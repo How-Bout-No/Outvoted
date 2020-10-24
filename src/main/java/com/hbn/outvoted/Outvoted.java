@@ -3,11 +3,15 @@ package com.hbn.outvoted;
 import com.hbn.outvoted.entities.InfernoEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import com.hbn.outvoted.init.ModItems;
+import com.hbn.outvoted.items.InfernoSpawnEggItem;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -47,4 +51,12 @@ public class Outvoted
             return new ItemStack(Items.DIAMOND_BLOCK);
         }
     };
+
+    @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public class ModEventBusSubscriber {
+        @SubscribeEvent
+        public void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
+            InfernoSpawnEggItem.initSpawnEggs();
+        }
+    }
 }

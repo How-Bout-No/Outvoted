@@ -25,13 +25,12 @@ public class ModEntitySpawns {
         }
     }
 
+    // Idk why but this works!
     @SubscribeEvent
     public static void changeInferno(LivingSpawnEvent.SpecialSpawn event) {
         Entity e = event.getEntity();
         if (e instanceof BlazeEntity) {
             if (event.getSpawnReason() == SpawnReason.NATURAL) {
-                System.out.println(Math.random());
-                System.out.println(Math.random());
                 if (Math.random() > 0.8) {
                     event.setCanceled(true);
 
@@ -45,23 +44,4 @@ public class ModEntitySpawns {
             }
         }
     }
-
-    /*
-    @SubscribeEvent
-    public static void newThing(EntityJoinWorldEvent event) {
-        Entity e = event.getEntity();
-        if (e instanceof BlazeEntity) {
-            if ((int)(Math.random()*100) > 50) {
-                event.setCanceled(true);
-
-                World world = event.getWorld();
-
-                InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                inferno.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
-
-                world.addEntity(inferno);
-            }
-        }
-    }
-     */
 }
