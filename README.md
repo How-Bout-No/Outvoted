@@ -1,5 +1,5 @@
 # Outvoted
-![https://www.curseforge.com/minecraft/mc-mods/outvoted](http://cf.way2muchnoise.eu/versions/outvoted.svg)
+[![](http://cf.way2muchnoise.eu/versions/outvoted.svg)](https://www.curseforge.com/minecraft/mc-mods/outvoted)
 
 Outvoted adds in mobs from previous mob votes that weren't able to make it into the game, trying to stay true to the original concepts.
 
