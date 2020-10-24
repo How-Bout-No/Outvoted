@@ -3,7 +3,6 @@ package com.hbn.outvoted.world.gen;
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.entities.InfernoEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -11,11 +10,8 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,7 +21,7 @@ public class ModEntitySpawns {
     @SubscribeEvent
     public static void spawnEntities(BiomeLoadingEvent event) {
         if (event.getName().toString().equals("minecraft:nether_wastes")) {
-            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 1, 5, 8));
+            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 8));
         }
     }
 

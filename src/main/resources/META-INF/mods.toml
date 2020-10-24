@@ -14,13 +14,13 @@ version="1.16.3-0.1.0" #mandatory
 
 displayName="Outvoted" #mandatory
 
-updateJSONURL="http://myurl.me/" #optional
+updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
-displayURL="http://example.com/" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
 logoFile="logo.png" #optional
 
-credits="" #optional
+#credits="" #optional
 
 authors="HowBoutNo" #optional
 
