@@ -63,7 +63,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
                 .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 4.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 100.0D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 50.0D)
                 .createMutableAttribute(Attributes.ARMOR, 10.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 48.0D);

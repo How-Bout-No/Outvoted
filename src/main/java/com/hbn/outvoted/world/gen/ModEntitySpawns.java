@@ -21,19 +21,16 @@ public class ModEntitySpawns {
     @SubscribeEvent
     public static void spawnEntities(BiomeLoadingEvent event) {
         if (event.getName().toString().equals("minecraft:nether_wastes")) {
-            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 8));
+            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
         }
     }
 
-    // Idk why but this works!
     @SubscribeEvent
     public static void changeInferno(LivingSpawnEvent.SpecialSpawn event) {
         Entity e = event.getEntity();
         if (e instanceof BlazeEntity) {
             if (event.getSpawnReason() == SpawnReason.NATURAL) {
                 if (Math.random() > 0.8) {
-                    event.setCanceled(true);
-
                     World world = event.getEntity().getEntityWorld();
 
                     InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
