@@ -1,6 +1,5 @@
 # Outvoted
-
-https://cf.way2muchnoise.eu/versions/outvoted.svg
+![Outvoted](http://cf.way2muchnoise.eu/versions/outvoted.svg)
 
 Outvoted adds in mobs from previous mob votes that weren't able to make it into the game, trying to stay true to the original concepts.
 
