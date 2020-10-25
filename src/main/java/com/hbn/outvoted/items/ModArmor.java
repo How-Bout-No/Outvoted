@@ -1,4 +1,4 @@
-package com.hbn.outvoted.util.enums;
+package com.hbn.outvoted.items;
 
 import com.hbn.outvoted.Outvoted;
 import net.minecraft.inventory.EquipmentSlotType;

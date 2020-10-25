@@ -20,7 +20,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
 logoFile="logo.png" #optional
 
-#credits="" #optional
+credits="Curseforge Community" #optional
 
 authors="HowBoutNo" #optional
 
