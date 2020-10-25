@@ -1,5 +1,8 @@
 {
   "item.outvoted.inferno_spawn_egg": "Hovering Inferno Spawn Egg",
   "entity.outvoted.inferno": "Hovering Inferno",
-  "itemGroup.modTab": "Outvoted"
+  "itemGroup.modTab": "Outvoted",
+  "item.outvoted.inferno_helmet" : "Inferno Helmet",
+  "advancements.outvoted.obtain_inferno_helmet.title": "Thick Skull",
+  "advancements.outvoted.obtain_inferno_helmet.description": "Obtain a Hovering Inferno's Helmet"
 }

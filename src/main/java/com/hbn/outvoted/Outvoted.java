@@ -14,7 +14,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -28,10 +27,9 @@ public class Outvoted
 
     public Outvoted() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-        ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModEntityTypes.ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -40,9 +38,6 @@ public class Outvoted
         DeferredWorkQueue.runLater(() -> {
             GlobalEntityTypeAttributes.put(ModEntityTypes.INFERNO.get(), InfernoEntity.setCustomAttributes().create());
         });
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
     }
 
     public static final ItemGroup TAB = new ItemGroup("modTab") {

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:nether/obtain_blaze_rod",
+  "display": {
+    "icon": {
+      "item": "outvoted:inferno_helmet"
+    },
+    "title": {
+      "translate": "advancements.outvoted.obtain_inferno_helmet.title"
+    },
+    "description": {
+      "translate": "advancements.outvoted.obtain_inferno_helmet.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "inferno_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "outvoted:inferno_helmet"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "inferno_helmet"
+    ]
+  ]
+}

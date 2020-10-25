@@ -201,12 +201,12 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
                 double d0 = this.blaze.getDistanceSq(livingentity);
                 if (d0 < 7.0D) {
-                    if (!flag) {
+                    /*if (!flag) {
                         return;
-                    }
+                    }*/
 
                     if (this.attackTime <= 0) {
-                        this.attackTime = 10;
+                        this.attackTime = 2;
                         this.blaze.attackEntityAsMob(livingentity);
                     }
 
