@@ -1,7 +1,7 @@
 package com.hbn.outvoted.world.gen;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.InfernoEntity;
+import com.hbn.outvoted.entities.inferno.InfernoEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -22,6 +23,10 @@ public class ModEntitySpawns {
     public static void spawnEntities(BiomeLoadingEvent event) {
         if (event.getName().toString().equals("minecraft:nether_wastes")) {
             event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
+        } else if (event.getCategory() == Biome.Category.DESERT) {
+            System.out.println(event.getSpawns().getSpawner(EntityClassification.CREATURE));
+            event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 90, 0, 1));
+            System.out.println(event.getSpawns().getSpawner(EntityClassification.CREATURE));
         }
     }
 

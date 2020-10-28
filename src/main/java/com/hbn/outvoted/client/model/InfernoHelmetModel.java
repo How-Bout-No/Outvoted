@@ -42,8 +42,7 @@ public class InfernoHelmetModel<T extends LivingEntity> extends BipedModel<T> {
     }
 
     @Override
-    protected Iterable<ModelRenderer> getHeadParts()
-    {
+    protected Iterable<ModelRenderer> getHeadParts() {
         // TODO SUPER HACKY FIX UNTIL FORGE CAN FIX setRotationAngles
         float offset = this.bipedHead.rotationPointY;
 
@@ -55,14 +54,13 @@ public class InfernoHelmetModel<T extends LivingEntity> extends BipedModel<T> {
     }
 
     @Override
-    protected Iterable<ModelRenderer> getBodyParts()
-    {
+    protected Iterable<ModelRenderer> getBodyParts() {
         return ImmutableList.of();
     }
 
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 

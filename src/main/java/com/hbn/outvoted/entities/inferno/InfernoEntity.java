@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities;
+package com.hbn.outvoted.entities.inferno;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -9,6 +9,9 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
@@ -28,19 +31,19 @@ import java.util.EnumSet;
 public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
-    private static boolean shielding = false;
+    private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
+
 
     EntityAnimationManager manager = new EntityAnimationManager();
-    EntityAnimationController mobcontroller = new EntityAnimationController(this, "mobController", 5, this::animationPredicate);
+    EntityAnimationController controller = new EntityAnimationController(this, "controller", 5, this::animationPredicate);
 
-    private <E extends Entity> boolean animationPredicate(AnimationTestEvent<E> event)
-    {
-        if (shielding) {
-            mobcontroller.transitionLengthTicks = 5;
-            mobcontroller.setAnimation(new AnimationBuilder().addAnimation("animation.hbn.inferno.shield").addAnimation("animation.hbn.inferno.shield2"));
+    public <E extends Entity> boolean animationPredicate(AnimationTestEvent<E> event) {
+        if (this.shielding()) {
+            controller.transitionLengthTicks = 5;
+            controller.setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
         } else {
-            mobcontroller.transitionLengthTicks = 1;
-            mobcontroller.setAnimation(new AnimationBuilder().addAnimation("animation.hbn.inferno.generaltran").addAnimation("animation.hbn.inferno.general"));
+            controller.transitionLengthTicks = 1;
+            controller.setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
 
         }
 
@@ -49,14 +52,12 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
     public InfernoEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super(type, worldIn);
-        manager.addAnimationController(mobcontroller);
+        manager.addAnimationController(controller);
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.setPathPriority(PathNodeType.LAVA, 8.0F);
         this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
         this.experienceValue = 20;
-        this.renderYawOffset = 0.0F;
-        this.rotationYaw = 0.0F;
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
@@ -81,13 +82,46 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_BLAZE_AMBIENT; }
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.ENTITY_BLAZE_AMBIENT;
+    }
 
     @Override
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_BLAZE_DEATH; }
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_BLAZE_DEATH;
+    }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return SoundEvents.ENTITY_BLAZE_HURT; }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_BLAZE_HURT;
+    }
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(SHIELDING, Boolean.FALSE);
+    }
+
+    public void shielding(boolean shielding) {
+        this.dataManager.set(SHIELDING, shielding);
+    }
+
+    public boolean shielding() {
+        return this.dataManager.get(SHIELDING);
+    }
+
+    /*@Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("Shielded", this.shielding());
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.shielding(compound.getBoolean("Shielded"));
+    }*/
+
 
     public float getBrightness() {
         return 1.0F;
@@ -108,7 +142,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                 this.world.playSound(this.getPosX() + 0.5D, this.getPosY() + 0.5D, this.getPosZ() + 0.5D, SoundEvents.ENTITY_BLAZE_BURN, this.getSoundCategory(), 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F, false);
             }
 
-            for(int i = 0; i < 2; ++i) {
+            for (int i = 0; i < 2; ++i) {
                 this.world.addParticle(ParticleTypes.SMOKE, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
             }
         }
@@ -124,13 +158,13 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
         --this.heightOffsetUpdateTime;
         if (this.heightOffsetUpdateTime <= 0) {
             this.heightOffsetUpdateTime = 100;
-            this.heightOffset = 0.5F + (float)this.rand.nextGaussian() * 3.0F;
+            this.heightOffset = 0.5F + (float) this.rand.nextGaussian() * 3.0F;
         }
 
         LivingEntity livingentity = this.getAttackTarget();
-        if (livingentity != null && livingentity.getPosYEye() > this.getPosYEye() + (double)this.heightOffset && this.canAttack(livingentity)) {
+        if (livingentity != null && livingentity.getPosYEye() > this.getPosYEye() + (double) this.heightOffset && this.canAttack(livingentity)) {
             Vector3d vector3d = this.getMotion();
-            this.setMotion(this.getMotion().add(0.0D, ((double)0.3F - vector3d.y) * (double)0.3F, 0.0D));
+            this.setMotion(this.getMotion().add(0.0D, ((double) 0.3F - vector3d.y) * (double) 0.3F, 0.0D));
             this.isAirBorne = true;
         }
 
@@ -147,7 +181,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
             this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
             return false;
         }
-            return super.attackEntityFrom(source, amount);
+        return super.attackEntityFrom(source, amount);
 
     }
 
@@ -218,7 +252,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
                     float health = (this.blaze.getMaxHealth() - this.blaze.getHealth()) / 2;
                     if (this.attackTime <= 0) {
-                        shielding = false;
+                        this.blaze.shielding(false);
                         ++this.attackStep;
                         if (this.attackStep == 1) {
                             this.attackTime = 60;
@@ -232,20 +266,20 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                         if (this.attackStep > 1) {
                             float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
                             if (!this.blaze.isSilent()) {
-                                this.blaze.world.playEvent((PlayerEntity)null, 1018, this.blaze.getPosition(), 0);
+                                this.blaze.world.playEvent((PlayerEntity) null, 1018, this.blaze.getPosition(), 0);
                             }
 
-                            for(int i = 0; i < 10; ++i) {
+                            for (int i = 0; i < 10; ++i) {
                                 for (int j = 0; j < 4; ++j) {
                                     SmallFireballEntity smallfireballentity;
                                     if (j == 0) {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i*36), d2, 360-(i*36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i * 36), d2, 360 - (i * 36));
                                     } else if (j == 1) {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i*36), d2, 360-(i*36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i * 36), d2, 360 - (i * 36));
                                     } else if (j == 2) {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i*36), d2, -360+(i*36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i * 36), d2, -360 + (i * 36));
                                     } else {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i*36), d2, -360+(i*36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i * 36), d2, -360 + (i * 36));
                                     }
                                     smallfireballentity.setPosition(smallfireballentity.getPosX(), this.blaze.getPosYHeight(0.5D), smallfireballentity.getPosZ());
                                     this.blaze.world.addEntity(smallfireballentity);
@@ -254,12 +288,12 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                             }
                         }
                     } else if (this.attackTime < 150 + health && this.attackTime > 100 - health) {
-                        shielding = true;
+                        this.blaze.shielding(true);
                     } else if (this.attackTime >= 30 && this.attackTime >= 50) {
-                        shielding = false;
+                        this.blaze.shielding(false);
                     }
 
-                    this.blaze.setInvulnerable(shielding);
+                    this.blaze.setInvulnerable(this.blaze.shielding());
 
                     this.blaze.getLookController().setLookPositionWithEntity(livingentity, 10.0F, 10.0F);
                 } else if (this.firedRecentlyTimer < 5) {

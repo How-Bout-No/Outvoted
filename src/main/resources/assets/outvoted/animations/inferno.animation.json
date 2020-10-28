@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.hbn.inferno.generaltran": {
+		"animation.inferno.generaltran": {
 			"animation_length": 1,
 			"bones": {
 				"one": {
@@ -154,7 +154,7 @@
 				}
 			}
 		},
-		"animation.hbn.inferno.general": {
+		"animation.inferno.general": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
@@ -283,7 +283,7 @@
 				}
 			}
 		},
-		"animation.hbn.inferno.shield": {
+		"animation.inferno.shield": {
 			"animation_length": 1,
 			"bones": {
 				"one": {
@@ -424,7 +424,7 @@
 				}
 			}
 		},
-		"animation.hbn.inferno.shield2": {
+		"animation.inferno.shield2": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {

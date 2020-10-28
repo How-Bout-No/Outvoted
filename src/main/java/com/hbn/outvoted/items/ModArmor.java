@@ -14,10 +14,12 @@ import java.util.function.Supplier;
 
 public enum ModArmor implements IArmorMaterial {
 
-    BLAZE(Outvoted.MOD_ID + ":blaze", 0, new int[] {0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
-            0.0F, () -> {return Ingredient.fromItems(Items.BLAZE_ROD.getItem());}, 0.0F);
+    BLAZE(Outvoted.MOD_ID + ":blaze", 0, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            0.0F, () -> {
+        return Ingredient.fromItems(Items.BLAZE_ROD.getItem());
+    }, 0.0F);
 
-    private static final int[] MAX_DAMAGE_ARRAY = new int[] { 11, 16, 15, 13 };
+    private static final int[] MAX_DAMAGE_ARRAY = new int[]{11, 16, 15, 13};
     private final String name;
     private final int maxDamageFactor; //Durability, Iron=15, Diamond=33, Gold=7, Leather=5
     private final int[] damageReductionAmountArray; //Armor Bar Protection, 1 = 1/2 armor bar
@@ -28,7 +30,7 @@ public enum ModArmor implements IArmorMaterial {
     private final float knockbackResistance; //1.0F=No Knockback, 0.0F=Disabled
 
     ModArmor(String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability,
-                     SoundEvent soundEvent, float toughness, Supplier<Ingredient> repairMaterial, float knockbackResistance) {
+             SoundEvent soundEvent, float toughness, Supplier<Ingredient> repairMaterial, float knockbackResistance) {
         this.name = name;
         this.maxDamageFactor = maxDamageFactor;
         this.damageReductionAmountArray = damageReductionAmountArray;

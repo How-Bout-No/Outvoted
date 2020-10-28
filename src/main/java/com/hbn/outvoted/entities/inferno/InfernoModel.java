@@ -1,6 +1,5 @@
-package com.hbn.outvoted.client.model;
+package com.hbn.outvoted.entities.inferno;
 
-import com.hbn.outvoted.entities.InfernoEntity;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib.animation.model.AnimatedEntityModel;
 import software.bernie.geckolib.animation.render.AnimatedModelRenderer;
@@ -17,8 +16,7 @@ public class InfernoModel<T extends InfernoEntity & IAnimatedEntity> extends Ani
     private final AnimatedModelRenderer four;
     private final AnimatedModelRenderer center;
 
-    public InfernoModel()
-    {
+    public InfernoModel() {
         textureWidth = 64;
         textureHeight = 64;
         head = new AnimatedModelRenderer(this);
@@ -113,14 +111,13 @@ public class InfernoModel<T extends InfernoEntity & IAnimatedEntity> extends Ani
 
     @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
-        this.head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
+        this.head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
+        this.head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
     }
 
 
     @Override
-    public ResourceLocation getAnimationFileLocation()
-    {
-        return new ResourceLocation("outvoted", "animations/inferno_animations.json");
+    public ResourceLocation getAnimationFileLocation() {
+        return new ResourceLocation("outvoted", "animations/inferno.animation.json");
     }
 }

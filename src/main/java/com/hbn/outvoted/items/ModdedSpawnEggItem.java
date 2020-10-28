@@ -9,21 +9,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
-public class InfernoSpawnEggItem extends SpawnEggItem {
-    protected static final List<InfernoSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
-    private final Supplier<? extends EntityType<?>> entityTypeSupplier;
+public class ModdedSpawnEggItem extends SpawnEggItem {
+    protected static final List<ModdedSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
+    private final Lazy<? extends EntityType<?>> entityTypeSupplier;
 
-    public InfernoSpawnEggItem(final RegistryObject<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
+    public ModdedSpawnEggItem(NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
         super(null, primaryColorIn, secondaryColorIn, builder);
-        this.entityTypeSupplier = entityTypeSupplier::get;
+        this.entityTypeSupplier = Lazy.of(entityTypeSupplier::get);
+        UNADDED_EGGS.add(this);
+    }
+
+    public ModdedSpawnEggItem(RegistryObject<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
+        super(null, primaryColorIn, secondaryColorIn, builder);
+        this.entityTypeSupplier = Lazy.of(entityTypeSupplier);
         UNADDED_EGGS.add(this);
     }
 

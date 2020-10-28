@@ -18,28 +18,25 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class InfernoHelmetItem extends ArmorItem {
-    public InfernoHelmetItem()
-    {
+    public InfernoHelmetItem() {
         super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB));
     }
 
     @SuppressWarnings("unchecked")
     @OnlyIn(Dist.CLIENT)
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default)
-    {
+    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
         return (A) new InfernoHelmetModel<LivingEntity>();
     }
 
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
-    {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         return "outvoted:textures/entity/inferno.png";
     }
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        if(player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get()) {
+        if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get()) {
             player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE));
         }
     }

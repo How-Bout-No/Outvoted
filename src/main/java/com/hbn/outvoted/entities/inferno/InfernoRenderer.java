@@ -1,8 +1,6 @@
-package com.hbn.outvoted.client.render;
+package com.hbn.outvoted.entities.inferno;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.client.model.InfernoModel;
-import com.hbn.outvoted.entities.InfernoEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
