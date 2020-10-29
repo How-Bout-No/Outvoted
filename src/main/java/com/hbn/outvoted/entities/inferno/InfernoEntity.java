@@ -28,10 +28,12 @@ import software.bernie.geckolib.manager.EntityAnimationManager;
 
 import java.util.EnumSet;
 
+@SuppressWarnings("EntityConstructor")
 public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BYTE);
 
 
     EntityAnimationManager manager = new EntityAnimationManager();
@@ -100,6 +102,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(SHIELDING, Boolean.FALSE);
+        this.dataManager.register(ON_FIRE, (byte)0);
     }
 
     public void shielding(boolean shielding) {
@@ -143,8 +146,10 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
             }
 
             for (int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.SMOKE, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
+                //this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
             }
+
         }
 
         super.livingTick();
@@ -173,6 +178,28 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
         return false;
+    }
+
+    /**
+     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
+     */
+    public boolean isBurning() {
+        return this.isCharged();
+    }
+
+    private boolean isCharged() {
+        return (this.dataManager.get(ON_FIRE) & 1) != 0;
+    }
+
+    private void setOnFire(boolean onFire) {
+        byte b0 = this.dataManager.get(ON_FIRE);
+        if (onFire) {
+            b0 = (byte)(b0 | 1);
+        } else {
+            b0 = (byte)(b0 & -2);
+        }
+
+        this.dataManager.set(ON_FIRE, b0);
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -216,6 +243,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void resetTask() {
+            this.blaze.setOnFire(false);
             this.firedRecentlyTimer = 0;
         }
 
@@ -256,11 +284,13 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                         ++this.attackStep;
                         if (this.attackStep == 1) {
                             this.attackTime = 60;
+                            this.blaze.setOnFire(true);
                         } else if (this.attackStep <= 3) {
                             this.attackTime = 30;
                         } else {
                             this.attackTime = 175;
                             this.attackStep = 0;
+                            this.blaze.setOnFire(false);
                         }
 
                         if (this.attackStep > 1) {
