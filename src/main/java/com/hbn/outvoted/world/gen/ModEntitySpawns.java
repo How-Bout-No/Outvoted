@@ -24,9 +24,7 @@ public class ModEntitySpawns {
         if (event.getName().toString().equals("minecraft:nether_wastes")) {
             event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
         } else if (event.getCategory() == Biome.Category.DESERT) {
-            System.out.println(event.getSpawns().getSpawner(EntityClassification.CREATURE));
             event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 90, 0, 1));
-            System.out.println(event.getSpawns().getSpawner(EntityClassification.CREATURE));
         }
     }
 
