@@ -250,17 +250,8 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                 //map = new HashMap<Enchantment, Integer>();
             }
         } else {
-            for (Enchantment ench : storedEnchants.keySet()) {
-                if (!ench.canApply(itemstack)) {
-                    System.out.println(storedEnchants);
-                    itemstack = null;
-                    break;
-                }
-            }
-            if (itemstack != null) {
-                map = storedEnchants;
-                storedEnchants = new HashMap<Enchantment, Integer>();
-            }
+            map = storedEnchants;
+            storedEnchants = new HashMap<Enchantment, Integer>();
         }
 
         /*if (map.equals(new HashMap<Enchantment, Integer>())) {
