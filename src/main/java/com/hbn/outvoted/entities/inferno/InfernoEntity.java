@@ -65,7 +65,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
-                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 4.0D)
+                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 5.0D)
                 .createMutableAttribute(Attributes.MAX_HEALTH, 50.0D)
                 .createMutableAttribute(Attributes.ARMOR, 10.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
@@ -150,6 +150,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                 //this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
             }
 
+        }
+        if(this.shielding()){
+            this.world.addParticle(ParticleTypes.LAVA, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
         }
 
         super.livingTick();
@@ -262,14 +265,18 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                 }
 
                 double d0 = this.blaze.getDistanceSq(livingentity);
-                if (d0 < 7.0D) {
+                if (d0 < 9.0D) {
+
+                    this.blaze.setOnFire(true);
+
                     /*if (!flag) {
                         return;
                     }*/
 
                     if (this.attackTime <= 0) {
-                        this.attackTime = 2;
+                        this.attackTime = 5;
                         this.blaze.attackEntityAsMob(livingentity);
+                        livingentity.setFire(4);
                     }
 
                     this.blaze.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);

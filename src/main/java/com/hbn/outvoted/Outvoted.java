@@ -40,7 +40,7 @@ public class Outvoted {
     public static final ItemGroup TAB = new ItemGroup("modTab") {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(Items.DIAMOND_BLOCK);
+            return new ItemStack(ModItems.INFERNO_HELMET.get());
         }
     };
 }
