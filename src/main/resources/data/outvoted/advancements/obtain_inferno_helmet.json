@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:nether/obtain_blaze_rod",
+  "parent": "outvoted:obtain_inferno_piece",
   "display": {
     "icon": {
       "item": "outvoted:inferno_helmet"
@@ -13,7 +13,7 @@
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
   "criteria": {
     "inferno_helmet": {
@@ -26,10 +26,5 @@
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "inferno_helmet"
-    ]
-  ]
+  }
 }

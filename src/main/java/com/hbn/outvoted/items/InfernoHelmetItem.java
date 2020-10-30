@@ -18,6 +18,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class InfernoHelmetItem extends ArmorItem {
+    private boolean timer = true;
+
     public InfernoHelmetItem() {
         super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB));
     }
@@ -36,8 +38,13 @@ public class InfernoHelmetItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get()) {
-            player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE));
+        if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get() && player.isBurning()) {
+            if (timer) {
+                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 200, 0, false, false, true));
+                timer = false;
+            }
+        } else {
+            timer = true;
         }
     }
 

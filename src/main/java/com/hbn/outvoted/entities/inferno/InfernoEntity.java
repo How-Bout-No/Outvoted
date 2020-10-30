@@ -110,19 +110,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
         return this.dataManager.get(SHIELDING);
     }
 
-    /*@Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        compound.putBoolean("Shielded", this.shielding());
-    }
-
-    @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        this.shielding(compound.getBoolean("Shielded"));
-    }*/
-
-
     public float getBrightness() {
         return 1.0F;
     }
@@ -235,20 +222,15 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
                 double d0 = this.blaze.getDistanceSq(livingentity);
                 if (d0 < 7.0D) {
-                    /*if (!flag) {
-                        return;
-                    }*/
 
                     if (this.attackTime <= 0) {
-                        this.attackTime = 2;
+                        this.attackTime = 5;
                         this.blaze.attackEntityAsMob(livingentity);
                     }
 
                     this.blaze.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
-                    //double d1 = livingentity.getPosX() - this.blaze.getPosX();
                     double d2 = livingentity.getPosYHeight(0.5D) - this.blaze.getPosYHeight(0.5D);
-                    //double d3 = livingentity.getPosZ() - this.blaze.getPosZ();
 
                     float health = (this.blaze.getMaxHealth() - this.blaze.getHealth()) / 2;
                     if (this.attackTime <= 0) {

@@ -4,10 +4,12 @@ import com.hbn.outvoted.entities.hunger.HungerEntity;
 import com.hbn.outvoted.entities.inferno.InfernoEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import com.hbn.outvoted.init.ModItems;
+import com.hbn.outvoted.util.ServerEvents;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +26,8 @@ public class Outvoted {
 
         ModItems.ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+
+        MinecraftForge.EVENT_BUS.register(new ServerEvents());
 
         modEventBus.addListener(this::setup);
     }
