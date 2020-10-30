@@ -28,7 +28,6 @@ import software.bernie.geckolib.manager.EntityAnimationManager;
 
 import java.util.EnumSet;
 
-@SuppressWarnings("EntityConstructor")
 public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
@@ -46,7 +45,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
         } else {
             controller.transitionLengthTicks = 1;
             controller.setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
-
         }
 
         return true;
@@ -185,6 +183,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
     /**
      * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
+     * Copied from BlazeEntity.java
      */
     public boolean isBurning() {
         return this.isCharged();
@@ -269,10 +268,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
                     this.blaze.setOnFire(true);
 
-                    /*if (!flag) {
-                        return;
-                    }*/
-
                     if (this.attackTime <= 0) {
                         this.attackTime = 5;
                         this.blaze.attackEntityAsMob(livingentity);
@@ -286,14 +281,23 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                     //double d3 = livingentity.getPosZ() - this.blaze.getPosZ();
 
                     float health = (this.blaze.getMaxHealth() - this.blaze.getHealth()) / 2;
+                    float healthPercent = this.blaze.getHealth()/this.blaze.getMaxHealth();
+
+                    int maxAttackSteps = 3;
+                    
+                    if(d0 < 36.0D){++maxAttackSteps;}
+                    if(healthPercent<0.6){++maxAttackSteps;}
+
                     if (this.attackTime <= 0) {
                         this.blaze.shielding(false);
                         ++this.attackStep;
                         if (this.attackStep == 1) {
-                            this.attackTime = 60;
+                            //this.attackTime = 60;
+                            this.attackTime = (int) (40*healthPercent+20);
                             this.blaze.setOnFire(true);
-                        } else if (this.attackStep <= 3) {
-                            this.attackTime = 30;
+                        } else if (this.attackStep <= maxAttackSteps) {
+                            //this.attackTime = 30;
+                            this.attackTime = (int) (25*healthPercent+5);
                         } else {
                             this.attackTime = 175;
                             this.attackStep = 0;
@@ -306,17 +310,20 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                                 this.blaze.world.playEvent((PlayerEntity) null, 1018, this.blaze.getPosition(), 0);
                             }
 
+                            int offset = ((36/(maxAttackSteps-1))*(attackStep-2));
+
+                            //shoot fireballs in circle
                             for (int i = 0; i < 10; ++i) {
                                 for (int j = 0; j < 4; ++j) {
                                     SmallFireballEntity smallfireballentity;
                                     if (j == 0) {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i * 36), d2, 360 - (i * 36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i * 36 + offset), d2, 360 - (i * 36 + offset));
                                     } else if (j == 1) {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i * 36), d2, 360 - (i * 36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i * 36 + offset), d2, 360 - (i * 36 + offset));
                                     } else if (j == 2) {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i * 36), d2, -360 + (i * 36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, (i * 36 + offset), d2, -360 + (i * 36 + offset));
                                     } else {
-                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i * 36), d2, -360 + (i * 36));
+                                        smallfireballentity = new SmallFireballEntity(this.blaze.world, this.blaze, -(i * 36 + offset), d2, -360 + (i * 36 + offset));
                                     }
                                     smallfireballentity.setPosition(smallfireballentity.getPosX(), this.blaze.getPosYHeight(0.5D), smallfireballentity.getPosZ());
                                     this.blaze.world.addEntity(smallfireballentity);
