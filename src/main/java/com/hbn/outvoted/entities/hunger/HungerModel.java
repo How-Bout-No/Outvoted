@@ -2,10 +2,13 @@ package com.hbn.outvoted.entities.hunger;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animation.model.AnimatedEntityModel;
 import software.bernie.geckolib.animation.render.AnimatedModelRenderer;
 import software.bernie.geckolib.entity.IAnimatedEntity;
 
+@OnlyIn(Dist.CLIENT)
 public class HungerModel<T extends HungerEntity & IAnimatedEntity> extends AnimatedEntityModel<T> {
 
     private final AnimatedModelRenderer all;
