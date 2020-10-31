@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 
 public class InfernoShieldItem extends ShieldItem {
     public InfernoShieldItem() {
-        super(new Properties().setISTER(InfernoShieldItem::getISTER).maxDamage(750).group(Outvoted.TAB));
+        super(new Properties().setISTER(() -> getISTER()).maxDamage(750).group(Outvoted.TAB));
         DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 

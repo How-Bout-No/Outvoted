@@ -2,6 +2,7 @@ package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.init.ModItems;
+import net.minecraft.client.renderer.entity.model.ShieldModel;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.item.IItemPropertyGetter;
@@ -40,9 +41,7 @@ public class InfernoShieldModel {
     @SubscribeEvent
     public static void onStitch(TextureStitchEvent.Pre event) {
         if (event.getMap().getTextureLocation().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {
-            for (RenderMaterial textures : new RenderMaterial[] { base }) {
-                event.addSprite(textures.getTextureLocation());
-            }
+            event.addSprite(base.getTextureLocation());
         }
     }
 }
