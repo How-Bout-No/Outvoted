@@ -1,0 +1,14 @@
+{
+  "parent": "item/shield",
+  "textures": {
+    "particle": "block/polished_blackstone"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "outvoted:blocking": 1
+      },
+      "model": "outvoted:item/inferno_shield_blocking"
+    }
+  ]
+}
