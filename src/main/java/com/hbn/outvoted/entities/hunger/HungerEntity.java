@@ -1,5 +1,6 @@
 package com.hbn.outvoted.entities.hunger;
 
+import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.CreatureEntity;
@@ -122,7 +123,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         return CreatureEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 15.0D)
                 .createMutableAttribute(Attributes.ATTACK_KNOCKBACK)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthhunger.get())
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 15.0D);
     }
@@ -200,71 +201,71 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         } else {
             itemstack.removeChildTag("Damage");
         }
+        if (storedEnchants.size() < OutvotedConfig.COMMON.max_enchants.get()) {
+            itemstack.setCount(count);
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((p_217012_0_) -> {
+                return !p_217012_0_.getKey().isCurse();
+                //return true;
+            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        itemstack.setCount(count);
-        Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((p_217012_0_) -> {
-            return !p_217012_0_.getKey().isCurse();
-            //return true;
-        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        if (!map.isEmpty()) {
-            for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
-                Enchantment key = entry.getKey();
-                Integer value = entry.getValue();
-                if (storedEnchants.containsKey(key)) {
-                    if (value == key.getMaxLevel() && storedEnchants.get(key) == key.getMaxLevel()) {
-                        boolean isMax = false;
-                        for (Map.Entry<Enchantment, Integer> stentry : storedEnchants.entrySet()) {
-                            if (stentry.getValue() == (stentry.getKey().getMaxLevel())) {
-                                isMax = true;
+            if (!map.isEmpty()) {
+                for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                    Enchantment key = entry.getKey();
+                    Integer value = entry.getValue();
+                    if (storedEnchants.containsKey(key)) {
+                        if (value == key.getMaxLevel() && storedEnchants.get(key) == key.getMaxLevel()) {
+                            boolean isMax = false;
+                            for (Map.Entry<Enchantment, Integer> stentry : storedEnchants.entrySet()) {
+                                if (stentry.getValue() == (stentry.getKey().getMaxLevel())) {
+                                    isMax = true;
+                                }
                             }
-                        }
-                        if (isMax) {
-                            storedEnchants.put(key, key.getMaxLevel() + 1);
+                            if (isMax) {
+                                storedEnchants.put(key, key.getMaxLevel() + 1);
+                            } else {
+                                itemstack = null;
+                            }
                         } else {
-                            itemstack = null;
+                            storedEnchants.put(key, value);
                         }
                     } else {
-                        storedEnchants.put(key, value);
-                    }
-                } else {
-                    if (storedEnchants.size() > 0) {
-                        for (Enchantment ench : storedEnchants.keySet()) {
-                            if (ench instanceof ProtectionEnchantment) {
-                                if (key instanceof ProtectionEnchantment) {
-                                    if (!storedEnchants.isEmpty()) {
-                                        if (key.isCompatibleWith(ench)) {
-                                            storedEnchants.put(key, value);
+                        if (storedEnchants.size() > 0) {
+                            for (Enchantment ench : storedEnchants.keySet()) {
+                                if (ench instanceof ProtectionEnchantment) {
+                                    if (key instanceof ProtectionEnchantment) {
+                                        if (!storedEnchants.isEmpty()) {
+                                            if (key.isCompatibleWith(ench)) {
+                                                storedEnchants.put(key, value);
+                                            } else {
+                                                itemstack = null;
+                                                break;
+                                            }
                                         } else {
-                                            itemstack = null;
-                                            break;
+                                            storedEnchants.put(key, value);
                                         }
                                     } else {
                                         storedEnchants.put(key, value);
                                     }
-                                } else {
+                                } else if (key.isCompatibleWith(ench)) {
                                     storedEnchants.put(key, value);
+                                } else if (key instanceof InfinityEnchantment || key instanceof MendingEnchantment) {
+                                    storedEnchants.put(key, value);
+                                } else {
+                                    itemstack = null;
+                                    break;
                                 }
-                            } else if (key.isCompatibleWith(ench)) {
-                                storedEnchants.put(key, value);
-                            } else if (key instanceof InfinityEnchantment || key instanceof MendingEnchantment) {
-                                storedEnchants.put(key, value);
-                            } else {
-                                itemstack = null;
-                                break;
                             }
+                        } else {
+                            storedEnchants.put(key, value);
+                            itemstack = ItemStack.EMPTY;
                         }
-                    } else {
-                        storedEnchants.put(key, value);
-                        itemstack = ItemStack.EMPTY;
                     }
+                    //map = new HashMap<Enchantment, Integer>();
                 }
-                //map = new HashMap<Enchantment, Integer>();
+            } else {
+                map = storedEnchants;
+                storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
             }
-        } else {
-            map = storedEnchants;
-            storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
-        }
 
         /*if (map.equals(new HashMap<Enchantment, Integer>())) {
             if (Math.random() > 0.5) {
@@ -273,27 +274,30 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                 itemstack = ItemStack.EMPTY;
             }
         }*/
-        if (itemstack != null) {
-            if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
-                itemstack = ItemStack.EMPTY;
-            } else if (itemstack.getItem() == Items.BOOK) {
-                itemstack = new ItemStack(Items.ENCHANTED_BOOK);
-            }
+            if (itemstack != null) {
+                if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
+                    itemstack = ItemStack.EMPTY;
+                } else if (itemstack.getItem() == Items.BOOK) {
+                    itemstack = new ItemStack(Items.ENCHANTED_BOOK);
+                }
 
-            if (map.size() == 0) {
-                itemstack = ItemStack.EMPTY;
-            }
+                if (map.size() == 0) {
+                    itemstack = ItemStack.EMPTY;
+                }
 
-            if (itemstack != ItemStack.EMPTY) {
-                EnchantmentHelper.setEnchantments(map, itemstack);
-                itemstack.setRepairCost(0);
+                if (itemstack != ItemStack.EMPTY) {
+                    EnchantmentHelper.setEnchantments(map, itemstack);
+                    itemstack.setRepairCost(0);
+                }
             }
-        }
 
 
         /*for (int i = 0; i < map.size(); ++i) {
             itemstack.setRepairCost(RepairContainer.getNewRepairCost(itemstack.getRepairCost()));
         }*/
+        } else {
+            itemstack = ItemStack.EMPTY;
+        }
 
         return itemstack;
     }

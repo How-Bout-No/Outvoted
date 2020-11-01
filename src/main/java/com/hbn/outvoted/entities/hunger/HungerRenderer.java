@@ -1,7 +1,6 @@
 package com.hbn.outvoted.entities.hunger;
 
 import com.hbn.outvoted.Outvoted;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;

@@ -1,5 +1,6 @@
 package com.hbn.outvoted.entities.inferno;
 
+import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -64,7 +65,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
                 .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 4.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 50.0D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthinferno.get())
                 .createMutableAttribute(Attributes.ARMOR, 10.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 48.0D);
@@ -203,6 +204,14 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
             return false;
         }
         return super.attackEntityFrom(source, amount);
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        if (source == DamageSource.DROWN) {
+            return false;
+        }
+        return super.isInvulnerableTo(source);
     }
 
     static class AttackGoal extends Goal {
