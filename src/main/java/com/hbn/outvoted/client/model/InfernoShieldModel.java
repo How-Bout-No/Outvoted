@@ -2,7 +2,6 @@ package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.init.ModItems;
-import net.minecraft.client.renderer.entity.model.ShieldModel;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.item.IItemPropertyGetter;
@@ -10,7 +9,6 @@ import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,7 +19,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class InfernoShieldModel {
 
     public static final RenderMaterial base = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(Outvoted.MOD_ID, "entity/inferno_shield_base"));
-    //public static final RenderMaterial basenop = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(Outvoted.MOD_ID,"entity/inferno_shield_base_nopattern"));
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {

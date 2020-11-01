@@ -1,6 +1,7 @@
 package com.hbn.outvoted.world.gen;
 
 import com.hbn.outvoted.Outvoted;
+import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.entities.inferno.InfernoEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.Entity;
@@ -21,27 +22,34 @@ public class ModEntitySpawns {
 
     @SubscribeEvent
     public static void spawnEntities(BiomeLoadingEvent event) {
-        if (event.getName().toString().equals("minecraft:nether_wastes")) {
-            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
-        } else if (event.getCategory() == Biome.Category.DESERT) {
-            event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 90, 0, 1));
-        } else if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST) {
-            event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 70, 0, 1));
+        if (OutvotedConfig.COMMON.spawninferno.get()) {
+            if (event.getName().toString().equals("minecraft:nether_wastes")) {
+                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
+            }
+        }
+        if (OutvotedConfig.COMMON.spawnhunger.get()) {
+            if (event.getCategory() == Biome.Category.DESERT) {
+                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 90, 0, 1));
+            } else if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST) {
+                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 70, 0, 1));
+            }
         }
     }
 
     @SubscribeEvent
     public static void changeInferno(LivingSpawnEvent.SpecialSpawn event) {
-        Entity e = event.getEntity();
-        if (e instanceof BlazeEntity) {
-            if (event.getSpawnReason() == SpawnReason.NATURAL) {
-                if (Math.random() > 0.8) {
-                    World world = event.getEntity().getEntityWorld();
+        if (OutvotedConfig.COMMON.spawninferno.get()) {
+            Entity e = event.getEntity();
+            if (e instanceof BlazeEntity) {
+                if (event.getSpawnReason() == SpawnReason.NATURAL) {
+                    if (Math.random() > 0.8) {
+                        World world = event.getEntity().getEntityWorld();
 
-                    InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                    inferno.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
+                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
+                        inferno.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
 
-                    world.addEntity(inferno);
+                        world.addEntity(inferno);
+                    }
                 }
             }
         }
