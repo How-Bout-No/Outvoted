@@ -52,6 +52,7 @@ public class ModEntitySpawns {
                     }
                 }
             }
+            /*
             else if (event.getSpawnReason() == SpawnReason.SPAWNER) {
                 if (Math.random() > 0.9 ) {
                     World world = event.getEntity().getEntityWorld();
@@ -62,6 +63,7 @@ public class ModEntitySpawns {
                     world.addEntity(inferno);
                 }
             }
+             */
         }
     }
 }
