@@ -1,10 +1,13 @@
 package com.hbn.outvoted.entities.inferno;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animation.model.AnimatedEntityModel;
 import software.bernie.geckolib.animation.render.AnimatedModelRenderer;
 import software.bernie.geckolib.entity.IAnimatedEntity;
 
+@OnlyIn(Dist.CLIENT)
 public class InfernoModel<T extends InfernoEntity & IAnimatedEntity> extends AnimatedEntityModel<T> {
     private final AnimatedModelRenderer head;
     private final AnimatedModelRenderer helmet;
