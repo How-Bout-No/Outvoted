@@ -63,7 +63,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
-                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 5.0D)
+                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 4.0D)
                 .createMutableAttribute(Attributes.MAX_HEALTH, 50.0D)
                 .createMutableAttribute(Attributes.ARMOR, 10.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
@@ -192,13 +192,17 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
+        boolean shieldedDrownDamage = false;
         if (this.isInvulnerableTo(source)) {
-            //this.playSound(SoundEvents.ITEM_SHIELD_BLOCK, 1.0F, 0.5F);
-            this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
+            if(source != DamageSource.DROWN) { this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F); }
+            else { this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.20F, 0.0F); }//this sound is less annoying but it doesn't fix the spamming
+
+            if(source.isProjectile()){source.getImmediateSource().setFire(12);}
+            //source.getImmediateSource().setFire(4); //crashes game when source is not an entity eg drowning damage
+
             return false;
         }
         return super.attackEntityFrom(source, amount);
-
     }
 
     static class AttackGoal extends Goal {
