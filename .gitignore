@@ -1,0 +1,12 @@
+
+run/
+
+logs/
+
+build/
+
+.idea/
+
+.gradle/
+
+infernoideas.txt
