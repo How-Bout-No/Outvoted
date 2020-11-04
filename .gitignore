@@ -10,3 +10,5 @@ build/
 .gradle/
 
 infernoideas.txt
+
+*.bbmodel
