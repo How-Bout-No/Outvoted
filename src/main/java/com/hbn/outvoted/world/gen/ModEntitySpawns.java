@@ -45,8 +45,17 @@ public class ModEntitySpawns {
                     if (Math.random() > 0.8) {
                         World world = event.getEntity().getEntityWorld();
 
-                    InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                    inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
+                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
+                        inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
+
+                        world.addEntity(inferno);
+                    }
+                } else if (event.getSpawnReason() == SpawnReason.SPAWNER) {
+                    if (Math.random() > 0.9) {
+                        World world = event.getEntity().getEntityWorld();
+
+                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
+                        inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
 
                         world.addEntity(inferno);
                     }

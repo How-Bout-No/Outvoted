@@ -195,11 +195,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         boolean shieldedDrownDamage = false;
         if (this.isInvulnerableTo(source)) {
-            if(source != DamageSource.DROWN) { this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F); }
-            else { this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.20F, 0.0F); }//this sound is less annoying but it doesn't fix the spamming
+            this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
 
             if(source.isProjectile()){source.getImmediateSource().setFire(12);}
-            //source.getImmediateSource().setFire(4); //crashes game when source is not an entity eg drowning damage
 
             return false;
         }
