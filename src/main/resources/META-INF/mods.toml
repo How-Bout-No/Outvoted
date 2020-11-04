@@ -20,7 +20,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
 logoFile="logo.png" #optional
 
-credits="Curseforge Community" #optional
+credits="Curseforge Community, David2753/Lord_Noodal" #optional
 
 authors="HowBoutNo" #optional
 
@@ -41,7 +41,7 @@ description='Adds in mobs that got outvoted!'
 [[dependencies.outvoted]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3]"
+    versionRange="[1.16.3,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.outvoted]]

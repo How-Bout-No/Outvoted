@@ -1,12 +1,11 @@
+/*
 
-run/
+!/gradle
+!/src
 
-logs/
-
-build/
-
-.idea/
-
-.gradle/
-
-infernoideas.txt
+!/build.gradle
+!/gradle.properties
+!/gradlew
+!/gradlew.bat
+!/README.md
+!/LICENSE
