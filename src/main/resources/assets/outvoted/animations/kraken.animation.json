@@ -387,8 +387,13 @@
 						}
 					}
 				}
+			},
+			"sound_effects": {
+				"0.16": {
+					"effect": "bite"
+				}
 			}
-		},
+        },
 		"animation.kraken.attack": {
 			"animation_length": 1.52,
 			"bones": {

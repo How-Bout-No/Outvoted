@@ -11,7 +11,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -37,7 +36,7 @@ public class ModEntitySpawns {
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (event.getCategory() == Biome.Category.OCEAN) {
-                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 90, 0, 1));
+                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 1, 0, 1));
             }
         }
     }

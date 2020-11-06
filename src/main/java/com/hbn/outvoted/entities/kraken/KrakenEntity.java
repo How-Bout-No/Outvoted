@@ -1,5 +1,6 @@
 package com.hbn.outvoted.entities.kraken;
 
+import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -52,6 +53,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         this.experienceValue = 10;
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.moveController = new KrakenEntity.MoveHelperController(this);
+        //controller.registerSoundListener(this::soundListener);
     }
 
     EntityAnimationManager manager = new EntityAnimationManager();
@@ -73,6 +75,16 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         return true;
     }
 
+    /*private <E extends Entity> SoundEvent soundListener(SoundKeyframeEvent<E> event) {
+        if (event.sound.equals("bite")) {
+            damageEntity(this);
+            System.out.println(this);
+            return SoundEvents.ENTITY_HORSE_EAT;
+        } else {
+            return null;
+        }
+    }*/
+
     @Override
     public EntityAnimationManager getAnimationManager() {
         return manager;
@@ -83,13 +95,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.1D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 30.0D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthkraken.get());
     }
 
     protected void registerGoals() {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
-        this.goalSelector.addGoal(3, new KrakenEntity.ApproachGoal(this, 1.0D, 32.0F));
+        this.goalSelector.addGoal(3, new FollowBoatGoal(this));
         this.goalSelector.addGoal(4, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
@@ -342,7 +354,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
             this.move(MoverType.SELF, this.getMotion());
             this.setMotion(this.getMotion().scale(0.9D));
             if (!this.isMoving() && this.getAttackTarget() == null) {
-                this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
+                this.setMotion(this.getMotion().add(0.0D, -0.001D, 0.0D));
             } else if (this.getAttackTarget() != null) {
                 this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
             }
@@ -419,13 +431,16 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                         f += 2.0F;
                     }
 
-                    //livingentity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.entity, this.entity), f);
-                    if (this.tickCounter % 100 == 0) {
-                        this.entity.setAttacking(3);
-                        livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), (float) this.entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    if (this.tickCounter % 50 == 0) {
+                        livingentity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.entity, this.entity), f);
+                        if (livingentity.getAir() - 50 > 0) {
+                            livingentity.setAir(livingentity.getAir() - 50);
+                        }
+                    }/* else if (this.tickCounter % 25 == 0) {
+                        this.entity.setAttacking(2);
                     }
-                    //this.entity.setAttackTarget((LivingEntity) null);
-                    //this.entity.setAttacking(0);
+                    this.entity.setAttackTarget((LivingEntity) null);
+                    this.entity.setAttacking(0);*/
                 } else {
                     this.entity.setAttacking(1);
                 }
@@ -433,49 +448,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                 super.tick();
             }
         }
-    }
-
-    static class ApproachGoal extends MoveTowardsTargetGoal {
-        private final KrakenEntity entity;
-
-        public ApproachGoal(KrakenEntity entity, double speedIn, float targetMaxDistance) {
-            super(entity, 1.0D, 32.0F);
-            this.entity = entity;
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        public boolean shouldExecute() {
-            LivingEntity livingentity = this.entity.getAttackTarget();
-            return super.shouldExecute() && livingentity != null && livingentity.isAlive() && (livingentity.isInWater() || (livingentity.getRidingEntity() != null && livingentity.getRidingEntity().isInWater())) && this.entity.getDistance(this.entity.getAttackTarget()) > 8.0D;
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean shouldContinueExecuting() {
-            return super.shouldContinueExecuting() && this.entity.getDistance(this.entity.getAttackTarget()) > 8.0D;
-        }
-/*
-        *//**
-         * Keep ticking a continuous task that has already been started
-         *//*
-        public void tick() {
-            LivingEntity livingentity = this.entity.getAttackTarget();
-            if (livingentity != null) {
-                this.entity.getNavigator().clearPath();
-                this.entity.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
-                this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
-                this.entity.moveController.setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
-                this.entity.setMoving(true);
-            } else {
-                this.entity.setMoving(false);
-            }
-
-            super.tick();
-        }*/
     }
 
     static class MoveHelperController extends MovementController {
@@ -517,7 +489,14 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                     d13 = d10;
                 }
 
-                this.entity.getLookController().setLookPosition(MathHelper.lerp(0.125D, d11, d8), MathHelper.lerp(0.125D, d12, d9), MathHelper.lerp(0.125D, d13, d10), 10.0F, 40.0F);
+                //this.entity.getLookController().setLookPosition(MathHelper.lerp(0.125D, d11, d8), MathHelper.lerp(0.125D, d12, d9), MathHelper.lerp(0.125D, d13, d10), 10.0F, 40.0F);
+                double setY = MathHelper.lerp(0.125D, d12, d9);
+                if (setY < 55) {
+                    setY += 5;
+                } else if (setY > 60) {
+                    setY -= 5;
+                }
+                this.entity.getLookController().setLookPosition(MathHelper.lerp(0.125D, d11, d8), setY, MathHelper.lerp(0.125D, d13, d10), 10.0F, 40.0F);
                 this.entity.setMoving(true);
             } else {
                 this.entity.setAIMoveSpeed(0.0F);

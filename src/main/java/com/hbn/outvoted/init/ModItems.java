@@ -18,7 +18,7 @@ public class ModItems {
     public static final RegistryObject<ModdedSpawnEggItem> HUNGER_SPAWN_EGG = ITEMS.register("hunger_spawn_egg",
             () -> new ModdedSpawnEggItem(ModEntityTypes.HUNGER, 0xF0D786, 0x000000, new Item.Properties().group(Outvoted.TAB)));
     public static final RegistryObject<ModdedSpawnEggItem> KRAKEN_SPAWN_EGG = ITEMS.register("kraken_spawn_egg",
-            () -> new ModdedSpawnEggItem(ModEntityTypes.KRAKEN, 0x000000, 0x000000, new Item.Properties().group(Outvoted.TAB)));
+            () -> new ModdedSpawnEggItem(ModEntityTypes.KRAKEN, 0x5B872E, 0x000000, new Item.Properties().group(Outvoted.TAB)));
 
     public static final RegistryObject<Item> INFERNO_HELMET = ITEMS.register("inferno_helmet", InfernoHelmetItem::new);
     public static final RegistryObject<Item> INFERNO_SHIELD = ITEMS.register("inferno_shield", InfernoShieldItem::new);
