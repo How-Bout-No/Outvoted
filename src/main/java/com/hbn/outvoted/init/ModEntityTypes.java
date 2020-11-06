@@ -3,7 +3,7 @@ package com.hbn.outvoted.init;
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.entities.hunger.HungerEntity;
 import com.hbn.outvoted.entities.inferno.InfernoEntity;
-import com.hbn.outvoted.entities.oceanmonster.OceanEntity;
+import com.hbn.outvoted.entities.kraken.KrakenEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -17,5 +17,5 @@ public class ModEntityTypes {
     // Entity Types
     public static final RegistryObject<EntityType<InfernoEntity>> INFERNO = ENTITY_TYPES.register("inferno", () -> EntityType.Builder.create(InfernoEntity::new, EntityClassification.MONSTER).immuneToFire().size(0.8F, 2.0F).build(new ResourceLocation(Outvoted.MOD_ID, "inferno").toString()));
     public static final RegistryObject<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES.register("hunger", () -> EntityType.Builder.create(HungerEntity::new, EntityClassification.CREATURE).size(1.0F, 1.0F).build(new ResourceLocation(Outvoted.MOD_ID, "hunger").toString()));
-    public static final RegistryObject<EntityType<OceanEntity>> OCEANMONSTER = ENTITY_TYPES.register("ocean_monster", () -> EntityType.Builder.create(OceanEntity::new, EntityClassification.MONSTER).size(1.0F, 1.0F).build(new ResourceLocation(Outvoted.MOD_ID, "ocean_monster").toString()));
+    public static final RegistryObject<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES.register("kraken", () -> EntityType.Builder.create(KrakenEntity::new, EntityClassification.MONSTER).size(1.0F, 1.0F).build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
 }

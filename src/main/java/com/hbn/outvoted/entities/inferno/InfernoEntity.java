@@ -101,7 +101,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(SHIELDING, Boolean.FALSE);
-        this.dataManager.register(ON_FIRE, (byte)0);
+        this.dataManager.register(ON_FIRE, (byte) 0);
     }
 
     public void shielding(boolean shielding) {
@@ -137,7 +137,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
             }
 
         }
-        if(this.shielding()){
+        if (this.shielding()) {
             this.world.addParticle(ParticleTypes.LAVA, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
         }
 
@@ -184,9 +184,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     private void setOnFire(boolean onFire) {
         byte b0 = this.dataManager.get(ON_FIRE);
         if (onFire) {
-            b0 = (byte)(b0 | 1);
+            b0 = (byte) (b0 | 1);
         } else {
-            b0 = (byte)(b0 & -2);
+            b0 = (byte) (b0 & -2);
         }
 
         this.dataManager.set(ON_FIRE, b0);
@@ -196,7 +196,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
         if (this.isInvulnerableTo(source)) {
             this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
 
-            if(source.isProjectile()){source.getImmediateSource().setFire(12);}
+            if (source.isProjectile()) {
+                source.getImmediateSource().setFire(12);
+            }
 
             return false;
         }
@@ -276,23 +278,27 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                     double d2 = livingentity.getPosYHeight(0.5D) - this.blaze.getPosYHeight(0.5D);
 
                     float health = (this.blaze.getMaxHealth() - this.blaze.getHealth()) / 2;
-                    float healthPercent = this.blaze.getHealth()/this.blaze.getMaxHealth();
+                    float healthPercent = this.blaze.getHealth() / this.blaze.getMaxHealth();
 
                     int maxAttackSteps = 3;
-                    
-                    if(d0 < 36.0D){++maxAttackSteps;}
-                    if(healthPercent<0.6){++maxAttackSteps;}
+
+                    if (d0 < 36.0D) {
+                        ++maxAttackSteps;
+                    }
+                    if (healthPercent < 0.6) {
+                        ++maxAttackSteps;
+                    }
 
                     if (this.attackTime <= 0) {
                         this.blaze.shielding(false);
                         ++this.attackStep;
                         if (this.attackStep == 1) {
                             //this.attackTime = 60;
-                            this.attackTime = (int) (40*healthPercent+20);
+                            this.attackTime = (int) (40 * healthPercent + 20);
                             this.blaze.setOnFire(true);
                         } else if (this.attackStep <= maxAttackSteps) {
                             //this.attackTime = 30;
-                            this.attackTime = (int) (25*healthPercent+5);
+                            this.attackTime = (int) (25 * healthPercent + 5);
                         } else {
                             this.attackTime = 175;
                             this.attackStep = 0;
@@ -305,7 +311,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                                 this.blaze.world.playEvent((PlayerEntity) null, 1018, this.blaze.getPosition(), 0);
                             }
 
-                            int offset = ((36/(maxAttackSteps-1))*(attackStep-2));
+                            int offset = ((36 / (maxAttackSteps - 1)) * (attackStep - 2));
 
                             //shoot fireballs in circle
                             for (int i = 0; i < 10; ++i) {

@@ -13,42 +13,37 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.ConfigValue<Integer> max_enchants;
         public final ForgeConfigSpec.BooleanValue spawninferno;
         public final ForgeConfigSpec.BooleanValue spawnhunger;
+        public final ForgeConfigSpec.BooleanValue spawnkraken;
         public final ForgeConfigSpec.DoubleValue healthinferno;
         public final ForgeConfigSpec.DoubleValue healthhunger;
+        public final ForgeConfigSpec.DoubleValue healthkraken;
 
         public Common(ForgeConfigSpec.Builder builder) {
-            builder.comment("Outvoted Config").push("outvoted");
-
             builder.comment("Hovering Inferno").push("inferno");
-            spawninferno = builder.comment("Enable/disable natural spawning")
-                    .translation("outvoted.configgui.spawn")
-                    .define("Natural Spawning", true);
+            spawninferno = builder.define("Natural Spawning", true);
 
-            healthinferno = builder.comment("Set max health")
-                    .translation("outvoted.configgui.health")
-                    .defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
+            healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
             builder.pop();
 
             builder.comment("Great Hunger").push("hunger");
-            max_enchants = builder.comment("Sets the maximum enchants the Great Hunger can store")
-                    .translation("outvoted.configgui.max_enchants")
-                    .define("Maximum Stored Enchantments", 1);
+            max_enchants = builder.define("Maximum Stored Enchantments", 1);
 
-            healthhunger = builder.comment("Set max health")
-                    .translation("outvoted.configgui.health")
-                    .defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
+            healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
 
-            spawnhunger = builder.comment("Enable/disable natural spawning")
-                    .translation("outvoted.configgui.spawn")
-                    .define("Natural Spawning", true);
+            spawnhunger = builder.define("Natural Spawning", true);
             builder.pop();
 
+            builder.comment("Monster of the Ocean Depths").push("kraken");
+            healthkraken = builder.defineInRange("Max Health", 25.0D, 1.0D, 1000.0D);
+
+            spawnkraken = builder.define("Natural Spawning", true);
             builder.pop();
         }
     }
 
     public static final ForgeConfigSpec COMMON_SPEC;
     public static final Common COMMON;
+
     static {
         final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(OutvotedConfig.Common::new);
         COMMON_SPEC = specPair.getRight();
@@ -62,6 +57,6 @@ public class OutvotedConfig {
 
     @SubscribeEvent
     public static void onFileChange(final ModConfig.Reloading event) {
-        
+
     }
 }

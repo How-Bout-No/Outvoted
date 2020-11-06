@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.oceanmonster;
+package com.hbn.outvoted.entities.kraken;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
@@ -34,36 +35,39 @@ import software.bernie.geckolib.manager.EntityAnimationManager;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.Random;
 
-public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
-    private static final DataParameter<Boolean> MOVING = EntityDataManager.createKey(OceanEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(OceanEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(OceanEntity.class, DataSerializers.VARINT);
+public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
+    private static final DataParameter<Boolean> MOVING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private LivingEntity targetedEntity;
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
     protected RandomWalkingGoal wander;
 
-    public OceanEntity(EntityType<? extends OceanEntity> type, World worldIn) {
+    public KrakenEntity(EntityType<? extends KrakenEntity> type, World worldIn) {
         super(type, worldIn);
         this.manager.addAnimationController(controller);
         this.experienceValue = 10;
         this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.moveController = new OceanEntity.MoveHelperController(this);
+        this.moveController = new KrakenEntity.MoveHelperController(this);
     }
 
     EntityAnimationManager manager = new EntityAnimationManager();
-    EntityAnimationController<OceanEntity> controller = new EntityAnimationController<>(this, "controller", 5, this::animationPredicate);
+    EntityAnimationController<KrakenEntity> controller = new EntityAnimationController<>(this, "controller", 5, this::animationPredicate);
 
     public <E extends Entity> boolean animationPredicate(AnimationTestEvent<E> event) {
         if (this.getAttackPhase() != 0) {
             if (this.getAttackPhase() == 1) {
-                controller.setAnimation(new AnimationBuilder().addAnimation("animation.ocean_monster.attack").addAnimation("animation.ocean_monster.reelin").addAnimation("animation.ocean_monster.reelin2"));
+                controller.setAnimation(new AnimationBuilder().addAnimation("animation.kraken.attack").addAnimation("animation.kraken.reelin").addAnimation("animation.kraken.reelin2"));
+            } else if (this.getAttackPhase() == 2) {
+                controller.setAnimation(new AnimationBuilder().addAnimation("animation.kraken.reelin2"));
+            } else if (this.getAttackPhase() == 3) {
+                controller.setAnimation(new AnimationBuilder().addAnimation("animation.kraken.bite").addAnimation("animation.kraken.reelin2"));
             }
         } else {
-            controller.setAnimation(new AnimationBuilder().addAnimation("animation.ocean_monster.swim"));
+            controller.setAnimation(new AnimationBuilder().addAnimation("animation.kraken.swim"));
         }
 
         return true;
@@ -85,7 +89,8 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
     protected void registerGoals() {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
-        this.goalSelector.addGoal(4, new OceanEntity.AttackGoal(this));
+        this.goalSelector.addGoal(3, new KrakenEntity.ApproachGoal(this, 1.0D, 32.0F));
+        this.goalSelector.addGoal(4, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -229,43 +234,50 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
                         this.world.addParticle(ParticleTypes.BUBBLE, this.getPosXRandom(0.5D) - vector3d1.x * 1.5D, this.getPosYRandom() - vector3d1.y * 1.5D, this.getPosZRandom(0.5D) - vector3d1.z * 1.5D, 0.0D, 0.0D, 0.0D);
                     }
                 }
-
                 if (this.hasTargetedEntity()) {
                     if (this.clientSideAttackTime < this.getAttackDuration()) {
                         ++this.clientSideAttackTime;
                     }
+                }
+            }
+            if (this.hasTargetedEntity()) {
+                LivingEntity livingentity = this.getTargetedEntity();
+                if (livingentity != null) {
+                    this.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
+                    this.getLookController().tick();
+                    double d5 = (double) this.getAttackAnimationScale(0.0F);
+                    double d0 = livingentity.getPosX() - this.getPosX();
+                    double d1 = livingentity.getPosYHeight(0.5D) - this.getPosYEye();
+                    double d2 = livingentity.getPosZ() - this.getPosZ();
+                    double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    d0 = d0 / d3;
+                    d1 = d1 / d3;
+                    d2 = d2 / d3;
+                    double d4 = this.rand.nextDouble();
+                    if (this.getAttackPhase() == 0) {
+                        this.setAttacking(1);
+                    }
 
-                    LivingEntity livingentity = this.getTargetedEntity();
-                    if (livingentity != null) {
-                        this.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
-                        this.getLookController().tick();
-                        double d5 = (double) this.getAttackAnimationScale(0.0F);
-                        double d0 = livingentity.getPosX() - this.getPosX();
-                        double d1 = livingentity.getPosYHeight(0.5D) - this.getPosYEye();
-                        double d2 = livingentity.getPosZ() - this.getPosZ();
-                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                        d0 = d0 / d3;
-                        d1 = d1 / d3;
-                        d2 = d2 / d3;
-                        double d4 = this.rand.nextDouble();
-                        if (this.getAttackPhase() == 0) {
-                            this.setAttacking(1);
+                    while (d4 < d3) {
+                        //System.out.println(this.getDistance(livingentity));
+                        d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
+                        this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() + d0 * d4, this.getPosYEye() + d1 * d4, this.getPosZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+                        livingentity.setLocationAndAngles(this.getPosX() + d0 * d3, this.getPosYEye() + d1, this.getPosZ() + d2 * d3, livingentity.rotationYaw, livingentity.rotationPitch);
+                        livingentity.setSwimming(false);
+                        livingentity.updateSwimming();
+                        if (!this.world.isRemote) {
+                            if (livingentity.isPassenger() && livingentity.getLowestRidingEntity() instanceof BoatEntity) {
+                                BoatEntity boat = (BoatEntity) livingentity.getLowestRidingEntity();
+                                boat.remove();
+                                livingentity.stopRiding();
+                                boat.entityDropItem(boat.getItemBoat());
+                            }
                         }
-
-                        while (d4 < d3) {
-                            //System.out.println(this.getDistance(livingentity));
-                            d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
-                            this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() + d0 * d4, this.getPosYEye() + d1 * d4, this.getPosZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
-                            livingentity.setLocationAndAngles(this.getPosX() + d0 * d3, this.getPosYEye() + d1, this.getPosZ() + d2 * d3, livingentity.rotationYaw, livingentity.rotationPitch);
-                            livingentity.setSwimming(false);
-                            livingentity.updateSwimming();
-                            if (this.controller.getCurrentAnimation() != null) {
-                                if (this.controller.getCurrentAnimation().animationName.equals("animation.ocean_monster.reelin")) {
-                                    livingentity.addVelocity(-d0 / 70, 0.0D, -d2 / 70);
-                                } else if (!this.controller.getCurrentAnimation().animationName.equals("animation.ocean_monster.swim")) {
-                                    System.out.println("moving is illegal");
-                                    livingentity.setVelocity(0.0D, 0.0D, 0.0D);
-                                }
+                        if (this.controller.getCurrentAnimation() != null) {
+                            if (this.controller.getCurrentAnimation().animationName.equals("animation.kraken.reelin")) {
+                                livingentity.addVelocity(-d0 / 60, 0.0D, -d2 / 60);
+                            } else if (!this.controller.getCurrentAnimation().animationName.equals("animation.kraken.swim")) {
+                                livingentity.addVelocity(-d0 / 20, 0.0D, -d2 / 20);
                             }
                         }
                     }
@@ -301,7 +313,7 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
         return worldIn.checkNoEntityCollision(this);
     }
 
-    public static boolean func_223329_b(EntityType<? extends OceanEntity> p_223329_0_, IWorld p_223329_1_, SpawnReason reason, BlockPos p_223329_3_, Random p_223329_4_) {
+    public static boolean func_223329_b(EntityType<? extends KrakenEntity> p_223329_0_, IWorld p_223329_1_, SpawnReason reason, BlockPos p_223329_3_, Random p_223329_4_) {
         return (p_223329_4_.nextInt(20) == 0 || !p_223329_1_.canBlockSeeSky(p_223329_3_)) && p_223329_1_.getDifficulty() != Difficulty.PEACEFUL && (reason == SpawnReason.SPAWNER || p_223329_1_.getFluidState(p_223329_3_).isTagged(FluidTags.WATER));
     }
 
@@ -309,13 +321,6 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (!this.isMoving() && !source.isMagicDamage() && source.getImmediateSource() instanceof LivingEntity) {
-            LivingEntity livingentity = (LivingEntity) source.getImmediateSource();
-            if (!source.isExplosion()) {
-                livingentity.attackEntityFrom(DamageSource.causeThornsDamage(this), 2.0F);
-            }
-        }
-
         if (this.wander != null) {
             this.wander.makeUpdate();
         }
@@ -348,10 +353,10 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
     }
 
     static class AttackGoal extends Goal {
-        private final OceanEntity entity;
+        private final KrakenEntity entity;
         private int tickCounter;
 
-        public AttackGoal(OceanEntity entity) {
+        public AttackGoal(KrakenEntity entity) {
             this.entity = entity;
             this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
@@ -362,7 +367,7 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
          */
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
-            return livingentity != null && livingentity.isAlive() && livingentity.isInWater();
+            return livingentity != null && livingentity.isAlive() && (livingentity.isInWater() || (livingentity.getRidingEntity() != null && livingentity.getRidingEntity().isInWater())) && this.entity.getDistance(this.entity.getAttackTarget()) < 8.0D;
         }
 
         /**
@@ -415,10 +420,9 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
                     }
 
                     //livingentity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.entity, this.entity), f);
-                    if (this.tickCounter % 50 == 0) {
+                    if (this.tickCounter % 100 == 0) {
+                        this.entity.setAttacking(3);
                         livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), (float) this.entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                        System.out.println(this.tickCounter);
-                        livingentity.setVelocity(0.0D, 0.0D, 0.0D);
                     }
                     //this.entity.setAttackTarget((LivingEntity) null);
                     //this.entity.setAttacking(0);
@@ -431,10 +435,53 @@ public class OceanEntity extends MonsterEntity implements IAnimatedEntity {
         }
     }
 
-    static class MoveHelperController extends MovementController {
-        private final OceanEntity entity;
+    static class ApproachGoal extends MoveTowardsTargetGoal {
+        private final KrakenEntity entity;
 
-        public MoveHelperController(OceanEntity entity) {
+        public ApproachGoal(KrakenEntity entity, double speedIn, float targetMaxDistance) {
+            super(entity, 1.0D, 32.0F);
+            this.entity = entity;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean shouldExecute() {
+            LivingEntity livingentity = this.entity.getAttackTarget();
+            return super.shouldExecute() && livingentity != null && livingentity.isAlive() && (livingentity.isInWater() || (livingentity.getRidingEntity() != null && livingentity.getRidingEntity().isInWater())) && this.entity.getDistance(this.entity.getAttackTarget()) > 8.0D;
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && this.entity.getDistance(this.entity.getAttackTarget()) > 8.0D;
+        }
+/*
+        *//**
+         * Keep ticking a continuous task that has already been started
+         *//*
+        public void tick() {
+            LivingEntity livingentity = this.entity.getAttackTarget();
+            if (livingentity != null) {
+                this.entity.getNavigator().clearPath();
+                this.entity.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
+                this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
+                this.entity.moveController.setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
+                this.entity.setMoving(true);
+            } else {
+                this.entity.setMoving(false);
+            }
+
+            super.tick();
+        }*/
+    }
+
+    static class MoveHelperController extends MovementController {
+        private final KrakenEntity entity;
+
+        public MoveHelperController(KrakenEntity entity) {
             super(entity);
             this.entity = entity;
         }
