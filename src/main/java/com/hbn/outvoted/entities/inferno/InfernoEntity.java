@@ -4,11 +4,13 @@ import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -199,6 +201,10 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
             if (source.isProjectile()) {
                 source.getImmediateSource().setFire(12);
+            }
+
+            if (source.getImmediateSource() instanceof PlayerEntity || source.getImmediateSource() instanceof MobEntity){
+                source.getImmediateSource().setFire(8);
             }
 
             return false;
