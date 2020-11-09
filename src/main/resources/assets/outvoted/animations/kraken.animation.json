@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.ocean_monster.attacking": {
+		"animation.kraken.attacking": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -93,7 +93,7 @@
 				}
 			}
 		},
-		"animation.ocean_monster.reelin": {
+		"animation.kraken.reelin": {
 			"animation_length": 4,
 			"bones": {
 				"Tent1": {
@@ -198,7 +198,7 @@
 							"vector": [0, 59, 0],
 							"easing": "easeInQuint"
 						},
-						"2.0": {
+						"1.0": {
 							"vector": [0, 9, 0]
 						}
 					},
@@ -207,14 +207,14 @@
 							"vector": [1, 60, 1],
 							"easing": "easeInQuint"
 						},
-						"2.0": {
+						"1.0": {
 							"vector": [1, 10, 1]
 						}
 					}
 				}
 			}
 		},
-		"animation.ocean_monster.reelin2": {
+		"animation.kraken.reelin2": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -302,7 +302,7 @@
 				}
 			}
 		},
-		"animation.ocean_monster.bite": {
+		"animation.kraken.bite": {
 			"animation_length": 0.32,
 			"bones": {
 				"Tent1": {
@@ -387,9 +387,14 @@
 						}
 					}
 				}
+			},
+			"sound_effects": {
+				"0.16": {
+					"effect": "bite"
+				}
 			}
-		},
-		"animation.ocean_monster.attack": {
+        },
+		"animation.kraken.attack": {
 			"animation_length": 1.52,
 			"bones": {
 				"Tent1": {
@@ -466,7 +471,7 @@
 				}
 			}
 		},
-		"animation.ocean_monster.swim": {
+		"animation.kraken.swim": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {

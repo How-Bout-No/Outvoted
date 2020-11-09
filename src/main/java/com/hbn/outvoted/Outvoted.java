@@ -3,7 +3,7 @@ package com.hbn.outvoted;
 import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.entities.hunger.HungerEntity;
 import com.hbn.outvoted.entities.inferno.InfernoEntity;
-import com.hbn.outvoted.entities.oceanmonster.OceanEntity;
+import com.hbn.outvoted.entities.kraken.KrakenEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import com.hbn.outvoted.init.ModItems;
 import com.hbn.outvoted.util.ServerEvents;
@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.maven.artifact.versioning.ComparableVersion;
 
 @Mod("outvoted")
 public class Outvoted {
@@ -45,7 +44,7 @@ public class Outvoted {
             GlobalEntityTypeAttributes.put(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes().create());
         });
         DeferredWorkQueue.runLater(() -> {
-            GlobalEntityTypeAttributes.put(ModEntityTypes.OCEANMONSTER.get(), OceanEntity.setCustomAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes().create());
         });
     }
 

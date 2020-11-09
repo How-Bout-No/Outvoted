@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.oceanmonster;
+package com.hbn.outvoted.entities.kraken;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -9,7 +9,7 @@ import software.bernie.geckolib.entity.IAnimatedEntity;
 
 
 @OnlyIn(Dist.CLIENT)
-public class OceanModel<T extends OceanEntity & IAnimatedEntity> extends AnimatedEntityModel<T> {
+public class KrakenModel<T extends KrakenEntity & IAnimatedEntity> extends AnimatedEntityModel<T> {
 
     private final AnimatedModelRenderer Monster;
     private final AnimatedModelRenderer Body;
@@ -20,7 +20,7 @@ public class OceanModel<T extends OceanEntity & IAnimatedEntity> extends Animate
     private final AnimatedModelRenderer Tent4;
     private final AnimatedModelRenderer Tongue;
 
-    public OceanModel() {
+    public KrakenModel() {
         textureWidth = 256;
         textureHeight = 160;
         Monster = new AnimatedModelRenderer(this);
@@ -91,6 +91,6 @@ public class OceanModel<T extends OceanEntity & IAnimatedEntity> extends Animate
 
     @Override
     public ResourceLocation getAnimationFileLocation() {
-        return new ResourceLocation("outvoted", "animations/ocean_monster.animation.json");
+        return new ResourceLocation("outvoted", "animations/kraken.animation.json");
     }
 }
