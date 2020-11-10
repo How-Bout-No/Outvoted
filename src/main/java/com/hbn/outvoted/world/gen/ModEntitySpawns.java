@@ -23,7 +23,7 @@ public class ModEntitySpawns {
     @SubscribeEvent
     public static void spawnEntities(BiomeLoadingEvent event) {
         if (OutvotedConfig.COMMON.spawninferno.get()) {
-            if (event.getName().toString().equals("minecraft:nether_wastes")) {
+            if (event.getCategory() == Biome.Category.NETHER) {
                 event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
             }
         }
@@ -42,9 +42,9 @@ public class ModEntitySpawns {
     }
 
     @SubscribeEvent
-    public static void changeInferno(LivingSpawnEvent.SpecialSpawn event) {
+    public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
+        Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
-            Entity e = event.getEntity();
             if (e instanceof BlazeEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
                     if (Math.random() > 0.8) {

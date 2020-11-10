@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[33,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 
 license="All rights reserved"
 
@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/How-Bout-No/Outvoted/issues" #optional
 
 modId="outvoted" #mandatory
 
-version="1.16.3-0.3.0" #mandatory
+version="1.16.3-0.3.1" #mandatory
 
 displayName="Outvoted" #mandatory
 
@@ -20,30 +20,12 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
 logoFile="logo.png" #optional
 
-credits="Curseforge Community, David2753/Lord_Noodal" #optional
+credits="Curseforge Community, David2753/Lord_Noodal for helpful contributions, Obi and Furti for textures" #optional
 
 authors="HowBoutNo" #optional
 
 description='Adds in mobs that got outvoted!'
 #A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.outvoted]] #optional
-    # the modid of the dependency
-    modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
-    # The version range of the dependency
-    versionRange="[34,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-    ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
-    side="BOTH"
-# Here's another dependency
-[[dependencies.outvoted]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.16.3,)"
-    ordering="NONE"
-    side="BOTH"
 [[dependencies.outvoted]]
     modId="geckolib"
     mandatory=true
