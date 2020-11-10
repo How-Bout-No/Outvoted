@@ -150,10 +150,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return this.getBlockPathWeight(this.getPosition(), worldIn) >= 0.0F && this.getBlockState().isSolid();
-    }
-
     @Override
     protected void registerData() {
         super.registerData();
