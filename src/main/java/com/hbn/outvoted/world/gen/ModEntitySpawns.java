@@ -36,7 +36,7 @@ public class ModEntitySpawns {
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (event.getCategory() == Biome.Category.OCEAN) {
-                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 1, 0, 1));
+                event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 1, 0, 1));
             }
         }
     }
