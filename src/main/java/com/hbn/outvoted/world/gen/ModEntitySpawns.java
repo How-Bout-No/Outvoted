@@ -34,6 +34,11 @@ public class ModEntitySpawns {
                 event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 70, 0, 1));
             }
         }
+        if (OutvotedConfig.COMMON.spawnkraken.get()) {
+            if (event.getName().toString().equals("minecraft:deep_ocean") || event.getName().toString().equals("minecraft:deep_warm_ocean") || event.getName().toString().equals("minecraft:deep_lukewarm_ocean")|| event.getName().toString().equals("minecraft:deep_cold_ocean")) {
+                event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 2, 0, 1));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -45,8 +50,17 @@ public class ModEntitySpawns {
                     if (Math.random() > 0.8) {
                         World world = event.getEntity().getEntityWorld();
 
-                    InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                    inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
+                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
+                        inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
+
+                        world.addEntity(inferno);
+                    }
+                } else if (event.getSpawnReason() == SpawnReason.SPAWNER) {
+                    if (Math.random() > 0.9) {
+                        World world = event.getEntity().getEntityWorld();
+
+                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
+                        inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
 
                         world.addEntity(inferno);
                     }

@@ -1,13 +1,15 @@
 {
   "item.outvoted.inferno_spawn_egg": "Hovering Inferno Spawn Egg",
   "item.outvoted.hunger_spawn_egg": "Great Hunger Spawn Egg",
+  "item.outvoted.kraken_spawn_egg": "Kraken Spawn Egg",
   "item.outvoted.inferno_helmet": "Inferno Helmet",
   "item.outvoted.inferno_shield": "Inferno Shield",
   "item.outvoted.inferno_shield_part": "Inferno Shield Part",
   "item.outvoted.inferno_piece": "Shattered Blaze Piece",
 
-  "entity.outvoted.inferno": "Hovering Inferno",
-  "entity.outvoted.hunger": "Great Hunger",
+  "entity.outvoted.inferno": "Inferno",
+  "entity.outvoted.hunger": "Hunger",
+  "entity.outvoted.kraken": "Kraken",
 
   "itemGroup.modTab": "Outvoted",
 
