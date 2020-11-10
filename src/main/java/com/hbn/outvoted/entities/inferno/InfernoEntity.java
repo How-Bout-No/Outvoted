@@ -195,7 +195,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        boolean shieldedDrownDamage = false;
         if (this.isInvulnerableTo(source)) {
             this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
 
