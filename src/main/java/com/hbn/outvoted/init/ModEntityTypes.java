@@ -15,7 +15,20 @@ public class ModEntityTypes {
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Outvoted.MOD_ID);
 
     // Entity Types
-    public static final RegistryObject<EntityType<InfernoEntity>> INFERNO = ENTITY_TYPES.register("inferno", () -> EntityType.Builder.create(InfernoEntity::new, EntityClassification.MONSTER).immuneToFire().size(0.8F, 2.0F).build(new ResourceLocation(Outvoted.MOD_ID, "inferno").toString()));
-    public static final RegistryObject<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES.register("hunger", () -> EntityType.Builder.create(HungerEntity::new, EntityClassification.CREATURE).size(1.0F, 1.0F).build(new ResourceLocation(Outvoted.MOD_ID, "hunger").toString()));
-    public static final RegistryObject<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES.register("kraken", () -> EntityType.Builder.create(KrakenEntity::new, EntityClassification.MONSTER).size(1.0F, 1.0F).build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
+    public static final RegistryObject<EntityType<InfernoEntity>> INFERNO = ENTITY_TYPES
+            .register("inferno", () -> EntityType.Builder
+            .create(InfernoEntity::new, EntityClassification.MONSTER)
+            .immuneToFire()
+            .size(0.8F, 2.0F)
+            .build(new ResourceLocation(Outvoted.MOD_ID, "inferno").toString()));
+    public static final RegistryObject<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES
+            .register("hunger", () -> EntityType.Builder
+            .create(HungerEntity::new, EntityClassification.CREATURE)
+            .size(1.0F, 1.0F)
+            .build(new ResourceLocation(Outvoted.MOD_ID, "hunger").toString()));
+    public static final RegistryObject<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES
+            .register("kraken", () -> EntityType.Builder
+            .create(KrakenEntity::new, EntityClassification.WATER_CREATURE)
+            .size(1.0F, 1.0F)
+            .build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
 }
