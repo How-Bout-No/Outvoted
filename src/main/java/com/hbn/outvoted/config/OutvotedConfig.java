@@ -26,7 +26,7 @@ public class OutvotedConfig {
             builder.pop();
 
             builder.comment("Great Hunger").push("hunger");
-            max_enchants = builder.define("Maximum Stored Enchantments", 1);
+            max_enchants = builder.define("Maximum Stored Enchantments", 5);
 
             healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
 
@@ -34,7 +34,7 @@ public class OutvotedConfig {
             builder.pop();
 
             builder.comment("Monster of the Ocean Depths").push("kraken");
-            healthkraken = builder.defineInRange("Max Health", 30.0D, 1.0D, 1000.0D);
+            healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
 
             spawnkraken = builder.define("Natural Spawning", true);
             builder.pop();

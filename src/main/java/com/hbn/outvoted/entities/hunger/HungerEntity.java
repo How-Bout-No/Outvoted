@@ -3,10 +3,7 @@ package com.hbn.outvoted.entities.hunger;
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -25,6 +22,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import software.bernie.geckolib.animation.builder.AnimationBuilder;
@@ -150,6 +148,10 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return this.getBlockPathWeight(this.getPosition(), worldIn) >= 0.0F && this.getBlockState().isSolid();
     }
 
     @Override
@@ -348,15 +350,20 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         double posZ = entityIn.getPosZ();
         boolean ret = true;
         for (double k = posX - 1; k <= posX + 1; ++k) {
-            for (double l = posZ - 1; l <= posZ + 1; ++l) {
-                BlockState block = world.getBlockState(new BlockPos(k, posY - 1, l));
-                if (block.isIn(BlockTags.BAMBOO_PLANTABLE_ON)) {
-                    if (ret) {
-                        ret = !entityIn.getLeashed();
+            if (ret) {
+                for (double l = posZ - 1; l <= posZ + 1; ++l) {
+                    BlockState block = world.getBlockState(new BlockPos(k, posY - 1, l));
+                    if (block.isIn(BlockTags.BAMBOO_PLANTABLE_ON) && !entityIn.isInWater()) {
+                        if (ret) {
+                            ret = !entityIn.getLeashed();
+                        }
+                    } else {
+                        ret = false;
+                        break;
                     }
-                } else {
-                    ret = false;
                 }
+            } else {
+                break;
             }
         }
         return ret;
