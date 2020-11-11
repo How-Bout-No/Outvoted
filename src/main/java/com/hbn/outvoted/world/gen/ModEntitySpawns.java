@@ -29,14 +29,14 @@ public class ModEntitySpawns {
         }
         if (OutvotedConfig.COMMON.spawnhunger.get()) {
             if (event.getCategory() == Biome.Category.DESERT) {
-                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 90, 0, 1));
+                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 100, 1, 2));
             } else if (event.getCategory() == Biome.Category.SWAMP) {
-                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 70, 0, 1));
+                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 80, 1, 2));
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (event.getName().toString().equals("minecraft:deep_ocean") || event.getName().toString().equals("minecraft:deep_warm_ocean") || event.getName().toString().equals("minecraft:deep_lukewarm_ocean") || event.getName().toString().equals("minecraft:deep_cold_ocean")) {
-                event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 50, 0, 1));
+                event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 30, 1, 1));
             }
         }
     }

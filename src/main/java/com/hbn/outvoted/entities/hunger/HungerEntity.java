@@ -201,7 +201,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         } else {
             itemstack.removeChildTag("Damage");
         }
-        if (storedEnchants.size() < OutvotedConfig.COMMON.max_enchants.get()) {
+        if (storedEnchants.size() <= OutvotedConfig.COMMON.max_enchants.get()) {
             itemstack.setCount(count);
             Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((p_217012_0_) -> {
                 return !p_217012_0_.getKey().isCurse();
@@ -222,11 +222,19 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                             }
                             if (isMax) {
                                 storedEnchants.put(key, key.getMaxLevel() + 1);
+                                itemstack = ItemStack.EMPTY;
                             } else {
                                 itemstack = null;
                             }
-                        } else {
+                        } else if (value == storedEnchants.get(key)) {
+                            storedEnchants.put(key, value + 1);
+                        } else if (value > storedEnchants.get(key)) {
                             storedEnchants.put(key, value);
+                        } else {
+                            itemstack = null;
+                        }
+                        if (itemstack != null) {
+                            itemstack = ItemStack.EMPTY;
                         }
                     } else {
                         if (storedEnchants.size() > 0) {
@@ -236,7 +244,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                                         if (!storedEnchants.isEmpty()) {
                                             if (key.isCompatibleWith(ench)) {
                                                 storedEnchants.put(key, value);
-                                            } else {
+                                            } else if (key != ench) {
                                                 itemstack = null;
                                                 break;
                                             }
@@ -250,9 +258,11 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                                     storedEnchants.put(key, value);
                                 } else if (key instanceof InfinityEnchantment || key instanceof MendingEnchantment) {
                                     storedEnchants.put(key, value);
-                                } else {
+                                } else if (key != ench) {
                                     itemstack = null;
                                     break;
+                                } else {
+                                    itemstack = ItemStack.EMPTY;
                                 }
                             }
                         } else {
@@ -267,13 +277,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                 storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
             }
 
-        /*if (map.equals(new HashMap<Enchantment, Integer>())) {
-            if (Math.random() > 0.5) {
-                EnchantmentHelper.addRandomEnchantment(new Random(), itemstack, 10, true);
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-        }*/
             if (itemstack != null) {
                 if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
                     itemstack = ItemStack.EMPTY;
@@ -313,10 +316,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         }
 
         super.livingTick();
-    }
-
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return super.canSpawn(worldIn, spawnReasonIn) && this.getBlockState().isIn(BlockTags.BAMBOO_PLANTABLE_ON);
     }
 
     public boolean canBePushed() {

@@ -82,8 +82,9 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
     protected void registerGoals() {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
-        this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
-        this.goalSelector.addGoal(4, new KrakenEntity.AttackGoal(this));
+        //this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
+        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 6.0D, 48.0F));
+        this.goalSelector.addGoal(3, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -209,6 +210,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
      * use this to react to sunlight and start to burn.
      */
     public void livingTick() {
+        super.livingTick();
         if (this.isAlive()) {
             if (this.world.isRemote) {
                 if (!this.isInWater()) {
@@ -238,7 +240,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                 if (livingentity != null) {
                     this.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
                     this.getLookController().tick();
-                    double d5 = (double) this.getAttackAnimationScale(0.0F);
+                    double d5 = this.getAttackAnimationScale(0.0F);
                     double d0 = livingentity.getPosX() - this.getPosX();
                     double d1 = livingentity.getPosYHeight(0.5D) - this.getPosYEye();
                     double d2 = livingentity.getPosZ() - this.getPosZ();
@@ -290,8 +292,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                 this.rotationYaw = this.rotationYawHead;
             }
         }
-
-        super.livingTick();
     }
 
     protected SoundEvent getFlopSound() {
@@ -342,15 +342,25 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
     }
 
     public boolean waterCheck(LivingEntity livingentity) {
-        return (livingentity.isInWater() || (livingentity.getRidingEntity() != null && livingentity.getRidingEntity().isInWater()));
+        if (livingentity.getRidingEntity() != null) {
+            return livingentity.getRidingEntity().isInWater();
+        } else {
+            return livingentity.isInWater();
+        }
     }
 
-    static class ChaseGoal extends MeleeAttackGoal {
+    static class ChaseGoal extends MoveTowardsTargetGoal {
         private final KrakenEntity entity;
+        private final double speed;
 
-        public ChaseGoal(KrakenEntity kraken, double speedIn, boolean longMemoryIn) {
-            super(kraken, speedIn, longMemoryIn);
+        public ChaseGoal(KrakenEntity kraken, double speedIn, float maxDistanceIn) {
+            super(kraken, speedIn, maxDistanceIn);
             this.entity = kraken;
+            this.speed = speedIn;
+        }
+
+        public void resetTask() {
+
         }
 
         /**
@@ -361,7 +371,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
             if (livingentity != null) {
                 return super.shouldExecute() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 7.0D;
             } else {
-                return super.shouldExecute();
+                return false;
             }
         }
 
@@ -373,7 +383,17 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
             if (livingentity != null) {
                 return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 7.0D;
             } else {
-                return super.shouldContinueExecuting();
+                return false;
+            }
+        }
+
+        public void startExecuting() {
+        }
+
+        public void tick() {
+            LivingEntity livingentity = this.entity.getAttackTarget();
+            if (livingentity != null) {
+                this.entity.getNavigator().tryMoveToEntityLiving(livingentity, this.speed);
             }
         }
     }
@@ -400,7 +420,11 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean shouldContinueExecuting() {
-            return super.shouldContinueExecuting() && this.entity.getDistance(this.entity.getAttackTarget()) < 8.0D;
+            if (this.entity.getAttackTarget() != null) {
+                return super.shouldContinueExecuting() && this.entity.getDistance(this.entity.getAttackTarget()) < 8.0D;
+            } else {
+                return false;
+            }
         }
 
         /**
@@ -418,7 +442,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
          */
         public void resetTask() {
             this.entity.setTargetedEntity(0);
-            this.entity.setAttackTarget((LivingEntity) null);
+            this.entity.setAttackTarget(null);
             this.entity.wander.makeUpdate();
             this.entity.setAttacking(0);
         }
@@ -428,31 +452,30 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
          */
         public void tick() {
             LivingEntity livingentity = this.entity.getAttackTarget();
-            this.entity.getNavigator().clearPath();
-            this.entity.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
-            if (!this.entity.canEntityBeSeen(livingentity)) {
-                this.entity.setAttackTarget((LivingEntity) null);
-            } else {
-                ++this.tickCounter;
-                if (this.tickCounter == 0) {
-                    this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
-                } else if (this.tickCounter >= this.entity.getAttackDuration()) {
-                    float f = 1.0F;
-                    if (this.entity.world.getDifficulty() == Difficulty.HARD) {
-                        f += 2.0F;
-                    }
+            if (livingentity != null) {
+                this.entity.getNavigator().clearPath();
+                this.entity.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
+                if (!this.entity.canEntityBeSeen(livingentity)) {
+                    this.entity.setAttackTarget(null);
+                } else {
+                    ++this.tickCounter;
+                    this.entity.setAttacking(1);
+                    if (this.tickCounter == 0) {
+                        this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
+                    } else if (this.tickCounter >= this.entity.getAttackDuration()) {
+                        float f = 1.0F;
+                        if (this.entity.world.getDifficulty() == Difficulty.HARD) {
+                            f += 2.0F;
+                        }
 
-                    if (this.tickCounter % 25 == 0) {
-                        livingentity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.entity, this.entity), f);
-                        if (livingentity.getAir() - 50 > 0) {
-                            livingentity.setAir(livingentity.getAir() - 50);
+                        if (this.tickCounter % 25 == 0) {
+                            livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), f);
+                            if (livingentity.getAir() - 50 > 0) {
+                                livingentity.setAir(livingentity.getAir() - 50);
+                            }
                         }
                     }
-                } else {
-                    this.entity.setAttacking(1);
                 }
-
-                super.tick();
             }
         }
     }
