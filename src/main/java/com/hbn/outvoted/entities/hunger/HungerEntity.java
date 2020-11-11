@@ -224,7 +224,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                                 storedEnchants.put(key, key.getMaxLevel() + 1);
                                 itemstack = ItemStack.EMPTY;
                             } else {
-                                System.out.println("here");
                                 itemstack = null;
                             }
                         } else if (value == storedEnchants.get(key)) {
@@ -240,9 +239,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                     } else {
                         if (storedEnchants.size() > 0) {
                             for (Enchantment ench : storedEnchants.keySet()) {
-                                System.out.println(key);
-                                System.out.println(ench);
-                                System.out.println();
                                 if (ench instanceof ProtectionEnchantment) {
                                     if (key instanceof ProtectionEnchantment) {
                                         if (!storedEnchants.isEmpty()) {
