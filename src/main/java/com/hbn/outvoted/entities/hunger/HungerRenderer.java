@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class HungerRenderer extends MobRenderer<HungerEntity, HungerModel<HungerEntity>> {
 
     protected static final ResourceLocation SANDTEXTURE = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger.png");
-    protected static final ResourceLocation GRASSTEXTURE = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_grass.png");
+    protected static final ResourceLocation SWAMPTEXTURE = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_swamp.png");
 
     public HungerRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new HungerModel<>(), 0.0F);
@@ -22,7 +22,7 @@ public class HungerRenderer extends MobRenderer<HungerEntity, HungerModel<Hunger
         if (entity.variant() == 0) {
             return SANDTEXTURE;
         } else {
-            return GRASSTEXTURE;
+            return SWAMPTEXTURE;
         }
     }
 }

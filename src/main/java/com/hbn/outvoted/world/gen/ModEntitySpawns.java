@@ -30,13 +30,13 @@ public class ModEntitySpawns {
         if (OutvotedConfig.COMMON.spawnhunger.get()) {
             if (event.getCategory() == Biome.Category.DESERT) {
                 event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 90, 0, 1));
-            } else if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST) {
+            } else if (event.getCategory() == Biome.Category.SWAMP) {
                 event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), 70, 0, 1));
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
-            if (event.getName().toString().equals("minecraft:deep_ocean") || event.getName().toString().equals("minecraft:deep_warm_ocean") || event.getName().toString().equals("minecraft:deep_lukewarm_ocean")|| event.getName().toString().equals("minecraft:deep_cold_ocean")) {
-                event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 2, 0, 1));
+            if (event.getName().toString().equals("minecraft:deep_ocean") || event.getName().toString().equals("minecraft:deep_warm_ocean") || event.getName().toString().equals("minecraft:deep_lukewarm_ocean") || event.getName().toString().equals("minecraft:deep_cold_ocean")) {
+                event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), 50, 0, 1));
             }
         }
     }
