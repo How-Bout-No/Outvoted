@@ -22,6 +22,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -35,6 +36,7 @@ import software.bernie.geckolib.manager.EntityAnimationManager;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -313,9 +315,12 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         super.livingTick();
     }
 
-    @Override
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return super.canSpawn(worldIn, spawnReasonIn) && this.getBlockState().isIn(BlockTags.BAMBOO_PLANTABLE_ON);
+    }
+
     public boolean canBePushed() {
-        return this.isInvulnerable() && super.canBePushed();
+        return !this.isInvulnerable() && super.canBePushed();
     }
 
     static class BiteGoal extends MeleeAttackGoal {
@@ -329,7 +334,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
         public boolean shouldExecute() {
             boolean exec = super.shouldExecute();
             LivingEntity livingentity = this.hunger.getAttackTarget();
-            if (livingentity != null && livingentity.isAlive() && this.hunger.canAttack(livingentity)) {
+            if (livingentity != null && livingentity.isAlive() && this.hunger.canAttack(livingentity) && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL) {
                 this.hunger.attacking(!this.hunger.enchanting() && !this.hunger.burrowed());
                 return !this.hunger.enchanting() && !this.hunger.burrowed() && exec;
             } else {
@@ -445,7 +450,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                 if (!entities.isEmpty()) {
                     for (Entity entity : entities) {
                         double d0 = this.hunger.getDistanceSq(entity);
-                        if (d0 < 1.1D) {
+                        if (d0 < 1.2D) {
                             if (entity instanceof ItemEntity) {
                                 ItemStack item = ((ItemEntity) entity).getItem();
                                 if (item.getTag() != null) {

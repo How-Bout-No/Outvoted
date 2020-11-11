@@ -24,6 +24,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animation.builder.AnimationBuilder;
@@ -81,7 +82,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
     protected void registerGoals() {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
-        this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 4.0D, false));
+        this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
         this.goalSelector.addGoal(4, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
@@ -358,7 +359,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
             if (livingentity != null) {
-                return super.shouldExecute() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 8.0D;
+                return super.shouldExecute() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 7.0D;
             } else {
                 return super.shouldExecute();
             }
@@ -370,7 +371,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         public boolean shouldContinueExecuting() {
             LivingEntity livingentity = this.entity.getAttackTarget();
             if (livingentity != null) {
-                return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 8.0D;
+                return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 7.0D;
             } else {
                 return super.shouldContinueExecuting();
             }
@@ -436,8 +437,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                 if (this.tickCounter == 0) {
                     this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
                 } else if (this.tickCounter >= this.entity.getAttackDuration()) {
+                    float f = 1.0F;
+                    if (this.entity.world.getDifficulty() == Difficulty.HARD) {
+                        f += 2.0F;
+                    }
+
                     if (this.tickCounter % 25 == 0) {
-                        livingentity.attackEntityAsMob(this.entity);
+                        livingentity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.entity, this.entity), f);
                         if (livingentity.getAir() - 50 > 0) {
                             livingentity.setAir(livingentity.getAir() - 50);
                         }
