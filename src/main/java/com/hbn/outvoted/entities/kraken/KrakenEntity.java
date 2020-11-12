@@ -27,16 +27,18 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animation.builder.AnimationBuilder;
-import software.bernie.geckolib.animation.controller.EntityAnimationController;
-import software.bernie.geckolib.entity.IAnimatedEntity;
-import software.bernie.geckolib.event.AnimationTestEvent;
-import software.bernie.geckolib.manager.EntityAnimationManager;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
+public class KrakenEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Boolean> MOVING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
@@ -47,28 +49,32 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
 
     public KrakenEntity(EntityType<? extends KrakenEntity> type, World worldIn) {
         super(type, worldIn);
-        this.manager.addAnimationController(controller);
         this.experienceValue = 10;
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.moveController = new KrakenEntity.MoveHelperController(this);
     }
 
-    EntityAnimationManager manager = new EntityAnimationManager();
-    EntityAnimationController<KrakenEntity> controller = new EntityAnimationController<>(this, "controller", 5, this::animationPredicate);
+    private AnimationFactory factory = new AnimationFactory(this);
 
-    public <E extends Entity> boolean animationPredicate(AnimationTestEvent<E> event) {
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getAttackPhase() != 0) {
-            controller.setAnimation(new AnimationBuilder().addAnimation("animation.kraken.attack").addAnimation("animation.kraken.reelin").addAnimation("animation.kraken.reelin2"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kraken.attack").addAnimation("animation.kraken.reelin").addAnimation("animation.kraken.reelin2"));
         } else {
-            controller.setAnimation(new AnimationBuilder().addAnimation("animation.kraken.swim"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kraken.swim"));
         }
 
-        return true;
+        return PlayState.CONTINUE;
     }
 
     @Override
-    public EntityAnimationManager getAnimationManager() {
-        return manager;
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
@@ -268,12 +274,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
                                 boat.entityDropItem(boat.getItemBoat());
                             }
                         }
-                        if (this.controller.getCurrentAnimation() != null) {
-                            if (this.controller.getCurrentAnimation().animationName.equals("animation.kraken.reelin")) {
-                                livingentity.addVelocity(-d0 / 60, -d1 / 60, -d2 / 60);
-                            } else if (!this.controller.getCurrentAnimation().animationName.equals("animation.kraken.swim")) {
-                                livingentity.addVelocity(-d0 / 20, -d1 / 20, -d2 / 20);
-                            }
+                        if (this.getAttackPhase() != 0) {
+                            livingentity.addVelocity(-d0 / 60, -d1 / 60, -d2 / 60);
                         }
                     }
                 }
@@ -360,7 +362,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         }
 
         public void resetTask() {
-
         }
 
         /**
@@ -369,7 +370,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
             if (livingentity != null) {
-                return super.shouldExecute() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 7.0D;
+                return super.shouldExecute() && this.entity.waterCheck(livingentity);
             } else {
                 return false;
             }
@@ -381,7 +382,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatedEntity {
         public boolean shouldContinueExecuting() {
             LivingEntity livingentity = this.entity.getAttackTarget();
             if (livingentity != null) {
-                return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity) && this.entity.getDistance(livingentity) >= 7.0D;
+                return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity);
             } else {
                 return false;
             }

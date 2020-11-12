@@ -18,12 +18,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod("outvoted")
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
 
     public Outvoted() {
+        GeckoLib.initialize();
         final FMLJavaModLoadingContext modLoadingContext = FMLJavaModLoadingContext.get();
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -48,7 +51,7 @@ public class Outvoted {
         });
     }
 
-    public static final ItemGroup TAB = new ItemGroup("modTab") {
+    public static final ItemGroup TAB = new ItemGroup("tab") {
         @Override
         public ItemStack createIcon() {
             return new ItemStack(ModItems.INFERNO_HELMET.get());

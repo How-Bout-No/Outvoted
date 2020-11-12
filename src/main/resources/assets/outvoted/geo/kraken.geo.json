@@ -1,0 +1,76 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.ocean_monster",
+				"texture_width": 256,
+				"texture_height": 160,
+				"visible_bounds_width": 6,
+				"visible_bounds_height": 3,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "mob",
+					"pivot": [0, 8, 4],
+					"rotation": [90, 0, 0]
+				},
+				{
+					"name": "body",
+					"parent": "mob",
+					"pivot": [0, 3.5, 4],
+					"cubes": [
+						{"origin": [-8, 4, -4], "size": [16, 16, 16], "uv": [0, 56]},
+						{"origin": [-8, -16, -4], "size": [16, 20, 16], "uv": [0, 100]}
+					]
+				},
+				{
+					"name": "tentacles",
+					"parent": "mob",
+					"pivot": [0, -4, 4]
+				},
+				{
+					"name": "tent1",
+					"parent": "tentacles",
+					"pivot": [-4, 12, 4],
+					"cubes": [
+						{"origin": [-12, 20, 4], "size": [12, 44, 12], "uv": [48, 0]}
+					]
+				},
+				{
+					"name": "tent2",
+					"parent": "tentacles",
+					"pivot": [4, 12, 4],
+					"cubes": [
+						{"origin": [0, 20, 4], "size": [12, 44, 12], "uv": [96, 0]}
+					]
+				},
+				{
+					"name": "tent3",
+					"parent": "tentacles",
+					"pivot": [4, 12, 4],
+					"cubes": [
+						{"origin": [0, 20, -8], "size": [12, 44, 12], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "tent4",
+					"parent": "tentacles",
+					"pivot": [-4, 12, 4],
+					"cubes": [
+						{"origin": [-12, 20, -8], "size": [12, 44, 12], "uv": [144, 0]}
+					]
+				},
+				{
+					"name": "tongue",
+					"parent": "mob",
+					"pivot": [0, 17, 4],
+					"cubes": [
+						{"origin": [-1, 16, 3], "size": [2, 2, 2], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

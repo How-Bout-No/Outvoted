@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/How-Bout-No/Outvoted/issues" #optional
 
 modId="outvoted" #mandatory
 
-version="1.16.3-0.3.1-2" #mandatory
+version="${file.jarVersion}" #mandatory
 
 displayName="Outvoted" #mandatory
 
@@ -27,8 +27,8 @@ authors="HowBoutNo" #optional
 description='Adds in mobs that got outvoted!'
 #A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.outvoted]]
-    modId="geckolib"
+    modId="geckolib3"
     mandatory=true
-    versionRange="[2.1.1,)"
+    versionRange="[3.0.0-beta.8,)"
     ordering="NONE"
     side="BOTH"

@@ -1,7 +1,6 @@
 package com.hbn.outvoted.entities.inferno;
 
 import com.hbn.outvoted.config.OutvotedConfig;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -10,7 +9,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -23,39 +21,50 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animation.builder.AnimationBuilder;
-import software.bernie.geckolib.animation.controller.EntityAnimationController;
-import software.bernie.geckolib.entity.IAnimatedEntity;
-import software.bernie.geckolib.event.AnimationTestEvent;
-import software.bernie.geckolib.manager.EntityAnimationManager;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
 
-public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
+public class InfernoEntity extends MonsterEntity implements IAnimatable {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BYTE);
 
 
-    EntityAnimationManager manager = new EntityAnimationManager();
-    EntityAnimationController controller = new EntityAnimationController(this, "controller", 5, this::animationPredicate);
+    private AnimationFactory factory = new AnimationFactory(this);
 
-    public <E extends Entity> boolean animationPredicate(AnimationTestEvent<E> event) {
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.shielding()) {
-            controller.transitionLengthTicks = 5;
-            controller.setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
+            event.getController().transitionLengthTicks = 5;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
         } else {
-            controller.transitionLengthTicks = 1;
-            controller.setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
+            event.getController().transitionLengthTicks = 1;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
         }
 
-        return true;
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
     public InfernoEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super(type, worldIn);
-        manager.addAnimationController(controller);
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.setPathPriority(PathNodeType.LAVA, 8.0F);
         this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
@@ -116,11 +125,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
 
     public float getBrightness() {
         return 1.0F;
-    }
-
-    @Override
-    public EntityAnimationManager getAnimationManager() {
-        return manager;
     }
 
     public void livingTick() {
@@ -202,7 +206,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatedEntity {
                 source.getImmediateSource().setFire(12);
             }
 
-            if (source.getImmediateSource() instanceof PlayerEntity || source.getImmediateSource() instanceof MobEntity){
+            if (source.getImmediateSource() instanceof PlayerEntity || source.getImmediateSource() instanceof MobEntity) {
                 source.getImmediateSource().setFire(8);
             }
 

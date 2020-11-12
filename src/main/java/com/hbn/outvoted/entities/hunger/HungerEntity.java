@@ -3,7 +3,10 @@ package com.hbn.outvoted.entities.hunger;
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -18,88 +21,86 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import software.bernie.geckolib.animation.builder.AnimationBuilder;
-import software.bernie.geckolib.animation.controller.EntityAnimationController;
-import software.bernie.geckolib.entity.IAnimatedEntity;
-import software.bernie.geckolib.event.AnimationTestEvent;
-import software.bernie.geckolib.event.ParticleKeyFrameEvent;
-import software.bernie.geckolib.event.SoundKeyframeEvent;
-import software.bernie.geckolib.manager.EntityAnimationManager;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.ParticleKeyFrameEvent;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
+public class HungerEntity extends CreatureEntity implements IAnimatable {
     private static final DataParameter<Boolean> BURROWED = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ENCHANTING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(HungerEntity.class, DataSerializers.VARINT);
     private Map<Enchantment, Integer> storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
 
-    EntityAnimationManager manager = new EntityAnimationManager();
-    EntityAnimationController controller = new EntityAnimationController(this, "controller", 2, this::animationPredicate);
+    private AnimationFactory factory = new AnimationFactory(this);
 
-    private <E extends HungerEntity> boolean animationPredicate(AnimationTestEvent<E> event) {
-        String animname = controller.getCurrentAnimation() != null ? controller.getCurrentAnimation().animationName : "";
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
         if (this.burrowed()) {
             if (this.enchanting()) {
-                controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite2").addAnimation("animation.great_hunger.bite2loop", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite2").addAnimation("animation.great_hunger.bite2loop", true));
             } else {
-                if (controller.getCurrentAnimation() != null) {
+                if (event.getController().getCurrentAnimation() != null) {
                     if (animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking") || animname.equals("animation.great_hunger.bite") || animname.equals("animation.great_hunger.burrow")) {
-                        controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
                     } else {
-                        controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow2"));
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow2"));
                     }
                 } else {
-                    controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
                 }
             }
         } else {
-            if (controller.getCurrentAnimation() == null || animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking")) {
+            if (event.getController().getCurrentAnimation() == null || animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking")) {
                 if (this.attacking()) {
-                    controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.attacking"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.attacking"));
                 } else {
-                    controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.idle"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.idle"));
                 }
             } else {
                 if (this.attacking()) {
-                    controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.attacking"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.attacking"));
                 } else {
-                    controller.setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.idle"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.idle"));
                 }
             }
         }
-        return true;
+        return PlayState.CONTINUE;
     }
 
-    private <E extends Entity> SoundEvent soundListener(SoundKeyframeEvent<E> event) {
+    private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
         if (event.sound.equals("chomp")) {
-            return SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH;
+            world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.HOSTILE, 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
             BlockState block = world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 1, this.getPosZ()));
             if (block.isIn(BlockTags.SAND)) {
-                return SoundEvents.BLOCK_SAND_BREAK;
+                world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_SAND_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             } else {
-                return SoundEvents.BLOCK_GRAVEL_BREAK;
+                world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_GRAVEL_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
-        } else {
-            return null;
         }
     }
 
-    private <E extends Entity> IParticleData particleListener(ParticleKeyFrameEvent<E> event) {
+    private <E extends IAnimatable> void particleListener(ParticleKeyFrameEvent<E> event) {
         if (event.effect.equals("dig")) {
             for (int i = 0; i < 2; ++i) {
                 BlockPos blockpos = new BlockPos(this.getPosX(), this.getPosY() - 0.5D, this.getPosZ());
@@ -107,14 +108,26 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                 this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), this.getPosXRandom(0.5D), this.getPosYHeight(0), this.getPosZRandom(0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
             }
         }
-        return null;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
+
+        // Registering a sound listener just makes it so when any sound keyframe is hit the method will be called.
+        // To register a particle listener or custom event listener you do the exact same thing, just with registerParticleListener and registerCustomInstructionListener, respectively.
+        controller.registerSoundListener(this::soundListener);
+        controller.registerParticleListener(this::particleListener);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
     public HungerEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
         super(type, worldIn);
-        manager.addAnimationController(controller);
-        controller.registerSoundListener(this::soundListener);
-        controller.registerParticleListener(this::particleListener);
         this.experienceValue = 5;
     }
 
@@ -222,20 +235,17 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                             }
                             if (isMax) {
                                 storedEnchants.put(key, key.getMaxLevel() + 1);
-                                itemstack = ItemStack.EMPTY;
                             } else {
-                                itemstack = null;
+                                return null;
                             }
                         } else if (value == storedEnchants.get(key)) {
                             storedEnchants.put(key, value + 1);
                         } else if (value > storedEnchants.get(key)) {
                             storedEnchants.put(key, value);
                         } else {
-                            itemstack = null;
+                            return null;
                         }
-                        if (itemstack != null) {
-                            itemstack = ItemStack.EMPTY;
-                        }
+                        itemstack = ItemStack.EMPTY;
                     } else {
                         if (storedEnchants.size() > 0) {
                             for (Enchantment ench : storedEnchants.keySet()) {
@@ -245,8 +255,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                                             if (key.isCompatibleWith(ench)) {
                                                 storedEnchants.put(key, value);
                                             } else if (key != ench) {
-                                                itemstack = null;
-                                                break;
+                                                return null;
                                             }
                                         } else {
                                             storedEnchants.put(key, value);
@@ -259,8 +268,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                                 } else if (key instanceof InfinityEnchantment || key instanceof MendingEnchantment) {
                                     storedEnchants.put(key, value);
                                 } else if (key != ench) {
-                                    itemstack = null;
-                                    break;
+                                    return null;
                                 } else {
                                     itemstack = ItemStack.EMPTY;
                                 }
@@ -277,21 +285,19 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
                 storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
             }
 
-            if (itemstack != null) {
-                if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
-                    itemstack = ItemStack.EMPTY;
-                } else if (itemstack.getItem() == Items.BOOK) {
-                    itemstack = new ItemStack(Items.ENCHANTED_BOOK);
-                }
+            if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
+                itemstack = ItemStack.EMPTY;
+            } else if (itemstack.getItem() == Items.BOOK) {
+                itemstack = new ItemStack(Items.ENCHANTED_BOOK);
+            }
 
-                if (map.size() == 0) {
-                    itemstack = ItemStack.EMPTY;
-                }
+            if (map.size() == 0) {
+                itemstack = ItemStack.EMPTY;
+            }
 
-                if (itemstack != ItemStack.EMPTY) {
-                    EnchantmentHelper.setEnchantments(map, itemstack);
-                    itemstack.setRepairCost(0);
-                }
+            if (itemstack != ItemStack.EMPTY) {
+                EnchantmentHelper.setEnchantments(map, itemstack);
+                itemstack.setRepairCost(0);
             }
 
 
@@ -512,10 +518,5 @@ public class HungerEntity extends CreatureEntity implements IAnimatedEntity {
             this.tick++;
             super.tick();
         }
-    }
-
-    @Override
-    public EntityAnimationManager getAnimationManager() {
-        return manager;
     }
 }

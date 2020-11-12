@@ -24,7 +24,7 @@ public class ModEntitySpawns {
     public static void spawnEntities(BiomeLoadingEvent event) {
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
-                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 10, 5, 7));
+                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 3, 5, 7));
             }
         }
         if (OutvotedConfig.COMMON.spawnhunger.get()) {
