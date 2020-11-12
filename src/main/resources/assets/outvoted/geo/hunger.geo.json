@@ -1,0 +1,85 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.HungerModel",
+				"texture_width": 160,
+				"texture_height": 96,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "all",
+					"pivot": [0, 4, 0]
+				},
+				{
+					"name": "head",
+					"parent": "all",
+					"pivot": [0, 10, 0],
+					"rotation": [0, 0, 0]
+				},
+				{
+					"name": "top",
+					"parent": "head",
+					"pivot": [0, 15, 6],
+					"cubes": [
+						{"origin": [-9, 15.2, -13], "size": [18, 4, 20], "uv": [0, 48]},
+						{"origin": [-9, 11.2, -13], "size": [18, 4, 20], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "bottom",
+					"parent": "head",
+					"pivot": [0, 15, 6],
+					"cubes": [
+						{"origin": [-9, 11.2, -13], "size": [18, 4, 20], "uv": [56, 56]},
+						{"origin": [-9, 7.2, -13], "size": [18, 4, 20], "uv": [0, 24]}
+					]
+				},
+				{
+					"name": "body",
+					"parent": "all",
+					"pivot": [0, 6.5, -0.6],
+					"cubes": [
+						{"origin": [-6.5, 4, -8.1], "size": [13, 5, 15], "inflate": -0.5, "uv": [61, 9]}
+					]
+				},
+				{
+					"name": "LegFR",
+					"parent": "all",
+					"pivot": [-5.25, 4.75, -5.75],
+					"cubes": [
+						{"origin": [-7.25, -0.25, -7.75], "size": [4, 6, 4], "inflate": -0.25, "uv": [0, 10]}
+					]
+				},
+				{
+					"name": "LegBR",
+					"parent": "all",
+					"pivot": [-5.25, 4.75, 5.25],
+					"cubes": [
+						{"origin": [-7.25, -0.25, 3.25], "size": [4, 6, 4], "inflate": -0.25, "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "LegFL",
+					"parent": "all",
+					"pivot": [4.75, 4.75, -5.75],
+					"cubes": [
+						{"origin": [2.75, -0.25, -7.75], "size": [4, 6, 4], "inflate": -0.25, "uv": [0, 24]}
+					]
+				},
+				{
+					"name": "LegBL",
+					"parent": "all",
+					"pivot": [4.75, 4.75, 5.25],
+					"cubes": [
+						{"origin": [2.75, -0.25, 3.25], "size": [4, 6, 4], "inflate": -0.25, "uv": [0, 34]}
+					]
+				}
+			]
+		}
+	]
+}

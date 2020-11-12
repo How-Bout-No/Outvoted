@@ -5,7 +5,7 @@
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
-				"Tent1": {
+				"tent1": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, -22.5],
@@ -21,7 +21,7 @@
 						}
 					}
 				},
-				"Tent2": {
+				"tent2": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, 22.5],
@@ -37,7 +37,7 @@
 						}
 					}
 				},
-				"Tent3": {
+				"tent3": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, 22.5],
@@ -53,7 +53,7 @@
 						}
 					}
 				},
-				"Tent4": {
+				"tent4": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, -22.5],
@@ -69,7 +69,7 @@
 						}
 					}
 				},
-				"Tongue": {
+				"tongue": {
 					"position": {
 						"0.0": {
 							"vector": [0, 59, 0],
@@ -96,7 +96,7 @@
 		"animation.kraken.reelin": {
 			"animation_length": 4,
 			"bones": {
-				"Tent1": {
+				"tent1": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, -22.5],
@@ -120,7 +120,7 @@
 						}
 					}
 				},
-				"Tent2": {
+				"tent2": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, 22.5],
@@ -144,7 +144,7 @@
 						}
 					}
 				},
-				"Tent3": {
+				"tent3": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, 22.5],
@@ -168,7 +168,7 @@
 						}
 					}
 				},
-				"Tent4": {
+				"tent4": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, -22.5],
@@ -192,7 +192,7 @@
 						}
 					}
 				},
-				"Tongue": {
+				"tongue": {
 					"position": {
 						"0.0": {
 							"vector": [0, 59, 0],
@@ -218,7 +218,7 @@
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
-				"Tent1": {
+				"tent1": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, -22.5],
@@ -234,7 +234,7 @@
 						}
 					}
 				},
-				"Tent2": {
+				"tent2": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, 22.5],
@@ -250,7 +250,7 @@
 						}
 					}
 				},
-				"Tent3": {
+				"tent3": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, 22.5],
@@ -266,7 +266,7 @@
 						}
 					}
 				},
-				"Tent4": {
+				"tent4": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, -22.5],
@@ -282,7 +282,7 @@
 						}
 					}
 				},
-				"Tongue": {
+				"tongue": {
 					"position": {
 						"0.0": {
 							"vector": [0, 9, 0]
@@ -305,7 +305,7 @@
 		"animation.kraken.bite": {
 			"animation_length": 0.32,
 			"bones": {
-				"Tent1": {
+				"tent1": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, -22.5],
@@ -321,7 +321,7 @@
 						}
 					}
 				},
-				"Tent2": {
+				"tent2": {
 					"rotation": {
 						"0.0": {
 							"vector": [-22.5, 0, 22.5],
@@ -337,7 +337,7 @@
 						}
 					}
 				},
-				"Tent3": {
+				"tent3": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, 22.5],
@@ -353,7 +353,7 @@
 						}
 					}
 				},
-				"Tent4": {
+				"tent4": {
 					"rotation": {
 						"0.0": {
 							"vector": [22.5, 0, -22.5],
@@ -369,7 +369,7 @@
 						}
 					}
 				},
-				"Tongue": {
+				"tongue": {
 					"position": {
 						"0.0": {
 							"vector": [0, 9, 0]
@@ -397,7 +397,7 @@
 		"animation.kraken.attack": {
 			"animation_length": 1.52,
 			"bones": {
-				"Tent1": {
+				"tent1": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -408,7 +408,7 @@
 						}
 					}
 				},
-				"Tent2": {
+				"tent2": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -419,7 +419,7 @@
 						}
 					}
 				},
-				"Tent3": {
+				"tent3": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -430,7 +430,7 @@
 						}
 					}
 				},
-				"Tent4": {
+				"tent4": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -441,7 +441,7 @@
 						}
 					}
 				},
-				"Tongue": {
+				"tongue": {
 					"position": {
 						"0.2": {
 							"vector": [0, 0, 0]
@@ -475,7 +475,7 @@
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
-				"Tent1": {
+				"tent1": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -490,7 +490,7 @@
 						}
 					}
 				},
-				"Tent2": {
+				"tent2": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -505,7 +505,7 @@
 						}
 					}
 				},
-				"Tent3": {
+				"tent3": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -520,7 +520,7 @@
 						}
 					}
 				},
-				"Tent4": {
+				"tent4": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -537,5 +537,6 @@
 				}
 			}
 		}
-	}
+	},
+	"geckolib_format_version": 2
 }

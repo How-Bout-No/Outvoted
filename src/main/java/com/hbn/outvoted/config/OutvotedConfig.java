@@ -17,26 +17,39 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.DoubleValue healthinferno;
         public final ForgeConfigSpec.DoubleValue healthhunger;
         public final ForgeConfigSpec.DoubleValue healthkraken;
+        public final ForgeConfigSpec.DoubleValue rateinferno;
+        public final ForgeConfigSpec.IntValue rateblaze;
+        public final ForgeConfigSpec.IntValue ratehunger;
+        public final ForgeConfigSpec.IntValue ratekraken;
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Hovering Inferno").push("inferno");
             spawninferno = builder.define("Natural Spawning", true);
 
-            healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
-            builder.pop();
+            rateblaze= builder.defineInRange("Blaze Group Spawn Weight", 3, 1, 100);
 
+            rateinferno = builder.comment("Percent chance an Inferno will spawn in a group of Blazes, default 20. The chance from a mob spawner will be half of whatever value is set.").defineInRange("Inferno % Spawn Chance", 20.0D, 1.0D, 100.0D);
+
+            healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
+
+            builder.pop();
             builder.comment("Great Hunger").push("hunger");
-            max_enchants = builder.define("Maximum Stored Enchantments", 5);
+            spawnhunger = builder.define("Natural Spawning", true);
+
+            ratehunger = builder.defineInRange("Spawn Weight", 90, 1, 100);
 
             healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
 
-            spawnhunger = builder.define("Natural Spawning", true);
-            builder.pop();
+            max_enchants = builder.define("Maximum Stored Enchantments", 5);
 
+            builder.pop();
             builder.comment("Monster of the Ocean Depths").push("kraken");
+            spawnkraken = builder.define("Natural Spawning", true);
+
+            ratekraken = builder.defineInRange("Spawn Weight", 30, 1, 100);
+
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
 
-            spawnkraken = builder.define("Natural Spawning", true);
             builder.pop();
         }
     }
