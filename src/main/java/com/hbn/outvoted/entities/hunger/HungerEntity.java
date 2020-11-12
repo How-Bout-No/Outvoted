@@ -17,7 +17,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
@@ -449,13 +448,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
          */
 
         public void tick() {
-            if (this.tick % 5 == 0) {
+            if (this.tick % 2 == 0) {
                 boolean suitable = this.hunger.isSuitable(this.hunger);
                 List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 1.0D, 1.0D).expand(-1.0D, 1.0D, -1.D));
                 if (!entities.isEmpty()) {
                     for (Entity entity : entities) {
-                        double d0 = this.hunger.getDistanceSq(entity);
-                        if (d0 < 1.2D) {
+                        double d0 = this.hunger.getDistance(entity);
+                        if (d0 < 1.1D) {
                             if (entity instanceof ItemEntity) {
                                 ItemStack item = ((ItemEntity) entity).getItem();
                                 if (item.getTag() != null) {

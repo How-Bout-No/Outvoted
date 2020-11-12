@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/How-Bout-No/Outvoted/issues" #optional
 
 modId="outvoted" #mandatory
 
-version="${file.jarVersion}" #mandatory
+version="${version}" #mandatory
 
 displayName="Outvoted" #mandatory
 

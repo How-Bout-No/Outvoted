@@ -43,10 +43,11 @@ public class HungerModel extends AnimatedGeoModel {
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationX(extraData.headPitch * ((float)Math.PI / 330F));
         head.setRotationY(extraData.netHeadYaw * ((float)Math.PI / 330F));
-        body.setRotationY((float) Math.PI / 2F);
-        /*legBR.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
+        float limbSwing = entityIn.limbSwing;
+        float limbSwingAmount = entityIn.limbSwingAmount;
+        legBR.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
         legBL.setRotationX(MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount);
         legFR.setRotationX(MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount);
-        legFL.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);*/
+        legFL.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
     }
 }

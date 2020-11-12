@@ -1,3 +1,5 @@
+// Adapted from https://github.com/ToMe25/Better-Shields/
+
 package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;

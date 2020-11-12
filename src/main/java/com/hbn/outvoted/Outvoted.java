@@ -27,7 +27,6 @@ public class Outvoted {
 
     public Outvoted() {
         GeckoLib.initialize();
-        final FMLJavaModLoadingContext modLoadingContext = FMLJavaModLoadingContext.get();
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.ITEMS.register(modEventBus);

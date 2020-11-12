@@ -645,11 +645,11 @@
               "easing": "easeInOutExpo"
             }
           }
-        },
-        "sound_effects": {
-          "0.16": {
-            "effect": "chomp"
-          }
+        }
+      },
+      "sound_effects": {
+        "0.16": {
+          "effect": "chomp"
         }
       }
     }
