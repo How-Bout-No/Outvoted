@@ -260,7 +260,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                     }
 
                     while (d4 < d3) {
-                        //System.out.println(this.getDistance(livingentity));
                         d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
                         this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() + d0 * d4, this.getPosYEye() + d1 * d4, this.getPosZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
                         livingentity.setLocationAndAngles(this.getPosX() + d0 * d3, this.getPosYEye() + d1, this.getPosZ() + d2 * d3, livingentity.rotationYaw, livingentity.rotationPitch);
@@ -414,7 +413,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
-            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.getDistance(this.entity.getAttackTarget()) < 8.0D;
+            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D;
         }
 
         /**
@@ -422,7 +421,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldContinueExecuting() {
             if (this.entity.getAttackTarget() != null) {
-                return super.shouldContinueExecuting() && this.entity.getDistance(this.entity.getAttackTarget()) < 8.0D;
+                return super.shouldContinueExecuting() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D;
             } else {
                 return false;
             }

@@ -453,8 +453,8 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 1.0D, 1.0D).expand(-1.0D, 1.0D, -1.D));
                 if (!entities.isEmpty()) {
                     for (Entity entity : entities) {
-                        double d0 = this.hunger.getDistance(entity);
-                        if (d0 < 1.1D) {
+                        double d0 = this.hunger.getDistanceSq(entity);
+                        if (d0 < 1.22D) {
                             if (entity instanceof ItemEntity) {
                                 ItemStack item = ((ItemEntity) entity).getItem();
                                 if (item.getTag() != null) {
