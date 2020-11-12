@@ -51,7 +51,7 @@ public class Outvoted {
         });
     }
 
-    public static final ItemGroup TAB = new ItemGroup("tab") {
+    public static final ItemGroup TAB = new ItemGroup("modTab") {
         @Override
         public ItemStack createIcon() {
             return new ItemStack(ModItems.INFERNO_HELMET.get());
