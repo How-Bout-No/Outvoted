@@ -5,6 +5,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -26,9 +27,10 @@ public class OutvotedConfig {
             builder.comment("Hovering Inferno").push("inferno");
             spawninferno = builder.define("Natural Spawning", true);
 
-            rateblaze= builder.defineInRange("Blaze Group Spawn Weight", 3, 1, 100);
+            rateblaze= builder.defineInRange("Blaze Group Spawn Weight", 2, 1, 100);
 
-            rateinferno = builder.comment("Percent chance an Inferno will spawn in a group of Blazes, default 20. The chance from a mob spawner will be half of whatever value is set.").defineInRange("Inferno % Spawn Chance", 20.0D, 1.0D, 100.0D);
+            rateinferno = builder.comment("Percent chance an Inferno will spawn in a group of Blazes, default 20. The chance from a mob spawner will be half of whatever value is set.")
+                    .defineInRange("Inferno % Spawn Chance", 20.0D, 1.0D, 100.0D);
 
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
 
@@ -46,7 +48,7 @@ public class OutvotedConfig {
             builder.comment("Monster of the Ocean Depths").push("kraken");
             spawnkraken = builder.define("Natural Spawning", true);
 
-            ratekraken = builder.defineInRange("Spawn Weight", 30, 1, 100);
+            ratekraken = builder.defineInRange("Spawn Weight", 24, 1, 100);
 
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
 
