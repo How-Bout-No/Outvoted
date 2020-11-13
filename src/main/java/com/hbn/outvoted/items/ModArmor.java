@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 
 public enum ModArmor implements IArmorMaterial {
 
-    BLAZE(Outvoted.MOD_ID + ":blaze", 0, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
-            0.0F, () -> {
+    BLAZE(Outvoted.MOD_ID + ":blaze", 25, new int[]{3, 3, 3, 3}, 0, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            0.5F, () -> {
         return Ingredient.fromItems(Items.BLAZE_ROD.getItem());
     }, 0.0F);
 

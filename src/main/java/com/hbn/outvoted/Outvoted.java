@@ -6,6 +6,7 @@ import com.hbn.outvoted.entities.inferno.InfernoEntity;
 import com.hbn.outvoted.entities.kraken.KrakenEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import com.hbn.outvoted.init.ModItems;
+import com.hbn.outvoted.init.ModRecipes;
 import com.hbn.outvoted.util.ServerEvents;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.ItemGroup;
@@ -31,6 +32,7 @@ public class Outvoted {
 
         ModItems.ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        ModRecipes.RECIPES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);

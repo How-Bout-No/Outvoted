@@ -38,9 +38,9 @@ public class InfernoHelmetItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get() && player.isBurning()) {
+        if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get() && player.isBurning() && !player.isCreative()) {
             if (timer) {
-                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 200, 0, false, false, true));
+                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 300, 0, false, false, true));
                 timer = false;
             }
         } else {

@@ -33,7 +33,6 @@ public class HungerModel extends AnimatedGeoModel {
     public void setLivingAnimations(IAnimatable entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("head");
-        IBone body = this.getAnimationProcessor().getBone("body");
         IBone legBR = this.getAnimationProcessor().getBone("LegBR");
         IBone legBL = this.getAnimationProcessor().getBone("LegBL");
         IBone legFR = this.getAnimationProcessor().getBone("LegFR");
