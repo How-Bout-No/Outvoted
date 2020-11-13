@@ -5,6 +5,8 @@ import com.hbn.outvoted.items.InfernoHelmetItem;
 import com.hbn.outvoted.items.InfernoShieldItem;
 import com.hbn.outvoted.items.ModdedSpawnEggItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,4 +26,5 @@ public class ModItems {
     public static final RegistryObject<Item> INFERNO_SHIELD = ITEMS.register("inferno_shield", InfernoShieldItem::new);
     public static final RegistryObject<Item> INFERNO_SHIELD_PART = ITEMS.register("inferno_shield_part", () -> new Item(new Item.Properties().group(Outvoted.TAB).isImmuneToFire()));
     public static final RegistryObject<Item> INFERNO_PIECE = ITEMS.register("inferno_piece", () -> new Item(new Item.Properties().group(Outvoted.TAB).isImmuneToFire()));
+    public static final RegistryObject<Item> HUNGER_TOOTH = ITEMS.register("hunger_tooth", () -> new Item(new Item.Properties().group(Outvoted.TAB)));
 }
