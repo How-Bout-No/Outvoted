@@ -1,5 +1,7 @@
-package com.hbn.outvoted.entities.kraken;
+package com.hbn.outvoted.client.render;
 
+import com.hbn.outvoted.client.model.KrakenModel;
+import com.hbn.outvoted.entities.KrakenEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

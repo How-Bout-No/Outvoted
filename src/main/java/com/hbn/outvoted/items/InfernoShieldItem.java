@@ -2,10 +2,12 @@ package com.hbn.outvoted.items;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.render.ShieldRenderer;
+import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,7 +18,7 @@ import java.util.concurrent.Callable;
 
 public class InfernoShieldItem extends ShieldItem {
     public InfernoShieldItem() {
-        super(new Properties().setISTER(() -> getISTER()).maxDamage(750).group(Outvoted.TAB));
+        super(new Properties().setISTER(() -> getISTER()).maxDamage(750).group(OutvotedConfig.COMMON.creativetab.get() ? Outvoted.TAB : ItemGroup.COMBAT));
         DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 

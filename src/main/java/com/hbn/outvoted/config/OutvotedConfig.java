@@ -11,43 +11,42 @@ import org.apache.commons.lang3.tuple.Pair;
 public class OutvotedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<Integer> max_enchants;
+        public final ForgeConfigSpec.BooleanValue creativetab;
         public final ForgeConfigSpec.BooleanValue spawninferno;
         public final ForgeConfigSpec.BooleanValue spawnhunger;
         public final ForgeConfigSpec.BooleanValue spawnkraken;
         public final ForgeConfigSpec.DoubleValue healthinferno;
         public final ForgeConfigSpec.DoubleValue healthhunger;
         public final ForgeConfigSpec.DoubleValue healthkraken;
-        public final ForgeConfigSpec.DoubleValue rateinferno;
         public final ForgeConfigSpec.IntValue rateblaze;
         public final ForgeConfigSpec.IntValue ratehunger;
         public final ForgeConfigSpec.IntValue ratekraken;
 
         public Common(ForgeConfigSpec.Builder builder) {
+            builder.comment("General").push("general");
+
+            creativetab = builder.comment("NOT IMPLEMENTED YET! CHANGING THIS WON'T DO ANYTHING!").define("Use Custom Creative Tab", true);
+
+            builder.pop();
             builder.comment("Hovering Inferno").push("inferno");
+
             spawninferno = builder.define("Natural Spawning", true);
-
-            rateblaze= builder.defineInRange("Blaze Group Spawn Weight", 3, 1, 100);
-
-            rateinferno = builder.comment("Percent chance an Inferno will spawn in a group of Blazes, default 20. The chance from a mob spawner will be half of whatever value is set.").defineInRange("Inferno % Spawn Chance", 20.0D, 1.0D, 100.0D);
-
+            rateblaze = builder.comment("Spawn weight for the group of blazes to spawn in the Nether.").defineInRange("Blaze Group Spawn Weight", 25, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");
+
             spawnhunger = builder.define("Natural Spawning", true);
-
-            ratehunger = builder.defineInRange("Spawn Weight", 90, 1, 100);
-
+            ratehunger = builder.defineInRange("Spawn Weight", 99, 1, 100);
             healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
-
             max_enchants = builder.define("Maximum Stored Enchantments", 5);
 
             builder.pop();
             builder.comment("Monster of the Ocean Depths").push("kraken");
+
             spawnkraken = builder.define("Natural Spawning", true);
-
-            ratekraken = builder.defineInRange("Spawn Weight", 30, 1, 100);
-
+            ratekraken = builder.defineInRange("Spawn Weight", 2, 1, 100);
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
 
             builder.pop();
@@ -65,11 +64,10 @@ public class OutvotedConfig {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading event) {
-
+        System.out.println(">> Outvoted Config Loaded");
     }
 
     @SubscribeEvent
     public static void onFileChange(final ModConfig.Reloading event) {
-
     }
 }

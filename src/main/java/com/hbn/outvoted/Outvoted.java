@@ -1,9 +1,9 @@
 package com.hbn.outvoted;
 
 import com.hbn.outvoted.config.OutvotedConfig;
-import com.hbn.outvoted.entities.hunger.HungerEntity;
-import com.hbn.outvoted.entities.inferno.InfernoEntity;
-import com.hbn.outvoted.entities.kraken.KrakenEntity;
+import com.hbn.outvoted.entities.HungerEntity;
+import com.hbn.outvoted.entities.InfernoEntity;
+import com.hbn.outvoted.entities.KrakenEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import com.hbn.outvoted.init.ModItems;
 import com.hbn.outvoted.init.ModRecipes;
@@ -29,18 +29,19 @@ public class Outvoted {
     public Outvoted() {
         GeckoLib.initialize();
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
         ModItems.ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
         modEventBus.addListener(this::setup);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+
         DeferredWorkQueue.runLater(() -> {
             GlobalEntityTypeAttributes.put(ModEntityTypes.INFERNO.get(), InfernoEntity.setCustomAttributes().create());
         });

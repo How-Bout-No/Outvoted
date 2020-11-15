@@ -1,7 +1,8 @@
-package com.hbn.outvoted.entities.hunger;
+package com.hbn.outvoted.client.render;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.kraken.KrakenEntity;
+import com.hbn.outvoted.client.model.HungerModel;
+import com.hbn.outvoted.entities.HungerEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

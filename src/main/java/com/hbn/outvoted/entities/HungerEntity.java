@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.hunger;
+package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;

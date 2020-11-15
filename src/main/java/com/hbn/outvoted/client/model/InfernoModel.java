@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.inferno;
+package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
 import net.minecraft.entity.LivingEntity;

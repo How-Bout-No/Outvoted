@@ -1,15 +1,12 @@
 package com.hbn.outvoted.util;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.hunger.HungerRenderer;
-import com.hbn.outvoted.entities.inferno.InfernoRenderer;
-import com.hbn.outvoted.entities.kraken.KrakenRenderer;
+import com.hbn.outvoted.client.render.HungerRenderer;
+import com.hbn.outvoted.client.render.InfernoRenderer;
+import com.hbn.outvoted.client.render.KrakenRenderer;
 import com.hbn.outvoted.init.ModEntityTypes;
-import com.hbn.outvoted.init.ModRecipes;
 import com.hbn.outvoted.items.ModdedSpawnEggItem;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;

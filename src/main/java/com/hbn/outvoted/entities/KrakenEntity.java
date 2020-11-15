@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.kraken;
+package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.entity.*;
@@ -89,7 +89,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
         //this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
-        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 6.0D, 48.0F));
+        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 5.0D, 48.0F));
         this.goalSelector.addGoal(3, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
