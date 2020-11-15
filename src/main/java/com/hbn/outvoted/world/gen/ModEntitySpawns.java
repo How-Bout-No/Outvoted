@@ -16,6 +16,7 @@ import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,8 +26,9 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEntitySpawns {
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void spawnEntities(BiomeLoadingEvent event) {
+        String biomename = event.getName().toString();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
                 event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
@@ -40,15 +42,15 @@ public class ModEntitySpawns {
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
-            if (event.getName().toString().equals("minecraft:deep_ocean") || event.getName().toString().equals("minecraft:deep_warm_ocean") || event.getName().toString().equals("minecraft:deep_lukewarm_ocean") || event.getName().toString().equals("minecraft:deep_cold_ocean")) {
+            if (biomename.equals("minecraft:deep_ocean") || biomename.equals("minecraft:deep_warm_ocean") || biomename.equals("minecraft:deep_lukewarm_ocean") || biomename.equals("minecraft:deep_cold_ocean")) {
                 event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), OutvotedConfig.COMMON.ratekraken.get(), 1, 1));
             }
         }
     }
 
     @SubscribeEvent
-    public static void checkMobs(LivingSpawnEvent.CheckSpawn event) {
-        double area = 7.0; // Value for x, y, and z expansion to check for entities
+    public static void checkMobs(LivingSpawnEvent.CheckSpawn event) { // Below is probably bad practice, but I don't know of any other way to force 1 mob
+        double area = 6.0; // Value for x, y, and z expansion to check for entities
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (e instanceof KrakenEntity) {
@@ -64,7 +66,7 @@ public class ModEntitySpawns {
 
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
-        double area = 7.0D;
+        double area = 6.0D;
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (e instanceof BlazeEntity) {

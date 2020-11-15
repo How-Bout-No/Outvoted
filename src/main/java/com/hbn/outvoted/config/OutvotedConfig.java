@@ -46,7 +46,7 @@ public class OutvotedConfig {
             builder.comment("Monster of the Ocean Depths").push("kraken");
 
             spawnkraken = builder.define("Natural Spawning", true);
-            ratekraken = builder.defineInRange("Spawn Weight", 2, 1, 100);
+            ratekraken = builder.defineInRange("Spawn Weight", 1, 1, 100);
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
 
             builder.pop();
