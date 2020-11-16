@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.hunger;
+package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
 import net.minecraft.entity.LivingEntity;
@@ -40,8 +40,8 @@ public class HungerModel extends AnimatedGeoModel {
 
         LivingEntity entityIn = (LivingEntity) entity;
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX(extraData.headPitch * ((float)Math.PI / 330F));
-        head.setRotationY(extraData.netHeadYaw * ((float)Math.PI / 330F));
+        head.setRotationX(extraData.headPitch * ((float) Math.PI / 330F));
+        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 330F));
         float limbSwing = entityIn.limbSwing;
         float limbSwingAmount = entityIn.limbSwingAmount;
         legBR.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);

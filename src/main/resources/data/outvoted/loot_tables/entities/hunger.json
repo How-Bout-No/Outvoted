@@ -6,7 +6,33 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "outvoted:hunger_tooth"
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0.0,
+                "max": 1.0,
+                "type": "minecraft:uniform"
+              }
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "minecraft:experience_bottle"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "outvoted:void_heart"
         }
       ],
       "conditions": [
@@ -15,7 +41,7 @@
         },
         {
           "condition": "minecraft:random_chance_with_looting",
-          "chance": 0.25,
+          "chance": 0.10,
           "looting_multiplier": 0.05
         }
       ]

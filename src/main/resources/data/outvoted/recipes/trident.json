@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " TT",
+    " HT",
+    "R  "
+  ],
+  "key": {
+    "T": {
+      "item": "outvoted:kraken_tooth"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "R": {
+      "item": "outvoted:prismarine_rod"
+    }
+  },
+  "result": {
+    "item": "minecraft:trident"
+  }
+}

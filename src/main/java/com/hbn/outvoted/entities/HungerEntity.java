@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.hunger;
+package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;
@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,6 +29,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -162,6 +164,11 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

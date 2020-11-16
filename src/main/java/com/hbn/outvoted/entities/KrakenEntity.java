@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities.kraken;
+package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.entity.*;
@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -27,6 +28,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -89,7 +91,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
         //this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
-        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 6.0D, 48.0F));
+        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 5.0D, 48.0F));
         this.goalSelector.addGoal(3, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
@@ -105,6 +107,11 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
      */
     protected PathNavigator createNavigator(World worldIn) {
         return new SwimmerPathNavigator(this, worldIn);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     protected void registerData() {

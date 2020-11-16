@@ -2,6 +2,7 @@ package com.hbn.outvoted.items;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoHelmetModel;
+import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.init.ModItems;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -21,7 +23,7 @@ public class InfernoHelmetItem extends ArmorItem {
     private boolean timer = true;
 
     public InfernoHelmetItem() {
-        super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB));
+        super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(OutvotedConfig.COMMON.creativetab.get() ? Outvoted.TAB : ItemGroup.COMBAT));
     }
 
     @SuppressWarnings("unchecked")
