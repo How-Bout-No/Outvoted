@@ -15,10 +15,6 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
-
-    protected static final ResourceLocation SANDTEXTURE = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger.png");
-    protected static final ResourceLocation SWAMPTEXTURE = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_swamp.png");
-
     public HungerRenderer(EntityRendererManager renderManager) {
         super(renderManager, new HungerModel());
     }
@@ -30,10 +26,6 @@ public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(HungerEntity entity) {
-        if (entity.variant() == 0) {
-            return SANDTEXTURE;
-        } else {
-            return SWAMPTEXTURE;
-        }
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger" + (entity.variant() == 0 ? "" : "_swamp") + ".png");
     }
 }

@@ -2,13 +2,11 @@ package com.hbn.outvoted.world.gen;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.config.OutvotedConfig;
+import com.hbn.outvoted.entities.HungerEntity;
 import com.hbn.outvoted.entities.InfernoEntity;
 import com.hbn.outvoted.entities.KrakenEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -35,10 +33,8 @@ public class ModEntitySpawns {
             }
         }
         if (OutvotedConfig.COMMON.spawnhunger.get()) {
-            if (event.getCategory() == Biome.Category.DESERT) {
-                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), OutvotedConfig.COMMON.ratehunger.get(), 2, 3));
-            } else if (event.getCategory() == Biome.Category.SWAMP) {
-                event.getSpawns().withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), OutvotedConfig.COMMON.ratehunger.get(), 2, 3));
+            if (event.getCategory() == Biome.Category.DESERT || event.getCategory() == Biome.Category.SWAMP) {
+                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.HUNGER.get(), OutvotedConfig.COMMON.ratehunger.get(), 1, 1));
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
@@ -97,6 +93,9 @@ public class ModEntitySpawns {
                     }
                 }
             }
+        }
+        if (e instanceof KrakenEntity) {
+            System.out.println("SPAWNED KRAKEN AT: " + e.getPosX() + " / " + e.getPosY() + " / " + e.getPosZ());
         }
     }
 }

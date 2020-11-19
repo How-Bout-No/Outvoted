@@ -1,7 +1,10 @@
 package com.hbn.outvoted.client.render;
 
+import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoModel;
+import com.hbn.outvoted.entities.HungerEntity;
 import com.hbn.outvoted.entities.InfernoEntity;
+import com.hbn.outvoted.util.ModCompatibility;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -21,10 +24,15 @@ public class InfernoRenderer extends GeoEntityRenderer<InfernoEntity> {
 
     @Override
     public RenderType getRenderType(InfernoEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.getEntityTranslucent(getTextureLocation(animatable));
+        return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
     }
 
     protected int getBlockLight(InfernoEntity entityIn, BlockPos partialTicks) {
         return 15;
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture(InfernoEntity entity) {
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno.png");
     }
 }

@@ -3,10 +3,7 @@ package com.hbn.outvoted.entities;
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -27,6 +24,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -42,6 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -148,6 +147,10 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.goalSelector.addGoal(4, new HungerEntity.BurrowGoal(this));
         this.goalSelector.addGoal(3, new HungerEntity.FindSpotGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, true));
+    }
+
+    public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return world.canBlockSeeSky(blockPos);
     }
 
     protected SoundEvent getAmbientSound() {

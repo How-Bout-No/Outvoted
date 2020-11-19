@@ -30,15 +30,15 @@ public class OutvotedConfig {
             builder.pop();
             builder.comment("Hovering Inferno").push("inferno");
 
-            spawninferno = builder.define("Natural Spawning", true);
-            rateblaze = builder.comment("Spawn weight for the group of blazes to spawn in the Nether.").defineInRange("Blaze Group Spawn Weight", 25, 1, 100);
+            spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
+            rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 15, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");
 
             spawnhunger = builder.define("Natural Spawning", true);
-            ratehunger = builder.defineInRange("Spawn Weight", 99, 1, 100);
+            ratehunger = builder.defineInRange("Spawn Weight", 5, 1, 100);
             healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
             max_enchants = builder.define("Maximum Stored Enchantments", 5);
 
@@ -46,7 +46,7 @@ public class OutvotedConfig {
             builder.comment("Monster of the Ocean Depths").push("kraken");
 
             spawnkraken = builder.define("Natural Spawning", true);
-            ratekraken = builder.defineInRange("Spawn Weight", 1, 1, 100);
+            ratekraken = builder.defineInRange("Spawn Weight", 2, 1, 100);
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
 
             builder.pop();
