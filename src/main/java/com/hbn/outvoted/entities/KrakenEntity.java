@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.IPacket;
@@ -48,6 +47,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Boolean> MOVING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(HungerEntity.class, DataSerializers.VARINT);
     private LivingEntity targetedEntity;
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
@@ -127,6 +127,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         this.dataManager.register(MOVING, false);
         this.dataManager.register(TARGET_ENTITY, 0);
         this.dataManager.register(ATTACKING, 0);
+        this.dataManager.register(VARIANT, 3);
     }
 
     public boolean canBreatheUnderwater() {
@@ -163,6 +164,20 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
     public int getAttackPhase() {
         return this.dataManager.get(ATTACKING);
+    }
+
+    public int variant() {
+        if (this.dataManager.get(VARIANT) == 3) {
+            if (this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:deep_warm_ocean")) {
+                this.dataManager.set(VARIANT, 1);
+            } else if (this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:deep_cold_ocean")) {
+                this.dataManager.set(VARIANT, 2);
+            } else {
+                this.dataManager.set(VARIANT, 0);
+            }
+
+        }
+        return this.dataManager.get(VARIANT);
     }
 
     @Nullable

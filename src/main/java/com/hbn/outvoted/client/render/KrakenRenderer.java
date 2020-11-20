@@ -1,5 +1,6 @@
 package com.hbn.outvoted.client.render;
 
+import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.KrakenModel;
 import com.hbn.outvoted.entities.KrakenEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -20,6 +21,16 @@ public class KrakenRenderer extends GeoEntityRenderer<KrakenEntity> {
 
     @Override
     public RenderType getRenderType(KrakenEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.getEntityTranslucent(getTextureLocation(animatable));
+        return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture(KrakenEntity entity) {
+        if (entity.variant() == 1) {
+            return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken_warm.png");
+        } else if (entity.variant() == 2) {
+            return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken_cold.png");
+        }
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken.png");
     }
 }

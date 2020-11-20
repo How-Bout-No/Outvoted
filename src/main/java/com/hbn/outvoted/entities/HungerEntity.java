@@ -209,7 +209,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     public int variant() {
         if (this.dataManager.get(VARIANT) == 2) {
-            this.dataManager.set(VARIANT, this.world.getBiome(new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ())).getCategory() == Biome.Category.DESERT ? 0 : 1);
+            this.dataManager.set(VARIANT, this.world.getBiome(this.getPosition()).getCategory() == Biome.Category.DESERT ? 0 : 1);
         }
         return this.dataManager.get(VARIANT);
     }

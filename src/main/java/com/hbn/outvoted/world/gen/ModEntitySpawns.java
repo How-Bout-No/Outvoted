@@ -2,11 +2,13 @@ package com.hbn.outvoted.world.gen;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.config.OutvotedConfig;
-import com.hbn.outvoted.entities.HungerEntity;
 import com.hbn.outvoted.entities.InfernoEntity;
 import com.hbn.outvoted.entities.KrakenEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -29,7 +31,11 @@ public class ModEntitySpawns {
         String biomename = event.getName().toString();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
-                event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                if (biomename.equals("minecraft:soul_sand_valley")) {
+                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.SOUL_BLAZE.get(), OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                } else {
+                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                }
             }
         }
         if (OutvotedConfig.COMMON.spawnhunger.get()) {
@@ -38,7 +44,8 @@ public class ModEntitySpawns {
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
-            if (biomename.equals("minecraft:deep_ocean") || biomename.equals("minecraft:deep_warm_ocean") || biomename.equals("minecraft:deep_lukewarm_ocean") || biomename.equals("minecraft:deep_cold_ocean")) {
+            if (event.getDepth() == -1.8F && !biomename.equals("minecraft:deep_frozen_ocean")) { // Possibly makes modded deep oceans compatible? (If those even exist, and use vanilla values)
+                //if (biomename.equals("minecraft:deep_ocean") || biomename.equals("minecraft:deep_warm_ocean") || biomename.equals("minecraft:deep_lukewarm_ocean") || biomename.equals("minecraft:deep_cold_ocean")) {
                 event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), OutvotedConfig.COMMON.ratekraken.get(), 1, 1));
             }
         }
@@ -93,9 +100,6 @@ public class ModEntitySpawns {
                     }
                 }
             }
-        }
-        if (e instanceof KrakenEntity) {
-            System.out.println("SPAWNED KRAKEN AT: " + e.getPosX() + " / " + e.getPosY() + " / " + e.getPosZ());
         }
     }
 }

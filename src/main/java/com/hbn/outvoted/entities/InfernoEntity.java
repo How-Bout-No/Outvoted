@@ -38,6 +38,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     private int heightOffsetUpdateTime;
     private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.VARINT);
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -120,6 +121,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         super.registerData();
         this.dataManager.register(SHIELDING, Boolean.FALSE);
         this.dataManager.register(ON_FIRE, (byte) 0);
+        this.dataManager.register(VARIANT, 2);
     }
 
     public void shielding(boolean shielding) {
@@ -128,6 +130,13 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     public boolean shielding() {
         return this.dataManager.get(SHIELDING);
+    }
+
+    public int variant() {
+        if (this.dataManager.get(VARIANT) == 2) {
+            this.dataManager.set(VARIANT, this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:soul_sand_valley") ? 1 : 0);
+        }
+        return this.dataManager.get(VARIANT);
     }
 
     public float getBrightness() {
