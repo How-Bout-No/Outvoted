@@ -1,8 +1,8 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[33,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 
-license="GNU General Public License"
+license="GNU GPLv3"
 
 issueTrackerURL="https://github.com/How-Bout-No/Outvoted/issues" #optional
 

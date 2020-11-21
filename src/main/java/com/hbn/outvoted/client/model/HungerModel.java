@@ -1,36 +1,36 @@
 package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
+import com.hbn.outvoted.entities.HungerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @OnlyIn(Dist.CLIENT)
-public class HungerModel extends AnimatedGeoModel {
+public class HungerModel extends AnimatedGeoModel<HungerEntity> {
     @Override
-    public ResourceLocation getAnimationFileLocation(Object entity) {
+    public ResourceLocation getAnimationFileLocation(HungerEntity entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "animations/hunger.animation.json");
     }
 
     @Override
-    public ResourceLocation getModelLocation(Object entity) {
+    public ResourceLocation getModelLocation(HungerEntity entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "geo/hunger.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Object o) {
+    public ResourceLocation getTextureLocation(HungerEntity entity) {
         return null;
     }
 
     @Override
-    public void setLivingAnimations(IAnimatable entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(HungerEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("head");
         IBone legBR = this.getAnimationProcessor().getBone("LegBR");

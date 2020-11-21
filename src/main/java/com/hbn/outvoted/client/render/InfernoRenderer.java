@@ -1,5 +1,6 @@
 package com.hbn.outvoted.client.render;
 
+import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoModel;
 import com.hbn.outvoted.entities.InfernoEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -21,10 +22,15 @@ public class InfernoRenderer extends GeoEntityRenderer<InfernoEntity> {
 
     @Override
     public RenderType getRenderType(InfernoEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.getEntityTranslucent(getTextureLocation(animatable));
+        return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
     }
 
     protected int getBlockLight(InfernoEntity entityIn, BlockPos partialTicks) {
         return 15;
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture(InfernoEntity entity) {
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno" + (entity.variant() == 0 ? "" : "_soul") + ".png");
     }
 }
