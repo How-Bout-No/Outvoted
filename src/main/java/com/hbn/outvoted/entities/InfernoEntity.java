@@ -1,9 +1,7 @@
 package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -114,6 +112,11 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+        return 1.8F;
     }
 
     @Override

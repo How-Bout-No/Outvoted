@@ -113,9 +113,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     @Override
     public void registerControllers(AnimationData data) {
         AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
-
-        // Registering a sound listener just makes it so when any sound keyframe is hit the method will be called.
-        // To register a particle listener or custom event listener you do the exact same thing, just with registerParticleListener and registerCustomInstructionListener, respectively.
         controller.registerSoundListener(this::soundListener);
         controller.registerParticleListener(this::particleListener);
         data.addAnimationController(controller);
@@ -225,8 +222,8 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
         if (storedEnchants.size() <= OutvotedConfig.COMMON.max_enchants.get()) {
             itemstack.setCount(count);
-            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((p_217012_0_) -> {
-                return !p_217012_0_.getKey().isCurse();
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((enchant) -> {
+                return !enchant.getKey().isCurse();
                 //return true;
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
@@ -424,7 +421,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     static class BurrowGoal extends Goal {
         private final HungerEntity hunger;
         private int tick = 0;
-        private int tick2 = 0;
         private ItemStack cacheitem = ItemStack.EMPTY;
         private Entity cacheentity = null;
 
@@ -434,7 +430,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
         public void resetTask() {
             this.tick = 0;
-            this.tick2 = 0;
             this.hunger.burrowed(false);
         }
 
@@ -458,73 +453,70 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
          */
 
         public void tick() {
-            if (this.tick % 2 == 0) {
-                boolean suitable = this.hunger.isSuitable(this.hunger);
-                List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 1.0D, 1.0D).expand(-1.0D, 1.0D, -1.D));
-                if (!entities.isEmpty()) {
-                    for (Entity entity : entities) {
-                        double d0 = this.hunger.getDistanceSq(entity);
-                        if (d0 < 1.22D) {
-                            if (entity instanceof ItemEntity) {
-                                ItemStack item = ((ItemEntity) entity).getItem();
-                                if (item.getTag() != null) {
-                                    if (!this.hunger.enchanting()) {
-                                        if (!item.getTag().contains("Bitten")) {
-                                            this.cacheitem = item.copy();
-                                            this.cacheentity = entity;
-                                            this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
-                                            entity.remove();
-                                            this.hunger.enchanting(true);
-                                        }
-                                        this.hunger.burrowed(suitable);
+            boolean suitable = this.hunger.isSuitable(this.hunger);
+            List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 0.0D, 1.0D).expand(-1.0D, 0.0D, -1.D));
+            if (!entities.isEmpty()) {
+                for (Entity entity : entities) {
+                    double d0 = this.hunger.getDistanceSq(entity);
+                    if (d0 < 1.1) {
+                        if (entity instanceof ItemEntity) {
+                            ItemStack item = ((ItemEntity) entity).getItem();
+                            if (item.getTag() != null) {
+                                if (!this.hunger.enchanting()) {
+                                    if (!item.getTag().contains("Bitten")) {
+                                        this.cacheitem = item.copy();
+                                        this.cacheentity = entity;
+                                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
+                                        entity.remove();
+                                        this.hunger.enchanting(true);
                                     }
-                                } else {
                                     this.hunger.burrowed(suitable);
-                                }
-                            } else if (entity instanceof LivingEntity && !this.hunger.enchanting()) {
-                                if (entity.isAlive() && this.hunger.canAttack((LivingEntity) entity)) {
-                                    if (!this.hunger.enchanting()) {
-                                        this.hunger.burrowed(false);
-                                        this.hunger.attacking(true);
-                                        this.hunger.enchanting(false);
-                                    }
                                 }
                             } else {
                                 this.hunger.burrowed(suitable);
                             }
+                        } else if (entity instanceof LivingEntity && !this.hunger.enchanting()) {
+                            if (entity.isAlive() && this.hunger.canAttack((LivingEntity) entity)) {
+                                if (!this.hunger.enchanting()) {
+                                    this.hunger.burrowed(false);
+                                    this.hunger.attacking(true);
+                                    this.hunger.enchanting(false);
+                                }
+                            }
                         } else {
                             this.hunger.burrowed(suitable);
                         }
+                    } else {
+                        this.hunger.burrowed(suitable);
                     }
-                }
-                if (this.cacheitem != ItemStack.EMPTY) {
-                    this.tick2++;
-
-                    if (this.tick2 % 4 == 0) {
-                        ItemStack noench = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
-                        if (noench == null) {
-                            noench = cacheitem;
-                            this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_FOX_SPIT, this.hunger.getSoundCategory(), 0.8F, 0.8F);
-                            noench.getOrCreateChildTag("Bitten");
-                            this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
-                        } else if (noench != ItemStack.EMPTY) {
-                            this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
-                            noench.getOrCreateChildTag("Bitten");
-                            this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
-                        } else {
-                            this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
-                        }
-                        this.cacheitem = ItemStack.EMPTY;
-                        this.tick2 = 0;
-                    }
-                    this.hunger.burrowed(true);
-                    this.hunger.enchanting(true);
-                } else {
-                    this.hunger.burrowed(suitable);
-                    this.hunger.enchanting(false);
                 }
             }
-            this.tick++;
+            if (this.cacheitem != ItemStack.EMPTY) {
+                this.tick++;
+
+                if (this.tick % 4 == 0) {
+                    ItemStack noench = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
+                    if (noench == null) {
+                        noench = cacheitem;
+                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_FOX_SPIT, this.hunger.getSoundCategory(), 0.8F, 0.8F);
+                        noench.getOrCreateChildTag("Bitten");
+                        this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
+                    } else if (noench != ItemStack.EMPTY) {
+                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
+                        noench.getOrCreateChildTag("Bitten");
+                        this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
+                    } else {
+                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
+                    }
+                    this.cacheitem = ItemStack.EMPTY;
+                    this.tick = 0;
+                }
+                this.hunger.burrowed(true);
+                this.hunger.enchanting(true);
+            } else {
+                this.hunger.burrowed(suitable);
+                this.hunger.enchanting(false);
+            }
             super.tick();
         }
     }
