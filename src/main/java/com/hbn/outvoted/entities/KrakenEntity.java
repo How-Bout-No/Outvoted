@@ -1,3 +1,4 @@
+// TODO: Remove the loads of unnecessary code that still remains from Guardian entity
 package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;

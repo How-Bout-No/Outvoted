@@ -23,7 +23,9 @@ public class RepairCostRecipe extends SpecialRecipe {
         super(res);
     }
 
-
+    /**
+     * Check matching items in crafting grid
+     */
     public boolean matches(CraftingInventory inv, World worldIn) {
         List<ItemStack> list = Lists.newArrayList();
 

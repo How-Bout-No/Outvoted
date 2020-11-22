@@ -15,7 +15,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ModEntityTypes {
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Outvoted.MOD_ID);
 
-    // Entity Types
     public static final RegistryObject<EntityType<SoulBlazeEntity>> SOUL_BLAZE = ENTITY_TYPES
             .register("soul_blaze", () -> EntityType.Builder
                     .create(SoulBlazeEntity::new, EntityClassification.MONSTER)

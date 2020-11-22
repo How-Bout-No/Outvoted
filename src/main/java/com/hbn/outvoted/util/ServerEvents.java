@@ -9,6 +9,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ServerEvents {
 
+    /**
+     * Sets entities that attack a player blocking with an Inferno Shield on fire
+     */
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event) {
         if (event.getSource().getTrueSource() != null) {

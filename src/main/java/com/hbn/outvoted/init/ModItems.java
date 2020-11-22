@@ -16,6 +16,7 @@ public class ModItems {
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Outvoted.MOD_ID);
     public static ItemGroup tab = OutvotedConfig.COMMON.creativetab.get() ? Outvoted.TAB : ItemGroup.MISC;
 
+    // Spawn Eggs
     public static final RegistryObject<ModdedSpawnEggItem> SOUL_BLAZE_SPAWN_EGG = ITEMS.register("soul_blaze_spawn_egg",
             () -> new ModdedSpawnEggItem(ModEntityTypes.SOUL_BLAZE, 0x04E2FB, 0xFFF87E, new Item.Properties().group(tab)));
     public static final RegistryObject<ModdedSpawnEggItem> INFERNO_SPAWN_EGG = ITEMS.register("inferno_spawn_egg",
@@ -25,6 +26,7 @@ public class ModItems {
     public static final RegistryObject<ModdedSpawnEggItem> KRAKEN_SPAWN_EGG = ITEMS.register("kraken_spawn_egg",
             () -> new ModdedSpawnEggItem(ModEntityTypes.KRAKEN, 0x5B872E, 0x000000, new Item.Properties().group(tab)));
 
+    // Items
     public static final RegistryObject<Item> INFERNO_HELMET = ITEMS.register("inferno_helmet", InfernoHelmetItem::new);
     public static final RegistryObject<Item> INFERNO_SHIELD = ITEMS.register("inferno_shield", InfernoShieldItem::new);
     public static final RegistryObject<Item> INFERNO_SHIELD_PART = ITEMS.register("inferno_shield_part", () -> new Item(new Item.Properties().group(tab).isImmuneToFire()));

@@ -22,18 +22,15 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
     protected static final List<ModdedSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
 
-    public ModdedSpawnEggItem(NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
-        super(null, primaryColorIn, secondaryColorIn, builder);
-        this.entityTypeSupplier = Lazy.of(entityTypeSupplier::get);
-        UNADDED_EGGS.add(this);
-    }
-
     public ModdedSpawnEggItem(RegistryObject<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
         super(null, primaryColorIn, secondaryColorIn, builder);
         this.entityTypeSupplier = Lazy.of(entityTypeSupplier);
         UNADDED_EGGS.add(this);
     }
 
+    /**
+     * Basically copies dispenser behavior from vanilla spawn eggs
+     */
     public static void initSpawnEggs() {
         final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
         DefaultDispenseItemBehavior dispenseBehavior = new DefaultDispenseItemBehavior() {

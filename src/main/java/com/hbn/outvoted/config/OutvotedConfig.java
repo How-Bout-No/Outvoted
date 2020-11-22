@@ -33,7 +33,7 @@ public class OutvotedConfig {
             builder.comment("Hovering Inferno").push("inferno");
 
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
-            rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 15, 1, 100);
+            rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 10, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
             infernovariant = builder.comment("Blue coloration to both Blazes and Infernos in Soul Sand Valleys").define("Biome Variants", false);
 

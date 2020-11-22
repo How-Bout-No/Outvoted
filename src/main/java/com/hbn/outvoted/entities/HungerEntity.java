@@ -212,6 +212,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     public ItemStack modifyEnchantments(ItemStack stack, int damage, int count) {
+        // TODO: Rewrite this awful crap
         ItemStack itemstack = stack.copy();
         itemstack.removeChildTag("Enchantments");
         itemstack.removeChildTag("StoredEnchantments");
