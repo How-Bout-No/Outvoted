@@ -19,11 +19,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public class InfernoHelmetItem extends ArmorItem {
     private boolean timer = true;
 
     public InfernoHelmetItem() {
-        super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(OutvotedConfig.COMMON.creativetab.get() ? Outvoted.TAB : ItemGroup.COMBAT));
+        super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
     }
 
     @SuppressWarnings("unchecked")
@@ -51,6 +54,11 @@ public class InfernoHelmetItem extends ArmorItem {
         } else {
             timer = true;
         }
+    }
+
+    @Override
+    public Collection<ItemGroup> getCreativeTabs() {
+        return Collections.singletonList(Outvoted.TAB_COMBAT);
     }
 
     @Override

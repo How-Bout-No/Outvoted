@@ -27,7 +27,7 @@ public class OutvotedConfig {
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("General").push("general");
 
-            creativetab = builder.comment("NOT IMPLEMENTED YET! CHANGING THIS WON'T DO ANYTHING!").define("Use Custom Creative Tab", true);
+            creativetab = builder.define("Use Custom Creative Tab", true);
 
             builder.pop();
             builder.comment("Hovering Inferno").push("inferno");
@@ -35,7 +35,7 @@ public class OutvotedConfig {
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
             rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 10, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
-            infernovariant = builder.comment("Blue coloration to both Blazes and Infernos in Soul Sand Valleys").define("Biome Variants", false);
+            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default").define("Biome Variants", false);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");
