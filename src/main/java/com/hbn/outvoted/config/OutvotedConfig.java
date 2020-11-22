@@ -1,6 +1,7 @@
 package com.hbn.outvoted.config;
 
 import com.hbn.outvoted.Outvoted;
+import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -11,7 +12,6 @@ import org.apache.commons.lang3.tuple.Pair;
 public class OutvotedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<Integer> max_enchants;
-        public final ForgeConfigSpec.BooleanValue creativetab;
         public final ForgeConfigSpec.BooleanValue spawninferno;
         public final ForgeConfigSpec.BooleanValue spawnhunger;
         public final ForgeConfigSpec.BooleanValue spawnkraken;
@@ -26,11 +26,6 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.BooleanValue restrictinferno;
 
         public Common(ForgeConfigSpec.Builder builder) {
-            builder.comment("General").push("general");
-
-            creativetab = builder.define("Use Custom Creative Tab", true);
-
-            builder.pop();
             builder.comment("Hovering Inferno").push("inferno");
 
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
@@ -66,6 +61,27 @@ public class OutvotedConfig {
         final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(OutvotedConfig.Common::new);
         COMMON_SPEC = specPair.getRight();
         COMMON = specPair.getLeft();
+    }
+
+    public static class Client {
+        public final ForgeConfigSpec.BooleanValue creativetab;
+
+        public Client(ForgeConfigSpec.Builder builder) {
+            builder.comment("General").push("general");
+
+            creativetab = builder.define("Use Custom Creative Tab", true);
+
+            builder.pop();
+        }
+    }
+
+    public static final ForgeConfigSpec CLIENT_SPEC;
+    public static final Client CLIENT;
+
+    static {
+        final Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(OutvotedConfig.Client::new);
+        CLIENT_SPEC = specPair.getRight();
+        CLIENT = specPair.getLeft();
     }
 
     @SubscribeEvent

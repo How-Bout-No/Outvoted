@@ -29,12 +29,13 @@ import software.bernie.geckolib3.GeckoLib;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
-    public static ItemGroup TAB_COMBAT = ItemGroup.COMBAT;
-    public static ItemGroup TAB_MISC = ItemGroup.MISC;
+    public static ItemGroup TAB_COMBAT;
+    public static ItemGroup TAB_MISC;
 
     public Outvoted() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::setup);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, OutvotedConfig.CLIENT_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
         GeckoLib.initialize();
@@ -45,16 +46,18 @@ public class Outvoted {
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
     }
 
-    private void clientSetup(final FMLClientSetupEvent event) {
-        if (OutvotedConfig.COMMON.creativetab.get()) {
+    private void setup(final FMLLoadCompleteEvent event) {
+        if (OutvotedConfig.CLIENT.creativetab.get()) {
             ItemGroup TAB = new ItemGroup(-1, "modTab") {
-                @OnlyIn(Dist.CLIENT)
                 public ItemStack createIcon() {
                     return new ItemStack(ModItems.INFERNO_HELMET.get());
                 }
             };
             TAB_COMBAT = TAB;
             TAB_MISC = TAB;
+        } else {
+            TAB_COMBAT = ItemGroup.COMBAT;
+            TAB_MISC = ItemGroup.MISC;
         }
     }
 
