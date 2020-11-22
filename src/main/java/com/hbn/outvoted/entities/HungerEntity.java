@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.BookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.IPacket;
@@ -473,7 +474,16 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                                     }
                                     this.hunger.burrowed(suitable);
                                 }
-                            } else {
+                            } else if (item.getItem() instanceof BookItem) {
+                                if (!this.hunger.enchanting()) {
+                                    this.cacheitem = item.copy();
+                                    this.cacheentity = entity;
+                                    this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
+                                    entity.remove();
+                                    this.hunger.enchanting(true);
+                                    this.hunger.burrowed(suitable);
+                                }
+                            }else {
                                 this.hunger.burrowed(suitable);
                             }
                         } else if (entity instanceof LivingEntity && !this.hunger.enchanting()) {
@@ -495,7 +505,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             if (this.cacheitem != ItemStack.EMPTY) {
                 this.tick++;
 
-                if (this.tick % 4 == 0) {
+                if (this.tick % 16 == 0) {
                     ItemStack noench = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
                     if (noench == null) {
                         noench = cacheitem;
