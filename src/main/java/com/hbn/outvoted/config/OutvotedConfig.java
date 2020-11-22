@@ -12,7 +12,6 @@ public class OutvotedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<Integer> max_enchants;
         public final ForgeConfigSpec.BooleanValue creativetab;
-        public final ForgeConfigSpec.BooleanValue infernovariant;
         public final ForgeConfigSpec.BooleanValue spawninferno;
         public final ForgeConfigSpec.BooleanValue spawnhunger;
         public final ForgeConfigSpec.BooleanValue spawnkraken;
@@ -22,7 +21,9 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.IntValue rateblaze;
         public final ForgeConfigSpec.IntValue ratehunger;
         public final ForgeConfigSpec.IntValue ratekraken;
+        public final ForgeConfigSpec.BooleanValue infernovariant;
         public final ForgeConfigSpec.BooleanValue krakenvariant;
+        public final ForgeConfigSpec.BooleanValue restrictinferno;
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("General").push("general");
@@ -36,6 +37,7 @@ public class OutvotedConfig {
             rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 10, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
             infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default").define("Biome Variants", false);
+            restrictinferno = builder.comment("Restrict Infernos (and subsequently the Blazes) to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");
