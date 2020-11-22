@@ -138,6 +138,19 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         return CreatureAttribute.WATER;
     }
 
+    protected void updateAir(int air) {
+        if (this.isAlive() && !this.isInWaterOrBubbleColumn()) {
+            this.setAir(air - 1);
+            if (this.getAir() == -20) {
+                this.setAir(0);
+                this.attackEntityFrom(DamageSource.DROWN, 5.0F);
+            }
+        } else {
+            this.setAir(300);
+        }
+
+    }
+
     public boolean isMoving() {
         return this.dataManager.get(MOVING);
     }
@@ -313,7 +326,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             if (this.isInWaterOrBubbleColumn()) {
                 this.setAir(300);
             } else if (this.onGround) {
-                this.setMotion(this.getMotion().add((double) ((this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F), 0.5D, (double) ((this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F)));
+                this.setMotion(this.getMotion().add((double) ((this.rand.nextFloat() * 2.0F - 1.0F) * 0.1F), 0.5D, (double) ((this.rand.nextFloat() * 2.0F - 1.0F) * 0.1F)));
                 this.rotationYaw = this.rand.nextFloat() * 360.0F;
                 this.onGround = false;
                 this.isAirBorne = true;
@@ -323,6 +336,12 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                 this.rotationYaw = this.rotationYawHead;
             }
         }
+    }
+
+    public void baseTick() {
+        int i = this.getAir();
+        super.baseTick();
+        this.updateAir(i);
     }
 
     protected SoundEvent getFlopSound() {

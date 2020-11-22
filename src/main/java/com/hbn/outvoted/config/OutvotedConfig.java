@@ -12,6 +12,7 @@ public class OutvotedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<Integer> max_enchants;
         public final ForgeConfigSpec.BooleanValue creativetab;
+        public final ForgeConfigSpec.BooleanValue infernovariant;
         public final ForgeConfigSpec.BooleanValue spawninferno;
         public final ForgeConfigSpec.BooleanValue spawnhunger;
         public final ForgeConfigSpec.BooleanValue spawnkraken;
@@ -21,6 +22,7 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.IntValue rateblaze;
         public final ForgeConfigSpec.IntValue ratehunger;
         public final ForgeConfigSpec.IntValue ratekraken;
+        public final ForgeConfigSpec.BooleanValue krakenvariant;
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("General").push("general");
@@ -33,6 +35,7 @@ public class OutvotedConfig {
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
             rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 15, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
+            infernovariant = builder.comment("Blue coloration to both Blazes and Infernos in Soul Sand Valleys").define("Biome Variants", false);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");
@@ -48,6 +51,7 @@ public class OutvotedConfig {
             spawnkraken = builder.define("Natural Spawning", true);
             ratekraken = builder.defineInRange("Spawn Weight", 2, 1, 100);
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
+            krakenvariant = builder.comment("Slight coloration based on biomes, bluer in colder oceans while yellower in warmer ones").define("Biome Variants", true);
 
             builder.pop();
         }
