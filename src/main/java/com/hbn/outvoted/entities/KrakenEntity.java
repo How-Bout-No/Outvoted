@@ -15,7 +15,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
@@ -45,10 +44,9 @@ import java.util.List;
 import java.util.Random;
 
 public class KrakenEntity extends MonsterEntity implements IAnimatable {
-    private static final DataParameter<Boolean> MOVING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(HungerEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private LivingEntity targetedEntity;
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
@@ -96,7 +94,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
         //this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
-        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 5.0D, 48.0F));
+        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 1.0D, 48.0F));
         this.goalSelector.addGoal(3, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
@@ -125,7 +123,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(MOVING, false);
         this.dataManager.register(TARGET_ENTITY, 0);
         this.dataManager.register(ATTACKING, 0);
         this.dataManager.register(VARIANT, 3);
@@ -150,14 +147,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             this.setAir(300);
         }
 
-    }
-
-    public boolean isMoving() {
-        return this.dataManager.get(MOVING);
-    }
-
-    private void setMoving(boolean moving) {
-        this.dataManager.set(MOVING, moving);
     }
 
     public int getAttackDuration() {
@@ -271,14 +260,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
                     this.clientSideTouchedGround = vector3d.y < 0.0D && this.world.isTopSolid(this.getPosition().down(), this);
                 }
-
-                if (this.isMoving() && this.isInWater()) {
-                    Vector3d vector3d1 = this.getLook(0.0F);
-
-                    for (int i = 0; i < 2; ++i) {
-                        this.world.addParticle(ParticleTypes.BUBBLE, this.getPosXRandom(0.5D) - vector3d1.x * 1.5D, this.getPosYRandom() - vector3d1.y * 1.5D, this.getPosZRandom(0.5D) - vector3d1.z * 1.5D, 0.0D, 0.0D, 0.0D);
-                    }
-                }
                 if (this.hasTargetedEntity()) {
                     if (this.clientSideAttackTime < this.getAttackDuration()) {
                         ++this.clientSideAttackTime;
@@ -305,7 +286,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
                     while (d4 < d3) {
                         d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
-                        this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() + d0 * d4, this.getPosYEye() + d1 * d4, this.getPosZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
                         livingentity.setLocationAndAngles(this.getPosX() + d0 * d3, this.getPosYEye() + d1, this.getPosZ() + d2 * d3, livingentity.rotationYaw, livingentity.rotationPitch);
                         livingentity.setSwimming(false);
                         livingentity.updateSwimming();
@@ -368,20 +348,12 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         return super.attackEntityFrom(source, amount);
     }
 
-    /**
-     * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
-     * use in wolves.
-     */
-    public int getVerticalFaceSpeed() {
-        return 180;
-    }
-
     public void travel(Vector3d travelVector) {
         if (this.isServerWorld() && this.isInWater()) {
             this.moveRelative(0.1F, travelVector);
             this.move(MoverType.SELF, this.getMotion());
             this.setMotion(this.getMotion().scale(0.9D));
-            if (!this.isMoving() && this.getAttackTarget() == null) {
+            if (this.getAIMoveSpeed() == 0.0F && this.getAttackTarget() == null) {
                 this.setMotion(this.getMotion().add(0.0D, -0.001D, 0.0D));
             } else if (this.getAttackTarget() != null) {
                 this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
@@ -569,11 +541,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                 float f1 = (float) (this.speed * this.entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
                 float f2 = MathHelper.lerp(0.125F, this.entity.getAIMoveSpeed(), f1);
                 this.entity.setAIMoveSpeed(f2);
-                double d4 = Math.sin((double) (this.entity.ticksExisted + this.entity.getEntityId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double) (this.entity.rotationYaw * ((float) Math.PI / 180F)));
-                double d6 = Math.sin((double) (this.entity.rotationYaw * ((float) Math.PI / 180F)));
-                double d7 = Math.sin((double) (this.entity.ticksExisted + this.entity.getEntityId()) * 0.75D) * 0.05D;
-                this.entity.setMotion(this.entity.getMotion().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
                 LookController lookcontroller = this.entity.getLookController();
                 double d8 = this.entity.getPosX() + d1 * 2.0D;
                 double d9 = this.entity.getPosYEye() + d2 / d0;
@@ -588,10 +555,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                 }
 
                 this.entity.getLookController().setLookPosition(MathHelper.lerp(0.125D, d11, d8), MathHelper.lerp(0.125D, d12, d9), MathHelper.lerp(0.125D, d13, d10), 10.0F, 40.0F);
-                this.entity.setMoving(true);
             } else {
                 this.entity.setAIMoveSpeed(0.0F);
-                this.entity.setMoving(false);
             }
         }
     }
