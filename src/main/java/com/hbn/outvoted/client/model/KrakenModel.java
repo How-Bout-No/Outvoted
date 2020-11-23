@@ -30,10 +30,10 @@ public class KrakenModel extends AnimatedGeoModel<KrakenEntity> {
     @Override
     public void setLivingAnimations(KrakenEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("mob");
+        IBone mob = this.getAnimationProcessor().getBone("mob");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX((extraData.headPitch * ((float) Math.PI / 180F) - 1.7F));
-        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+        mob.setRotationX((extraData.headPitch * ((float) Math.PI / 180F) - 1.7F));
+        mob.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
     }
 }

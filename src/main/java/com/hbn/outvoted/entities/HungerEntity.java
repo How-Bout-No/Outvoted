@@ -483,7 +483,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                                     this.hunger.enchanting(true);
                                     this.hunger.burrowed(suitable);
                                 }
-                            }else {
+                            } else {
                                 this.hunger.burrowed(suitable);
                             }
                         } else if (entity instanceof LivingEntity && !this.hunger.enchanting()) {

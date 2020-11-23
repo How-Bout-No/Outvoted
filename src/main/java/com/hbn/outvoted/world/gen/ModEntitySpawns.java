@@ -67,12 +67,12 @@ public class ModEntitySpawns {
      */
     @SubscribeEvent
     public static void checkMobs(LivingSpawnEvent.CheckSpawn event) { // Below is probably bad practice, but I don't know of any other way to force 1 mob
-        double area = 6.0; // Value for x, 2*y, and z expansion to check for entities; a variable in case it causes lag or something
+        double area = 6.0; // Value for x, y, and z expansion to check for entities; a variable in case it causes lag or something
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (e instanceof KrakenEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
-                    List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area / 2, area).expand(-area, -area / 2, -area));
+                    List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area, area).expand(-area, -area, -area));
                     if (!entities.isEmpty()) {
                         event.setResult(Event.Result.DENY);
                     }

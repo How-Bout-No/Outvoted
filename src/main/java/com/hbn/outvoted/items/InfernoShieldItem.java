@@ -2,7 +2,6 @@ package com.hbn.outvoted.items;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.render.ShieldRenderer;
-import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.LivingEntity;
