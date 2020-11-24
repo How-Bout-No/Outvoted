@@ -18,6 +18,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -93,9 +94,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     protected void registerGoals() {
         MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
-        //this.goalSelector.addGoal(3, new KrakenEntity.ChaseGoal(this, 6.0D, false));
-        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 1.0D, 48.0F));
         this.goalSelector.addGoal(3, new KrakenEntity.AttackGoal(this));
+        this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 6.0D, 48.0F));
         this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -237,7 +237,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
-        return sizeIn.height * 0.5F;
+        return sizeIn.height * 0.4F;
     }
 
     public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
@@ -267,6 +267,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                 }
             }
             if (this.hasTargetedEntity()) {
+                this.rotationYaw = this.rotationYawHead;
                 LivingEntity livingentity = this.getTargetedEntity();
                 if (livingentity != null) {
                     this.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
@@ -312,10 +313,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                 this.onGround = false;
                 this.isAirBorne = true;
             }
-
-            if (this.hasTargetedEntity()) {
-                this.rotationYaw = this.rotationYawHead;
-            }
         }
     }
 
@@ -329,8 +326,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         return SoundEvents.ENTITY_GUARDIAN_FLOP;
     }
 
-    public float getAttackAnimationScale(float p_175477_1_) {
-        return ((float) this.clientSideAttackTime + p_175477_1_) / (float) this.getAttackDuration();
+    public float getAttackAnimationScale(float f) {
+        return ((float) this.clientSideAttackTime + f) / (float) this.getAttackDuration();
     }
 
     public boolean isNotColliding(IWorldReader worldIn) {
@@ -375,19 +372,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         if (livingentity.getRidingEntity() != null) {
             return livingentity.getRidingEntity().isInWater();
         } else {
-            return livingentity.isInWater();
+            return livingentity.isInWater() && livingentity.getActivePotionEffect(Effects.DOLPHINS_GRACE) == null;
         }
-    }
-
-    public boolean krakenCheck() {
-        double area = 10.0; // Value for x, y, and z expansion to check for entities
-        List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(area, area / 2, area).expand(-area, -area / 2, -area));
-        for (Entity entity : entities) {
-            if (entity instanceof KrakenEntity) {
-                return false;
-            }
-        }
-        return true;
     }
 
     static class ChaseGoal extends MoveTowardsTargetGoal {
@@ -409,7 +395,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
             if (livingentity != null) {
-                return super.shouldExecute() && this.entity.waterCheck(livingentity) && this.entity.krakenCheck() && this.entity.isWithinHomeDistanceCurrentPosition();
+                return super.shouldExecute() && this.entity.waterCheck(livingentity) && this.entity.isWithinHomeDistanceCurrentPosition();
             } else {
                 return false;
             }
@@ -421,7 +407,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         public boolean shouldContinueExecuting() {
             LivingEntity livingentity = this.entity.getAttackTarget();
             if (livingentity != null) {
-                return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity) && this.entity.krakenCheck() && this.entity.isWithinHomeDistanceCurrentPosition();
+                return super.shouldContinueExecuting() && this.entity.waterCheck(livingentity) && this.entity.isWithinHomeDistanceCurrentPosition();
             } else {
                 return false;
             }
@@ -453,7 +439,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
-            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.krakenCheck() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D;
+            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 75.0D;
         }
 
         /**
@@ -461,7 +447,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldContinueExecuting() {
             if (this.entity.getAttackTarget() != null) {
-                return super.shouldContinueExecuting() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D;
+                return super.shouldContinueExecuting() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D && this.entity.getAttackTarget().getActivePotionEffect(Effects.DOLPHINS_GRACE) == null;
             } else {
                 return false;
             }
@@ -503,15 +489,18 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                     if (this.tickCounter == 0) {
                         this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
                     } else if (this.tickCounter >= this.entity.getAttackDuration()) {
-                        float f = 1.0F;
+                        float f = 2.0F;
                         if (this.entity.world.getDifficulty() == Difficulty.HARD) {
-                            f += 2.0F;
+                            f += 4.0F;
                         }
 
-                        if (this.tickCounter % 25 == 0) {
-                            livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), f);
-                            if (livingentity.getAir() - 50 > 0) {
-                                livingentity.setAir(livingentity.getAir() - 50);
+                        if (this.tickCounter % 20 == 0) {
+                            //livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), f);
+                            if (livingentity.getActivePotionEffect(Effects.WATER_BREATHING) != null) {
+                                livingentity.attackEntityFrom(DamageSource.DROWN, f);
+                            }
+                            if (livingentity.getAir() >= 0) {
+                                livingentity.setAir(livingentity.getAir() - 45);
                             }
                         }
                     }
@@ -541,6 +530,11 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                 float f1 = (float) (this.speed * this.entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
                 float f2 = MathHelper.lerp(0.125F, this.entity.getAIMoveSpeed(), f1);
                 this.entity.setAIMoveSpeed(f2);
+                double d4 = Math.sin((double) (this.entity.ticksExisted + this.entity.getEntityId()) * 0.5D) * 0.05D;
+                double d5 = Math.cos((double) (this.entity.rotationYaw * ((float) Math.PI / 180F)));
+                double d6 = Math.sin((double) (this.entity.rotationYaw * ((float) Math.PI / 180F)));
+                double d7 = Math.sin((double) (this.entity.ticksExisted + this.entity.getEntityId()) * 0.75D) * 0.05D;
+                this.entity.setMotion(this.entity.getMotion().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
                 LookController lookcontroller = this.entity.getLookController();
                 double d8 = this.entity.getPosX() + d1 * 2.0D;
                 double d9 = this.entity.getPosYEye() + d2 / d0;
