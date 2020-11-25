@@ -41,13 +41,11 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Random;
 
 public class KrakenEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private LivingEntity targetedEntity;
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
@@ -125,7 +123,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         super.registerData();
         this.dataManager.register(TARGET_ENTITY, 0);
         this.dataManager.register(ATTACKING, 0);
-        this.dataManager.register(VARIANT, 3);
     }
 
     public boolean canBreatheUnderwater() {
@@ -167,20 +164,6 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
     public int getAttackPhase() {
         return this.dataManager.get(ATTACKING);
-    }
-
-    public int variant() {
-        if (this.dataManager.get(VARIANT) == 3) {
-            if (this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:deep_warm_ocean")) {
-                this.dataManager.set(VARIANT, 1);
-            } else if (this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:deep_cold_ocean")) {
-                this.dataManager.set(VARIANT, 2);
-            } else {
-                this.dataManager.set(VARIANT, 0);
-            }
-
-        }
-        return this.dataManager.get(VARIANT);
     }
 
     @Nullable

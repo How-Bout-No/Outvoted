@@ -22,10 +22,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class InfernoHelmetItem extends ArmorItem {
+    //private int timer = 0;
     private boolean timer = true;
 
     public InfernoHelmetItem() {
-        super(ModArmor.BLAZE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
+        super(ModArmor.INFERNO, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
     }
 
     @SuppressWarnings("unchecked")
@@ -45,9 +46,17 @@ public class InfernoHelmetItem extends ArmorItem {
      */
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+        /*player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 0, 0, false, false, true));
+        if (player.isBurning()) {
+            if (timer >= 40) {
+                stack.damageItem(1, player, consumer -> consumer.sendBreakAnimation(EquipmentSlotType.HEAD));
+                timer = 0;
+            }
+            timer++;
+        }*/
         if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get() && player.isBurning() && !player.isCreative()) {
             if (timer) {
-                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 300, 0, false, false, true));
+                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 400, 0, false, false, true));
                 timer = false;
             }
         } else {
