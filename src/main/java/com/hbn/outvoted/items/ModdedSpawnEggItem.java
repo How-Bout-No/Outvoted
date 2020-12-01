@@ -1,32 +1,26 @@
 package com.hbn.outvoted.items;
 
+import com.hbn.outvoted.Outvoted;
+import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ModdedSpawnEggItem extends SpawnEggItem {
     protected static final List<ModdedSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
-
-    public ModdedSpawnEggItem(NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
-        super(null, primaryColorIn, secondaryColorIn, builder);
-        this.entityTypeSupplier = Lazy.of(entityTypeSupplier::get);
-        UNADDED_EGGS.add(this);
-    }
 
     public ModdedSpawnEggItem(RegistryObject<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
         super(null, primaryColorIn, secondaryColorIn, builder);
@@ -34,6 +28,9 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
         UNADDED_EGGS.add(this);
     }
 
+    /**
+     * Basically copies dispenser behavior from vanilla spawn eggs
+     */
     public static void initSpawnEggs() {
         final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
         DefaultDispenseItemBehavior dispenseBehavior = new DefaultDispenseItemBehavior() {
@@ -52,6 +49,14 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
             EGGS.put(spawnEgg.getType(null), spawnEgg);
             DispenserBlock.registerDispenseBehavior(spawnEgg, dispenseBehavior);
         }
+    }
+
+    @Override
+    public Collection<ItemGroup> getCreativeTabs() {
+        if (this.entityTypeSupplier.get().toString().equals("entity.outvoted.soul_blaze") && !OutvotedConfig.COMMON.infernovariant.get()) {
+            return Collections.EMPTY_LIST;
+        }
+        return Collections.singletonList(Outvoted.TAB_MISC);
     }
 
     @Override

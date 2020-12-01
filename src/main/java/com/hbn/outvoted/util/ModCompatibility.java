@@ -3,6 +3,7 @@ package com.hbn.outvoted.util;
 import net.minecraftforge.fml.ModList;
 
 public class ModCompatibility {
+    // TODO: Implement this
     public static boolean extendednether = false;
     public static boolean geckolib3 = false;
 

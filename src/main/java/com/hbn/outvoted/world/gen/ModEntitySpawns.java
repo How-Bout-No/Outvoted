@@ -26,14 +26,25 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEntitySpawns {
 
+    /**
+     * Adds entity spawns to biomes
+     */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void spawnEntities(BiomeLoadingEvent event) {
         String biomename = event.getName().toString();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
-                if (biomename.equals("minecraft:soul_sand_valley")) {
-                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.SOUL_BLAZE.get(), OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
-                } else {
+                if (!OutvotedConfig.COMMON.restrictinferno.get()) {
+                    if (biomename.equals("minecraft:soul_sand_valley")) {
+                        if (OutvotedConfig.COMMON.infernovariant.get()) {
+                            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.SOUL_BLAZE.get(), OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                        } else {
+                            event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                        }
+                    } else {
+                        event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                    }
+                } else if (biomename.equals("minecraft:nether_wastes")) {
                     event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
                 }
             }
@@ -51,14 +62,17 @@ public class ModEntitySpawns {
         }
     }
 
+    /**
+     * Checks Kraken entities in an area to limit spawn count
+     */
     @SubscribeEvent
     public static void checkMobs(LivingSpawnEvent.CheckSpawn event) { // Below is probably bad practice, but I don't know of any other way to force 1 mob
-        double area = 6.0; // Value for x, y, and z expansion to check for entities
+        double area = 6.0; // Value for x, y, and z expansion to check for entities; a variable in case it causes lag or something
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (e instanceof KrakenEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
-                    List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area / 2, area).expand(-area, -area / 2, -area));
+                    List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area, area).expand(-area, -area, -area));
                     if (!entities.isEmpty()) {
                         event.setResult(Event.Result.DENY);
                     }
@@ -67,9 +81,12 @@ public class ModEntitySpawns {
         }
     }
 
+    /**
+     * Add Inferno entities to large enough Blaze groups and to Mob Spawners
+     */
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
-        double area = 6.0D;
+        double area = 6.0D; // Value for x, 2*y, and z expansion to check for entities; a variable in case it causes lag or something
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (e instanceof BlazeEntity) {
