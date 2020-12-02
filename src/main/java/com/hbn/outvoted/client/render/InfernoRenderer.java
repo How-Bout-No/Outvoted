@@ -2,7 +2,6 @@ package com.hbn.outvoted.client.render;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoModel;
-import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.entities.InfernoEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -32,9 +31,9 @@ public class InfernoRenderer extends GeoEntityRenderer<InfernoEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(InfernoEntity entity) {
-        if (OutvotedConfig.COMMON.infernovariant.get()) {
+        /*if (OutvotedConfig.COMMON.infernovariant.get()) {
             return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno" + (entity.variant() == 0 ? "" : "_soul") + ".png");
-        }
+        }*/
         return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno.png");
     }
 }

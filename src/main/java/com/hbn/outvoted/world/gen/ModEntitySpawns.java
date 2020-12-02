@@ -36,11 +36,12 @@ public class ModEntitySpawns {
             if (event.getCategory() == Biome.Category.NETHER) {
                 if (!OutvotedConfig.COMMON.restrictinferno.get()) {
                     if (biomename.equals("minecraft:soul_sand_valley")) {
-                        if (OutvotedConfig.COMMON.infernovariant.get()) {
+                        /*if (OutvotedConfig.COMMON.infernovariant.get()) {
                             event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.SOUL_BLAZE.get(), OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
                         } else {
                             event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
-                        }
+                        }*/
+                        event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
                     } else {
                         event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
                     }

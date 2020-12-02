@@ -46,7 +46,7 @@ public class InfernoHelmetModel<T extends LivingEntity> extends BipedModel<T> {
 
     /**
      * Hacky fix cause it's broken
-     *
+     * <p>
      * Adapted from https://gitlab.com/modding-legacy/mining-helmet/
      */
     @Override
