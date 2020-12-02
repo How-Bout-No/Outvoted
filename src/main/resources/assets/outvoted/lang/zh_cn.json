@@ -1,0 +1,25 @@
+{
+  "item.outvoted.soul_blaze_spawn_egg": "灵焰人刷怪蛋",
+  "item.outvoted.inferno_spawn_egg": "狱火行者刷怪蛋",
+  "item.outvoted.hunger_spawn_egg": "大胃怪刷怪蛋",
+  "item.outvoted.kraken_spawn_egg": "克拉肯刷怪蛋",
+  "item.outvoted.inferno_helmet": "狱火头盔",
+  "item.outvoted.inferno_shield": "狱火盾牌",
+  "item.outvoted.inferno_shield_part": "狱火盾牌部件",
+  "item.outvoted.inferno_piece": "烈焰碎片",
+  "item.outvoted.void_heart": "虚空之心",
+  "item.outvoted.kraken_tooth": "克拉肯尖牙",
+  "item.outvoted.prismarine_rod": "海晶石棒",
+
+  "entity.outvoted.soul_blaze": "灵焰人",
+  "entity.outvoted.inferno": "狱火行者",
+  "entity.outvoted.hunger": "大胃怪",
+  "entity.outvoted.kraken": "克拉肯",
+
+  "itemGroup.modTab": "落选生物",
+
+  "advancements.outvoted.obtain_inferno_helmet.title": "头脑发热！",
+  "advancements.outvoted.obtain_inferno_helmet.description": "获得一个狱火头盔",
+  "advancements.outvoted.obtain_inferno_piece.title": "好热！好热！好热！",
+  "advancements.outvoted.obtain_inferno_piece.description": "获得一块狱火盾牌"
+}
