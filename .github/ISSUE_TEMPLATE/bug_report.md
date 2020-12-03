@@ -1,11 +1,15 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: "[BUG]"
 labels: bug
 assignees: How-Bout-No
 
 ---
+
+/Before submitting, please ensure you've done the following, as these are fixes for some common bugs:
+[ ] Reset/delete config files
+[ ] Run with Java 8
 
 **Describe the bug**
 A clear and concise description of what the bug is.
@@ -24,8 +28,8 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem, or logs from Pastebin or similar.
 
 **Version (please complete the following information):**
- - Minecraft Version [e.g. 1.16.3, 1.15.2]
- - Mod Version [e.g. b0.2.3]
+ - Minecraft Version [e.g. 1.16.4 or 1.15.2]
+ - Mod Version [e.g. b0.4.0]
 
 **Additional context**
 Add any other context about the problem here.
