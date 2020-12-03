@@ -17,7 +17,7 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.DoubleValue healthinferno;
         public final ForgeConfigSpec.DoubleValue healthhunger;
         public final ForgeConfigSpec.DoubleValue healthkraken;
-        public final ForgeConfigSpec.IntValue rateblaze;
+        public final ForgeConfigSpec.IntValue rateinferno;
         public final ForgeConfigSpec.IntValue ratehunger;
         public final ForgeConfigSpec.IntValue ratekraken;
         //public final ForgeConfigSpec.BooleanValue infernovariant;
@@ -28,10 +28,10 @@ public class OutvotedConfig {
             builder.comment("Hovering Inferno").push("inferno");
 
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
-            rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 10, 1, 100);
+            rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
             //infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default").define("Biome Variants", false);
-            restrictinferno = builder.comment("Restrict Infernos (and subsequently the Blazes) to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
+            restrictinferno = builder.comment("Restrict Inferno groups to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");

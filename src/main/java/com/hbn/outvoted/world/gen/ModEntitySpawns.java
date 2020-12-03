@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.BlazeEntity;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEntitySpawns {
@@ -35,18 +37,18 @@ public class ModEntitySpawns {
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
                 if (!OutvotedConfig.COMMON.restrictinferno.get()) {
-                    if (biomename.equals("minecraft:soul_sand_valley")) {
-                        /*if (OutvotedConfig.COMMON.infernovariant.get()) {
+                    /*if (biomename.equals("minecraft:soul_sand_valley")) {
+                        if (OutvotedConfig.COMMON.infernovariant.get()) {
                             event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.SOUL_BLAZE.get(), OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
                         } else {
                             event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
-                        }*/
-                        event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                        }
                     } else {
                         event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
-                    }
+                    }*/
+                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.INFERNO.get(), OutvotedConfig.COMMON.rateinferno.get(), 1, 1));
                 } else if (biomename.equals("minecraft:nether_wastes")) {
-                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, OutvotedConfig.COMMON.rateblaze.get(), 3, 4));
+                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.INFERNO.get(), OutvotedConfig.COMMON.rateinferno.get(), 1, 1));
                 }
             }
         }
@@ -64,10 +66,11 @@ public class ModEntitySpawns {
     }
 
     /**
-     * Checks Kraken entities in an area to limit spawn count
+     * Checks entities in an area to force limit spawn count
+     * Probably awful practice, but this is a quick and dirty way to force 1 mob
      */
     @SubscribeEvent
-    public static void checkMobs(LivingSpawnEvent.CheckSpawn event) { // Below is probably bad practice, but I don't know of any other way to force 1 mob
+    public static void checkMobs(LivingSpawnEvent.CheckSpawn event) { //
         double area = 6.0; // Value for x, y, and z expansion to check for entities; a variable in case it causes lag or something
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
@@ -80,34 +83,49 @@ public class ModEntitySpawns {
                 }
             }
         }
+        if (OutvotedConfig.COMMON.spawninferno.get()) {
+            if (e instanceof InfernoEntity) {
+                if (event.getSpawnReason() == SpawnReason.NATURAL && event.getWorld().getDifficulty() != Difficulty.HARD) {
+                    List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area, area).expand(-area, -area, -area));
+                    if (entities.stream().anyMatch(entity -> entity instanceof InfernoEntity)) {
+                        event.setResult(Event.Result.DENY);
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * Add Inferno entities to large enough Blaze groups and to Mob Spawners
+     * Adds Blazes around Infernos and adds Infernos to Mob Spawners
      */
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
-        double area = 6.0D; // Value for x, 2*y, and z expansion to check for entities; a variable in case it causes lag or something
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
-            if (e instanceof BlazeEntity) {
+            if (e instanceof InfernoEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
-                    List<Entity> allentities = event.getWorld().getEntitiesWithinAABBExcludingEntity(e, e.getBoundingBox().expand(area, area / 2, area).expand(-area, -area / 2, -area));
-                    List<Entity> entities = new ArrayList<Entity>();
-                    for (Entity entity : allentities) {
-                        if (entity instanceof BlazeEntity) {
-                            entities.add(entity);
+                    World world = event.getEntity().getEntityWorld();
+                    int max = 4;
+                    switch (world.getDifficulty()) {
+                        case NORMAL: max = 5;
+                            break;
+                        case HARD: max = 6;
+                            break;
+                    }
+                    int min = max - 2;
+                    int rand = new Random().nextInt(max - min) + min;
+                    for (int i = 1; i <= rand; i++) {
+                        BlazeEntity blaze = EntityType.BLAZE.create(world);
+                        blaze.setPositionAndRotation(e.getPosXRandom(2.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
+                        while (!world.isAirBlock(blaze.getPosition())) { // Prevent spawning in blocks
+                            blaze.setPositionAndRotation(e.getPosXRandom(2.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
                         }
+                        world.addEntity(blaze);
                     }
-                    if (entities.size() > 1 && allentities.stream().noneMatch(entity -> entity instanceof InfernoEntity)) {
-                        World world = event.getEntity().getEntityWorld();
-                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                        //inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(1.0D), e.rotationYaw, e.rotationPitch);
-                        inferno.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
-
-                        world.addEntity(inferno);
-                    }
-                } else if (event.getSpawnReason() == SpawnReason.SPAWNER) {
+                }
+            }
+            if (e instanceof BlazeEntity) {
+                if (event.getSpawnReason() == SpawnReason.SPAWNER) {
                     if (Math.random() > 0.8) {
                         World world = event.getEntity().getEntityWorld();
 
