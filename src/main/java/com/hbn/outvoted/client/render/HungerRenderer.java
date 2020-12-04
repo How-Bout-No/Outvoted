@@ -2,7 +2,7 @@ package com.hbn.outvoted.client.render;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.HungerModel;
-import com.hbn.outvoted.entities.HungerEntity;
+import com.hbn.outvoted.entity.HungerEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

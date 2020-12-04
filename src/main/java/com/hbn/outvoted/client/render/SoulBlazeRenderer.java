@@ -1,7 +1,7 @@
 package com.hbn.outvoted.client.render;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.SoulBlazeEntity;
+import com.hbn.outvoted.entity.SoulBlazeEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.BlazeModel;

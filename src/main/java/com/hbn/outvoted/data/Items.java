@@ -2,8 +2,8 @@ package com.hbn.outvoted.data;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.init.ModItems;
-import com.hbn.outvoted.items.ModItem;
-import com.hbn.outvoted.items.ModdedSpawnEggItem;
+import com.hbn.outvoted.item.ModItem;
+import com.hbn.outvoted.item.ModdedSpawnEggItem;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -18,6 +18,9 @@ public class Items extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        /*
+          Iterates through each basic item and spawn egg, each type having the same exact layout so it just uses less lines
+         */
         ModItems.ITEMS.getEntries().forEach(item -> {
             if (item.get() instanceof ModItem) {
                 singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/generated"),

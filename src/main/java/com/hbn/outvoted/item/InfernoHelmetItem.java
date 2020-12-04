@@ -1,4 +1,4 @@
-package com.hbn.outvoted.items;
+package com.hbn.outvoted.item;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoHelmetModel;

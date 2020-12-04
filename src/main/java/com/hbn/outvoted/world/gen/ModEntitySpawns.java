@@ -2,8 +2,8 @@ package com.hbn.outvoted.world.gen;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.config.OutvotedConfig;
-import com.hbn.outvoted.entities.InfernoEntity;
-import com.hbn.outvoted.entities.KrakenEntity;
+import com.hbn.outvoted.entity.InfernoEntity;
+import com.hbn.outvoted.entity.KrakenEntity;
 import com.hbn.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -57,8 +57,8 @@ public class ModEntitySpawns {
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
-            if (event.getDepth() == -1.8F && !biomename.equals("minecraft:deep_frozen_ocean")) { // Possibly makes modded deep oceans compatible? (If those even exist, and use vanilla values)
-                //if (biomename.equals("minecraft:deep_ocean") || biomename.equals("minecraft:deep_warm_ocean") || biomename.equals("minecraft:deep_lukewarm_ocean") || biomename.equals("minecraft:deep_cold_ocean")) {
+            /* Possibly makes modded deep oceans compatible? (If those even exist, and use vanilla values) */
+            if (event.getDepth() == -1.8F && !biomename.equals("minecraft:deep_frozen_ocean")) {
                 event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), OutvotedConfig.COMMON.ratekraken.get(), 1, 1));
             }
         }
@@ -69,7 +69,7 @@ public class ModEntitySpawns {
      * Probably awful practice, but this is a quick and dirty way to force 1 mob
      */
     @SubscribeEvent
-    public static void checkMobs(LivingSpawnEvent.CheckSpawn event) { //
+    public static void checkMobs(LivingSpawnEvent.CheckSpawn event) {
         double area = 6.0; // Value for x, y, and z expansion to check for entities; a variable in case it causes lag or something
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
@@ -104,21 +104,21 @@ public class ModEntitySpawns {
             if (e instanceof InfernoEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
                     World world = event.getEntity().getEntityWorld();
-                    int max = 4;
+                    int max = 3;
                     switch (world.getDifficulty()) {
                         case NORMAL:
-                            max = 5;
+                            max = 4;
                             break;
                         case HARD:
-                            max = 6;
+                            max = 5;
                             break;
                     }
-                    int min = max - 2;
+                    int min = max - 1;
                     int rand = new Random().nextInt(max - min) + min;
                     for (int i = 1; i <= rand; i++) {
                         BlazeEntity blaze = EntityType.BLAZE.create(world);
                         blaze.setPositionAndRotation(e.getPosXRandom(2.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
-                        while (!world.isAirBlock(blaze.getPosition())) { // Should prevent spawning in blocks
+                        while (!world.isAirBlock(blaze.getPosition())) { // Should prevent spawning inside of blocks
                             blaze.setPositionAndRotation(e.getPosXRandom(2.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
                         }
                         world.addEntity(blaze);

@@ -2,7 +2,7 @@ package com.hbn.outvoted.client.render;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoModel;
-import com.hbn.outvoted.entities.InfernoEntity;
+import com.hbn.outvoted.entity.InfernoEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

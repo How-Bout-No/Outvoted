@@ -1,10 +1,10 @@
 package com.hbn.outvoted.init;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.items.InfernoHelmetItem;
-import com.hbn.outvoted.items.InfernoShieldItem;
-import com.hbn.outvoted.items.ModItem;
-import com.hbn.outvoted.items.ModdedSpawnEggItem;
+import com.hbn.outvoted.item.InfernoHelmetItem;
+import com.hbn.outvoted.item.InfernoShieldItem;
+import com.hbn.outvoted.item.ModItem;
+import com.hbn.outvoted.item.ModdedSpawnEggItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;

@@ -1,4 +1,4 @@
-package com.hbn.outvoted.entities;
+package com.hbn.outvoted.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.BlazeEntity;

@@ -2,7 +2,7 @@
   This class only exists to make the Creative Tab config option work with normal items, however this can be easily expanded
  */
 
-package com.hbn.outvoted.items;
+package com.hbn.outvoted.item;
 
 import com.hbn.outvoted.Outvoted;
 import net.minecraft.item.Item;
