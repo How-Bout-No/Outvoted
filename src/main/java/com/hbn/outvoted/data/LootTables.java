@@ -1,8 +1,6 @@
 package com.hbn.outvoted.data;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
@@ -22,8 +20,7 @@ public class LootTables extends LootTableProvider {
     }
 
     @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker)
-    {
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
         map.forEach((id, table) -> {
             LootTableManager.validateLootTable(validationtracker, id, table);
         });

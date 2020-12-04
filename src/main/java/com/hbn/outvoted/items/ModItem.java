@@ -8,7 +8,6 @@ import com.hbn.outvoted.Outvoted;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 

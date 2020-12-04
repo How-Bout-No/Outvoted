@@ -27,6 +27,7 @@ public class OutvotedConfig {
         /**
          * Common config setup
          * Related to both server and client options
+         *
          * @param builder
          */
         public Common(ForgeConfigSpec.Builder builder) {
@@ -66,12 +67,14 @@ public class OutvotedConfig {
         COMMON_SPEC = specPair.getRight();
         COMMON = specPair.getLeft();
     }
+
     public static class Client {
         public final ForgeConfigSpec.BooleanValue creativetab;
 
         /**
          * Client config setup
          * Just used for the creative tab
+         *
          * @param builder
          */
         public Client(ForgeConfigSpec.Builder builder) {

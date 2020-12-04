@@ -3,7 +3,10 @@ package com.hbn.outvoted.data;
 import com.hbn.outvoted.init.ModItems;
 import com.hbn.outvoted.init.ModRecipes;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.*;
+import net.minecraft.data.CustomRecipeBuilder;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.RecipeProvider;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -17,9 +20,9 @@ public class Recipes extends RecipeProvider {
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-            SmithingBuilder.smithingRecipe(Ingredient.fromItems(Items.SHIELD), Ingredient.fromItems(ModItems.INFERNO_SHIELD_PART.get()), ModItems.INFERNO_SHIELD.get())
-                    .addCriterion("has_inferno_part", hasItem(ModItems.INFERNO_SHIELD_PART.get()))
-                    .build(consumer, ModItems.INFERNO_SHIELD.getId());
+        SmithingBuilder.smithingRecipe(Ingredient.fromItems(Items.SHIELD), Ingredient.fromItems(ModItems.INFERNO_SHIELD_PART.get()), ModItems.INFERNO_SHIELD.get())
+                .addCriterion("has_inferno_part", hasItem(ModItems.INFERNO_SHIELD_PART.get()))
+                .build(consumer, ModItems.INFERNO_SHIELD.getId());
         ShapedBuilder.shapedRecipe(ModItems.INFERNO_SHIELD_PART.get())
                 .patternLine("MMM")
                 .patternLine("MCM")

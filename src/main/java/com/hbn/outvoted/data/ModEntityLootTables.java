@@ -38,12 +38,12 @@ public class ModEntityLootTables extends EntityLootTables {
                 .addLootPool(LootPool.builder()
                         .rolls(ConstantRange.of(1))
                         .addEntry(ItemLootEntry.builder(ModItems.INFERNO_PIECE.get())
-                                .acceptCondition(RandomChanceWithLooting.builder(0.125F, 0.05F))
+                                .acceptCondition(RandomChanceWithLooting.builder(0.15F, 0.05F))
                                 .acceptCondition(KilledByPlayer.builder())))
                 .addLootPool(LootPool.builder()
                         .rolls(ConstantRange.of(1))
                         .addEntry(ItemLootEntry.builder(ModItems.INFERNO_HELMET.get())
-                                .acceptCondition(RandomChanceWithLooting.builder(0.025F, 0.025F))
+                                .acceptCondition(RandomChanceWithLooting.builder(0.05F, 0.025F))
                                 .acceptCondition(KilledByPlayer.builder())))
         );
 
@@ -56,8 +56,8 @@ public class ModEntityLootTables extends EntityLootTables {
                                 .acceptCondition(KilledByPlayer.builder())))
                 .addLootPool(LootPool.builder()
                         .rolls(ConstantRange.of(1))
-                        .addEntry(ItemLootEntry.builder(ModItems.INFERNO_PIECE.get())
-                                .acceptCondition(RandomChanceWithLooting.builder(0.1F, 0.05F))
+                        .addEntry(ItemLootEntry.builder(ModItems.VOID_HEART.get())
+                                .acceptCondition(RandomChanceWithLooting.builder(0.2F, 0.05F))
                                 .acceptCondition(KilledByPlayer.builder())))
         );
 

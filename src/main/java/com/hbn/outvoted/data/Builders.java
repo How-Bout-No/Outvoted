@@ -136,6 +136,12 @@ class SmithingBuilder extends SmithingRecipeBuilder {
     }
 
     @Override
+    public SmithingRecipeBuilder addCriterion(String name, ICriterionInstance criterion) {
+        this.advancementBuilder.withCriterion(name, criterion);
+        return this;
+    }
+
+    @Override
     public void build(Consumer<IFinishedRecipe> consumer, String id) {
         this.build(consumer, new ResourceLocation(id));
     }
