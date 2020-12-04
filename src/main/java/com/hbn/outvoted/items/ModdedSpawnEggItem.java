@@ -22,7 +22,7 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
 
     public ModdedSpawnEggItem(RegistryObject<? extends EntityType<?>> entityTypeSupplier, int primaryColorIn, int secondaryColorIn, Properties builder) {
-        super(null, primaryColorIn, secondaryColorIn, builder);
+        super(null, primaryColorIn, secondaryColorIn, builder.group(Outvoted.TAB_MISC));
         this.entityTypeSupplier = Lazy.of(entityTypeSupplier);
         UNADDED_EGGS.add(this);
     }

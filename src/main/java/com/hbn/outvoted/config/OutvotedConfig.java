@@ -24,6 +24,11 @@ public class OutvotedConfig {
         //public final ForgeConfigSpec.BooleanValue krakenvariant;
         public final ForgeConfigSpec.BooleanValue restrictinferno;
 
+        /**
+         * Common config setup
+         * Related to both server and client options
+         * @param builder
+         */
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Hovering Inferno").push("inferno");
 
@@ -61,10 +66,14 @@ public class OutvotedConfig {
         COMMON_SPEC = specPair.getRight();
         COMMON = specPair.getLeft();
     }
-
     public static class Client {
         public final ForgeConfigSpec.BooleanValue creativetab;
 
+        /**
+         * Client config setup
+         * Just used for the creative tab
+         * @param builder
+         */
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("General").push("general");
 
@@ -85,10 +94,10 @@ public class OutvotedConfig {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading event) {
-        System.out.println(">> Outvoted Config Loaded");
+        System.out.println(">> Outvoted " + event.getConfig().getType() + " Config Loaded");
     }
 
-    @SubscribeEvent
-    public static void onFileChange(final ModConfig.Reloading event) {
-    }
+//    @SubscribeEvent
+//    public static void onFileChange(final ModConfig.Reloading event) {
+//    }
 }

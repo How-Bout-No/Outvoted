@@ -2,7 +2,6 @@ package com.hbn.outvoted.items;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoHelmetModel;
-import com.hbn.outvoted.init.ModItems;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

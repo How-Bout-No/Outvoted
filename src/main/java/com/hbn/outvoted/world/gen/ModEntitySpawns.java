@@ -21,7 +21,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -107,9 +106,11 @@ public class ModEntitySpawns {
                     World world = event.getEntity().getEntityWorld();
                     int max = 4;
                     switch (world.getDifficulty()) {
-                        case NORMAL: max = 5;
+                        case NORMAL:
+                            max = 5;
                             break;
-                        case HARD: max = 6;
+                        case HARD:
+                            max = 6;
                             break;
                     }
                     int min = max - 2;
@@ -117,7 +118,7 @@ public class ModEntitySpawns {
                     for (int i = 1; i <= rand; i++) {
                         BlazeEntity blaze = EntityType.BLAZE.create(world);
                         blaze.setPositionAndRotation(e.getPosXRandom(2.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
-                        while (!world.isAirBlock(blaze.getPosition())) { // Prevent spawning in blocks
+                        while (!world.isAirBlock(blaze.getPosition())) { // Should prevent spawning in blocks
                             blaze.setPositionAndRotation(e.getPosXRandom(2.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
                         }
                         world.addEntity(blaze);

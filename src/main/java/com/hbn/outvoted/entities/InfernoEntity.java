@@ -1,7 +1,10 @@
 package com.hbn.outvoted.entities;
 
 import com.hbn.outvoted.config.OutvotedConfig;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -9,8 +12,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.item.AxeItem;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.item.SwordItem;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -32,7 +33,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class InfernoEntity extends MonsterEntity implements IAnimatable {
@@ -186,7 +186,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         --this.heightOffsetUpdateTime;
         if (this.heightOffsetUpdateTime <= 0) {
             this.heightOffsetUpdateTime = 100;
-            this.heightOffset = 0.5F + (float) this.rand.nextGaussian() * (3/((this.getHealth() / 25) + 1));
+            this.heightOffset = 0.5F + (float) this.rand.nextGaussian() * (3 / ((this.getHealth() / 25) + 1));
         }
 
         LivingEntity livingentity = this.getAttackTarget();
@@ -232,7 +232,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                 LivingEntity entity = (LivingEntity) source.getImmediateSource();
                 if (entity.getHeldItemMainhand().getItem() instanceof AxeItem) {
                     double itemDamage = ((AxeItem) entity.getHeldItemMainhand().getItem()).getAttackDamage() + 1;
-                    if (amount == itemDamage + (itemDamage/2)) { // Only disable shields on a critical axe hit
+                    if (amount == itemDamage + (itemDamage / 2)) { // Only disable shields on a critical axe hit
                         this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 1.5F);
                         this.shieldDisabled = true;
                         this.shielding(false);
