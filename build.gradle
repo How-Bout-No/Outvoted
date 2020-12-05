@@ -16,15 +16,14 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-//version =  "${minecraft_version}-${mod_version}"
-version =  "1.16.4-b0.4.3"
+version =  "${mod_version}"
 group = 'com.hbn.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'outvoted'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-println('Mod Version: [' + "${mod_version}" + '] MC Version: [' + "${minecraft_version}" + '] Mappings Version: [' + "${mappings_version}" + '] Loader Version: [' + "${loader_version}" + '] Forge Version: [' + "${forge_version}" + ']')
+println('Mod Version: [' + "${mod_version}" + '] MC Version: [' + "${minecraft_version}" + '] Mappings Version: [' + "${mappings_version}" + '] Loader Version: [' + "${loader_version}" + '] Forge Version: [' + "${forge_version}" + '] Geckolib Version: [' + "${geckolib_version}" + ']')
 minecraft {
     mappings channel: "snapshot", version: "${mappings_version}"
 
@@ -74,7 +73,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf('software.bernie.geckolib:forge-1.16.4-geckolib:3.0.0-beta.10')
+    implementation fg.deobf("software.bernie.geckolib:forge-${minecraft_version}-geckolib:${geckolib_version}")
 }
 
 jar {
