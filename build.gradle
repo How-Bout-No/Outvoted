@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -13,15 +16,16 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.3-b0.4.3'
+version =  "${minecraft_version}-${mod_version}"
 group = 'com.hbn.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'outvoted'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println('Mod Version: [' + "${mod_version}" + '] MC Version: [' + "${minecraft_version}" + '] Mappings Version: [' + "${mappings_version}" + '] Loader Version: [' + "${loader_version}" + '] Forge Version: [' + "${forge_version}" + ']')
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: "snapshot", version: "${mappings_version}"
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -67,7 +71,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.7'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf('software.bernie.geckolib:forge-1.16.4-geckolib:3.0.0-beta.10')
 }
@@ -88,10 +92,24 @@ jar {
 
 jar.finalizedBy('reobfJar')
 
+buildscript {
+    def updateJsonFile = file('update.json')
+    def updateJson = new JsonSlurper().parse(updateJsonFile) as Map
+
+    // Update promos
+    updateJson.promos."1.16.4-latest" = "${mod_version}"
+    updateJson.promos."1.16.4-recommended" = "${mod_version}"
+    updateJson.promos."1.16.3-latest" = "${mod_version}"
+    updateJson.promos."1.16.3-recommended" = "${mod_version}"
+
+    updateJsonFile.write(JsonOutput.prettyPrint(JsonOutput.toJson(updateJson)))
+}
+
 // Process resources on build
 processResources {
     // This will ensure that this task is redone when the versions change.
     inputs.property 'version', project.version
+    inputs.property 'loader', "${loader_version}"
 
     // Replace stuff in mods.toml, nothing else
     from(sourceSets.main.resources.srcDirs) {
@@ -99,6 +117,7 @@ processResources {
 
         // Replace version
         expand 'version':project.version
+        expand 'loader':"${loader_version}"
     }
 
     // Copy everything else except the mods.toml

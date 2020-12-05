@@ -50,7 +50,5 @@ public class Outvoted {
             TAB_COMBAT = ItemGroup.COMBAT;
             TAB_MISC = ItemGroup.MISC;
         }
-        System.out.println(TAB_COMBAT.getGroupName());
-        System.out.println(TAB_MISC.getGroupName());
     }
 }
