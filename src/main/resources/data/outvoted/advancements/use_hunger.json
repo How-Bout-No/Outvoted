@@ -1,14 +1,14 @@
 {
-  "parent": "minecraft:nether/obtain_blaze_rod",
+  "parent": "minecraft:story/enchant_item",
   "display": {
     "icon": {
-      "item": "outvoted:inferno_piece"
+      "item": "minecraft:experience_bottle"
     },
     "title": {
-      "translate": "advancements.outvoted.obtain_inferno_piece.title"
+      "translate": "advancements.outvoted.use_hunger.title"
     },
     "description": {
-      "translate": "advancements.outvoted.obtain_inferno_piece.description"
+      "translate": "advancements.outvoted.use_hunger.description"
     },
     "frame": "goal",
     "show_toast": true,
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "outvoted:inferno_piece"
+            "nbt": "{Bitten:{}}"
           }
         ]
       }

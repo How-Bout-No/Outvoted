@@ -4,7 +4,6 @@ import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.entity.HungerEntity;
 import com.hbn.outvoted.entity.InfernoEntity;
 import com.hbn.outvoted.entity.KrakenEntity;
-import com.hbn.outvoted.entity.SoulBlazeEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -31,11 +30,4 @@ public class ModEntityTypes {
                     .create(KrakenEntity::new, EntityClassification.MONSTER)
                     .size(1.0F, 1.0F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
-    public static final RegistryObject<EntityType<SoulBlazeEntity>> SOUL_BLAZE = ENTITY_TYPES
-            .register("soul_blaze", () -> EntityType.Builder
-                    .create(SoulBlazeEntity::new, EntityClassification.MONSTER)
-                    .immuneToFire()
-                    .size(0.6F, 1.8F)
-                    .trackingRange(8)
-                    .build(new ResourceLocation(Outvoted.MOD_ID, "soul_blaze").toString()));
 }

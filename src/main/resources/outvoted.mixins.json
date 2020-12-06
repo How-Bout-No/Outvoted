@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.hbn.outvoted.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "outvoted.refmap.json",
+  "mixins": [
+    "MixinBlazeRenderer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

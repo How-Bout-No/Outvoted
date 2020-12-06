@@ -1,5 +1,4 @@
 {
-  "item.outvoted.soul_blaze_spawn_egg": "Soul Blaze Spawn Egg",
   "item.outvoted.inferno_spawn_egg": "Hovering Inferno Spawn Egg",
   "item.outvoted.hunger_spawn_egg": "Great Hunger Spawn Egg",
   "item.outvoted.kraken_spawn_egg": "Kraken Spawn Egg",
@@ -11,7 +10,6 @@
   "item.outvoted.kraken_tooth": "Kraken Tooth",
   "item.outvoted.prismarine_rod": "Prismarine Rod",
 
-  "entity.outvoted.soul_blaze": "Soul Blaze",
   "entity.outvoted.inferno": "Inferno",
   "entity.outvoted.hunger": "Hunger",
   "entity.outvoted.kraken": "Kraken",
@@ -21,5 +19,12 @@
   "advancements.outvoted.obtain_inferno_helmet.title": "Hot-headed!",
   "advancements.outvoted.obtain_inferno_helmet.description": "Obtain a Hovering Inferno's Helmet",
   "advancements.outvoted.obtain_inferno_piece.title": "Hot Hot Hot!",
-  "advancements.outvoted.obtain_inferno_piece.description": "Obtain a piece of the Hovering Inferno's Shield"
+  "advancements.outvoted.obtain_inferno_piece.description": "Obtain a piece of the Hovering Inferno's Shield",
+  "advancements.outvoted.rename_hunger.title": "Wingardium Leviosa",
+  "advancements.outvoted.rename_hunger.description": "Rename a Hunger and watch it float!",
+  "advancements.outvoted.use_hunger.title": "What An Appetite",
+  "advancements.outvoted.use_hunger.description": "Enchant an item using the Hunger",
+  "advancements.outvoted.overenchant_hunger.title": "Unlimited Powah!!!",
+  "advancements.outvoted.overenchant_hunger.description": "Overenchant an item above its max level"
+
 }

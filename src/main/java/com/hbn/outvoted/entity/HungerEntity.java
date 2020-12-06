@@ -2,6 +2,7 @@ package com.hbn.outvoted.entity;
 
 import com.hbn.outvoted.config.OutvotedConfig;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -178,7 +179,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.dataManager.register(BURROWED, Boolean.FALSE);
         this.dataManager.register(ATTACKING, Boolean.FALSE);
         this.dataManager.register(ENCHANTING, Boolean.FALSE);
-        this.dataManager.register(VARIANT, 2);
+        this.dataManager.register(VARIANT, 3);
     }
 
     public void burrowed(boolean burrowed) {
@@ -206,8 +207,14 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     public int variant() {
-        if (this.dataManager.get(VARIANT) == 2) {
-            this.dataManager.set(VARIANT, this.world.getBiome(this.getPosition()).getCategory() == Biome.Category.DESERT ? 0 : 1);
+        if (this.dataManager.get(VARIANT) == 3) {
+            if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.SAND)) {
+                this.dataManager.set(VARIANT, 0);
+            } else if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.RED_SAND)) {
+                this.dataManager.set(VARIANT, 1);
+            } else {
+                this.dataManager.set(VARIANT, 2);
+            }
         }
         return this.dataManager.get(VARIANT);
     }

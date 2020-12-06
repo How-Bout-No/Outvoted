@@ -15,8 +15,6 @@ public class ModItems {
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Outvoted.MOD_ID);
 
     // Spawn Eggs
-    public static final RegistryObject<ModdedSpawnEggItem> SOUL_BLAZE_SPAWN_EGG = ITEMS.register("soul_blaze_spawn_egg",
-            () -> new ModdedSpawnEggItem(ModEntityTypes.SOUL_BLAZE, 0x04E2FB, 0xFFF87E, new ModItem.Properties()));
     public static final RegistryObject<ModdedSpawnEggItem> INFERNO_SPAWN_EGG = ITEMS.register("inferno_spawn_egg",
             () -> new ModdedSpawnEggItem(ModEntityTypes.INFERNO, 0xF6B201, 0x000000, new ModItem.Properties()));
     public static final RegistryObject<ModdedSpawnEggItem> HUNGER_SPAWN_EGG = ITEMS.register("hunger_spawn_egg",

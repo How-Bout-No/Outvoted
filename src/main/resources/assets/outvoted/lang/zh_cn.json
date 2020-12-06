@@ -1,5 +1,4 @@
 {
-  "item.outvoted.soul_blaze_spawn_egg": "灵焰人刷怪蛋",
   "item.outvoted.inferno_spawn_egg": "狱火行者刷怪蛋",
   "item.outvoted.hunger_spawn_egg": "大胃怪刷怪蛋",
   "item.outvoted.kraken_spawn_egg": "克拉肯刷怪蛋",
@@ -11,7 +10,6 @@
   "item.outvoted.kraken_tooth": "克拉肯尖牙",
   "item.outvoted.prismarine_rod": "海晶石棒",
 
-  "entity.outvoted.soul_blaze": "灵焰人",
   "entity.outvoted.inferno": "狱火行者",
   "entity.outvoted.hunger": "大胃怪",
   "entity.outvoted.kraken": "克拉肯",

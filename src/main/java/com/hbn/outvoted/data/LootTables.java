@@ -99,15 +99,6 @@ public class LootTables extends LootTableProvider {
                                     .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
                                     .acceptCondition(KilledByPlayer.builder())))
             );
-
-            this.registerLootTable(ModEntityTypes.SOUL_BLAZE.get(), LootTable.builder()
-                    .addLootPool(LootPool.builder()
-                            .rolls(ConstantRange.of(1))
-                            .addEntry(ItemLootEntry.builder(Items.BLAZE_ROD)
-                                    .acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 1.0F)))
-                                    .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                                    .acceptCondition(KilledByPlayer.builder())))
-            );
         }
 
     }

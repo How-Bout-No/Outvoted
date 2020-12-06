@@ -52,10 +52,6 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
 
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
-        //if (this.entityTypeSupplier.get().toString().equals("entity.outvoted.soul_blaze") && !OutvotedConfig.COMMON.infernovariant.get()) {
-        if (this.entityTypeSupplier.get().toString().equals("entity.outvoted.soul_blaze")) {
-            return Collections.EMPTY_LIST;
-        }
         return Collections.singletonList(Outvoted.TAB_MISC);
     }
 
