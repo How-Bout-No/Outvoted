@@ -19,7 +19,7 @@ public enum ModArmor implements IArmorMaterial {
     }, 0.0F);*/
 
     INFERNO(Outvoted.MOD_ID + ":inferno", 25, new int[]{2, 2, 2, 2}, 0, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
-            0.5F, null, 0.0F);
+            0.5F, () -> Ingredient.EMPTY, 0.0F);
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[]{11, 16, 15, 13};
     private final String name;

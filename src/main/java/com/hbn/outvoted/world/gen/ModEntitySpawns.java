@@ -57,7 +57,7 @@ public class ModEntitySpawns {
             }
         }
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
-            /* Possibly makes modded deep oceans compatible? (If those even exist, and use vanilla values) */
+            // Possibly makes modded deep oceans compatible? (If those even exist, and use vanilla values)
             if (event.getDepth() == -1.8F && !biomename.equals("minecraft:deep_frozen_ocean")) {
                 event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), OutvotedConfig.COMMON.ratekraken.get(), 1, 1));
             }
@@ -70,7 +70,7 @@ public class ModEntitySpawns {
      */
     @SubscribeEvent
     public static void checkMobs(LivingSpawnEvent.CheckSpawn event) {
-        double area = 6.0; // Value for x, y, and z expansion to check for entities; a variable in case it causes lag or something
+        double area = 6.0; // Value for x, y, and z expansion to check for entities
         Entity e = event.getEntity();
         if (OutvotedConfig.COMMON.spawnkraken.get()) {
             if (e instanceof KrakenEntity) {

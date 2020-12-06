@@ -3,6 +3,8 @@ package com.hbn.outvoted.item;
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.InfernoHelmetModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,6 +70,18 @@ public class InfernoHelmetItem extends ArmorItem {
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
         return Collections.singletonList(Outvoted.TAB_COMBAT);
+    }
+
+    /**
+     * Allow or forbid the specific book/item combination as an anvil enchant
+     *
+     * @param stack The item
+     * @param book  The book
+     * @return if the enchantment is allowed
+     */
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.MENDING);
     }
 
     @Override

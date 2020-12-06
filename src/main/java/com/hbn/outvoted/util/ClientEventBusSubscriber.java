@@ -45,7 +45,5 @@ public class ClientEventBusSubscriber {
         EntitySpawnPlacementRegistry.register(ModEntityTypes.KRAKEN.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, KrakenEntity::canSpawn);
 
         ModdedSpawnEggItem.initSpawnEggs();
-
-        //ModCompatibility.initCompat();
     }
 }
