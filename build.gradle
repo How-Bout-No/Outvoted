@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version =  "${mod_version}"
+version =  "${minecraft_version}-${mod_version}"
 group = 'com.hbn.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'outvoted'
 
@@ -89,7 +89,7 @@ jar {
             "Specification-Vendor": "HowBoutNo",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": "${mod_version}",
             "Implementation-Vendor" :"HowBoutNo",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "MixinConfigs": "outvoted.mixins.json"
@@ -121,7 +121,7 @@ processResources {
         include 'META-INF/mods.toml'
 
         // Replace version
-        expand 'version':project.version, 'loader':"${loader_version}"
+        expand 'version':"${mod_version}", 'loader':"${loader_version}"
     }
 
     // Copy everything else except the mods.toml

@@ -1,6 +1,8 @@
 package com.hbn.outvoted.entity;
 
 import com.hbn.outvoted.config.OutvotedConfig;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,13 +20,11 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.World;import net.minecraftforge.fml.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -146,7 +146,12 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     public int variant() {
         if (this.dataManager.get(VARIANT) == 2) {
-            this.dataManager.set(VARIANT, this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:soul_sand_valley") ? 1 : 0);
+            Block block = this.world.getBlockState(new BlockPos(this.getPositionVec().add(0D, -0.1D, 0D))).getBlock();
+            if (block.matchesBlock(Blocks.SOUL_SAND) || block.matchesBlock(Blocks.SOUL_SAND)) {
+                this.dataManager.set(VARIANT, 1);
+            } else {
+                this.dataManager.set(VARIANT, 0);
+            }
         }
         return this.dataManager.get(VARIANT);
     }

@@ -36,7 +36,7 @@ public class OutvotedConfig {
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
             rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
-            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default").define("Biome Variants", false);
+            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it Vanilla").define("Biome Variants", false);
             restrictinferno = builder.comment("Restrict Inferno groups to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
 
             builder.pop();
