@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "outvoted:inferno_shield"
+    ]
+  },
+  "criteria": {
+    "has_inferno_part": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "outvoted:inferno_shield_part"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "outvoted:inferno_shield"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_inferno_part",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,7 +1,7 @@
 package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.InfernoEntity;
+import com.hbn.outvoted.entity.InfernoEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

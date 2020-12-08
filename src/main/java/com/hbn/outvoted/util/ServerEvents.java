@@ -1,6 +1,6 @@
 package com.hbn.outvoted.util;
 
-import com.hbn.outvoted.items.InfernoShieldItem;
+import com.hbn.outvoted.item.InfernoShieldItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
