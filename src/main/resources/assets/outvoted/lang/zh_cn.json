@@ -14,10 +14,16 @@
   "entity.outvoted.hunger": "大胃怪",
   "entity.outvoted.kraken": "克拉肯",
 
-  "itemGroup.modtab": "落选生物",
+  "itemGroup.modTab": "落选生物",
 
   "advancements.outvoted.obtain_inferno_helmet.title": "头脑发热！",
   "advancements.outvoted.obtain_inferno_helmet.description": "获得一个狱火头盔",
   "advancements.outvoted.obtain_inferno_piece.title": "好热！好热！好热！",
-  "advancements.outvoted.obtain_inferno_piece.description": "获得一块狱火盾牌"
+  "advancements.outvoted.obtain_inferno_piece.description": "获得一块狱火盾牌",
+  "advancements.outvoted.rename_hunger.title": "漂浮咒",
+  "advancements.outvoted.rename_hunger.description": "为一只大胃怪改名，并且看着它浮起来！",
+  "advancements.outvoted.use_hunger.title": "垂涎欲滴",
+  "advancements.outvoted.use_hunger.description": "利用大胃怪附魔一件物品",
+  "advancements.outvoted.overenchant_hunger.title": "超越无限！！！",
+  "advancements.outvoted.overenchant_hunger.description": "使一件物品附魔可以超过该附魔属性的最大等级"
 }
