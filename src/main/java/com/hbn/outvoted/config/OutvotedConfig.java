@@ -17,21 +17,27 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.DoubleValue healthinferno;
         public final ForgeConfigSpec.DoubleValue healthhunger;
         public final ForgeConfigSpec.DoubleValue healthkraken;
-        public final ForgeConfigSpec.IntValue rateblaze;
+        public final ForgeConfigSpec.IntValue rateinferno;
         public final ForgeConfigSpec.IntValue ratehunger;
         public final ForgeConfigSpec.IntValue ratekraken;
         public final ForgeConfigSpec.BooleanValue infernovariant;
-        public final ForgeConfigSpec.BooleanValue krakenvariant;
+        //public final ForgeConfigSpec.BooleanValue krakenvariant;
         public final ForgeConfigSpec.BooleanValue restrictinferno;
 
+        /**
+         * Common config setup
+         * Related to both server and client options
+         *
+         * @param builder
+         */
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Hovering Inferno").push("inferno");
 
             spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
-            rateblaze = builder.comment("Spawn weight for the groups of blazes to spawn in the Nether").defineInRange("Blaze Group Spawn Weight", 10, 1, 100);
+            rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
-            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default").define("Biome Variants", false);
-            restrictinferno = builder.comment("Restrict Infernos (and subsequently the Blazes) to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
+            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it Vanilla").define("Biome Variants", false);
+            restrictinferno = builder.comment("Restrict Inferno groups to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");
@@ -47,7 +53,7 @@ public class OutvotedConfig {
             spawnkraken = builder.define("Natural Spawning", true);
             ratekraken = builder.defineInRange("Spawn Weight", 2, 1, 100);
             healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
-            krakenvariant = builder.comment("Slight coloration based on biomes, bluer in colder oceans while yellower in warmer ones").define("Biome Variants", true);
+            //krakenvariant = builder.comment("Slight coloration based on biomes, bluer in colder oceans while yellower in warmer ones").define("Biome Variants", true);
 
             builder.pop();
         }
@@ -65,6 +71,12 @@ public class OutvotedConfig {
     public static class Client {
         public final ForgeConfigSpec.BooleanValue creativetab;
 
+        /**
+         * Client config setup
+         * Just used for the creative tab
+         *
+         * @param builder
+         */
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("General").push("general");
 
@@ -85,10 +97,10 @@ public class OutvotedConfig {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading event) {
-        System.out.println(">> Outvoted Config Loaded");
+        System.out.println(">> Outvoted " + event.getConfig().getType() + " Config Loaded");
     }
 
-    @SubscribeEvent
-    public static void onFileChange(final ModConfig.Reloading event) {
-    }
+//    @SubscribeEvent
+//    public static void onFileChange(final ModConfig.Reloading event) {
+//    }
 }

@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.outvoted.obtain_inferno_piece.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false

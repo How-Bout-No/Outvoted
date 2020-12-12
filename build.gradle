@@ -1,11 +1,16 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
+        maven {url='https://dist.creeper.host/Sponge/maven'}
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -13,21 +18,23 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.3-b0.4.2'
+version =  "${minecraft_version}-${mod_version}"
 group = 'com.hbn.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'outvoted'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println('Mod Version: [' + "${mod_version}" + '] MC Version: [' + "${minecraft_version}" + '] Mappings Version: [' + "${mappings_version}" + '] Loader Version: [' + "${loader_version}" + '] Forge Version: [' + "${forge_version}" + '] Geckolib Version: [' + "${geckolib_version}" + ']')
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: "snapshot", version: "${mappings_version}"
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=outvoted.mixins.json'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -39,6 +46,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=outvoted.mixins.json'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -52,7 +60,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'outvoted', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'outvoted', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
                 outvoted {
                     source sourceSets.main
@@ -64,12 +72,14 @@ minecraft {
 
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
+    maven {url='https://dist.creeper.host/Sponge/maven'}
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.1'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf('software.bernie.geckolib:forge-1.16.4-geckolib:3.0.0-beta.10')
+    implementation fg.deobf("software.bernie.geckolib:forge-${minecraft_version}-geckolib:${geckolib_version}")
+    compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
 }
 
 jar {
@@ -79,26 +89,39 @@ jar {
             "Specification-Vendor": "HowBoutNo",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": "${mod_version}",
             "Implementation-Vendor" :"HowBoutNo",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "outvoted.mixins.json"
         ])
     }
 }
 
 jar.finalizedBy('reobfJar')
 
+buildscript {
+    def updateJsonFile = file('update.json')
+    def updateJson = new JsonSlurper().parse(updateJsonFile) as Map
+
+    // Update promos
+    updateJson.promos."1.16.4-latest" = "${mod_version}"
+    updateJson.promos."1.16.4-recommended" = "${mod_version}"
+    updateJson.promos."1.16.3-latest" = "${mod_version}"
+    updateJson.promos."1.16.3-recommended" = "${mod_version}"
+
+    updateJsonFile.write(JsonOutput.prettyPrint(JsonOutput.toJson(updateJson)))
+}
+
 // Process resources on build
 processResources {
-    // This will ensure that this task is redone when the versions change.
-    inputs.property 'version', project.version
+    outputs.upToDateWhen { false }
 
     // Replace stuff in mods.toml, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'META-INF/mods.toml'
 
         // Replace version
-        expand 'version':project.version
+        expand 'version':"${mod_version}", 'loader':"${loader_version}"
     }
 
     // Copy everything else except the mods.toml
@@ -118,4 +141,10 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+mixin {
+    add sourceSets.main, "outvoted.refmap.json"
 }

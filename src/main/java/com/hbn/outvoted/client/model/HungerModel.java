@@ -1,7 +1,7 @@
 package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.HungerEntity;
+import com.hbn.outvoted.entity.HungerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;

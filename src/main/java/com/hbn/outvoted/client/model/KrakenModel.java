@@ -1,7 +1,7 @@
 package com.hbn.outvoted.client.model;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.entities.KrakenEntity;
+import com.hbn.outvoted.entity.KrakenEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

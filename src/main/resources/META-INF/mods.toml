@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[${loader},)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 
 license="GNU GPLv3"
 
@@ -14,7 +14,7 @@ version="${version}" #mandatory
 
 displayName="Outvoted" #mandatory
 
-#updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
+updateJSONURL="https://raw.githubusercontent.com/How-Bout-No/Outvoted/main/update.json" #optional
 
 displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 

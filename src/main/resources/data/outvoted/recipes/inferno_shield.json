@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:shield"
+  },
+  "addition": {
+    "item": "outvoted:inferno_shield_part"
+  },
+  "result": {
+    "item": "outvoted:inferno_shield"
+  }
+}

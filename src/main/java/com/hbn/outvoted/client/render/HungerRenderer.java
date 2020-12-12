@@ -2,7 +2,7 @@ package com.hbn.outvoted.client.render;
 
 import com.hbn.outvoted.Outvoted;
 import com.hbn.outvoted.client.model.HungerModel;
-import com.hbn.outvoted.entities.HungerEntity;
+import com.hbn.outvoted.entity.HungerEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -26,6 +26,6 @@ public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(HungerEntity entity) {
-        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger" + (entity.variant() == 0 ? "" : "_swamp") + ".png");
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger" + (entity.variant() == 2 ? "_swamp" : "") + (entity.variant() == 1 ? "_red" : "") + ".png");
     }
 }

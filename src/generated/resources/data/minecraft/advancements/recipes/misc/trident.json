@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:trident"
+    ]
+  },
+  "criteria": {
+    "has_tooth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "outvoted:kraken_tooth"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:trident"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tooth",
+      "has_the_recipe"
+    ]
+  ]
+}

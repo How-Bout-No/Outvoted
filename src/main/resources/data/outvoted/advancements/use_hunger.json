@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:story/enchant_item",
+  "display": {
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "title": {
+      "translate": "advancements.outvoted.use_hunger.title"
+    },
+    "description": {
+      "translate": "advancements.outvoted.use_hunger.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "inferno_piece": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "nbt": "{Bitten:{}}"
+          }
+        ]
+      }
+    }
+  }
+}

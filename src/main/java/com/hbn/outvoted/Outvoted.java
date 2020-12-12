@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
 
@@ -37,9 +37,9 @@ public class Outvoted {
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
     }
 
-    private void setup(final FMLLoadCompleteEvent event) {
+    public void setup(final FMLCommonSetupEvent event) {
         if (OutvotedConfig.CLIENT.creativetab.get()) {
-            ItemGroup TAB = new ItemGroup(-1, "modTab") {
+            ItemGroup TAB = new ItemGroup("modtab") {
                 public ItemStack createIcon() {
                     return new ItemStack(ModItems.INFERNO_HELMET.get());
                 }
@@ -51,6 +51,4 @@ public class Outvoted {
             TAB_MISC = ItemGroup.MISC;
         }
     }
-
-
 }
