@@ -37,7 +37,7 @@ public class OutvotedConfig {
             rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
             infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it Vanilla").define("Biome Variants", false);
-            restrictinferno = builder.comment("Restrict Inferno groups to spawn only in Nether Wastes or all biomes").define("Restrict Spawning", true);
+            restrictinferno = builder.comment("Restrict Inferno groups to spawn only in Nether Wastes or not").define("Restrict Spawning", true);
 
             builder.pop();
             builder.comment("Great Hunger").push("hunger");

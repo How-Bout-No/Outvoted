@@ -23,7 +23,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Extends and overrides {@link ShapedRecipeBuilder} to be compatible with config
+ * Extends and overrides {@link ShapedRecipeBuilder} and {@link SmithingRecipeBuilder} to be compatible with creativetab config
+ * Yea, it's a lot just for that
  */
 class ShapedBuilder extends ShapedRecipeBuilder {
     private final Item result;
@@ -113,9 +114,6 @@ class ShapedBuilder extends ShapedRecipeBuilder {
     }
 }
 
-/**
- * Extends and overrides {@link SmithingRecipeBuilder} to be compatible with config
- */
 class SmithingBuilder extends SmithingRecipeBuilder {
     private final Ingredient base;
     private final Ingredient addition;
