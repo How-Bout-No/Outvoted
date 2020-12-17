@@ -33,7 +33,7 @@ public class OutvotedConfig {
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Hovering Inferno").push("inferno");
 
-            spawninferno = builder.comment("This will disable the natural blaze spawns and all inferno spawns (natural + spawner)").define("Natural Spawning", true);
+            spawninferno = builder.comment("This will disable all Inferno spawns (natural + spawner)").define("Natural Spawning", true);
             rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
             infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it Vanilla").define("Biome Variants", false);
@@ -73,7 +73,7 @@ public class OutvotedConfig {
 
         /**
          * Client config setup
-         * Just used for the creative tab
+         * Just used for the creative tab right now
          *
          * @param builder
          */

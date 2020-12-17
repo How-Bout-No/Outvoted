@@ -42,9 +42,6 @@ public class InfernoHelmetItem extends ArmorItem {
         return "outvoted:textures/entity/inferno.png";
     }
 
-    /**
-     * Creates a Turtle Helmet esque Water Breathing effect but with Fire Resistance
-     */
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
         player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1, 0, false, false, true));

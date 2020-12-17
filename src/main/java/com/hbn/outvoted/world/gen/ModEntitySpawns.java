@@ -57,7 +57,7 @@ public class ModEntitySpawns {
 
     /**
      * Checks entities in an area to force limit spawn count
-     * Probably awful practice, but this is a quick and dirty way to force 1 mob
+     * Probably awful practice, but this is a quick and dirty way to force 1 mob in an area
      */
     @SubscribeEvent
     public static void checkMobs(LivingSpawnEvent.CheckSpawn event) {
@@ -86,7 +86,7 @@ public class ModEntitySpawns {
     }
 
     /**
-     * Adds Blazes around Infernos and adds Infernos to Mob Spawners
+     * Adds Blazes to Inferno spawns and adds Infernos to Mob Spawners
      */
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {

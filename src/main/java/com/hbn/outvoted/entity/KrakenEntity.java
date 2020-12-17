@@ -1,6 +1,7 @@
 package com.hbn.outvoted.entity;
 
 import com.hbn.outvoted.config.OutvotedConfig;
+import com.hbn.outvoted.init.ModSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -203,15 +204,15 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return this.isInWaterOrBubbleColumn() ? SoundEvents.ENTITY_GUARDIAN_AMBIENT : SoundEvents.ENTITY_GUARDIAN_AMBIENT_LAND;
+        return ModSounds.KRAKEN_AMBIENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return this.isInWaterOrBubbleColumn() ? SoundEvents.ENTITY_GUARDIAN_HURT : SoundEvents.ENTITY_GUARDIAN_HURT_LAND;
+        return ModSounds.KRAKEN_HIT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return this.isInWaterOrBubbleColumn() ? SoundEvents.ENTITY_GUARDIAN_DEATH : SoundEvents.ENTITY_GUARDIAN_DEATH_LAND;
+        return ModSounds.KRAKEN_DEATH.get();
     }
 
     protected boolean canTriggerWalking() {

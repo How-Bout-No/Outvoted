@@ -299,14 +299,10 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
             }
 
-            if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
+            if (itemstack.getItem() == Items.ENCHANTED_BOOK || map.size() == 0) {
                 itemstack = ItemStack.EMPTY;
             } else if (itemstack.getItem() == Items.BOOK) {
                 itemstack = new ItemStack(Items.ENCHANTED_BOOK);
-            }
-
-            if (map.size() == 0) {
-                itemstack = ItemStack.EMPTY;
             }
 
             if (itemstack != ItemStack.EMPTY) {

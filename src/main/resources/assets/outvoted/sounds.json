@@ -1,0 +1,32 @@
+{
+  "kraken_ambient": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "outvoted:entity/kraken1"
+      },
+      {
+        "name": "outvoted:entity/kraken2"
+      },
+      {
+        "name": "outvoted:entity/kraken3"
+      }
+    ]
+  },
+  "kraken_hit": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "outvoted:entity/kraken_hit"
+      }
+    ]
+  },
+  "kraken_death": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "outvoted:entity/kraken_death"
+      }
+    ]
+  }
+}

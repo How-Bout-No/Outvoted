@@ -4,6 +4,7 @@ import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.init.ModEntityTypes;
 import com.hbn.outvoted.init.ModItems;
 import com.hbn.outvoted.init.ModRecipes;
+import com.hbn.outvoted.init.ModSounds;
 import com.hbn.outvoted.util.ServerEvents;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ public class Outvoted {
         ModItems.ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
+        ModSounds.SOUNDS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
     }
