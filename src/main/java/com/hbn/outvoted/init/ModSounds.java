@@ -1,11 +1,6 @@
 package com.hbn.outvoted.init;
 
 import com.hbn.outvoted.Outvoted;
-import com.hbn.outvoted.item.InfernoHelmetItem;
-import com.hbn.outvoted.item.InfernoShieldItem;
-import com.hbn.outvoted.item.ModItem;
-import com.hbn.outvoted.item.ModdedSpawnEggItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -22,4 +17,11 @@ public class ModSounds {
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "kraken_hit")));
     public static final RegistryObject<SoundEvent> KRAKEN_DEATH = SOUNDS.register("kraken_death",
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "kraken_death")));
+
+    public static final RegistryObject<SoundEvent> HUNGER_AMBIENT = SOUNDS.register("hunger_ambient",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_ambient")));
+    public static final RegistryObject<SoundEvent> HUNGER_HIT = SOUNDS.register("hunger_hit",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_hit")));
+    public static final RegistryObject<SoundEvent> HUNGER_DEATH = SOUNDS.register("hunger_death",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_death")));
 }

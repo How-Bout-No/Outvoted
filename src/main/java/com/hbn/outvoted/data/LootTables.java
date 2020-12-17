@@ -86,7 +86,7 @@ public class LootTables extends LootTableProvider {
                     .addLootPool(LootPool.builder()
                             .rolls(ConstantRange.of(1))
                             .addEntry(ItemLootEntry.builder(ModItems.VOID_HEART.get())
-                                    .acceptCondition(RandomChanceWithLooting.builder(0.2F, 0.05F))
+                                    .acceptCondition(RandomChanceWithLooting.builder(0.1F, 0.05F))
                                     .acceptCondition(KilledByPlayer.builder())))
             );
 

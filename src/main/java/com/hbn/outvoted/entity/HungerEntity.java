@@ -1,6 +1,7 @@
 package com.hbn.outvoted.entity;
 
 import com.hbn.outvoted.config.OutvotedConfig;
+import com.hbn.outvoted.init.ModSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.*;
@@ -89,6 +90,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
+        System.out.println(event.sound);
         if (event.sound.equals("chomp")) {
             world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.HOSTILE, 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
@@ -152,15 +154,15 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_SILVERFISH_AMBIENT;
+        return ModSounds.HUNGER_AMBIENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_SILVERFISH_HURT;
+        return ModSounds.HUNGER_HIT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_SILVERFISH_DEATH;
+        return ModSounds.HUNGER_DEATH.get();
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {

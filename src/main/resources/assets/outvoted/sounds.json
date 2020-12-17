@@ -28,5 +28,41 @@
         "name": "outvoted:entity/kraken_death"
       }
     ]
+  },
+  "hunger_ambient": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger"
+      }
+    ]
+  },
+  "hunger_hit": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger_hit1"
+      },
+      {
+        "name": "outvoted:entity/hunger_hit2"
+      },
+      {
+        "name": "outvoted:entity/hunger_hit3"
+      }
+    ]
+  },
+  "hunger_death": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger_death1"
+      },
+      {
+        "name": "outvoted:entity/hunger_death2"
+      },
+      {
+        "name": "outvoted:entity/hunger_death3"
+      }
+    ]
   }
 }
