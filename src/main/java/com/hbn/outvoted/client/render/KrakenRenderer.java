@@ -26,13 +26,6 @@ public class KrakenRenderer extends GeoEntityRenderer<KrakenEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(KrakenEntity entity) {
-        /*if (OutvotedConfig.COMMON.krakenvariant.get()) {
-            if (entity.variant() == 1) {
-                return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken_warm.png");
-            } else if (entity.variant() == 2) {
-                return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken_cold.png");
-            }
-        }*/
         return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken.png");
     }
 }
