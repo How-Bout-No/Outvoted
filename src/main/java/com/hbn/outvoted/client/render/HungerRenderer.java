@@ -23,7 +23,6 @@ public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
     private static final ResourceLocation RED_SAND = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_red.png");
     private static final ResourceLocation SWAMP = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_swamp.png");
 
-
     @Override
     public RenderType getRenderType(HungerEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
@@ -31,13 +30,12 @@ public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(HungerEntity entity) {
-        switch (entity.getVariant()) {
-            case 1:
-                return RED_SAND;
-            case 2:
-                return SWAMP;
-            default:
-                return SAND;
+        if (entity.getVariant() == 1) {
+            return RED_SAND;
+        } else if (entity.getVariant() == 2) {
+            return SWAMP;
+        } else {
+            return SAND;
         }
     }
 }

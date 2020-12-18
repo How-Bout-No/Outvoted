@@ -18,17 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(BlazeRenderer.class)
 public class MixinBlazeRenderer {
-    private int variant = 1;
 
     @Inject(method = "getEntityTexture", at = @At("RETURN"), cancellable = true)
     private void soulTextures(BlazeEntity entity, CallbackInfoReturnable<ResourceLocation> cir) {
         if (!OutvotedConfig.COMMON.infernovariant.get()) return;
         Block block = entity.world.getBlockState(new BlockPos(entity.getPositionVec().add(0D, -0.1D, 0D))).getBlock();
-        if (this.variant == 1) {
-            if (block.matchesBlock(Blocks.SOUL_SAND) || block.matchesBlock(Blocks.SOUL_SOIL)) {
-                this.variant = 0;
-                cir.setReturnValue(new ResourceLocation(Outvoted.MOD_ID, "textures/entity/soul_blaze.png"));
-            }
+        if (block.matchesBlock(Blocks.SOUL_SAND) || block.matchesBlock(Blocks.SOUL_SOIL)) {
+            cir.setReturnValue(new ResourceLocation(Outvoted.MOD_ID, "textures/entity/soul_blaze.png"));
         }
     }
 }
