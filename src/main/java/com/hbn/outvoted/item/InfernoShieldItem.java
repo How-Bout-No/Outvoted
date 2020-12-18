@@ -13,8 +13,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.Callable;
 
 public class InfernoShieldItem extends ShieldItem {
@@ -35,7 +35,10 @@ public class InfernoShieldItem extends ShieldItem {
 
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
-        return Collections.singletonList(Outvoted.TAB_COMBAT);
+        Collection<ItemGroup> groups = new ArrayList<>();
+        groups.add(Outvoted.TAB_COMBAT);
+        groups.add(ItemGroup.SEARCH);
+        return groups;
     }
 
     @Override

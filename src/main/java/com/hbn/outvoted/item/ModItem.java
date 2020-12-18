@@ -8,8 +8,8 @@ import com.hbn.outvoted.Outvoted;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 public class ModItem extends Item {
 
@@ -19,6 +19,9 @@ public class ModItem extends Item {
 
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
-        return Collections.singletonList(Outvoted.TAB_MISC);
+        Collection<ItemGroup> groups = new ArrayList<>();
+        groups.add(Outvoted.TAB_MISC);
+        groups.add(ItemGroup.SEARCH);
+        return groups;
     }
 }

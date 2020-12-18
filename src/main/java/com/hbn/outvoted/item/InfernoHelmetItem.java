@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 public class InfernoHelmetItem extends ArmorItem {
     private int timer = 0;
@@ -66,7 +66,10 @@ public class InfernoHelmetItem extends ArmorItem {
 
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
-        return Collections.singletonList(Outvoted.TAB_COMBAT);
+        Collection<ItemGroup> groups = new ArrayList<>();
+        groups.add(Outvoted.TAB_COMBAT);
+        groups.add(ItemGroup.SEARCH);
+        return groups;
     }
 
     /**

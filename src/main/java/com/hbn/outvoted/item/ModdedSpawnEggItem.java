@@ -15,7 +15,10 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class ModdedSpawnEggItem extends SpawnEggItem {
     protected static final List<ModdedSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
@@ -52,7 +55,10 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
 
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
-        return Collections.singletonList(Outvoted.TAB_MISC);
+        Collection<ItemGroup> groups = new ArrayList<>();
+        groups.add(Outvoted.TAB_MISC);
+        groups.add(ItemGroup.SEARCH);
+        return groups;
     }
 
     @Override
