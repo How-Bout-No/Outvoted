@@ -21,6 +21,9 @@ public class InfernoRenderer extends GeoEntityRenderer<InfernoEntity> {
         super(renderManager, new InfernoModel());
     }
 
+    private static final ResourceLocation NETHER = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno.png");
+    private static final ResourceLocation SOUL = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno_soul.png");
+
     @Override
     public RenderType getRenderType(InfernoEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
@@ -33,6 +36,10 @@ public class InfernoRenderer extends GeoEntityRenderer<InfernoEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(InfernoEntity entity) {
-        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno" + ((entity.variant() == 0 || !OutvotedConfig.COMMON.infernovariant.get()) ? "" : "_soul") + ".png");
+        if (entity.getVariant() == 0 || !OutvotedConfig.COMMON.infernovariant.get()) {
+            return NETHER;
+        } else {
+            return SOUL;
+        }
     }
 }
