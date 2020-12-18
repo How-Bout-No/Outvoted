@@ -13,23 +13,21 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.BookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.IPacket;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -40,6 +38,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -57,15 +56,15 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
-        if (this.burrowed()) {
-            if (this.enchanting()) {
+        if (this.getBurrowed()) {
+            if (this.getEnchanting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite2").addAnimation("animation.great_hunger.bite2loop", true));
             } else {
                 if (event.getController().getCurrentAnimation() != null) {
                     if (animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking") || animname.equals("animation.great_hunger.bite") || animname.equals("animation.great_hunger.burrow")) {
                         event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
                     } else {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow2"));
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow2", true));
                     }
                 } else {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
@@ -73,13 +72,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             }
         } else {
             if (event.getController().getCurrentAnimation() == null || animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking")) {
-                if (this.attacking()) {
+                if (this.getAttacking()) {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.attacking"));
                 } else {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.idle"));
                 }
             } else {
-                if (this.attacking()) {
+                if (this.getAttacking()) {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.attacking"));
                 } else {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.idle"));
@@ -90,7 +89,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
-        System.out.println(event.sound);
         if (event.sound.equals("chomp")) {
             world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.HOSTILE, 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
@@ -131,10 +129,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.experienceValue = 5;
     }
 
-
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
         return CreatureEntity.registerAttributes()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 15.0D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 19.0D)
                 .createMutableAttribute(Attributes.ATTACK_KNOCKBACK)
                 .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthhunger.get())
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
@@ -144,9 +141,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new HungerEntity.BiteGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(4, new HungerEntity.BurrowGoal(this));
-        this.goalSelector.addGoal(3, new HungerEntity.FindSpotGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, true));
+        this.goalSelector.addGoal(3, new HungerEntity.BurrowGoal(this));
+        this.goalSelector.addGoal(4, new HungerEntity.FindSpotGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true));
     }
 
     public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
@@ -169,9 +166,31 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
     }
 
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("Variant", this.getVariant());
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setVariant(compound.getInt("Variant"));
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        int type;
+        if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.SAND)) {
+            type = 0;
+        } else if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.RED_SAND)) {
+            type = 1;
+        } else {
+            type = 2;
+        }
+        this.setVariant(type);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Override
@@ -180,43 +199,38 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.dataManager.register(BURROWED, Boolean.FALSE);
         this.dataManager.register(ATTACKING, Boolean.FALSE);
         this.dataManager.register(ENCHANTING, Boolean.FALSE);
-        this.dataManager.register(VARIANT, 3);
+        this.dataManager.register(VARIANT, 0);
     }
 
-    public void burrowed(boolean burrowed) {
+    public void setBurrowed(boolean burrowed) {
         this.dataManager.set(BURROWED, burrowed);
     }
 
-    public boolean burrowed() {
+    public boolean getBurrowed() {
         return this.dataManager.get(BURROWED);
     }
 
-    public void attacking(boolean attacking) {
+    public void setAttacking(boolean attacking) {
         this.dataManager.set(ATTACKING, attacking);
     }
 
-    public boolean attacking() {
+    public boolean getAttacking() {
         return this.dataManager.get(ATTACKING);
     }
 
-    public void enchanting(boolean enchanting) {
+    public void setEnchanting(boolean enchanting) {
         this.dataManager.set(ENCHANTING, enchanting);
     }
 
-    public boolean enchanting() {
+    public boolean getEnchanting() {
         return this.dataManager.get(ENCHANTING);
     }
 
-    public int variant() {
-        if (this.dataManager.get(VARIANT) == 3) {
-            if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.SAND)) {
-                this.dataManager.set(VARIANT, 0);
-            } else if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.RED_SAND)) {
-                this.dataManager.set(VARIANT, 1);
-            } else {
-                this.dataManager.set(VARIANT, 2);
-            }
-        }
+    public void setVariant(int type) {
+        this.dataManager.set(VARIANT, type);
+    }
+
+    public int getVariant() {
         return this.dataManager.get(VARIANT);
     }
 
@@ -230,12 +244,21 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         } else {
             itemstack.removeChildTag("Damage");
         }
-        if (storedEnchants.size() <= OutvotedConfig.COMMON.max_enchants.get()) {
+        if (storedEnchants.size() <= OutvotedConfig.COMMON.max_enchants.get() && hasEnchantibility(stack)) {
             itemstack.setCount(count);
             Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((enchant) -> {
                 return !enchant.getKey().isCurse();
                 //return true;
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+            Map<Enchantment, Integer> curses = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((enchant) -> {
+                return enchant.getKey().isCurse();
+                //return true;
+            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            System.out.println(curses);
+            System.out.println(curses.size());
+            System.out.println(curses.isEmpty());
+            if (!curses.isEmpty()) this.addPotionEffect(new EffectInstance(Effects.WITHER, 600));
 
             if (!map.isEmpty()) {
                 for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
@@ -324,13 +347,22 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     /**
+     * Returns whether this Entity is invulnerable to the given DamageSource.
+     *
+     * @param source
+     */
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return super.isInvulnerableTo(source) && !source.damageType.equals("wither") && !source.isMagicDamage() && !source.isExplosion();
+    }
+
+    /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     public void livingTick() {
         if (this.isAlive()) {
-            this.setInvulnerable(this.burrowed());
-            this.setSilent(this.burrowed());
+            this.setInvulnerable(this.getBurrowed());
         }
 
         super.livingTick();
@@ -349,19 +381,14 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public boolean shouldExecute() {
-            boolean exec = super.shouldExecute();
-            LivingEntity livingentity = this.hunger.getAttackTarget();
-            if (livingentity != null && livingentity.isAlive() && this.hunger.canAttack(livingentity) && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL) {
-                this.hunger.attacking(!this.hunger.enchanting() && !this.hunger.burrowed());
-                return !this.hunger.enchanting() && !this.hunger.burrowed() && exec;
-            } else {
-                this.hunger.attacking(false);
-                return false;
-            }
+            boolean exec = super.shouldExecute() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.getBurrowed();
+            this.hunger.setAttacking(exec);
+            return exec;
         }
     }
 
     public boolean isSuitable(HungerEntity entityIn) {
+        if (this.getActivePotionEffect(Effects.WITHER) != null) return false;
         World world = entityIn.world;
         double posX = entityIn.getPosX();
         double posY = entityIn.getPosY();
@@ -396,32 +423,21 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public boolean shouldExecute() {
-            if (!this.mustUpdate) {
-                if (this.creature.getIdleTime() >= 100) {
-                    return false;
-                }
-
-                if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
-                    return false;
-                }
-            }
-
-            Vector3d vector3d = this.getPosition();
-            if (vector3d == null) {
-                return false;
-            } else if (!this.hunger.burrowed() && !this.hunger.isSuitable(this.hunger)) {
-                this.x = vector3d.x;
-                this.y = vector3d.y;
-                this.z = vector3d.z;
-                this.mustUpdate = false;
-                return true;
-            }
-            return super.shouldExecute();
+            return super.shouldExecute() && !this.hunger.getBurrowed() && !this.hunger.isSuitable(this.hunger);
         }
 
         public boolean shouldContinueExecuting() {
-            return !this.hunger.burrowed() && !this.hunger.isSuitable(this.hunger) && !this.hunger.getNavigator().noPath() && !this.hunger.isBeingRidden();
+            return super.shouldContinueExecuting() && !this.hunger.getBurrowed() && !this.hunger.isSuitable(this.hunger);
         }
+
+        public void tick() {
+            if (this.hunger.getBurrowed() || this.hunger.isSuitable(this.hunger))
+                this.creature.getNavigator().clearPath();
+        }
+    }
+
+    private static boolean hasEnchantibility(ItemStack itemStack) {
+        return itemStack.isEnchantable() || itemStack.isEnchanted();
     }
 
     static class BurrowGoal extends Goal {
@@ -436,7 +452,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
         public void resetTask() {
             this.tick = 0;
-            this.hunger.burrowed(false);
+            this.hunger.setBurrowed(false);
         }
 
         /**
@@ -444,14 +460,14 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
          * method as well.
          */
         public boolean shouldExecute() {
-            return !this.hunger.attacking() && this.hunger.isSuitable(this.hunger);
+            return !this.hunger.getAttacking() && this.hunger.isSuitable(this.hunger);
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean shouldContinueExecuting() {
-            return !this.hunger.attacking() && this.hunger.isSuitable(this.hunger);
+            return !this.hunger.getAttacking() && this.hunger.isSuitable(this.hunger);
         }
 
         /**
@@ -468,41 +484,48 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                         if (entity instanceof ItemEntity) {
                             ItemStack item = ((ItemEntity) entity).getItem();
                             if (item.getTag() != null) {
-                                if (!this.hunger.enchanting()) {
+                                if (!this.hunger.getEnchanting()) {
                                     if (!item.getTag().contains("Bitten")) {
                                         this.cacheitem = item.copy();
                                         this.cacheentity = entity;
                                         this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
                                         entity.remove();
-                                        this.hunger.enchanting(true);
+                                        this.hunger.setEnchanting(true);
                                     }
-                                    this.hunger.burrowed(suitable);
+                                    this.hunger.setBurrowed(suitable);
                                 }
                             } else if (item.getItem() instanceof BookItem) {
-                                if (!this.hunger.enchanting()) {
+                                if (!this.hunger.getEnchanting()) {
                                     this.cacheitem = item.copy();
                                     this.cacheentity = entity;
                                     this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
                                     entity.remove();
-                                    this.hunger.enchanting(true);
-                                    this.hunger.burrowed(suitable);
+                                    this.hunger.setEnchanting(true);
+                                    this.hunger.setBurrowed(suitable);
                                 }
                             } else {
-                                this.hunger.burrowed(suitable);
+                                if (!this.hunger.getEnchanting()) {
+                                    this.cacheitem = item.copy();
+                                    this.cacheentity = entity;
+                                    this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
+                                    entity.remove();
+                                    this.hunger.setEnchanting(true);
+                                }
+                                this.hunger.setBurrowed(suitable);
                             }
-                        } else if (entity instanceof LivingEntity && !this.hunger.enchanting()) {
+                        } else if (entity instanceof LivingEntity && !this.hunger.getEnchanting()) {
                             if (entity.isAlive() && this.hunger.canAttack((LivingEntity) entity)) {
-                                if (!this.hunger.enchanting()) {
-                                    this.hunger.burrowed(false);
-                                    this.hunger.attacking(true);
-                                    this.hunger.enchanting(false);
+                                if (!this.hunger.getEnchanting()) {
+                                    this.hunger.setBurrowed(false);
+                                    this.hunger.setAttacking(true);
+                                    this.hunger.setEnchanting(false);
                                 }
                             }
                         } else {
-                            this.hunger.burrowed(suitable);
+                            this.hunger.setBurrowed(suitable);
                         }
                     } else {
-                        this.hunger.burrowed(suitable);
+                        this.hunger.setBurrowed(suitable);
                     }
                 }
             }
@@ -520,19 +543,18 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                         this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
                         noench.getOrCreateChildTag("Bitten");
                         this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
-                    } else {
+                    } else if (hasEnchantibility(cacheitem)) {
                         this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
                     }
                     this.cacheitem = ItemStack.EMPTY;
                     this.tick = 0;
                 }
-                this.hunger.burrowed(true);
-                this.hunger.enchanting(true);
+                this.hunger.setBurrowed(true);
+                this.hunger.setEnchanting(true);
             } else {
-                this.hunger.burrowed(suitable);
-                this.hunger.enchanting(false);
+                this.hunger.setBurrowed(suitable);
+                this.hunger.setEnchanting(false);
             }
-            super.tick();
         }
     }
 }
