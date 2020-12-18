@@ -1,20 +1,17 @@
 package com.hbn.outvoted.util;
 
-import com.google.common.collect.Lists;
 import com.hbn.outvoted.init.ModItems;
 import com.hbn.outvoted.init.ModRecipes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.TieredItem;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +24,7 @@ public class RepairCostRecipe extends SpecialRecipe {
      * Check matching items in crafting grid
      */
     public boolean matches(CraftingInventory inv, World worldIn) {
-        List<ItemStack> list = Lists.newArrayList();
+        List<ItemStack> list = new ArrayList<>();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
@@ -35,7 +32,7 @@ public class RepairCostRecipe extends SpecialRecipe {
                 list.add(itemstack);
                 if (list.size() > 1) {
                     ItemStack itemstack1 = list.get(0);
-                    if ((!(itemstack.getItem() == ModItems.VOID_HEART.get()) && !(itemstack1.getItem() == ModItems.VOID_HEART.get())) || ((!(itemstack.getItem() instanceof TieredItem) && !(itemstack.getItem() instanceof ArmorItem)) && (!(itemstack1.getItem() instanceof TieredItem) && !(itemstack1.getItem() instanceof ArmorItem)))) {
+                    if ((itemstack.getItem() != ModItems.VOID_HEART.get() && itemstack1.getItem() != ModItems.VOID_HEART.get()) || (!hasEnchantibility(itemstack) && !hasEnchantibility(itemstack1))) {
                         return false;
                     }
                 }
@@ -49,7 +46,7 @@ public class RepairCostRecipe extends SpecialRecipe {
      * Returns an Item that is the result of this recipe
      */
     public ItemStack getCraftingResult(CraftingInventory inv) {
-        List<ItemStack> list = Lists.newArrayList();
+        List<ItemStack> list = new ArrayList<>();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
@@ -57,7 +54,7 @@ public class RepairCostRecipe extends SpecialRecipe {
                 list.add(itemstack);
                 if (list.size() > 1) {
                     ItemStack itemstack1 = list.get(0);
-                    if ((!(itemstack.getItem() == ModItems.VOID_HEART.get()) && !(itemstack1.getItem() == ModItems.VOID_HEART.get())) || ((!(itemstack.getItem() instanceof TieredItem) && !(itemstack.getItem() instanceof ArmorItem)) && (!(itemstack1.getItem() instanceof TieredItem) && !(itemstack1.getItem() instanceof ArmorItem)))) {
+                    if ((itemstack.getItem() != ModItems.VOID_HEART.get() && itemstack1.getItem() != ModItems.VOID_HEART.get()) || (!hasEnchantibility(itemstack) && !hasEnchantibility(itemstack1))) {
                         return ItemStack.EMPTY;
                     }
                 }
@@ -67,19 +64,15 @@ public class RepairCostRecipe extends SpecialRecipe {
         if (list.size() == 2) {
             ItemStack itemstack3 = list.get(0);
             ItemStack itemstack4 = list.get(1);
-            if ((itemstack3.getItem() == ModItems.VOID_HEART.get() || itemstack4.getItem() == ModItems.VOID_HEART.get()) && ((itemstack3.getItem() instanceof TieredItem || itemstack3.getItem() instanceof ArmorItem) || (itemstack4.getItem() instanceof TieredItem || itemstack4.getItem() instanceof ArmorItem))) {
-                Item item;
+            if ((itemstack3.getItem() == ModItems.VOID_HEART.get() || itemstack4.getItem() == ModItems.VOID_HEART.get()) && (hasEnchantibility(itemstack3) || hasEnchantibility(itemstack4))) {
+                ItemStack item;
                 Map<Enchantment, Integer> map;
-                if (itemstack3.getItem() instanceof TieredItem || itemstack3.getItem() instanceof ArmorItem) {
-                    item = itemstack3.getItem();
-                    map = EnchantmentHelper.getEnchantments(itemstack3);
-                } else {
-                    item = itemstack4.getItem();
-                    map = EnchantmentHelper.getEnchantments(itemstack4);
-                }
+                item = hasEnchantibility(itemstack3) ? itemstack3 : itemstack4;
+                map = EnchantmentHelper.getEnchantments(item);
 
-                ItemStack itemstack2 = new ItemStack(item);
+                ItemStack itemstack2 = new ItemStack(item.getItem());
                 itemstack2.setRepairCost(0);
+                itemstack2.setDamage(item.getDamage());
                 EnchantmentHelper.setEnchantments(map, itemstack2);
 
                 return itemstack2;
@@ -87,6 +80,10 @@ public class RepairCostRecipe extends SpecialRecipe {
         }
 
         return ItemStack.EMPTY;
+    }
+
+    private boolean hasEnchantibility(ItemStack itemStack) {
+        return itemStack.isEnchantable() || itemStack.isEnchanted();
     }
 
     /**
