@@ -255,9 +255,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 return enchant.getKey().isCurse();
                 //return true;
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            System.out.println(curses);
-            System.out.println(curses.size());
-            System.out.println(curses.isEmpty());
+
             if (!curses.isEmpty()) this.addPotionEffect(new EffectInstance(Effects.WITHER, 600));
 
             if (!map.isEmpty()) {

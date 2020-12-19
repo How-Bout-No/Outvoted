@@ -4,6 +4,8 @@
         "1.16.4-latest": "b0.4.4",
         "1.16.4-recommended": "b0.4.4",
         "1.16.3-latest": "b0.4.4",
-        "1.16.3-recommended": "b0.4.4"
+        "1.16.3-recommended": "b0.4.4",
+        "1.15.2-latest": "b0.4.4",
+        "1.15.2-recommended": "b0.4.4"
     }
 }
