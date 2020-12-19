@@ -33,7 +33,8 @@
     "category": "hostile",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger"
+        "name": "outvoted:entity/hunger",
+        "volume": 0.5
       }
     ]
   },
@@ -41,13 +42,16 @@
     "category": "hostile",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger_hit1"
+        "name": "outvoted:entity/hunger_hit1",
+        "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_hit2"
+        "name": "outvoted:entity/hunger_hit2",
+        "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_hit3"
+        "name": "outvoted:entity/hunger_hit3",
+        "volume": 0.5
       }
     ]
   },
@@ -55,13 +59,16 @@
     "category": "hostile",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger_death1"
+        "name": "outvoted:entity/hunger_death1",
+        "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_death2"
+        "name": "outvoted:entity/hunger_death2",
+        "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_death3"
+        "name": "outvoted:entity/hunger_death3",
+        "volume": 0.5
       }
     ]
   }
