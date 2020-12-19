@@ -475,7 +475,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                             if (livingentity.getActivePotionEffect(Effects.WATER_BREATHING) != null) {
                                 livingentity.attackEntityFrom(DamageSource.DROWN, f);
                             }
-                            if (livingentity.getAir() >= 0) {
+                            if (livingentity.getAir() - 45 >= 0) {
                                 livingentity.setAir(livingentity.getAir() - 45);
                             }
                         }
