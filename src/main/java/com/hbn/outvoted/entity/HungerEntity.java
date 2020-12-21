@@ -2,12 +2,11 @@ package com.hbn.outvoted.entity;
 
 import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.init.ModSounds;
+import com.hbn.outvoted.init.ModTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.command.arguments.NBTCompoundTagArgument;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -26,7 +25,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import org.apache.commons.lang3.tuple.MutablePair;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -193,9 +191,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         int type;
-        if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.SAND)) {
+        if (this.world.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.SAND)) {
             type = 0;
-        } else if (this.world.getBlockState(this.getPosition().down()).getBlock().matchesBlock(Blocks.RED_SAND)) {
+        } else if (this.world.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.RED_SAND)) {
             type = 1;
         } else {
             type = 2;
@@ -405,7 +403,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             if (ret) {
                 for (double l = posZ - 1; l <= posZ + 1; ++l) {
                     BlockState block = world.getBlockState(new BlockPos(k, posY - 1, l));
-                    if (block.isIn(BlockTags.BAMBOO_PLANTABLE_ON) && !entityIn.isInWater()) {
+                    if (block.isIn(ModTags.HUNGER_CAN_BURROW) && !entityIn.isInWater()) {
                         if (ret) {
                             ret = !entityIn.getLeashed();
                         }
@@ -441,11 +439,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             if (this.hunger.isBurrowed() || this.hunger.isSuitable(this.hunger))
                 this.creature.getNavigator().clearPath();
         }
-    }
-
-    private static Vector3d returnVector(HungerEntity entity) {
-        Vector3d vector3d = RandomPositionGenerator.getLandPos(entity, 4, 2);
-        return vector3d == null ? entity.getPositionVec() : vector3d;
     }
 
     static class BurrowGoal extends Goal {
@@ -524,14 +517,12 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                     } else if (pair.getLeft() == 1) {
                         this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), ModSounds.HUNGER_SPIT.get(), this.hunger.getSoundCategory(), 0.8F, 0.8F);
                         ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), cacheitem);
-                        newitem.setMotion(newitem.getMotion().add(newitem.getMotion().x, 0.0D, newitem.getMotion().z));
                         newitem.setThrowerId(this.hunger.getUniqueID());
                         this.hunger.world.addEntity(newitem);
                     } else {
                         this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
                         item.getOrCreateTag().putInt("Bitten", 1);
                         ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), item);
-                        newitem.setMotion(newitem.getMotion().add(newitem.getMotion().x, 0.0D, newitem.getMotion().z));
                         newitem.setThrowerId(this.hunger.getUniqueID());
                         this.hunger.world.addEntity(newitem);
                     }
