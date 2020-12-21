@@ -37,13 +37,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Random;
+import java.util.*;
 
 public class KrakenEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Integer> ATTACKING = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(KrakenEntity.class, DataSerializers.VARINT);
     private LivingEntity targetedEntity;
+    private static Map<Integer, UUID> targetedEntities = new HashMap<>();
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
     protected RandomWalkingGoal wander;
@@ -220,11 +220,27 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     }
 
     /**
+     * Called when the mob's health reaches 0.
+     *
+     * @param cause
+     */
+    @Override
+    public void onDeath(DamageSource cause) {
+        targetedEntities.remove(this.dataManager.get(TARGET_ENTITY));
+        super.onDeath(cause);
+    }
+
+    /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
+    int tick = 0;
     public void livingTick() {
         super.livingTick();
+        if (++tick >= 40) {
+            System.out.println(this.getUniqueID() + " : " + targetedEntities);
+            tick = 0;
+        }
         if (this.isAlive()) {
             if (this.world.isRemote) {
                 if (!this.isInWater()) {
@@ -347,7 +363,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         if (livingentity.getRidingEntity() != null) {
             return livingentity.getRidingEntity().isInWater();
         } else {
-            return livingentity.isInWater() && livingentity.getActivePotionEffect(Effects.DOLPHINS_GRACE) == null;
+            return livingentity.isInWater() && livingentity.getActivePotionEffect(Effects.DOLPHINS_GRACE) == null && (targetedEntities.get(livingentity.getEntityId()) == null || targetedEntities.get(livingentity.getEntityId()) == this.getUniqueID());
         }
     }
 
@@ -422,7 +438,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldContinueExecuting() {
             if (this.entity.getAttackTarget() != null) {
-                return super.shouldContinueExecuting() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D && this.entity.getAttackTarget().getActivePotionEffect(Effects.DOLPHINS_GRACE) == null;
+                return super.shouldContinueExecuting() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D && this.entity.getAttackTarget().getActivePotionEffect(Effects.DOLPHINS_GRACE) == null && this.entity.waterCheck(this.entity.getAttackTarget());
             } else {
                 return false;
             }
@@ -442,6 +458,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void resetTask() {
+            targetedEntities.remove(this.entity.dataManager.get(TARGET_ENTITY));
             this.entity.setTargetedEntity(0);
             this.entity.setAttackTarget(null);
             this.entity.wander.makeUpdate();
@@ -463,6 +480,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                     this.entity.setAttacking(1);
                     if (this.tickCounter == 0) {
                         this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
+                        targetedEntities.put(livingentity.getEntityId(), this.entity.getUniqueID());
                     } else if (this.tickCounter >= this.entity.getAttackDuration()) {
                         float f = 2.0F;
                         if (this.entity.world.getDifficulty() == Difficulty.HARD) {

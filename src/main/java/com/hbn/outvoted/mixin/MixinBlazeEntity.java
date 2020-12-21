@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
 @Mixin(BlazeEntity.class)
 public abstract class MixinBlazeEntity extends MonsterEntity implements IMixinBlazeEntity {
 
-    public MixinBlazeEntity(EntityType<? extends BlazeEntity> type, World world) {
-        super(type, world);
+    protected MixinBlazeEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+        super(type, worldIn);
     }
 
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(BlazeEntity.class, DataSerializers.VARINT);
@@ -66,7 +66,5 @@ public abstract class MixinBlazeEntity extends MonsterEntity implements IMixinBl
     }
 
     @Inject(method = "registerData", at = @At("TAIL"))
-    protected void registerVariant(CallbackInfo info) {
-        this.dataManager.register(VARIANT, 0);
-    }
+    protected void registerVariant(CallbackInfo info) { this.dataManager.register(VARIANT, 0); }
 }
