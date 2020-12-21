@@ -91,7 +91,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         this.wander = new RandomWalkingGoal(this, 1.0D, 80);
         this.goalSelector.addGoal(3, new KrakenEntity.AttackGoal(this));
         this.goalSelector.addGoal(4, new KrakenEntity.ChaseGoal(this, 6.0D, 48.0F));
-        this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
+        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, KrakenEntity.class, 72.0F, 4.0D, 4.0D));
+        this.goalSelector.addGoal(6, movetowardsrestrictiongoal);
         this.goalSelector.addGoal(7, this.wander);
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
@@ -234,13 +235,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    int tick = 0;
     public void livingTick() {
         super.livingTick();
-        if (++tick >= 40) {
-            System.out.println(this.getUniqueID() + " : " + targetedEntities);
-            tick = 0;
-        }
         if (this.isAlive()) {
             if (this.world.isRemote) {
                 if (!this.isInWater()) {
@@ -377,8 +373,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             this.speed = speedIn;
         }
 
-        public void resetTask() {
-        }
+        public void resetTask() { }
 
         /**
          * Execute a one shot task or start executing a continuous task
@@ -404,8 +399,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             }
         }
 
-        public void startExecuting() {
-        }
+        public void startExecuting() {}
 
         public void tick() {
             LivingEntity livingentity = this.entity.getAttackTarget();
@@ -430,7 +424,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldExecute() {
             LivingEntity livingentity = this.entity.getAttackTarget();
-            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 75.0D;
+            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D;
         }
 
         /**
@@ -438,7 +432,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
          */
         public boolean shouldContinueExecuting() {
             if (this.entity.getAttackTarget() != null) {
-                return super.shouldContinueExecuting() && this.entity.getDistanceSq(this.entity.getAttackTarget()) < 64.0D && this.entity.getAttackTarget().getActivePotionEffect(Effects.DOLPHINS_GRACE) == null && this.entity.waterCheck(this.entity.getAttackTarget());
+                return this.entity.getDistanceSq(this.entity.getAttackTarget()) < 90.5D && this.entity.getAttackTarget().getActivePotionEffect(Effects.DOLPHINS_GRACE) == null && this.entity.waterCheck(this.entity.getAttackTarget());
             } else {
                 return false;
             }
