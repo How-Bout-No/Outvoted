@@ -169,6 +169,42 @@
       }
     ]
   },
+  "hunger_dig": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.dig",
+    "sounds": [
+      {
+        "name": "minecraft:dig/gravel1"
+      },
+      {
+        "name": "minecraft:dig/gravel2"
+      },
+      {
+        "name": "minecraft:dig/gravel3"
+      },
+      {
+        "name": "minecraft:dig/gravel4"
+      }
+    ]
+  },
+  "hunger_dig_sand": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.dig",
+    "sounds": [
+      {
+        "name": "minecraft:dig/sand1"
+      },
+      {
+        "name": "minecraft:dig/sand2"
+      },
+      {
+        "name": "minecraft:dig/sand3"
+      },
+      {
+        "name": "minecraft:dig/sand4"
+      }
+    ]
+  },
   "kraken_ambient": {
     "category": "hostile",
     "subtitle": "subtitles.entity.outvoted.kraken.ambient",
