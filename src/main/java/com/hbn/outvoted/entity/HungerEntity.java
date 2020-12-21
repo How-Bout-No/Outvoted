@@ -4,16 +4,18 @@ import com.hbn.outvoted.config.OutvotedConfig;
 import com.hbn.outvoted.init.ModSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.command.arguments.NBTCompoundTagArgument;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.BookItem;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.*;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -22,12 +24,11 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
+import org.apache.commons.lang3.tuple.MutablePair;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -39,6 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -50,14 +52,14 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ENCHANTING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(HungerEntity.class, DataSerializers.VARINT);
-    private Map<Enchantment, Integer> storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
+    private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
-        if (this.getBurrowed()) {
-            if (this.getEnchanting()) {
+        if (this.isBurrowed()) {
+            if (this.isEnchanting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite2").addAnimation("animation.great_hunger.bite2loop", true));
             } else {
                 if (event.getController().getCurrentAnimation() != null) {
@@ -72,13 +74,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             }
         } else {
             if (event.getController().getCurrentAnimation() == null || animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking")) {
-                if (this.getAttacking()) {
+                if (this.isAttacking()) {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.attacking"));
                 } else {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.idle"));
                 }
             } else {
-                if (this.getAttacking()) {
+                if (this.isAttacking()) {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.attacking"));
                 } else {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.idle"));
@@ -90,7 +92,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
         if (event.sound.equals("chomp")) {
-            world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.HOSTILE, 1.0F, 1.0F, false);
+            world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.HUNGER_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
             BlockState block = world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 1, this.getPosZ()));
             if (block.isIn(BlockTags.SAND)) {
@@ -155,20 +157,26 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.HUNGER_HIT.get();
+        return ModSounds.HUNGER_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
         return ModSounds.HUNGER_DEATH.get();
     }
 
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
+    public SoundCategory getSoundCategory() {
+        return SoundCategory.HOSTILE;
     }
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putInt("Variant", this.getVariant());
+
+        ItemStack item = ItemStack.EMPTY; // Store enchantments in an empty ItemStack
+        EnchantmentHelper.setEnchantments(storedEnchants, item);
+        CompoundNBT compoundNBT = new CompoundNBT();
+        item.write(compoundNBT);
+        compound.put("Enchantments", compoundNBT);
     }
 
     /**
@@ -177,6 +185,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setVariant(compound.getInt("Variant"));
+
+        ItemStack item = ItemStack.read(compound.getCompound("Enchantments"));
+        storedEnchants = EnchantmentHelper.deserializeEnchantments(item.getEnchantmentTagList());
     }
 
     @Nullable
@@ -206,7 +217,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.dataManager.set(BURROWED, burrowed);
     }
 
-    public boolean getBurrowed() {
+    public boolean isBurrowed() {
         return this.dataManager.get(BURROWED);
     }
 
@@ -214,7 +225,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.dataManager.set(ATTACKING, attacking);
     }
 
-    public boolean getAttacking() {
+    public boolean isAttacking() {
         return this.dataManager.get(ATTACKING);
     }
 
@@ -222,7 +233,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         this.dataManager.set(ENCHANTING, enchanting);
     }
 
-    public boolean getEnchanting() {
+    public boolean isEnchanting() {
         return this.dataManager.get(ENCHANTING);
     }
 
@@ -234,9 +245,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         return this.dataManager.get(VARIANT);
     }
 
-    public ItemStack modifyEnchantments(ItemStack stack, int damage, int count) {
-        // TODO: Rewrite this awful crap
+    private static boolean hasEnchantibility(ItemStack itemStack) {
+        return itemStack.isEnchantable() || itemStack.isEnchanted() || itemStack.getItem() instanceof EnchantedBookItem;
+    }
+
+    public MutablePair<Integer, ItemStack> modifyEnchantments(ItemStack stack, int damage, int count) {
         ItemStack itemstack = stack.copy();
+        Map<Enchantment, Integer> cacheEnchants = new ConcurrentHashMap<>(storedEnchants);
         itemstack.removeChildTag("Enchantments");
         itemstack.removeChildTag("StoredEnchantments");
         if (damage > 0) {
@@ -244,104 +259,92 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         } else {
             itemstack.removeChildTag("Damage");
         }
-        if (storedEnchants.size() <= OutvotedConfig.COMMON.max_enchants.get() && hasEnchantibility(stack)) {
+
+        if (itemstack.getItem() == Items.BOOK) {
+            itemstack = new ItemStack(Items.ENCHANTED_BOOK);
+        }
+
+        /*
+         * left: Status of item, 0 = accepted, 1 = rejected, 2 = enchanted
+         * right: Item to return
+         */
+        MutablePair<Integer, ItemStack> pair = new MutablePair<>(0, itemstack);
+        if (storedEnchants.size() <= OutvotedConfig.COMMON.max_enchants.get()) {
             itemstack.setCount(count);
+            final boolean[] hasCurses = {false};
             Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((enchant) -> {
+                if (enchant.getKey().isCurse()) hasCurses[0] = true;
                 return !enchant.getKey().isCurse();
                 //return true;
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            Map<Enchantment, Integer> curses = EnchantmentHelper.getEnchantments(stack).entrySet().stream().filter((enchant) -> {
-                return enchant.getKey().isCurse();
-                //return true;
-            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-            if (!curses.isEmpty()) this.addPotionEffect(new EffectInstance(Effects.WITHER, 600));
+            if (hasCurses[0]) {
+                this.addPotionEffect(new EffectInstance(Effects.WITHER, 600, 1));
+                pair.setLeft(1);
+                return pair;
+            } else if (itemstack.getTag() != null && itemstack.getTag().contains("Bitten")) {
+                pair.setLeft(1);
+                return pair;
+            } else if (!hasEnchantibility(itemstack)) {
+                pair.setRight(ItemStack.EMPTY);
+                return pair;
+            }
 
             if (!map.isEmpty()) {
                 for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
-                    Enchantment key = entry.getKey();
-                    Integer value = entry.getValue();
-                    if (storedEnchants.containsKey(key)) {
-                        if (value == key.getMaxLevel() && storedEnchants.get(key) == key.getMaxLevel()) {
-                            boolean isMax = false;
-                            for (Map.Entry<Enchantment, Integer> stentry : storedEnchants.entrySet()) {
-                                if (stentry.getValue() == (stentry.getKey().getMaxLevel())) {
-                                    isMax = true;
-                                }
+                    Enchantment enchantment = entry.getKey();
+                    Integer level = entry.getValue();
+                    if (cacheEnchants.containsKey(enchantment)) {
+                        if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) != enchantment.getMaxLevel() + 1) {
+                            if (level == enchantment.getMaxLevel() && cacheEnchants.get(enchantment) == enchantment.getMaxLevel()) {
+                                cacheEnchants.put(enchantment, enchantment.getMaxLevel() + 1);
+                            } else if (level.equals(cacheEnchants.get(enchantment))) {
+                                cacheEnchants.put(enchantment, level + 1);
+                            } else if (level > cacheEnchants.get(enchantment)) {
+                                cacheEnchants.put(enchantment, level);
                             }
-                            if (isMax) {
-                                storedEnchants.put(key, key.getMaxLevel() + 1);
-                            } else {
-                                return null;
-                            }
-                        } else if (value == storedEnchants.get(key)) {
-                            storedEnchants.put(key, value + 1);
-                        } else if (value > storedEnchants.get(key)) {
-                            storedEnchants.put(key, value);
                         } else {
-                            return null;
+                            pair.setLeft(1);
+                            return pair;
                         }
-                        itemstack = ItemStack.EMPTY;
-                    } else {
-                        if (storedEnchants.size() > 0) {
-                            for (Enchantment ench : storedEnchants.keySet()) {
-                                if (ench instanceof ProtectionEnchantment) {
-                                    if (key instanceof ProtectionEnchantment) {
-                                        if (!storedEnchants.isEmpty()) {
-                                            if (key.isCompatibleWith(ench)) {
-                                                storedEnchants.put(key, value);
-                                            } else if (key != ench) {
-                                                return null;
-                                            }
-                                        } else {
-                                            storedEnchants.put(key, value);
-                                        }
-                                    } else {
-                                        storedEnchants.put(key, value);
-                                    }
-                                } else if (key.isCompatibleWith(ench)) {
-                                    storedEnchants.put(key, value);
-                                } else if (key instanceof InfinityEnchantment || key instanceof MendingEnchantment) {
-                                    storedEnchants.put(key, value);
-                                } else if (key != ench) {
-                                    return null;
+                    } else if (!cacheEnchants.isEmpty()) {
+                        for (Enchantment ench : storedEnchants.keySet()) {
+                            if (enchantment instanceof ProtectionEnchantment && ench instanceof ProtectionEnchantment) {
+                                if (((ProtectionEnchantment) enchantment).canApplyTogether(ench)) {
+                                    cacheEnchants.put(enchantment, level);
                                 } else {
-                                    itemstack = ItemStack.EMPTY;
+                                    pair.setLeft(1);
+                                    return pair;
                                 }
+                            } else if (enchantment instanceof InfinityEnchantment || enchantment instanceof MendingEnchantment) {
+                                cacheEnchants.put(enchantment, level);
+                            } else if (enchantment instanceof DamageEnchantment && ench instanceof DamageEnchantment) {
+                                cacheEnchants.put(enchantment, level);
+                            } else if (enchantment.isCompatibleWith(ench)) {
+                                cacheEnchants.put(enchantment, level);
+                            } else {
+                                pair.setLeft(1);
+                                return pair;
                             }
-                        } else {
-                            storedEnchants.put(key, value);
-                            itemstack = ItemStack.EMPTY;
                         }
+                    } else {
+                        cacheEnchants.put(enchantment, level);
                     }
-                    //map = new HashMap<Enchantment, Integer>();
                 }
-            } else {
+            } else if (!storedEnchants.isEmpty()) {
+                pair.setLeft(2);
                 map = storedEnchants;
-                storedEnchants = new ConcurrentHashMap<Enchantment, Integer>();
-            }
-
-            if (itemstack.getItem() == Items.ENCHANTED_BOOK || map.size() == 0) {
-                itemstack = ItemStack.EMPTY;
-            } else if (itemstack.getItem() == Items.BOOK) {
-                itemstack = new ItemStack(Items.ENCHANTED_BOOK);
-            }
-
-            if (itemstack != ItemStack.EMPTY) {
+                storedEnchants = new HashMap<>();
                 EnchantmentHelper.setEnchantments(map, itemstack);
-                itemstack.setRepairCost(0);
+                return pair;
+            } else {
+                pair.setRight(ItemStack.EMPTY);
             }
-
-
-        /*for (int i = 0; i < map.size(); ++i) {
-            itemstack.setRepairCost(RepairContainer.getNewRepairCost(itemstack.getRepairCost()));
-        }*/
+            storedEnchants = cacheEnchants;
         } else {
-            itemstack = ItemStack.EMPTY;
+            pair.setLeft(1);
         }
-
-        return itemstack;
+        return pair;
     }
 
     /**
@@ -360,7 +363,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
      */
     public void livingTick() {
         if (this.isAlive()) {
-            this.setInvulnerable(this.getBurrowed());
+            this.setInvulnerable(this.isBurrowed());
         }
 
         super.livingTick();
@@ -379,12 +382,18 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public boolean shouldExecute() {
-            boolean exec = super.shouldExecute() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.getBurrowed();
+            boolean exec = super.shouldExecute() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
             this.hunger.setAttacking(exec);
             return exec;
         }
     }
 
+    /**
+     * Determines whether a 3x3 section of ground below is suitable for burrowing
+     *
+     * @param entityIn
+     * @return
+     */
     public boolean isSuitable(HungerEntity entityIn) {
         if (this.getActivePotionEffect(Effects.WITHER) != null) return false;
         World world = entityIn.world;
@@ -421,28 +430,28 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public boolean shouldExecute() {
-            return super.shouldExecute() && !this.hunger.getBurrowed() && !this.hunger.isSuitable(this.hunger);
+            return super.shouldExecute() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger);
         }
 
         public boolean shouldContinueExecuting() {
-            return super.shouldContinueExecuting() && !this.hunger.getBurrowed() && !this.hunger.isSuitable(this.hunger);
+            return super.shouldContinueExecuting() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger);
         }
 
         public void tick() {
-            if (this.hunger.getBurrowed() || this.hunger.isSuitable(this.hunger))
+            if (this.hunger.isBurrowed() || this.hunger.isSuitable(this.hunger))
                 this.creature.getNavigator().clearPath();
         }
     }
 
-    private static boolean hasEnchantibility(ItemStack itemStack) {
-        return itemStack.isEnchantable() || itemStack.isEnchanted();
+    private static Vector3d returnVector(HungerEntity entity) {
+        Vector3d vector3d = RandomPositionGenerator.getLandPos(entity, 4, 2);
+        return vector3d == null ? entity.getPositionVec() : vector3d;
     }
 
     static class BurrowGoal extends Goal {
         private final HungerEntity hunger;
         private int tick = 0;
         private ItemStack cacheitem = ItemStack.EMPTY;
-        private Entity cacheentity = null;
 
         public BurrowGoal(HungerEntity entityIn) {
             this.hunger = entityIn;
@@ -453,19 +462,23 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             this.hunger.setBurrowed(false);
         }
 
+        public void startExecuting() {
+            this.hunger.setBurrowed(true);
+        }
+
         /**
          * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
          * method as well.
          */
         public boolean shouldExecute() {
-            return !this.hunger.getAttacking() && this.hunger.isSuitable(this.hunger);
+            return !this.hunger.isAttacking() && this.hunger.isSuitable(this.hunger);
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean shouldContinueExecuting() {
-            return !this.hunger.getAttacking() && this.hunger.isSuitable(this.hunger);
+            return !this.hunger.isAttacking() && this.hunger.isSuitable(this.hunger);
         }
 
         /**
@@ -473,85 +486,59 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
          */
 
         public void tick() {
-            boolean suitable = this.hunger.isSuitable(this.hunger);
-            List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 0.0D, 1.0D).expand(-1.0D, 0.0D, -1.D));
+            List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 0.0D, 1.0D).expand(-1.0D, 0.0D, -1.0D));
             if (!entities.isEmpty()) {
-                for (Entity entity : entities) {
-                    double d0 = this.hunger.getDistanceSq(entity);
-                    if (d0 < 1.1) {
-                        if (entity instanceof ItemEntity) {
-                            ItemStack item = ((ItemEntity) entity).getItem();
-                            if (item.getTag() != null) {
-                                if (!this.hunger.getEnchanting()) {
-                                    if (!item.getTag().contains("Bitten")) {
-                                        this.cacheitem = item.copy();
-                                        this.cacheentity = entity;
-                                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
-                                        entity.remove();
-                                        this.hunger.setEnchanting(true);
-                                    }
-                                    this.hunger.setBurrowed(suitable);
-                                }
-                            } else if (item.getItem() instanceof BookItem) {
-                                if (!this.hunger.getEnchanting()) {
+                if (!this.hunger.isAttacking() && !this.hunger.isEnchanting()) {
+                    for (Entity entity : entities) {
+                        double d0 = this.hunger.getDistanceSq(entity);
+                        if (d0 < 1.1) {
+                            if (entity instanceof ItemEntity) {
+                                ItemStack item = ((ItemEntity) entity).getItem();
+                                if (((ItemEntity) entity).getThrowerId() != this.hunger.getUniqueID()) {
                                     this.cacheitem = item.copy();
-                                    this.cacheentity = entity;
-                                    this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
+                                    this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), ModSounds.HUNGER_EAT.get(), this.hunger.getSoundCategory(), 0.8F, 0.9F);
                                     entity.remove();
                                     this.hunger.setEnchanting(true);
-                                    this.hunger.setBurrowed(suitable);
+                                    break;
                                 }
-                            } else {
-                                if (!this.hunger.getEnchanting()) {
-                                    this.cacheitem = item.copy();
-                                    this.cacheentity = entity;
-                                    this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_STRIDER_EAT, this.hunger.getSoundCategory(), 0.8F, 0.9F);
-                                    entity.remove();
-                                    this.hunger.setEnchanting(true);
-                                }
-                                this.hunger.setBurrowed(suitable);
-                            }
-                        } else if (entity instanceof LivingEntity && !this.hunger.getEnchanting()) {
-                            if (entity.isAlive() && this.hunger.canAttack((LivingEntity) entity)) {
-                                if (!this.hunger.getEnchanting()) {
+                            } else if (entity instanceof LivingEntity) {
+                                if (entity.isAlive() && this.hunger.canAttack((LivingEntity) entity)) {
                                     this.hunger.setBurrowed(false);
                                     this.hunger.setAttacking(true);
-                                    this.hunger.setEnchanting(false);
                                 }
                             }
-                        } else {
-                            this.hunger.setBurrowed(suitable);
                         }
-                    } else {
-                        this.hunger.setBurrowed(suitable);
                     }
                 }
             }
-            if (this.cacheitem != ItemStack.EMPTY) {
+            if (this.hunger.isEnchanting()) {
                 this.tick++;
 
                 if (this.tick % 16 == 0) {
-                    ItemStack noench = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
-                    if (noench == null) {
-                        noench = cacheitem;
-                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_FOX_SPIT, this.hunger.getSoundCategory(), 0.8F, 0.8F);
-                        noench.getOrCreateChildTag("Bitten");
-                        this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
-                    } else if (noench != ItemStack.EMPTY) {
+                    MutablePair<Integer, ItemStack> pair = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
+                    ItemStack item = pair.getRight();
+                    if (pair.getLeft() == 0) {
+                        if (item != ItemStack.EMPTY) {
+                            this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
+                        }
+                    } else if (pair.getLeft() == 1) {
+                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), ModSounds.HUNGER_SPIT.get(), this.hunger.getSoundCategory(), 0.8F, 0.8F);
+                        ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), cacheitem);
+                        newitem.setMotion(newitem.getMotion().add(newitem.getMotion().x, 0.0D, newitem.getMotion().z));
+                        newitem.setThrowerId(this.hunger.getUniqueID());
+                        this.hunger.world.addEntity(newitem);
+                    } else {
                         this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
-                        noench.getOrCreateChildTag("Bitten");
-                        this.hunger.world.addEntity(new ItemEntity(cacheentity.world, cacheentity.getPosX(), cacheentity.getPosY(), cacheentity.getPosZ(), noench));
-                    } else if (hasEnchantibility(cacheitem)) {
-                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
+                        item.getOrCreateTag().putInt("Bitten", 1);
+                        ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), item);
+                        newitem.setMotion(newitem.getMotion().add(newitem.getMotion().x, 0.0D, newitem.getMotion().z));
+                        newitem.setThrowerId(this.hunger.getUniqueID());
+                        this.hunger.world.addEntity(newitem);
                     }
                     this.cacheitem = ItemStack.EMPTY;
                     this.tick = 0;
+                    this.hunger.setEnchanting(false);
                 }
-                this.hunger.setBurrowed(true);
-                this.hunger.setEnchanting(true);
-            } else {
-                this.hunger.setBurrowed(suitable);
-                this.hunger.setEnchanting(false);
             }
         }
     }

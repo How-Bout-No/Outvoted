@@ -201,7 +201,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.KRAKEN_HIT.get();
+        return ModSounds.KRAKEN_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
@@ -299,7 +299,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     }
 
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return ModSounds.KRAKEN_FLOP.get();
     }
 
     public float getAttackAnimationScale(float f) {
@@ -362,8 +362,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             this.speed = speedIn;
         }
 
-        public void resetTask() {
-        }
+        public void resetTask() {}
 
         /**
          * Execute a one shot task or start executing a continuous task
@@ -389,8 +388,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             }
         }
 
-        public void startExecuting() {
-        }
+        public void startExecuting() {}
 
         public void tick() {
             LivingEntity livingentity = this.entity.getAttackTarget();
