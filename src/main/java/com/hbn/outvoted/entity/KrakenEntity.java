@@ -21,7 +21,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -362,7 +361,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             this.speed = speedIn;
         }
 
-        public void resetTask() {}
+        public void resetTask() {
+        }
 
         /**
          * Execute a one shot task or start executing a continuous task
@@ -388,7 +388,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             }
         }
 
-        public void startExecuting() {}
+        public void startExecuting() {
+        }
 
         public void tick() {
             LivingEntity livingentity = this.entity.getAttackTarget();
