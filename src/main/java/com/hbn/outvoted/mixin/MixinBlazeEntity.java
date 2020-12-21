@@ -45,13 +45,11 @@ public abstract class MixinBlazeEntity extends MonsterEntity implements IMixinBl
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putInt("Variant", this.getVariant());
-        System.out.println(this.getVariant());
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setVariant(compound.getInt("Variant"));
-        System.out.println(compound.getInt("Variant"));
     }
 
     @Nullable
