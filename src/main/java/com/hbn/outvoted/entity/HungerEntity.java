@@ -153,13 +153,21 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         return world.canBlockSeeSky(blockPos);
     }
 
-    protected SoundEvent getAmbientSound() { return ModSounds.HUNGER_AMBIENT.get(); }
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.HUNGER_AMBIENT.get();
+    }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return ModSounds.HUNGER_HURT.get(); }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.HUNGER_HURT.get();
+    }
 
-    protected SoundEvent getDeathSound() { return ModSounds.HUNGER_DEATH.get(); }
+    protected SoundEvent getDeathSound() {
+        return ModSounds.HUNGER_DEATH.get();
+    }
 
-    public SoundCategory getSoundCategory() { return SoundCategory.HOSTILE; }
+    public SoundCategory getSoundCategory() {
+        return SoundCategory.HOSTILE;
+    }
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);

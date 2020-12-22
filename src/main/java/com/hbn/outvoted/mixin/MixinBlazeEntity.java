@@ -66,5 +66,7 @@ public abstract class MixinBlazeEntity extends MonsterEntity implements IMixinBl
     }
 
     @Inject(method = "registerData", at = @At("TAIL"))
-    protected void registerVariant(CallbackInfo info) { this.dataManager.register(VARIANT, 0); }
+    protected void registerVariant(CallbackInfo info) {
+        this.dataManager.register(VARIANT, 0);
+    }
 }
