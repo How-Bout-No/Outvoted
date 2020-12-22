@@ -298,6 +298,12 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                     if (cacheEnchants.containsKey(enchantment)) {
                         if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) != enchantment.getMaxLevel() + 1) {
                             if (level == enchantment.getMaxLevel() && cacheEnchants.get(enchantment) == enchantment.getMaxLevel()) {
+                                for (Enchantment ench : cacheEnchants.keySet()) {
+                                    if (cacheEnchants.get(ench) == ench.getMaxLevel() + 1) {
+                                        pair.setLeft(1);
+                                        return pair;
+                                    }
+                                }
                                 cacheEnchants.put(enchantment, enchantment.getMaxLevel() + 1);
                             } else if (level.equals(cacheEnchants.get(enchantment))) {
                                 cacheEnchants.put(enchantment, level + 1);
