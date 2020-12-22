@@ -102,19 +102,13 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
-        return ModSounds.INFERNO_AMBIENT.get();
-    }
+    protected SoundEvent getAmbientSound() { return ModSounds.INFERNO_AMBIENT.get(); }
 
     @Override
-    protected SoundEvent getDeathSound() {
-        return ModSounds.INFERNO_DEATH.get();
-    }
+    protected SoundEvent getDeathSound() { return ModSounds.INFERNO_DEATH.get(); }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.INFERNO_HURT.get();
-    }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return ModSounds.INFERNO_HURT.get(); }
 
     @Override
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {

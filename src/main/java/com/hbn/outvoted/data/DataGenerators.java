@@ -16,8 +16,7 @@ public class DataGenerators {
         if (event.includeServer()) {
             generator.addProvider(new Recipes(generator));
             generator.addProvider(new LootTables(generator));
-            final BlockTagProvider blockTagsProvider = new BlockTagProvider(generator, existingFileHelper);
-            generator.addProvider(blockTagsProvider);
+            generator.addProvider(new BlockTagProvider(generator, existingFileHelper));
         }
         if (event.includeClient()) {
             generator.addProvider(new Items(generator, event.getExistingFileHelper()));
