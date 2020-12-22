@@ -14,6 +14,23 @@
   "entity.outvoted.hunger": "大胃怪",
   "entity.outvoted.kraken": "克拉肯",
 
+  "subtitles.entity.outvoted.inferno.ambient": "狱火行者：呼吸",
+  "subtitles.entity.outvoted.inferno.hurt": "狱火行者：受伤",
+  "subtitles.entity.outvoted.inferno.death": "狱火行者：死亡",
+  "subtitles.entity.outvoted.inferno.burn": "狱火行者：噼啪作响",
+  "subtitles.entity.outvoted.inferno.shoot": "狱火行者：射击",
+  "subtitles.entity.outvoted.hunger.ambient": "大胃怪：嘶嘶",
+  "subtitles.entity.outvoted.hunger.hurt": "大胃怪：受伤",
+  "subtitles.entity.outvoted.hunger.death": "大胃怪：死亡",
+  "subtitles.entity.outvoted.hunger.bite": "大胃怪：撕咬",
+  "subtitles.entity.outvoted.hunger.spit": "大胃怪：吐出",
+  "subtitles.entity.outvoted.hunger.eat": "大胃怪：进食",
+  "subtitles.entity.outvoted.hunger.dig": "大胃怪：挖",
+  "subtitles.entity.outvoted.kraken.ambient": "克拉肯：窥视",
+  "subtitles.entity.outvoted.kraken.hurt": "克拉肯：受伤",
+  "subtitles.entity.outvoted.kraken.death": "克拉肯：死亡",
+  "subtitles.entity.outvoted.kraken.flop": "克拉肯：落地",
+
   "itemGroup.modtab": "落选生物",
 
   "advancements.outvoted.obtain_inferno_helmet.title": "头脑发热！",
