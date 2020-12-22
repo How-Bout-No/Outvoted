@@ -280,8 +280,6 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 //return true;
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            System.out.println(itemstack.getItem().equals(ModItems.VOID_HEART.get()));
-
             if (hasCurses[0]) {
                 this.addPotionEffect(new EffectInstance(Effects.WITHER, 600, 1));
                 pair.setLeft(1);
