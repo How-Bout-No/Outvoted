@@ -1,6 +1,8 @@
 package com.hbn.outvoted.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.hbn.outvoted.config.OutvotedConfig;
+import com.hbn.outvoted.init.ModItems;
 import com.hbn.outvoted.init.ModSounds;
 import com.hbn.outvoted.init.ModTags;
 import net.minecraft.block.BlockState;
@@ -12,6 +14,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AirItem;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,10 +27,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
@@ -280,6 +280,8 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 //return true;
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+            System.out.println(itemstack.getItem().equals(ModItems.VOID_HEART.get()));
+
             if (hasCurses[0]) {
                 this.addPotionEffect(new EffectInstance(Effects.WITHER, 600, 1));
                 pair.setLeft(1);
@@ -289,6 +291,8 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 return pair;
             } else if (!hasEnchantibility(itemstack)) {
                 pair.setRight(ItemStack.EMPTY);
+                return pair;
+            } else if (itemstack.getItem().equals(ModItems.VOID_HEART.get())) {
                 return pair;
             }
 
@@ -370,13 +374,33 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         boolean exec = super.attackEntityAsMob(entityIn);
         if (exec && entityIn instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entityIn;
-            List<ItemStack> enchantedItems = player.inventory.mainInventory.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList());
-            enchantedItems.addAll(player.inventory.armorInventory.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList()));
-            enchantedItems.addAll(player.inventory.offHandInventory.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList()));
-            System.out.println(enchantedItems);
+            List<NonNullList<ItemStack>> allInventories = ImmutableList.of(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory);
+            List<ItemStack> enchantedItems = new ArrayList<>();
+            for (NonNullList<ItemStack> inv : allInventories) {
+                enchantedItems.addAll(inv.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList()));
+            }
+            enchantedItems.removeIf((item) -> item.getItem() instanceof AirItem);
             if (!enchantedItems.isEmpty()) {
                 ItemStack item = enchantedItems.get(this.rand.nextInt(enchantedItems.size()));
-                System.out.println(item);
+                Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
+                item.removeChildTag("Enchantments");
+                item.removeChildTag("StoredEnchantments");
+                Object[] enchants = enchantments.keySet().toArray();
+                Enchantment enchant = (Enchantment) enchants[this.rand.nextInt(enchants.length)];
+                if (enchantments.get(enchant) > 1) {
+                    enchantments.put(enchant, enchantments.get(enchant) - 1);
+                } else {
+                    enchantments.remove(enchant);
+                }
+                if (enchantments.isEmpty() && item.getItem() instanceof EnchantedBookItem) {
+                    for (NonNullList<ItemStack> inv : allInventories) {
+                        if (inv.contains(item)) {
+                            inv.set(inv.indexOf(item), new ItemStack(Items.BOOK));
+                        }
+                    }
+                } else {
+                    EnchantmentHelper.setEnchantments(enchantments, item);
+                }
             }
         }
         return exec;
@@ -406,6 +430,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public boolean shouldExecute() {
+            this.hunger.setAttacking(this.hunger.getAttackTarget() != null && !this.hunger.isBurrowed());
             return super.shouldExecute() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
         }
 
@@ -419,8 +444,8 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public void resetTask() {
-//            super.resetTask();
-            this.hunger.setAttacking(false);
+            super.resetTask();
+            this.hunger.setAttacking(this.attacker.getAttackTarget() != null);
         }
     }
 
@@ -507,7 +532,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             Random random = this.hunger.getRNG();
             BlockPos blockpos = this.hunger.getPosition();
 
-            for(int i = 0; i < 10; ++i) {
+            for (int i = 0; i < 10; ++i) {
                 BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
                 if (this.hunger.isSuitable(this.hunger, blockpos1)) {
                     return Vector3d.copyCenteredHorizontally(blockpos1);
@@ -599,6 +624,11 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 if (this.tick % 16 == 0) {
                     MutablePair<Integer, ItemStack> pair = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
                     ItemStack item = pair.getRight();
+                    if (cacheitem.getItem().equals(ModItems.VOID_HEART.get())) {
+                        Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.hunger.world, this.hunger) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+                        this.hunger.world.createExplosion(this.hunger, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), 2.0F, explosion$mode);
+                        this.hunger.remove();
+                    }
                     if (pair.getLeft() == 0) {
                         if (item != ItemStack.EMPTY) {
                             this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);

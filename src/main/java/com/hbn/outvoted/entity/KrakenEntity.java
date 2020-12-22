@@ -196,15 +196,25 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         return 160;
     }
 
-    protected SoundEvent getAmbientSound() { return ModSounds.KRAKEN_AMBIENT.get(); }
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.KRAKEN_AMBIENT.get();
+    }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return ModSounds.KRAKEN_HURT.get(); }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.KRAKEN_HURT.get();
+    }
 
-    protected SoundEvent getDeathSound() { return ModSounds.KRAKEN_DEATH.get(); }
+    protected SoundEvent getDeathSound() {
+        return ModSounds.KRAKEN_DEATH.get();
+    }
 
-    protected boolean canTriggerWalking() { return false; }
+    protected boolean canTriggerWalking() {
+        return false;
+    }
 
-    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) { return sizeIn.height * 0.4F; }
+    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+        return sizeIn.height * 0.4F;
+    }
 
     public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
         return worldIn.getFluidState(pos).isTagged(FluidTags.WATER) ? 10.0F + worldIn.getBrightness(pos) - 0.5F : super.getBlockPathWeight(pos, worldIn);
@@ -368,7 +378,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             this.speed = speedIn;
         }
 
-        public void resetTask() { }
+        public void resetTask() {
+        }
 
         /**
          * Execute a one shot task or start executing a continuous task
@@ -394,7 +405,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
             }
         }
 
-        public void startExecuting() {}
+        public void startExecuting() {
+        }
 
         public void tick() {
             LivingEntity livingentity = this.entity.getAttackTarget();
