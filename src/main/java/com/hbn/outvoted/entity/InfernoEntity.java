@@ -320,6 +320,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
          */
         public void resetTask() {
             this.inferno.setOnFire(false);
+            this.inferno.setShielding(false);
             this.firedRecentlyTimer = 0;
         }
 
