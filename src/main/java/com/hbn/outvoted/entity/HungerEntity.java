@@ -94,7 +94,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         if (event.sound.equals("chomp")) {
             world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.HUNGER_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
-            BlockState block = world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 1, this.getPosZ()));
+            BlockState block = world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 0.5D, this.getPosZ()));
             if (block.isIn(BlockTags.SAND)) {
                 world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.HUNGER_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             } else {

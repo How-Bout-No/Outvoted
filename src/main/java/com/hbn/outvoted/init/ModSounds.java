@@ -44,7 +44,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> HUNGER_EAT = SOUNDS.register("hunger_eat",
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_eat")));
     public static final RegistryObject<SoundEvent> HUNGER_DIG = SOUNDS.register("hunger_dig",
-            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_digs")));
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_dig")));
     public static final RegistryObject<SoundEvent> HUNGER_DIG_SAND = SOUNDS.register("hunger_dig_sand",
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "hunger_dig_sand")));
 }
