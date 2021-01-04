@@ -31,7 +31,6 @@ public class Outvoted {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, OutvotedConfig.CLIENT_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
-        GeckoLibMod.DISABLE_IN_DEV = true;
         GeckoLib.initialize();
         ModItems.ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
