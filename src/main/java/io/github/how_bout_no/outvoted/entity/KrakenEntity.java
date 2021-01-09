@@ -11,6 +11,8 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -284,10 +286,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                         livingentity.updateSwimming();
                         if (!this.world.isRemote) {
                             if (livingentity.isPassenger() && livingentity.getLowestRidingEntity() instanceof BoatEntity) {
-                                BoatEntity boat = (BoatEntity) livingentity.getLowestRidingEntity();
+                                Entity boat = livingentity.getLowestRidingEntity();
                                 livingentity.stopRiding();
+                                boat.entityDropItem(((BoatEntity) boat).getItemBoat());
+                                try {
+                                    InventoryHelper.dropInventoryItems(boat.world, boat, (IInventory) boat);
+                                } catch (Exception e) {}
                                 boat.remove();
-                                boat.entityDropItem(boat.getItemBoat());
                             }
                         }
                         if (this.getAttackPhase() != 0) {
