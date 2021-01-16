@@ -1,10 +1,10 @@
 package io.github.how_bout_no.outvoted.data;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModItems;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.EntityLootTables;

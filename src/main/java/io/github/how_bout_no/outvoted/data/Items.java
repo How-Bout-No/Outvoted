@@ -24,14 +24,23 @@ public class Items extends ItemModelProvider {
         ModItems.ITEMS.getEntries().forEach(item -> {
             if (item.get() instanceof ModItem) {
                 singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/generated"),
-                        "layer0", new ResourceLocation(Outvoted.MOD_ID, "items/" + item.get().getRegistryName().getPath()));
+                        "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/" + item.get().getRegistryName().getPath()));
             } else if (item.get() instanceof ModdedSpawnEggItem) {
                 withExistingParent(item.get().getRegistryName().getPath(), new ResourceLocation("item/template_spawn_egg"));
             }
         });
 
         singleTexture(ModItems.INFERNO_HELMET.get().getRegistryName().getPath(), new ResourceLocation("item/generated"),
-                "layer0", new ResourceLocation(Outvoted.MOD_ID, "items/" + ModItems.INFERNO_HELMET.get().getRegistryName().getPath()));
+                "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/inferno_helmet"))
+                .override().predicate(new ResourceLocation("custom_model_data"), 1).model(new ModelFile(new ResourceLocation(Outvoted.MOD_ID, "item/inferno_helmet_soul")) {
+            @Override
+            protected boolean exists() {
+                return true;
+            }
+        });
+
+        singleTexture(ModItems.INFERNO_HELMET.get().getRegistryName().getPath() + "_soul", new ResourceLocation("item/generated"),
+                "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/inferno_helmet_soul"));
 
         singleTexture(ModItems.INFERNO_SHIELD.get().getRegistryName().getPath(), new ResourceLocation("item/shield"),
                 "particles", new ResourceLocation("block/nether_bricks"))

@@ -32,29 +32,25 @@ public class OutvotedConfig {
          */
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Hovering Inferno").push("inferno");
-
             spawninferno = builder.comment("This will affect all Inferno spawns (natural + spawner)").define("Natural Spawning", true);
             rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
-            healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, 1000.0D);
-            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it Vanilla").define("Biome Variants", false);
-            restrictinferno = builder.comment("Restrict Inferno groups to spawn only in Nether Wastes or not").define("Restrict Spawning", true);
-
+            healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, Double.POSITIVE_INFINITY);
+            infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it vanilla. Does not affect Inferno Helmet textures").define("Biome Variants", false);
+            restrictinferno = builder.comment("Restrict Infernos to spawn only in Nether Wastes or not").define("Restrict Spawning", true);
             builder.pop();
-            builder.comment("Great Hunger").push("hunger");
 
+            builder.comment("Great Hunger").push("hunger");
             spawnhunger = builder.define("Natural Spawning", true);
             ratehunger = builder.defineInRange("Spawn Weight", 5, 1, 100);
-            healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, 1000.0D);
+            healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, Double.POSITIVE_INFINITY);
             max_enchants = builder.define("Maximum Stored Enchantments", 5);
-
             builder.pop();
-            builder.comment("Monster of the Ocean Depths").push("kraken");
 
+            builder.comment("Monster of the Ocean Depths").push("kraken");
             spawnkraken = builder.define("Natural Spawning", true);
             ratekraken = builder.defineInRange("Spawn Weight", 2, 1, 100);
-            healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, 1000.0D);
+            healthkraken = builder.defineInRange("Max Health", 40.0D, 1.0D, Double.POSITIVE_INFINITY);
             //krakenvariant = builder.comment("Slight coloration based on biomes, bluer in colder oceans while yellower in warmer ones").define("Biome Variants", true);
-
             builder.pop();
         }
     }
@@ -97,7 +93,7 @@ public class OutvotedConfig {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading event) {
-        System.out.println(">> Outvoted " + event.getConfig().getType() + " Config Loaded");
+        Outvoted.LOGGER.info(">> Outvoted " + event.getConfig().getType() + " Config Loaded");
     }
 
 //    @SubscribeEvent

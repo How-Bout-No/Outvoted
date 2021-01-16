@@ -33,12 +33,15 @@ public class InfernoHelmetItem extends ArmorItem {
     @SuppressWarnings("unchecked")
     @OnlyIn(Dist.CLIENT)
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) new InfernoHelmetModel<LivingEntity>();
+        return (A) new InfernoHelmetModel<>();
     }
 
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+        if (stack.getTag() != null && stack.getTag().getFloat("CustomModelData") == 1.0F) {
+            return "outvoted:textures/entity/inferno_soul.png";
+        }
         return "outvoted:textures/entity/inferno.png";
     }
 

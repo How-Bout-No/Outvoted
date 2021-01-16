@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "outvoted:items/void_heart"
+    "layer0": "outvoted:item/void_heart"
   }
 }

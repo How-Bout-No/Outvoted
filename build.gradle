@@ -79,7 +79,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("software.bernie.geckolib:forge-${minecraft_version}-geckolib:${geckolib_version}")
+    implementation fg.deobf("software.bernie.geckolib:forge-1.16.4-geckolib:${geckolib_version}")
     compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
 
     //implementation fg.deobf("curse.maven:extraboats-337396:3154939")

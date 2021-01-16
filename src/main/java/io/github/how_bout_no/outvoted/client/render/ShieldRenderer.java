@@ -2,9 +2,9 @@
 
 package io.github.how_bout_no.outvoted.client.render;
 
-import io.github.how_bout_no.outvoted.client.model.InfernoShieldModel;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import io.github.how_bout_no.outvoted.client.model.InfernoShieldModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;

@@ -291,7 +291,8 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                                 boat.entityDropItem(((BoatEntity) boat).getItemBoat());
                                 try {
                                     InventoryHelper.dropInventoryItems(boat.world, boat, (IInventory) boat);
-                                } catch (Exception e) {}
+                                } catch (Exception e) {
+                                }
                                 boat.remove();
                             }
                         }

@@ -15,7 +15,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import software.bernie.example.GeckoLibMod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
 @Mod("outvoted")
@@ -24,6 +25,8 @@ public class Outvoted {
     public static final String MOD_ID = "outvoted";
     public static ItemGroup TAB_COMBAT;
     public static ItemGroup TAB_MISC;
+
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public Outvoted() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
