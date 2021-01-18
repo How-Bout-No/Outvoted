@@ -14,6 +14,23 @@
   "entity.outvoted.hunger": "Hunger",
   "entity.outvoted.kraken": "Kraken",
 
+  "subtitles.entity.outvoted.inferno.ambient": "Inferno breathes",
+  "subtitles.entity.outvoted.inferno.hurt": "Inferno hurts",
+  "subtitles.entity.outvoted.inferno.death": "Inferno dies",
+  "subtitles.entity.outvoted.inferno.burn": "Inferno crackles",
+  "subtitles.entity.outvoted.inferno.shoot": "Inferno shoots",
+  "subtitles.entity.outvoted.hunger.ambient": "Hunger hisses",
+  "subtitles.entity.outvoted.hunger.hurt": "Hunger hurts",
+  "subtitles.entity.outvoted.hunger.death": "Hunger dies",
+  "subtitles.entity.outvoted.hunger.bite": "Hunger bites",
+  "subtitles.entity.outvoted.hunger.spit": "Hunger spits",
+  "subtitles.entity.outvoted.hunger.eat": "Hunger eats",
+  "subtitles.entity.outvoted.hunger.dig": "Hunger digs",
+  "subtitles.entity.outvoted.kraken.ambient": "Kraken lurks",
+  "subtitles.entity.outvoted.kraken.hurt": "Kraken hurts",
+  "subtitles.entity.outvoted.kraken.death": "Kraken dies",
+  "subtitles.entity.outvoted.kraken.flop": "Kraken flops",
+
   "itemGroup.modtab": "Outvoted",
 
   "advancements.outvoted.obtain_inferno_helmet.title": "Hot-headed!",
@@ -26,5 +43,4 @@
   "advancements.outvoted.use_hunger.description": "Enchant an item using the Hunger",
   "advancements.outvoted.overenchant_hunger.title": "Unlimited Powah!!!",
   "advancements.outvoted.overenchant_hunger.description": "Overenchant an item above its max level"
-
 }

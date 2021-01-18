@@ -1,0 +1,259 @@
+{
+  "inferno_ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.inferno.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:mob/blaze/breathe1",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/blaze/breathe2",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/blaze/breathe3",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/blaze/breathe4",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "inferno_hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.inferno.hurt",
+    "sounds": [
+      {
+        "name": "minecraft:mob/blaze/hit1",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/blaze/hit2",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/blaze/hit3",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/blaze/hit4",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "inferno_death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.inferno.death",
+    "sounds": [
+      {
+        "name": "minecraft:mob/blaze/death",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "inferno_burn": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.inferno.burn",
+    "sounds": [
+      {
+        "name": "minecraft:fire/fire"
+      }
+    ]
+  },
+  "inferno_shoot": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.inferno.shoot",
+    "sounds": [
+      {
+        "name": "minecraft:mob/ghast/fireball4"
+      }
+    ]
+  },
+  "hunger_ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.ambient",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger",
+        "volume": 0.5
+      }
+    ]
+  },
+  "hunger_hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.hurt",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger_hit1",
+        "volume": 0.5
+      },
+      {
+        "name": "outvoted:entity/hunger_hit2",
+        "volume": 0.5
+      },
+      {
+        "name": "outvoted:entity/hunger_hit3",
+        "volume": 0.5
+      }
+    ]
+  },
+  "hunger_death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.death",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger_death1",
+        "volume": 0.5
+      },
+      {
+        "name": "outvoted:entity/hunger_death2",
+        "volume": 0.5
+      },
+      {
+        "name": "outvoted:entity/hunger_death3",
+        "volume": 0.5
+      }
+    ]
+  },
+  "hunger_bite": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.bite",
+    "sounds": [
+      {
+        "name": "outvoted:entity/hunger_bite"
+      }
+    ]
+  },
+  "hunger_spit": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.spit",
+    "sounds": [
+      {
+        "name": "minecraft:mob/fox/spit1",
+        "volume": 0.8,
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:mob/fox/spit2",
+        "volume": 0.8,
+        "pitch": 0.8
+      },
+
+      {
+        "name": "minecraft:mob/fox/spit3",
+        "volume": 0.8,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "hunger_eat": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.eat",
+    "sounds": [
+      {
+        "name": "minecraft:mob/strider/eat1",
+        "volume": 0.8,
+        "pitch": 0.9
+      },
+      {
+        "name": "minecraft:mob/strider/eat2",
+        "volume": 0.8,
+        "pitch": 0.9
+      },
+      {
+        "name": "minecraft:mob/strider/eat3",
+        "volume": 0.8,
+        "pitch": 0.9
+      }
+    ]
+  },
+  "hunger_dig": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.dig",
+    "sounds": [
+      {
+        "name": "minecraft:dig/gravel1"
+      },
+      {
+        "name": "minecraft:dig/gravel2"
+      },
+      {
+        "name": "minecraft:dig/gravel3"
+      },
+      {
+        "name": "minecraft:dig/gravel4"
+      }
+    ]
+  },
+  "hunger_dig_sand": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.hunger.dig",
+    "sounds": [
+      {
+        "name": "minecraft:dig/sand1"
+      },
+      {
+        "name": "minecraft:dig/sand2"
+      },
+      {
+        "name": "minecraft:dig/sand3"
+      },
+      {
+        "name": "minecraft:dig/sand4"
+      }
+    ]
+  },
+  "kraken_ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.kraken.ambient",
+    "sounds": [
+      {
+        "name": "outvoted:entity/kraken1"
+      },
+      {
+        "name": "outvoted:entity/kraken2"
+      },
+      {
+        "name": "outvoted:entity/kraken3"
+      }
+    ]
+  },
+  "kraken_hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.kraken.hurt",
+    "sounds": [
+      {
+        "name": "outvoted:entity/kraken_hit"
+      }
+    ]
+  },
+  "kraken_death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.kraken.death",
+    "sounds": [
+      {
+        "name": "outvoted:entity/kraken_death"
+      }
+    ]
+  },
+  "kraken_flop": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.kraken.flop",
+    "sounds": [
+      {
+        "name": "minecraft:mob/guardian/flop1"
+      },
+      {
+        "name": "minecraft:mob/guardian/flop2"
+      },
+      {
+        "name": "minecraft:mob/guardian/flop3"
+      },
+      {
+        "name": "minecraft:mob/guardian/flop4"
+      }
+    ]
+  }
+}

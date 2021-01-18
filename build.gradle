@@ -6,7 +6,7 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
-        maven {url='https://dist.creeper.host/Sponge/maven'}
+        maven { url='https://dist.creeper.host/Sponge/maven' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version =  "${minecraft_version}-${mod_version}"
-group = 'com.hbn.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'io.github.how_bout_no.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'outvoted'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -72,14 +72,17 @@ minecraft {
 
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
-    maven {url='https://dist.creeper.host/Sponge/maven'}
+    maven { url='https://dist.creeper.host/Sponge/maven' }
+    //maven { url "https://www.cursemaven.com" }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("software.bernie.geckolib:forge-${minecraft_version}-geckolib:${geckolib_version}")
+    implementation fg.deobf("software.bernie.geckolib:forge-1.16.4-geckolib:${geckolib_version}")
     compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
+
+    //implementation fg.deobf("curse.maven:extraboats-337396:3154939")
 }
 
 jar {

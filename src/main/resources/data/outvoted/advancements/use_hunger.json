@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "nbt": "{Bitten:{}}"
+            "nbt": "{Bitten:1}"
           }
         ]
       }
