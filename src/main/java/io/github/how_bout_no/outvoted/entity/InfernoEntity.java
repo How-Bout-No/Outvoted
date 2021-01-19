@@ -37,6 +37,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
+import static java.lang.Math.*;
+
 public class InfernoEntity extends MonsterEntity implements IAnimatable {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
@@ -351,7 +353,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
                     this.inferno.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
+                    double d1 = livingentity.getPosX() - this.inferno.getPosX();
                     double d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
+                    double d3 = livingentity.getPosZ() - this.inferno.getPosZ();
 
                     float health = (this.inferno.getMaxHealth() - this.inferno.getHealth()) / 2;
                     float healthPercent = this.inferno.getHealth() / this.inferno.getMaxHealth();
@@ -386,24 +390,27 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                                 this.inferno.world.playSound(null, this.inferno.getPosition(), ModSounds.INFERNO_SHOOT.get(), this.inferno.getSoundCategory(), 1.0F, 1.0F);
                             }
 
-                            int offset = ((36 / (maxAttackSteps - 1)) * (attackStep - 2));
+                            final double fireballcount = 17;                //number of fireballs to shoot
+                            final double offsetangle = toRadians(4);        //angle between each fireball
+                            final double maxdepressangle = toRadians(50);   //maximum angle from the xz plane
 
-                            //shoot fireballs in circle
-                            for (int i = 0; i < 10; ++i) {
-                                for (int j = 0; j < 4; ++j) {
-                                    SmallFireballEntity smallfireballentity;
-                                    if (j == 0) {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, (i * 36 + offset), d2, 360 - (i * 36 + offset));
-                                    } else if (j == 1) {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, -(i * 36 + offset), d2, 360 - (i * 36 + offset));
-                                    } else if (j == 2) {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, (i * 36 + offset), d2, -360 + (i * 36 + offset));
-                                    } else {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, -(i * 36 + offset), d2, -360 + (i * 36 + offset));
-                                    }
-                                    smallfireballentity.setPosition(smallfireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), smallfireballentity.getPosZ());
-                                    this.inferno.world.addEntity(smallfireballentity);
-                                }
+                            //update target pos
+                            d1 = livingentity.getPosX() - this.inferno.getPosX();
+                            d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
+                            d3 = livingentity.getPosZ() - this.inferno.getPosZ();
+
+                            //shoot fireballs in a wave
+                            for (int i = 0; i < (fireballcount-1); ++i) {
+                                SmallFireballEntity smallfireballentity;
+                                double angle = (i-((fireballcount-1)/2))*offsetangle;
+                                double x = d1*cos(angle)+d3*sin(angle);
+                                double y = d2;
+                                double z = -d1*sin(angle)+d3*cos(angle);
+                                if (abs((atan2(d2, sqrt((d1*d1)+(d3*d3)))))>maxdepressangle) {
+                                    y = -tan(maxdepressangle)*(sqrt((d1*d1)+(d3*d3)));}
+                                smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, x, y, z);
+                                smallfireballentity.setPosition(smallfireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), smallfireballentity.getPosZ());
+                                this.inferno.world.addEntity(smallfireballentity);
                             }
                         }
                     } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {
