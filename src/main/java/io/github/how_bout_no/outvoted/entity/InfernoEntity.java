@@ -236,6 +236,11 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         if (this.getShielding()) {
             this.world.addParticle(ParticleTypes.LAVA, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
         }
+        if (this.getAttacking()){
+            for (int particlei = 0; particlei < 16; ++particlei){
+                this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.75D), this.getPosYRandom(), this.getPosZRandom(0.75D), 0.0D, 0.0D, 0.0D);
+            }
+        }
 
         super.livingTick();
     }
