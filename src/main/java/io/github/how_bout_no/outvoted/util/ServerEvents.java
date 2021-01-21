@@ -24,7 +24,7 @@ public class ServerEvents {
             LivingEntity player = event.getEntityLiving();
             Item shield = player.getActiveItemStack().getItem();
             if (shield instanceof InfernoShieldItem) {
-                if (player.isActiveItemStackBlocking() && !event.getSource().isProjectile()) {
+                if (player.isActiveItemStackBlocking()) {
                     if (event.getSource().isProjectile()) {
                         event.getSource().getImmediateSource().setFire(5);
                     } else {
