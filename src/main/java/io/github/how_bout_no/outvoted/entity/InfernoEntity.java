@@ -390,17 +390,17 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                                 this.inferno.world.playSound(null, this.inferno.getPosition(), ModSounds.INFERNO_SHOOT.get(), this.inferno.getSoundCategory(), 1.0F, 1.0F);
                             }
 
-                            final double fireballcount = 17;                //number of fireballs to shoot
-                            final double offsetangle = toRadians(4);        //angle between each fireball
-                            final double maxdepressangle = toRadians(50);   //maximum angle from the xz plane
+                            double fireballcount =  OutvotedConfig.COMMON.fireballcount.get();
+                            double offsetangle = OutvotedConfig.COMMON.offsetangle.get();
+                            double maxdepressangle = OutvotedConfig.COMMON.maxdepressangle.get();
 
                             //update target pos
                             d1 = livingentity.getPosX() - this.inferno.getPosX();
                             d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
                             d3 = livingentity.getPosZ() - this.inferno.getPosZ();
 
-                            //shoot fireballs in a wave
-                            for (int i = 0; i < (fireballcount-1); ++i) {
+                            //shoot fireballs
+                            for (int i = 0; i <= (fireballcount-1); ++i) {
                                 SmallFireballEntity smallfireballentity;
                                 double angle = (i-((fireballcount-1)/2))*offsetangle;
                                 double x = d1*cos(angle)+d3*sin(angle);

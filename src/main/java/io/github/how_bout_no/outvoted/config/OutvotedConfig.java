@@ -23,6 +23,10 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.BooleanValue infernovariant;
         //public final ForgeConfigSpec.BooleanValue krakenvariant;
         public final ForgeConfigSpec.BooleanValue restrictinferno;
+        public final ForgeConfigSpec.IntValue fireballcount;
+        public final ForgeConfigSpec.DoubleValue offsetangle;
+        public final ForgeConfigSpec.DoubleValue maxdepressangle;
+
 
         /**
          * Common config setup
@@ -37,6 +41,12 @@ public class OutvotedConfig {
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, Double.POSITIVE_INFINITY);
             infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it vanilla. Does not affect Inferno Helmet textures").define("Biome Variants", false);
             restrictinferno = builder.comment("Restrict Infernos to spawn only in Nether Wastes or not").define("Restrict Spawning", true);
+            builder.pop();
+
+            builder.push("inferno attack");
+            fireballcount = builder.comment("Amount of fireballs per attack").defineInRange("Fireball Count", 17, 1, 128);
+            offsetangle = builder.comment("Angle between fireballs in degrees").defineInRange("Fireball Spacing", 4.0, 1, 359);
+            maxdepressangle = builder.comment("Maximum downwards angle in degrees inferno can shoot fireballs. Prevents the Inferno from shooting straight down").defineInRange("Fireball Max Depression", 50.0, 1, 89);
             builder.pop();
 
             builder.comment("Great Hunger").push("hunger");
