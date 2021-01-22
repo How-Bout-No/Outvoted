@@ -26,6 +26,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -37,25 +38,53 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
+import static java.lang.Math.*;
+
 public class InfernoEntity extends MonsterEntity implements IAnimatable {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     private boolean shieldDisabled = false;
     private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.VARINT);
 
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.getShielding()) {
-            event.getController().transitionLengthTicks = 5;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
-        } else {
-            event.getController().transitionLengthTicks = 1;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
+        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
+
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped)){
+            if (this.getAttacking()){
+                event.getController().transitionLengthTicks = 1;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.attack"));
+            }
+            else if (this.getShielding()){
+                event.getController().transitionLengthTicks = 5;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
+            }
+            else {
+                event.getController().transitionLengthTicks = 1;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
+            }
+
         }
+        else if (!animname.equals("animation.inferno.attack")){
+            if (this.getAttacking()){
+                event.getController().transitionLengthTicks = 1;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.attack"));
+            }
+            else if (this.getShielding()){
+                event.getController().transitionLengthTicks = 5;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
+            }
+            else {
+                event.getController().transitionLengthTicks = 1;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
+            }
+        }
+
 
         return PlayState.CONTINUE;
     }
@@ -151,6 +180,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(SHIELDING, Boolean.FALSE);
+        this.dataManager.register(ATTACKING, Boolean.FALSE);
         this.dataManager.register(ON_FIRE, (byte) 0);
         this.dataManager.register(VARIANT, 0);
     }
@@ -175,6 +205,14 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         return this.dataManager.get(VARIANT);
     }
 
+    public void setAttacking(boolean attacking) {
+        this.dataManager.set(ATTACKING, attacking);
+    }
+
+    public boolean getAttacking() {
+        return this.dataManager.get(ATTACKING);
+    }
+
     public float getBrightness() {
         return 1.0F;
     }
@@ -197,6 +235,11 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         }
         if (this.getShielding()) {
             this.world.addParticle(ParticleTypes.LAVA, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
+        }
+        if (this.getAttacking()){
+            for (int particlei = 0; particlei < 16; ++particlei){
+                this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.75D), this.getPosYRandom(), this.getPosZRandom(0.75D), 0.0D, 0.0D, 0.0D);
+            }
         }
 
         super.livingTick();
@@ -256,7 +299,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                 LivingEntity entity = (LivingEntity) source.getImmediateSource();
                 if (entity.getHeldItemMainhand().getItem() instanceof AxeItem) {
                     double itemDamage = ((AxeItem) entity.getHeldItemMainhand().getItem()).getAttackDamage() + 1;
-                    if (amount == itemDamage + (itemDamage / 2)) { // Only disable shields on a critical axe hit
+                    if (amount >= itemDamage + (itemDamage / 2)) { // Only disable shields on a critical axe hit
                         this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 1.5F);
                         this.shieldDisabled = true;
                         this.setShielding(false);
@@ -321,6 +364,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         public void resetTask() {
             this.inferno.setOnFire(false);
             this.inferno.setShielding(false);
+            this.inferno.setAttacking(false);
             this.firedRecentlyTimer = 0;
         }
 
@@ -330,6 +374,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         public void tick() {
             --this.attackTime;
             LivingEntity livingentity = this.inferno.getAttackTarget();
+            this.inferno.setAttacking(false);
             if (livingentity != null) {
                 boolean flag = this.inferno.getEntitySenses().canSee(livingentity);
                 if (flag) {
@@ -344,6 +389,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                     this.inferno.setOnFire(true);
 
                     if (this.attackTime <= 0) {
+                        this.inferno.setAttacking(true);
                         this.attackTime = 5;
                         this.inferno.attackEntityAsMob(livingentity);
                         livingentity.setFire(4);
@@ -351,7 +397,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
                     this.inferno.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
+                    double d1 = livingentity.getPosX() - this.inferno.getPosX();
                     double d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
+                    double d3 = livingentity.getPosZ() - this.inferno.getPosZ();
 
                     float health = (this.inferno.getMaxHealth() - this.inferno.getHealth()) / 2;
                     float healthPercent = this.inferno.getHealth() / this.inferno.getMaxHealth();
@@ -369,41 +417,47 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                         this.inferno.setShielding(false);
                         ++this.attackStep;
                         if (this.attackStep == 1) {
-                            //this.attackTime = 60;
                             this.attackTime = (int) (40 * healthPercent + 20);
                             this.inferno.setOnFire(true);
                         } else if (this.attackStep <= maxAttackSteps) {
-                            //this.attackTime = 30;
                             this.attackTime = (int) (25 * healthPercent + 5);
                         } else {
                             this.attackTime = 200;
                             this.attackStep = 0;
                             this.inferno.setOnFire(false);
+                            this.inferno.setAttacking(false);
                         }
 
                         if (this.attackStep > 1) {
+
+                            this.inferno.setAttacking(true);
+
                             if (!this.inferno.isSilent()) {
                                 this.inferno.world.playSound(null, this.inferno.getPosition(), ModSounds.INFERNO_SHOOT.get(), this.inferno.getSoundCategory(), 1.0F, 1.0F);
                             }
 
-                            int offset = ((36 / (maxAttackSteps - 1)) * (attackStep - 2));
+                            double fireballcount = OutvotedConfig.COMMON.fireballcount.get();
+                            double offsetangle = toRadians(OutvotedConfig.COMMON.offsetangle.get());
+                            double maxdepressangle = toRadians(OutvotedConfig.COMMON.maxdepressangle.get());
 
-                            //shoot fireballs in circle
-                            for (int i = 0; i < 10; ++i) {
-                                for (int j = 0; j < 4; ++j) {
-                                    SmallFireballEntity smallfireballentity;
-                                    if (j == 0) {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, (i * 36 + offset), d2, 360 - (i * 36 + offset));
-                                    } else if (j == 1) {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, -(i * 36 + offset), d2, 360 - (i * 36 + offset));
-                                    } else if (j == 2) {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, (i * 36 + offset), d2, -360 + (i * 36 + offset));
-                                    } else {
-                                        smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, -(i * 36 + offset), d2, -360 + (i * 36 + offset));
-                                    }
-                                    smallfireballentity.setPosition(smallfireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), smallfireballentity.getPosZ());
-                                    this.inferno.world.addEntity(smallfireballentity);
+                            //update target pos
+                            d1 = livingentity.getPosX() - this.inferno.getPosX();
+                            d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
+                            d3 = livingentity.getPosZ() - this.inferno.getPosZ();
+
+                            //shoot fireballs
+                            for (int i = 0; i <= (fireballcount - 1); ++i) {
+                                SmallFireballEntity smallfireballentity;
+                                double angle = (i - ((fireballcount - 1) / 2)) * offsetangle;
+                                double x = d1 * cos(angle) + d3 * sin(angle);
+                                double y = d2;
+                                double z = -d1 * sin(angle) + d3 * cos(angle);
+                                if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
+                                    y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
                                 }
+                                smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, x, y, z);
+                                smallfireballentity.setPosition(smallfireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), smallfireballentity.getPosZ());
+                                this.inferno.world.addEntity(smallfireballentity);
                             }
                         }
                     } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {

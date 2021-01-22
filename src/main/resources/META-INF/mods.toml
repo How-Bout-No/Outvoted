@@ -20,9 +20,9 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
 logoFile="logo.png" #optional
 
-credits="Curseforge Community, David2753/Lord_Noodal for contributions, Obi and Furti for textures" #optional
-
 authors="HowBoutNo" #optional
+
+credits="Curseforge Community, Lord_Noodal for contributions, and Obi and Furti for textures" #optional
 
 description='Adds in mobs that got outvoted!'
 #A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
