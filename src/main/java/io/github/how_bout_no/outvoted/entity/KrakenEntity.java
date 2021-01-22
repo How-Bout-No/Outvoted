@@ -37,6 +37,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -61,11 +62,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getAttackPhase() != 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kraken.attack").addAnimation("animation.kraken.reelin").addAnimation("animation.kraken.reelin2"));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kraken.swim"));
+            if (this.hasTargetedEntity()) {
+                GeckoLibCache.getInstance().parser.setValue("distance", this.getDistanceSq(this.getTargetedEntity()) + 15);
+            }
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
+            return PlayState.CONTINUE;
         }
-
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
         return PlayState.CONTINUE;
     }
 
@@ -291,7 +294,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                                 boat.entityDropItem(((BoatEntity) boat).getItemBoat());
                                 try {
                                     InventoryHelper.dropInventoryItems(boat.world, boat, (IInventory) boat);
-                                } catch (Exception e) {
+                                } catch (Exception ignored) {
                                 }
                                 boat.remove();
                             }
