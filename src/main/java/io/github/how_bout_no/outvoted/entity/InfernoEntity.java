@@ -36,7 +36,10 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 
 import static java.lang.Math.*;
 
@@ -55,36 +58,20 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
 
-        if (event.getController().getAnimationState().equals(AnimationState.Stopped)){
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || !animname.equals("attack")) {
             if (this.getAttacking()){
                 event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.attack"));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
             }
-            else if (this.getShielding()){
-                event.getController().transitionLengthTicks = 5;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
-            }
-            else {
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
-            }
-
-        }
-        else if (!animname.equals("animation.inferno.attack")){
-            if (this.getAttacking()){
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.attack"));
-            }
-            else if (this.getShielding()){
-                event.getController().transitionLengthTicks = 5;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
+            else if (this.getShielding()) {
+                event.getController().transitionLengthTicks = 10;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("shielding"));
             }
             else {
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
+                event.getController().transitionLengthTicks = 10;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("general"));
             }
         }
-
 
         return PlayState.CONTINUE;
     }
@@ -297,6 +284,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         if (!this.world.isRemote) {
             if (source.getImmediateSource() instanceof LivingEntity && this.isInvulnerable()) {
                 LivingEntity entity = (LivingEntity) source.getImmediateSource();
+                // Shield disabling on critical axe hit
                 if (entity.getHeldItemMainhand().getItem() instanceof AxeItem) {
                     double itemDamage = ((AxeItem) entity.getHeldItemMainhand().getItem()).getAttackDamage() + 1;
                     if (amount >= itemDamage + (itemDamage / 2)) { // Only disable shields on a critical axe hit
@@ -325,10 +313,12 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        if (source == DamageSource.DROWN) {
+        // Some jank stuff because setting invulnerability in animation code is wack
+        if (source == DamageSource.GENERIC && !source.isCreativePlayer()) {
+            return this.isInvulnerable();
+        } else {
             return false;
         }
-        return super.isInvulnerableTo(source);
     }
 
     static class AttackGoal extends Goal {
