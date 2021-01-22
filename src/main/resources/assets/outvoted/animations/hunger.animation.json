@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.great_hunger.burrow": {
+		"burrow": {
 			"animation_length": 1.04,
 			"bones": {
 				"top": {
@@ -182,7 +182,7 @@
 				}
 			}
 		},
-		"animation.great_hunger.burrow2": {
+		"burrowed": {
 			"loop": true,
 			"animation_length": 0.04,
 			"bones": {
@@ -226,7 +226,7 @@
 				}
 			}
 		},
-		"animation.great_hunger.bite": {
+		"chomp": {
 			"animation_length": 0.28,
 			"bones": {
 				"top": {
@@ -275,7 +275,7 @@
 				}
 			}
 		},
-		"animation.great_hunger.bite2": {
+		"bite": {
 			"animation_length": 0.28,
 			"bones": {
 				"top": {
@@ -326,7 +326,7 @@
 				}
 			}
 		},
-		"animation.great_hunger.bite2loop": {
+		"biteloop": {
 			"loop": true,
 			"animation_length": 0.04,
 			"bones": {
@@ -373,7 +373,7 @@
 				}
 			}
 		},
-		"animation.great_hunger.idle": {
+		"idle": {
 			"loop": true,
 			"animation_length": 3,
 			"bones": {
@@ -409,7 +409,7 @@
 				}
 			}
 		},
-		"animation.great_hunger.attacking": {
+		"attacking": {
 			"loop": true,
 			"animation_length": 0.56,
 			"bones": {

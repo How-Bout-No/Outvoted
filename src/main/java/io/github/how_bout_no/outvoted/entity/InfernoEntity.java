@@ -19,6 +19,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -36,10 +37,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.List;
 
 import static java.lang.Math.*;
 
@@ -59,16 +57,11 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
 
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || !animname.equals("attack")) {
-            if (this.getAttacking()){
-                event.getController().transitionLengthTicks = 1;
+            if (this.getAttacking()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
-            }
-            else if (this.getShielding()) {
-                event.getController().transitionLengthTicks = 5;
+            } else if (this.getShielding()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("shieldtransition").addAnimation("shielding"));
-            }
-            else {
-                event.getController().transitionLengthTicks = 5;
+            } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
             }
         }
@@ -78,7 +71,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
+        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
         data.addAnimationController(controller);
     }
 
@@ -223,8 +216,8 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         if (this.getShielding()) {
             this.world.addParticle(ParticleTypes.LAVA, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
         }
-        if (this.getAttacking()){
-            for (int particlei = 0; particlei < 16; ++particlei){
+        if (this.getAttacking()) {
+            for (int particlei = 0; particlei < 16; ++particlei) {
                 this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.75D), this.getPosYRandom(), this.getPosZRandom(0.75D), 0.0D, 0.0D, 0.0D);
             }
         }
@@ -298,7 +291,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
             }
             if (this.isInvulnerableTo(source)) {
                 this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
-
                 if (source.isProjectile()) {
                     source.getImmediateSource().setFire(12);
                 } else if (source.getImmediateSource() != null) {
@@ -313,8 +305,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        // Some jank stuff because setting invulnerability in animation code is wack
-        if (source == DamageSource.GENERIC && !source.isCreativePlayer()) {
+        if ((source == DamageSource.GENERIC || source instanceof EntityDamageSource) && !source.isCreativePlayer()) {
             return this.isInvulnerable();
         } else {
             return false;

@@ -60,30 +60,30 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
         if (this.isBurrowed()) {
             if (this.isEnchanting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite2").addAnimation("animation.great_hunger.bite2loop", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("bite").addAnimation("biteloop", true));
             } else {
                 if (event.getController().getCurrentAnimation() != null) {
-                    if (animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking") || animname.equals("animation.great_hunger.bite") || animname.equals("animation.great_hunger.burrow")) {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
+                    if (animname.equals("idle") || animname.equals("attacking") || animname.equals("chomp") || animname.equals("burrow")) {
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("burrow").addAnimation("burrowed", true));
                     } else {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow2", true));
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("burrowed", true));
                     }
                 } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.burrow").addAnimation("animation.great_hunger.burrow2", true));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("burrow").addAnimation("burrowed", true));
                 }
             }
         } else {
-            if (event.getController().getCurrentAnimation() == null || animname.equals("animation.great_hunger.idle") || animname.equals("animation.great_hunger.attacking")) {
+            if (event.getController().getCurrentAnimation() == null || animname.equals("idle") || animname.equals("attacking")) {
                 if (this.isAttacking()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.attacking"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking"));
                 } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.idle"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
                 }
             } else {
                 if (this.isAttacking()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.attacking"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("chomp").addAnimation("attacking"));
                 } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.great_hunger.bite").addAnimation("animation.great_hunger.idle"));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("chomp").addAnimation("idle"));
                 }
             }
         }
