@@ -64,12 +64,12 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
             }
             else if (this.getShielding()) {
-                event.getController().transitionLengthTicks = 10;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("shielding"));
+                event.getController().transitionLengthTicks = 5;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("shieldtransition").addAnimation("shielding"));
             }
             else {
-                event.getController().transitionLengthTicks = 10;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("general"));
+                event.getController().transitionLengthTicks = 5;
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
             }
         }
 
