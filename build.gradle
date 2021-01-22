@@ -7,16 +7,19 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url='https://dist.creeper.host/Sponge/maven' }
+        maven { url  = 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: "com.matthewprenger.cursegradle"
 
 version =  "${minecraft_version}-${mod_version}"
 group = 'io.github.how_bout_no.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -74,6 +77,10 @@ repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url='https://dist.creeper.host/Sponge/maven' }
     //maven { url "https://www.cursemaven.com" }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 dependencies {
@@ -150,4 +157,28 @@ apply plugin: 'org.spongepowered.mixin'
 
 mixin {
     add sourceSets.main, "outvoted.refmap.json"
+}
+
+curseforge {
+
+    def curseProp = new Properties()
+    File secretPropsFile = file("key.properties")
+    curseProp.load(secretPropsFile.newInputStream())
+    apiKey = curseProp.getProperty('curseKey')
+
+    project {
+        id = "415057"
+        releaseType = "release"
+        changelogType = 'text'
+        changelog = file('changelog.txt')
+        addGameVersion("1.16.3")
+        addGameVersion("1.16.4")
+        addGameVersion("1.16.5")
+        addGameVersion("Forge")
+        addGameVersion("Java 8")
+
+        mainArtifact(jar) {
+            displayName = "Outvoted-${minecraft_version}-${mod_version}"
+        }
+    }
 }
