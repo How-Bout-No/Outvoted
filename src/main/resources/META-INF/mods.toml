@@ -24,7 +24,9 @@ authors="HowBoutNo" #optional
 
 credits="Curseforge Community, Lord_Noodal for contributions, and Obi and Furti for textures" #optional
 
-description='Adds in mobs that got outvoted!'
+description='''Adds in mobs that got outvoted!
+
+With generous support from TheMasterBlast_r'''
 #A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.outvoted]]
     modId="geckolib3"
