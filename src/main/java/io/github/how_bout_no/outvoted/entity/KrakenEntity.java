@@ -300,7 +300,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                             }
                         }
                         if (this.getAttackPhase() != 0) {
-                            livingentity.addVelocity(-d0 / 60, -d1 / 60, -d2 / 60);
+                            livingentity.addVelocity(-d0 / 50, -d1 / 50, -d2 / 50);
                         }
                     }
                 }
@@ -492,19 +492,12 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                         this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
                         targetedEntities.put(livingentity.getEntityId(), this.entity.getUniqueID());
                     } else if (this.tickCounter >= this.entity.getAttackDuration()) {
-                        float f = 2.0F;
-                        if (this.entity.world.getDifficulty() == Difficulty.HARD) {
-                            f += 4.0F;
-                        }
-
                         if (this.tickCounter % 20 == 0) {
                             //livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), f);
-                            if (livingentity.getActivePotionEffect(Effects.WATER_BREATHING) != null) {
-                                livingentity.attackEntityFrom(DamageSource.DROWN, f);
+                            if (livingentity.getActivePotionEffect(Effects.WATER_BREATHING) != null && livingentity.getAir() == 0) {
+                                livingentity.attackEntityFrom(DamageSource.DROWN, 2.0F);
                             }
-                            if (livingentity.getAir() - 45 >= 0) {
-                                livingentity.setAir(livingentity.getAir() - 45);
-                            }
+                            livingentity.setAir(Math.max(livingentity.getAir() - 45, 0));
                         }
                     }
                 }
