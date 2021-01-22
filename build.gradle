@@ -114,6 +114,8 @@ buildscript {
     def updateJson = new JsonSlurper().parse(updateJsonFile) as Map
 
     // Update promos
+    updateJson.promos."1.16.5-latest" = "${mod_version}"
+    updateJson.promos."1.16.5-recommended" = "${mod_version}"
     updateJson.promos."1.16.4-latest" = "${mod_version}"
     updateJson.promos."1.16.4-recommended" = "${mod_version}"
     updateJson.promos."1.16.3-latest" = "${mod_version}"
