@@ -28,6 +28,6 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES
             .register("kraken", () -> EntityType.Builder
                     .create(KrakenEntity::new, EntityClassification.MONSTER)
-                    .size(1.0F, 1.0F)
+                    .size(1.2F, 1.2F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
 }
