@@ -161,26 +161,27 @@ mixin {
     add sourceSets.main, "outvoted.refmap.json"
 }
 
-curseforge {
+if (file("key.properties").exists()) {
+    curseforge {
+        def curseProp = new Properties()
+        File secretPropsFile = file("key.properties")
+        curseProp.load(secretPropsFile.newInputStream())
+        apiKey = curseProp.getProperty('curseKey')
 
-    def curseProp = new Properties()
-    File secretPropsFile = file("key.properties")
-    curseProp.load(secretPropsFile.newInputStream())
-    apiKey = curseProp.getProperty('curseKey')
+        project {
+            id = "415057"
+            releaseType = "release"
+            changelogType = 'text'
+            changelog = file('changelog.txt')
+            addGameVersion("1.16.3")
+            addGameVersion("1.16.4")
+            addGameVersion("1.16.5")
+            addGameVersion("Forge")
+            addGameVersion("Java 8")
 
-    project {
-        id = "415057"
-        releaseType = "release"
-        changelogType = 'text'
-        changelog = file('changelog.txt')
-        addGameVersion("1.16.3")
-        addGameVersion("1.16.4")
-        addGameVersion("1.16.5")
-        addGameVersion("Forge")
-        addGameVersion("Java 8")
-
-        mainArtifact(jar) {
-            displayName = "Outvoted-${minecraft_version}-${mod_version}"
+            mainArtifact(jar) {
+                displayName = "Outvoted-${minecraft_version}-${mod_version}"
+            }
         }
     }
 }
