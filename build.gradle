@@ -38,6 +38,11 @@ minecraft {
         client {
             workingDirectory project.file('run')
             arg '-mixin.config=outvoted.mixins.json'
+            /*
+            -XX:HotswapAgent=fatjar is an argument related to DCEVM/HotswapAgent, allowing the modification of classes while running in debug
+            The JDK pertaining to this option can be found at https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases, otherwise it can be omitted
+             */
+            jvmArg '-XX:HotswapAgent=fatjar'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {

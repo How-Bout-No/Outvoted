@@ -16,14 +16,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Download Trava JDK 11
-      run: wget https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases/latest/download/java11-openjdk-dcevm-linux.tar.gz
-    - name: Set up Trava JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: "11.0.9"
-        architecture: x64
-        jdkFile: ./java11-openjdk-dcevm-linux.tar.gz
+        java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
