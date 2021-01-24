@@ -276,7 +276,7 @@
 			}
 		},
 		"bite": {
-			"animation_length": 0.28,
+			"animation_length": 0.12,
 			"bones": {
 				"top": {
 					"rotation": {
@@ -287,9 +287,6 @@
 							"vector": [-70, 0, 0],
 							"easing": "easeInCirc"
 						}
-					},
-					"position": {
-						"vector": [0, 0, 0]
 					}
 				},
 				"all": {
@@ -297,7 +294,7 @@
 						"0.0": {
 							"vector": [-20, 0, 0]
 						},
-						"0.28": {
+						"0.12": {
 							"vector": [-20, 0, 0]
 						}
 					},
@@ -305,7 +302,7 @@
 						"0.0": {
 							"vector": [0, -18, -9]
 						},
-						"0.28": {
+						"0.12": {
 							"vector": [0, -18, -9],
 							"easing": "linear"
 						}
@@ -319,16 +316,63 @@
 						"0.12": {
 							"vector": [-70, 0, 0]
 						}
-					},
+					}
+				},
+				"body": {
 					"position": {
-						"vector": [0, 0, 0]
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [0, 6, 0]
+						}
+					}
+				},
+				"LegFR": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [0, 6, 0]
+						}
+					}
+				},
+				"LegBR": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [0, 6, 0]
+						}
+					}
+				},
+				"LegFL": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [0, 6, 0]
+						}
+					}
+				},
+				"LegBL": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [0, 6, 0]
+						}
 					}
 				}
 			}
 		},
 		"biteloop": {
 			"loop": true,
-			"animation_length": 0.04,
+			"animation_length": 0.12,
 			"bones": {
 				"top": {
 					"rotation": {
@@ -340,6 +384,9 @@
 							"vector": [-70, 0, 0],
 							"easing": "easeInCirc"
 						}
+					},
+					"position": {
+						"vector": [0, 1, 1]
 					}
 				},
 				"all": {
@@ -354,10 +401,6 @@
 					"position": {
 						"0.0": {
 							"vector": [0, -18, -9]
-						},
-						"0.04": {
-							"vector": [0, -18, -9],
-							"easing": "linear"
 						}
 					}
 				},
@@ -369,6 +412,31 @@
 						"0.04": {
 							"vector": [-70, 0, 0]
 						}
+					}
+				},
+				"body": {
+					"position": {
+						"vector": [0, 6, 0]
+					}
+				},
+				"LegFR": {
+					"position": {
+						"vector": [0, 6, 0]
+					}
+				},
+				"LegBR": {
+					"position": {
+						"vector": [0, 6, 0]
+					}
+				},
+				"LegFL": {
+					"position": {
+						"vector": [0, 6, 0]
+					}
+				},
+				"LegBL": {
+					"position": {
+						"vector": [0, 6, 0]
 					}
 				}
 			}

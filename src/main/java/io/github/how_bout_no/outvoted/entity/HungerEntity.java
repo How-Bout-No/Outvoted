@@ -28,7 +28,9 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -563,6 +565,22 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
     }
 
+    /**
+     * Creates a vector based on caclulated direction of one of the 8 cardinal directions the entity is facing
+     *
+     * @return
+     */
+    private Vector3d directionVector() {
+        Vector3d vec3d = Vector3d.ZERO;
+        double rotation = this.rotationYaw - 180;
+        if (rotation < 0) rotation += 360;
+        int ordinal = MathHelper.floor(rotation / 45.0D + 0.5D) & 7;
+        for (Direction direction : Direction8.values()[ordinal].getDirections()) {
+            vec3d = vec3d.add(new Vector3d(direction.toVector3f()));
+        }
+        return vec3d;
+    }
+
     static class BurrowGoal extends Goal {
         private final HungerEntity hunger;
         private int tick = 0;
@@ -590,12 +608,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public void tick() {
-            List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, this.hunger.getBoundingBox().expand(1.0D, 0.0D, 1.0D).expand(-1.0D, 0.0D, -1.0D));
+            Vector3d vec3d = this.hunger.directionVector().scale(0.66D);
+            AxisAlignedBB boundingBox = this.hunger.getBoundingBox().expand(vec3d).expand(vec3d.inverse());
+            List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, boundingBox);
             if (!entities.isEmpty()) {
                 if (!this.hunger.isAttacking() && !this.hunger.isEnchanting()) {
                     for (Entity entity : entities) {
-                        double d0 = this.hunger.getDistanceSq(entity);
-                        if (d0 < 1.1) {
+                        if (boundingBox.contains(entity.getPositionVec())) {
                             if (entity instanceof ItemEntity) {
                                 ItemStack item = ((ItemEntity) entity).getItem();
                                 if (((ItemEntity) entity).getThrowerId() != this.hunger.getUniqueID()) {
