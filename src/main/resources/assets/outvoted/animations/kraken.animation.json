@@ -71,10 +71,10 @@
 				},
 				"tongue": {
 					"position": {
-						"vector": [0, "Math.clamp(distance, 10, 60)", 0]
+						"vector": [0, "distance - 5 + Math.min(distance, 5)", 0]
 					},
 					"scale": {
-						"vector": [1, "Math.clamp(distance, 10, 60)", 1]
+						"vector": [1, "distance - 5 + Math.min(distance, 5)", 1]
 					}
 				}
 			}
@@ -128,7 +128,7 @@
 							"vector": [0, 0, 0]
 						},
 						"0.56": {
-							"vector": [0, "math.clamp(distance, 10, 60)", 0]
+							"vector": [0, "distance", 0]
 						}
 					},
 					"scale": {
@@ -136,7 +136,7 @@
 							"vector": [1, 1, 1]
 						},
 						"0.56": {
-							"vector": [1, "math.clamp(distance, 10, 60)", 1]
+							"vector": [1, "distance", 1]
 						}
 					}
 				}
