@@ -1,16 +1,7 @@
-Inferno (Thanks to Lord_Noodal for most of these!)
-- Now has an attack animation
-- Inferno no longer shoots fireballs in a circle, instead angles a configurable amount towards its target
-- Inferno is only invulnerable when its shield transition is done
-- Fixed bug where shield would not be disabled on critical axe hit
+Hunger
+- Slightly altered animations
+- Slightly increased hitbox size
+- New hitbox detection method for items and entities
 
 Kraken
-- Removed damage penalty for water breathing, instead just applies normal drowning damage
-- Buffed pull speed
-- Animations have been adjusted, tongue now attaches to player
-
-Inferno Shield
-- Fix not setting deflected arrow on fire
-
-Inferno Helmet
-- Now has a different texture depending on which Inferno variant dropped it (is not affected by config)
+- Marginally increased hitbox size
