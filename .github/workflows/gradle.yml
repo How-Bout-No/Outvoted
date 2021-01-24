@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Download Trava JDK 11
-      run: curl -O "https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases/latest/download/java11-openjdk-dcevm-linux.tar.gz"
+      run: wget https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases/latest/download/java11-openjdk-dcevm-linux.tar.gz
     - name: Set up Trava JDK 11
       uses: actions/setup-java@v1
       with:
