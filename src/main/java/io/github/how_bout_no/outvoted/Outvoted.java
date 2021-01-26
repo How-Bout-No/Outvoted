@@ -1,10 +1,7 @@
 package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
-import io.github.how_bout_no.outvoted.init.ModItems;
-import io.github.how_bout_no.outvoted.init.ModRecipes;
-import io.github.how_bout_no.outvoted.init.ModSounds;
+import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.util.ServerEvents;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -24,6 +21,7 @@ import software.bernie.geckolib3.GeckoLib;
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
     public static ItemGroup TAB_COMBAT;
+    //public static ItemGroup TAB_MATERIAL;
     public static ItemGroup TAB_MISC;
 
     public static final Logger LOGGER = LogManager.getLogger();
@@ -36,6 +34,8 @@ public class Outvoted {
 
         GeckoLib.initialize();
         ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModBlocks.BLOCK_ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
