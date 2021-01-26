@@ -20,6 +20,8 @@ import software.bernie.geckolib3.GeckoLib;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
+    public static ItemGroup TAB_BLOCKS;
+    public static ItemGroup TAB_DECO;
     public static ItemGroup TAB_COMBAT;
     //public static ItemGroup TAB_MATERIAL;
     public static ItemGroup TAB_MISC;
@@ -50,9 +52,13 @@ public class Outvoted {
                     return new ItemStack(ModItems.INFERNO_HELMET.get());
                 }
             };
+            TAB_BLOCKS = TAB;
+            TAB_DECO = TAB;
             TAB_COMBAT = TAB;
             TAB_MISC = TAB;
         } else {
+            TAB_BLOCKS = ItemGroup.BUILDING_BLOCKS;
+            TAB_DECO = ItemGroup.DECORATIONS;
             TAB_COMBAT = ItemGroup.COMBAT;
             TAB_MISC = ItemGroup.MISC;
         }

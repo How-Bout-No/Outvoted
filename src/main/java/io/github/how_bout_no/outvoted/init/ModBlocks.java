@@ -27,7 +27,7 @@ public class ModBlocks {
     public static final RegistryObject<Item> PALM_PLANKS_ITEM = BLOCK_ITEMS.register("palm_planks",() -> new ModBlockItem(PALM_PLANKS.get(), new Item.Properties()));
     public static final RegistryObject<Item> PALM_LOG_ITEM = BLOCK_ITEMS.register("palm_log",() -> new ModBlockItem(PALM_LOG.get(), new Item.Properties()));
     public static final RegistryObject<Item> PALM_LEAVES_ITEM = BLOCK_ITEMS.register("palm_leaves", () -> new ModBlockItem(PALM_LEAVES.get(), new Item.Properties()));
-    public static final RegistryObject<Item> PALM_SAPLING_ITEM = BLOCK_ITEMS.register("palm_sapling", () -> new ModBlockItem(PALM_SAPLING.get(), new Item.Properties()));
+    public static final RegistryObject<Item> PALM_SAPLING_ITEM = BLOCK_ITEMS.register("palm_sapling", () -> new ModBlockItem(PALM_SAPLING.get(), new Item.Properties(), 1));
     public static final RegistryObject<Item> PALM_WOOD_ITEM = BLOCK_ITEMS.register("palm_wood",() -> new ModBlockItem(PALM_WOOD.get(), new Item.Properties()));
     public static final RegistryObject<Item> STRIPPED_PALM_LOG_ITEM = BLOCK_ITEMS.register("stripped_palm_log", () -> new ModBlockItem(STRIPPED_PALM_LOG.get(), new Item.Properties()));
     public static final RegistryObject<Item> STRIPPED_PALM_WOOD_ITEM = BLOCK_ITEMS.register("stripped_palm_wood", () -> new ModBlockItem(STRIPPED_PALM_WOOD.get(), new Item.Properties()));
