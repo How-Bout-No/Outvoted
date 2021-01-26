@@ -37,20 +37,20 @@ public class OutvotedConfig {
          * @param builder
          */
         public Common(ForgeConfigSpec.Builder builder) {
-            builder.comment("Hovering Inferno").push("Inferno");
+            builder.comment("Hovering Inferno").push("inferno");
             spawninferno = builder.comment("This will affect all Inferno spawns (natural + spawner)").define("Natural Spawning", true);
             rateinferno = builder.defineInRange("Inferno Spawn Weight", 1, 1, 100);
             healthinferno = builder.defineInRange("Max Health", 50.0D, 1.0D, Double.POSITIVE_INFINITY);
             infernovariant = builder.comment("Blue coloration to *both* Blazes and Infernos in Soul Sand Valleys. Disabled by default to keep it vanilla. Does not affect Inferno Helmet textures").define("Biome Variants", false);
             restrictinferno = builder.comment("Restrict Infernos to spawn only in Nether Wastes or not").define("Restrict Spawning", true);
-            builder.pop();
 
-            builder.comment("Hovering Inferno").push("Inferno Attack");
+            builder.comment("Attack Configuration").push("attack");
             fireballcount = builder.comment("Amount of fireballs per attack").defineInRange("Fireball Count", 17, 1, 360);
             offsetangle = builder.comment("Angle between fireballs in degrees").defineInRange("Fireball Spacing", 4.0, 1, 359);
             maxdepressangle = builder.comment("Maximum downwards angle in degrees inferno can shoot fireballs. Prevents the Inferno from shooting straight down").defineInRange("Fireball Max Depression", 50.0, 1, 89);
             infernodofireballexplosion = builder.comment("Determines whether Inferno Fireball should explode").define("Explode", false);
             infernofireballexplosionpower = builder.comment("Sets Inferno Fireball explosion radius").defineInRange("Explosion Radius", 0.5, 0.1, 4);
+            builder.pop();
             builder.pop();
 
             builder.comment("Great Hunger").push("hunger");
