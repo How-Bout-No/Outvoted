@@ -1,0 +1,13 @@
+{
+  "type": "outvoted:crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "outvoted:palm_logs"
+    }
+  ],
+  "result": {
+    "item": "outvoted:palm_planks",
+    "count": 4
+  }
+}
