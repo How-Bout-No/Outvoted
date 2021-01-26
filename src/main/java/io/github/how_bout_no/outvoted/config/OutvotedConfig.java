@@ -26,6 +26,8 @@ public class OutvotedConfig {
         public final ForgeConfigSpec.IntValue fireballcount;
         public final ForgeConfigSpec.DoubleValue offsetangle;
         public final ForgeConfigSpec.DoubleValue maxdepressangle;
+        public final ForgeConfigSpec.BooleanValue infernodofireballexplosion;
+        public final ForgeConfigSpec.DoubleValue infernofireballexplosionpower;
 
 
         /**
@@ -45,6 +47,8 @@ public class OutvotedConfig {
             fireballcount = builder.comment("Amount of fireballs per attack").defineInRange("Fireball Count", 17, 1, 360);
             offsetangle = builder.comment("Angle between fireballs in degrees").defineInRange("Fireball Spacing", 4.0, 1, 359);
             maxdepressangle = builder.comment("Maximum downwards angle in degrees inferno can shoot fireballs. Prevents the Inferno from shooting straight down").defineInRange("Fireball Max Depression", 50.0, 1, 89);
+            infernodofireballexplosion = builder.comment("Determines whether Inferno Fireball should explode").define("Explode", false);
+            infernofireballexplosionpower = builder.comment("Sets Inferno Fireball explosion radius").defineInRange("Explosion Radius", 0.5, 0.1, 4);
             builder.pop();
 
             builder.comment("Great Hunger").push("hunger");
