@@ -7,16 +7,19 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url='https://dist.creeper.host/Sponge/maven' }
+        maven { url  = 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: "com.matthewprenger.cursegradle"
 
 version =  "${minecraft_version}-${mod_version}"
 group = 'io.github.how_bout_no.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -35,6 +38,11 @@ minecraft {
         client {
             workingDirectory project.file('run')
             arg '-mixin.config=outvoted.mixins.json'
+            /*
+            -XX:HotswapAgent=fatjar is an argument related to DCEVM/HotswapAgent, allowing the modification of classes while running in debug
+            The JDK pertaining to this option can be found at https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases, otherwise it can be omitted
+             */
+            jvmArg '-XX:HotswapAgent=fatjar'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -74,12 +82,16 @@ repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url='https://dist.creeper.host/Sponge/maven' }
     //maven { url "https://www.cursemaven.com" }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("software.bernie.geckolib:forge-1.16.4-geckolib:${geckolib_version}")
+    implementation fg.deobf("software.bernie.geckolib:forge-${minecraft_version}-geckolib:${geckolib_version}")
     compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
 
     //implementation fg.deobf("curse.maven:extraboats-337396:3154939")
@@ -107,6 +119,8 @@ buildscript {
     def updateJson = new JsonSlurper().parse(updateJsonFile) as Map
 
     // Update promos
+    updateJson.promos."1.16.5-latest" = "${mod_version}"
+    updateJson.promos."1.16.5-recommended" = "${mod_version}"
     updateJson.promos."1.16.4-latest" = "${mod_version}"
     updateJson.promos."1.16.4-recommended" = "${mod_version}"
     updateJson.promos."1.16.3-latest" = "${mod_version}"
@@ -150,4 +164,29 @@ apply plugin: 'org.spongepowered.mixin'
 
 mixin {
     add sourceSets.main, "outvoted.refmap.json"
+}
+
+if (file("key.properties").exists()) {
+    curseforge {
+        def curseProp = new Properties()
+        File secretPropsFile = file("key.properties")
+        curseProp.load(secretPropsFile.newInputStream())
+        apiKey = curseProp.getProperty('curseKey')
+
+        project {
+            id = "415057"
+            releaseType = "release"
+            changelogType = 'text'
+            changelog = file('changelog.txt')
+            addGameVersion("1.16.3")
+            addGameVersion("1.16.4")
+            addGameVersion("1.16.5")
+            addGameVersion("Forge")
+            addGameVersion("Java 8")
+
+            mainArtifact(jar) {
+                displayName = "Outvoted-${minecraft_version}-${mod_version}"
+            }
+        }
+    }
 }

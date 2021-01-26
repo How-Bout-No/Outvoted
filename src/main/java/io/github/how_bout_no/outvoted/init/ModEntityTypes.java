@@ -23,11 +23,11 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES
             .register("hunger", () -> EntityType.Builder
                     .create(HungerEntity::new, EntityClassification.CREATURE)
-                    .size(0.9F, 1.2F)
+                    .size(1.0F, 1.2F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "hunger").toString()));
     public static final RegistryObject<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES
             .register("kraken", () -> EntityType.Builder
                     .create(KrakenEntity::new, EntityClassification.MONSTER)
-                    .size(1.0F, 1.0F)
+                    .size(1.2F, 1.2F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
 }

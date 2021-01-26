@@ -1,0 +1,7 @@
+Hunger
+- Slightly altered animations
+- Slightly increased hitbox size
+- New hitbox detection method for items and entities
+
+Kraken
+- Marginally increased hitbox size

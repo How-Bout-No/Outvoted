@@ -19,6 +19,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -55,20 +56,14 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
 
-        if (event.getController().getAnimationState().equals(AnimationState.Stopped)){
-            if (this.getAttacking()){
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.attack"));
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || !animname.equals("attack")) {
+            if (this.getAttacking()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            } else if (this.getShielding()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("shieldtransition").addAnimation("shielding"));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
             }
-            else if (this.getShielding()){
-                event.getController().transitionLengthTicks = 5;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
-            }
-            else {
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
-            }
-
         }
         else if (!animname.equals("animation.inferno.attack")){
             if (this.getAttacking()){
@@ -91,7 +86,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
+        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
         data.addAnimationController(controller);
     }
 
@@ -236,8 +231,8 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         if (this.getShielding()) {
             this.world.addParticle(ParticleTypes.LAVA, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
         }
-        if (this.getAttacking()){
-            for (int particlei = 0; particlei < 16; ++particlei){
+        if (this.getAttacking()) {
+            for (int particlei = 0; particlei < 16; ++particlei) {
                 this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.75D), this.getPosYRandom(), this.getPosZRandom(0.75D), 0.0D, 0.0D, 0.0D);
             }
         }
@@ -297,6 +292,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         if (!this.world.isRemote) {
             if (source.getImmediateSource() instanceof LivingEntity && this.isInvulnerable()) {
                 LivingEntity entity = (LivingEntity) source.getImmediateSource();
+                // Shield disabling on critical axe hit
                 if (entity.getHeldItemMainhand().getItem() instanceof AxeItem) {
                     double itemDamage = ((AxeItem) entity.getHeldItemMainhand().getItem()).getAttackDamage() + 1;
                     if (amount >= itemDamage + (itemDamage / 2)) { // Only disable shields on a critical axe hit
@@ -310,7 +306,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
             }
             if (this.isInvulnerableTo(source)) {
                 this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
-
                 if (source.isProjectile()) {
                     source.getImmediateSource().setFire(12);
                 } else if (source.getImmediateSource() != null) {
@@ -325,10 +320,11 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        if (source == DamageSource.DROWN) {
+        if ((source == DamageSource.GENERIC || source instanceof EntityDamageSource) && !source.isCreativePlayer()) {
+            return this.isInvulnerable();
+        } else {
             return false;
         }
-        return super.isInvulnerableTo(source);
     }
 
     static class AttackGoal extends Goal {
@@ -447,7 +443,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
                             //shoot fireballs
                             for (int i = 0; i <= (fireballcount - 1); ++i) {
-                                InfernoFireballEntity infernofireballentity;
+                                SmallFireballEntity smallfireballentity;
                                 double angle = (i - ((fireballcount - 1) / 2)) * offsetangle;
                                 double x = d1 * cos(angle) + d3 * sin(angle);
                                 double y = d2;
@@ -455,9 +451,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                                 if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
                                     y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
                                 }
-                                infernofireballentity = new InfernoFireballEntity(this.inferno.world, this.inferno, x, y, z);
-                                infernofireballentity.setPosition(infernofireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), infernofireballentity.getPosZ());
-                                this.inferno.world.addEntity(infernofireballentity);
+                                smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, x, y, z);
+                                smallfireballentity.setPosition(smallfireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), smallfireballentity.getPosZ());
+                                this.inferno.world.addEntity(smallfireballentity);
                             }
                         }
                     } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {

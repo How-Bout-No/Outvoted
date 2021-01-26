@@ -26,7 +26,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -37,6 +36,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -61,11 +61,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getAttackPhase() != 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kraken.attack").addAnimation("animation.kraken.reelin").addAnimation("animation.kraken.reelin2"));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kraken.swim"));
+            if (this.hasTargetedEntity()) {
+                GeckoLibCache.getInstance().parser.setValue("distance", this.getDistanceSq(this.getTargetedEntity()) + 15);
+            }
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
+            return PlayState.CONTINUE;
         }
-
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
         return PlayState.CONTINUE;
     }
 
@@ -291,13 +293,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                                 boat.entityDropItem(((BoatEntity) boat).getItemBoat());
                                 try {
                                     InventoryHelper.dropInventoryItems(boat.world, boat, (IInventory) boat);
-                                } catch (Exception e) {
+                                } catch (Exception ignored) {
                                 }
                                 boat.remove();
                             }
                         }
                         if (this.getAttackPhase() != 0) {
-                            livingentity.addVelocity(-d0 / 60, -d1 / 60, -d2 / 60);
+                            livingentity.addVelocity(-d0 / 50, -d1 / 50, -d2 / 50);
                         }
                     }
                 }
@@ -489,19 +491,12 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                         this.entity.setTargetedEntity(this.entity.getAttackTarget().getEntityId());
                         targetedEntities.put(livingentity.getEntityId(), this.entity.getUniqueID());
                     } else if (this.tickCounter >= this.entity.getAttackDuration()) {
-                        float f = 2.0F;
-                        if (this.entity.world.getDifficulty() == Difficulty.HARD) {
-                            f += 4.0F;
-                        }
-
                         if (this.tickCounter % 20 == 0) {
                             //livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), f);
-                            if (livingentity.getActivePotionEffect(Effects.WATER_BREATHING) != null) {
-                                livingentity.attackEntityFrom(DamageSource.DROWN, f);
+                            if (livingentity.getActivePotionEffect(Effects.WATER_BREATHING) != null && livingentity.getAir() == 0) {
+                                livingentity.attackEntityFrom(DamageSource.DROWN, 2.0F);
                             }
-                            if (livingentity.getAir() - 45 >= 0) {
-                                livingentity.setAir(livingentity.getAir() - 45);
-                            }
+                            livingentity.setAir(Math.max(livingentity.getAir() - 45, 0));
                         }
                     }
                 }
