@@ -65,21 +65,6 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
             }
         }
-        else if (!animname.equals("animation.inferno.attack")){
-            if (this.getAttacking()){
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.attack"));
-            }
-            else if (this.getShielding()){
-                event.getController().transitionLengthTicks = 5;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.shield").addAnimation("animation.inferno.shield2"));
-            }
-            else {
-                event.getController().transitionLengthTicks = 1;
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.inferno.generaltran").addAnimation("animation.inferno.general"));
-            }
-        }
-
 
         return PlayState.CONTINUE;
     }
@@ -443,7 +428,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
                             //shoot fireballs
                             for (int i = 0; i <= (fireballcount - 1); ++i) {
-                                SmallFireballEntity smallfireballentity;
+                                InfernoFireballEntity infernofireballentity;
                                 double angle = (i - ((fireballcount - 1) / 2)) * offsetangle;
                                 double x = d1 * cos(angle) + d3 * sin(angle);
                                 double y = d2;
@@ -451,9 +436,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                                 if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
                                     y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
                                 }
-                                smallfireballentity = new SmallFireballEntity(this.inferno.world, this.inferno, x, y, z);
-                                smallfireballentity.setPosition(smallfireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), smallfireballentity.getPosZ());
-                                this.inferno.world.addEntity(smallfireballentity);
+                                infernofireballentity = new InfernoFireballEntity(this.inferno.world, this.inferno, x, y, z);
+                                infernofireballentity.setPosition(infernofireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), infernofireballentity.getPosZ());
+                                this.inferno.world.addEntity(infernofireballentity);
                             }
                         }
                     } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {
