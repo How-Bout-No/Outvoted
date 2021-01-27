@@ -6,6 +6,7 @@ import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.Tags;
 
 public class PalmTreeSaplingBlock extends SaplingBlock {
@@ -15,6 +16,11 @@ public class PalmTreeSaplingBlock extends SaplingBlock {
 
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return state.isIn(Tags.Blocks.SAND);
+        return super.isValidGround(state, worldIn, pos) || state.isIn(Tags.Blocks.SAND);
+    }
+
+    @Override
+    public PlantType getPlantType(IBlockReader world, BlockPos pos) {
+        return PlantType.DESERT;
     }
 }

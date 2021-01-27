@@ -1,6 +1,7 @@
 package io.github.how_bout_no.outvoted.data;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.BlockTagsProvider;
@@ -19,5 +20,7 @@ public class BlockTagProvider extends BlockTagsProvider {
     protected void registerTags() {
         getOrCreateBuilder(ModTags.HUNGER_CAN_BURROW).addTag(BlockTags.SAND)
                 .add(Blocks.GRAVEL, Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.MYCELIUM);
+        getOrCreateBuilder(ModTags.PALM_LOGS)
+                .add(ModBlocks.PALM_LOG.get(), ModBlocks.STRIPPED_PALM_LOG.get());
     }
 }

@@ -3,7 +3,7 @@
   "group": "planks",
   "ingredients": [
     {
-      "tag": "outvoted:blocks/palm_logs"
+      "tag": "outvoted:palm_logs"
     }
   ],
   "result": {
