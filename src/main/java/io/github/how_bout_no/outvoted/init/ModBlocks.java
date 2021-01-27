@@ -2,13 +2,9 @@ package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.ModBlockItem;
-import io.github.how_bout_no.outvoted.block.ModSaplingBlock;
-import io.github.how_bout_no.outvoted.block.PalmSaplingBlock;
-import io.github.how_bout_no.outvoted.world.feature.PalmTree;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.RotatedPillarBlock;
+import io.github.how_bout_no.outvoted.block.PalmTreeSaplingBlock;
+import io.github.how_bout_no.outvoted.block.trees.PalmTree;
+import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -22,8 +18,8 @@ public class ModBlocks {
     //Blocks
     public static final RegistryObject<Block> PALM_PLANKS = BLOCKS.register("palm_planks", () -> new Block(Block.Properties.from(Blocks.JUNGLE_PLANKS)));
     public static final RegistryObject<Block> PALM_LOG = BLOCKS.register("palm_log", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.JUNGLE_LOG)));
-    public static final RegistryObject<Block> PALM_LEAVES = BLOCKS.register("palm_leaves", () -> new LeavesBlock(Block.Properties.from(Blocks.ACACIA_LEAVES)));
-    public static final RegistryObject<Block> PALM_SAPLING = BLOCKS.register("palm_sapling", () -> new PalmSaplingBlock(new PalmTree(), Block.Properties.from(Blocks.OAK_SAPLING)));
+    public static final RegistryObject<Block> PALM_LEAVES = BLOCKS.register("palm_leaves", () -> new LeavesBlock(Block.Properties.from(Blocks.JUNGLE_LEAVES)));
+    public static final RegistryObject<Block> PALM_SAPLING = BLOCKS.register("palm_sapling", () -> new PalmTreeSaplingBlock(new PalmTree(), Block.Properties.from(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> PALM_WOOD = BLOCKS.register("palm_wood", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.JUNGLE_WOOD)));
     public static final RegistryObject<Block> STRIPPED_PALM_LOG = BLOCKS.register("stripped_palm_log", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.STRIPPED_JUNGLE_LOG)));
     public static final RegistryObject<Block> STRIPPED_PALM_WOOD = BLOCKS.register("stripped_palm_wood", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.STRIPPED_JUNGLE_WOOD)));
@@ -33,7 +29,7 @@ public class ModBlocks {
     public static final RegistryObject<Item> PALM_PLANKS_ITEM = BLOCK_ITEMS.register("palm_planks",() -> new ModBlockItem(PALM_PLANKS.get(), new Item.Properties()));
     public static final RegistryObject<Item> PALM_LOG_ITEM = BLOCK_ITEMS.register("palm_log",() -> new ModBlockItem(PALM_LOG.get(), new Item.Properties()));
     public static final RegistryObject<Item> PALM_LEAVES_ITEM = BLOCK_ITEMS.register("palm_leaves", () -> new ModBlockItem(PALM_LEAVES.get(), new Item.Properties()));
-    public static final RegistryObject<Item> PALM_SAPLING_ITEM = BLOCK_ITEMS.register("palm_sapling", () -> new ModBlockItem(PALM_SAPLING.get(), new Item.Properties()));
+    public static final RegistryObject<Item> PALM_SAPLING_ITEM = BLOCK_ITEMS.register("palm_sapling", () -> new ModBlockItem(PALM_SAPLING.get(), new Item.Properties(), 1));
     public static final RegistryObject<Item> PALM_WOOD_ITEM = BLOCK_ITEMS.register("palm_wood",() -> new ModBlockItem(PALM_WOOD.get(), new Item.Properties()));
     public static final RegistryObject<Item> STRIPPED_PALM_LOG_ITEM = BLOCK_ITEMS.register("stripped_palm_log", () -> new ModBlockItem(STRIPPED_PALM_LOG.get(), new Item.Properties()));
     public static final RegistryObject<Item> STRIPPED_PALM_WOOD_ITEM = BLOCK_ITEMS.register("stripped_palm_wood", () -> new ModBlockItem(STRIPPED_PALM_WOOD.get(), new Item.Properties()));

@@ -14,12 +14,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
 
 @Mod("outvoted")
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
+    public static ItemGroup TAB_BLOCKS;
+    public static ItemGroup TAB_DECO;
     public static ItemGroup TAB_COMBAT;
     //public static ItemGroup TAB_MATERIAL;
     public static ItemGroup TAB_MISC;
@@ -33,9 +36,11 @@ public class Outvoted {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
         GeckoLib.initialize();
+        GeckoLibMod.DISABLE_IN_DEV = true;
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlocks.BLOCK_ITEMS.register(modEventBus);
+        ModFeatures.FEATURES.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
@@ -50,9 +55,13 @@ public class Outvoted {
                     return new ItemStack(ModItems.INFERNO_HELMET.get());
                 }
             };
+            TAB_BLOCKS = TAB;
+            TAB_DECO = TAB;
             TAB_COMBAT = TAB;
             TAB_MISC = TAB;
         } else {
+            TAB_BLOCKS = ItemGroup.BUILDING_BLOCKS;
+            TAB_DECO = ItemGroup.DECORATIONS;
             TAB_COMBAT = ItemGroup.COMBAT;
             TAB_MISC = ItemGroup.MISC;
         }

@@ -52,6 +52,7 @@ public class OutvotedConfig {
             infernodofireballexplosion = builder.comment("Determines whether Inferno Fireball should explode").define("Explode", false);
             infernofireballexplosionpower = builder.comment("Sets Inferno Fireball explosion radius").defineInRange("Explosion Radius", 0.5, 0.1, 4);
             builder.pop();
+            builder.pop();
 
             builder.comment("Great Hunger").push("hunger");
             spawnhunger = builder.define("Natural Spawning", true);
