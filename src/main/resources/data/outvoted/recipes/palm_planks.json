@@ -1,5 +1,5 @@
 {
-  "type": "outvoted:crafting_shapeless",
+  "type": "minecraft:crafting_shapeless",
   "group": "planks",
   "ingredients": [
     {

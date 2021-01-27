@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:stripped_palm_log"
+      "item": "outvoted:stripped_palm_log"
     }
   },
   "result": {
-    "item": "minecraft:stripped_palm_wood",
+    "item": "outvoted:stripped_palm_wood",
     "count": 3
   }
 }
