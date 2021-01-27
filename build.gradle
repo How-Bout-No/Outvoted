@@ -1,6 +1,3 @@
-import groovy.json.JsonSlurper
-import groovy.json.JsonOutput
-
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -81,11 +78,6 @@ minecraft {
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url='https://dist.creeper.host/Sponge/maven' }
-    //maven { url "https://www.cursemaven.com" }
-    maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
 }
 
 dependencies {
@@ -93,8 +85,6 @@ dependencies {
 
     implementation fg.deobf("software.bernie.geckolib:forge-${minecraft_version}-geckolib:${geckolib_version}")
     compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
-
-    //implementation fg.deobf("curse.maven:extraboats-337396:3154939")
 }
 
 jar {
@@ -113,21 +103,6 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
-
-buildscript {
-    def updateJsonFile = file('update.json')
-    def updateJson = new JsonSlurper().parse(updateJsonFile) as Map
-
-    // Update promos
-    updateJson.promos."1.16.5-latest" = "${mod_version}"
-    updateJson.promos."1.16.5-recommended" = "${mod_version}"
-    updateJson.promos."1.16.4-latest" = "${mod_version}"
-    updateJson.promos."1.16.4-recommended" = "${mod_version}"
-    updateJson.promos."1.16.3-latest" = "${mod_version}"
-    updateJson.promos."1.16.3-recommended" = "${mod_version}"
-
-    updateJsonFile.write(JsonOutput.prettyPrint(JsonOutput.toJson(updateJson)))
-}
 
 // Process resources on build
 processResources {
@@ -164,29 +139,4 @@ apply plugin: 'org.spongepowered.mixin'
 
 mixin {
     add sourceSets.main, "outvoted.refmap.json"
-}
-
-if (file("key.properties").exists()) {
-    curseforge {
-        def curseProp = new Properties()
-        File secretPropsFile = file("key.properties")
-        curseProp.load(secretPropsFile.newInputStream())
-        apiKey = curseProp.getProperty('curseKey')
-
-        project {
-            id = "415057"
-            releaseType = "release"
-            changelogType = 'text'
-            changelog = file('changelog.txt')
-            addGameVersion("1.16.3")
-            addGameVersion("1.16.4")
-            addGameVersion("1.16.5")
-            addGameVersion("Forge")
-            addGameVersion("Java 8")
-
-            mainArtifact(jar) {
-                displayName = "Outvoted-${minecraft_version}-${mod_version}"
-            }
-        }
-    }
 }
