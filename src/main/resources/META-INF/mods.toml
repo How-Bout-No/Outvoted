@@ -14,8 +14,6 @@ version="${version}" #mandatory
 
 displayName="Outvoted" #mandatory
 
-updateJSONURL="https://raw.githubusercontent.com/How-Bout-No/Outvoted/main/update.json" #optional
-
 displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
 logoFile="logo.png" #optional

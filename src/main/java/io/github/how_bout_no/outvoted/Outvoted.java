@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
 
 @Mod("outvoted")
@@ -35,9 +36,11 @@ public class Outvoted {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
         GeckoLib.initialize();
+        GeckoLibMod.DISABLE_IN_DEV = true;
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlocks.BLOCK_ITEMS.register(modEventBus);
+        ModFeatures.FEATURES.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);

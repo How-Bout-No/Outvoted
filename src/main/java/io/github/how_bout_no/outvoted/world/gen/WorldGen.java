@@ -5,6 +5,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.InfernoEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModFeatures;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -14,6 +15,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -25,14 +27,16 @@ import java.util.List;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ModEntitySpawns {
+public class WorldGen {
 
     /**
-     * Adds entity spawns to biomes
+     * Adds entity spawns and trees to biomes
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void spawnEntities(BiomeLoadingEvent event) {
         String biomename = event.getName().toString();
+
+        // Entities
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
                 if (!OutvotedConfig.COMMON.restrictinferno.get()) {
@@ -52,6 +56,11 @@ public class ModEntitySpawns {
             if (event.getDepth() == -1.8F && !biomename.equals("minecraft:deep_frozen_ocean")) {
                 event.getSpawns().withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.KRAKEN.get(), OutvotedConfig.COMMON.ratekraken.get(), 1, 1));
             }
+        }
+
+        // Features
+        if (biomename.equals("minecraft:desert")) {
+            event.getGeneration().withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE);
         }
     }
 
