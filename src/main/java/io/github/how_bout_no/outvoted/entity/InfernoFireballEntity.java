@@ -24,16 +24,8 @@ public class InfernoFireballEntity extends AbstractFireballEntity {
     public double explosionPower = OutvotedConfig.COMMON.infernofireballexplosionpower.get();
     public boolean doExplode = OutvotedConfig.COMMON.infernodofireballexplosion.get();
 
-    public InfernoFireballEntity(EntityType<? extends SmallFireballEntity> p_i50160_1_, World p_i50160_2_) {
-        super(p_i50160_1_, p_i50160_2_);
-    }
-
     public InfernoFireballEntity(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(SMALL_FIREBALL, shooter, accelX, accelY, accelZ, worldIn);
-    }
-
-    public InfernoFireballEntity(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
-        super(SMALL_FIREBALL, x, y, z, accelX, accelY, accelZ, worldIn);
     }
 
     /**

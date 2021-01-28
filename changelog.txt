@@ -1,7 +1,14 @@
+Inferno
+- Fireballs can be configured to explode (obviously disabled by default)
+- More configuration to its attacks
+
 Hunger
 - Slightly altered animations
 - Slightly increased hitbox size
-- New hitbox detection method for items and entities
+- New hitbox detection method for items and entities (careful! - will now detect entities along its entire mouth instead of just the center)
 
 Kraken
 - Marginally increased hitbox size
+
+Misc
+- No longer officially supports 1.16.3, as newer Geckolib versions are needed for smoothness and necessary bugfixes

@@ -66,46 +66,4 @@ public class ServerEvents {
             }
         }
     }
-
-
-    /*
-
-    //Wood stripping event
-    //copied from https://forums.minecraftforge.net/topic/83842-1144-stripped-logs-help-solved/?do=findComment&comment=396477
-
-    public static Map<Block, Block> BLOCK_STRIPPING_MAP = new HashMap<>();
-
-
-    //idk how to do this part
-    static {
-        BLOCK_STRIPPING_MAP.put(Registry.PALM_LOG, Registry.STRIPPED_PALM_LOG);
-        BLOCK_STRIPPING_MAP.put(Registry.PALM_WOOD, Registry.STRIPPED_PALM_WOOD);
-    }
-
-    @SubscribeEvent
-    public static void onBlockClicked(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getItemStack().getItem() instanceof AxeItem) {
-            World world = event.getWorld();
-            BlockPos blockpos = event.getPos();
-            BlockState blockstate = world.getBlockState(blockpos);
-            Block block = BLOCK_STRIPPING_MAP.get(blockstate.getBlock());
-            if (block != null) {
-                PlayerEntity playerentity = event.getPlayer();
-                world.playSound(playerentity, blockpos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                if (!world.isRemote) {
-                    world.setBlockState(blockpos, block.getDefaultState()
-                            .with(RotatedPillarBlock.AXIS, blockstate.get(RotatedPillarBlock.AXIS)), 11);
-                    if (playerentity != null) {
-                        event.getItemStack().damageItem(1, playerentity, (p_220040_1_) -> {
-                            p_220040_1_.sendBreakAnimation(event.getHand());
-                        });
-                    }
-                }
-            }
-        }
-
-    }
-
-     */
-
 }

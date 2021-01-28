@@ -31,6 +31,6 @@ With generous support from TheMasterBlast_r'''
 [[dependencies.outvoted]]
     modId="geckolib3"
     mandatory=true
-    versionRange="[3.0.0-beta.10,)"
+    versionRange="[3.0.6,)"
     ordering="NONE"
     side="BOTH"

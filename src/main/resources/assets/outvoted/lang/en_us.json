@@ -10,14 +10,6 @@
   "item.outvoted.kraken_tooth": "Kraken Tooth",
   "item.outvoted.prismarine_rod": "Prismarine Rod",
 
-  "block.outvoted.palm_planks": "Palm Planks",
-  "block.outvoted.palm_log": "Palm Log",
-  "block.outvoted.palm_leaves": "Palm Leaves",
-  "block.outvoted.palm_sapling": "Palm Sapling",
-  "block.outvoted.palm_wood": "Palm Wood",
-  "block.outvoted.stripped_palm_log": "Stripped Palm Log",
-  "block.outvoted.stripped_palm_wood": "Stripped Palm Wood",
-
   "entity.outvoted.inferno": "Inferno",
   "entity.outvoted.hunger": "Hunger",
   "entity.outvoted.kraken": "Kraken",
