@@ -14,6 +14,7 @@ e11fb883e3e7297b0aa29189dc75df7fdd795756 assets/outvoted/models/item/prismarine_
 b1622e211af4d5c9346d96e8e5c8533db1784839 data/minecraft/recipes/repair_cost.json
 eac3ecae4c1c7abbbeaf5ee9195da1df40bb25f1 data/minecraft/recipes/trident.json
 af71b30d95ff9b21cbb181baf8dd272279b43d82 data/minecraft/tags/blocks/logs.json
+af71b30d95ff9b21cbb181baf8dd272279b43d82 data/minecraft/tags/blocks/logs_that_burn.json
 c1c67b149d68a21cac76e58d6d918c51a780d390 data/outvoted/advancements/recipes/combat/inferno_shield.json
 ff5d49ad6eafbc8b01b92207fd3106affbb16f96 data/outvoted/advancements/recipes/misc/inferno_shield_part.json
 a406e84be3f37451057e8fb4f2b3fc96c37f659a data/outvoted/advancements/recipes/misc/prismarine_rod.json
