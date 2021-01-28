@@ -16,7 +16,7 @@ public class ModBlockItem extends BlockItem {
     }
 
     /* Lazy and dumb method of sectioning off saplings and blocks :P */
-    public ModBlockItem(Block blockIn, Properties properties, int sapling) {
+    public ModBlockItem(Block blockIn, Properties properties, boolean sapling) {
         super(blockIn, properties.group(Outvoted.TAB_DECO));
         type = 1;
     }

@@ -13,6 +13,7 @@ e11fb883e3e7297b0aa29189dc75df7fdd795756 assets/outvoted/models/item/prismarine_
 8a17ed0bd2861d5cc7c93f45716ec2cf15c0a5e2 data/minecraft/advancements/recipes/misc/trident.json
 b1622e211af4d5c9346d96e8e5c8533db1784839 data/minecraft/recipes/repair_cost.json
 eac3ecae4c1c7abbbeaf5ee9195da1df40bb25f1 data/minecraft/recipes/trident.json
+af71b30d95ff9b21cbb181baf8dd272279b43d82 data/minecraft/tags/blocks/logs.json
 c1c67b149d68a21cac76e58d6d918c51a780d390 data/outvoted/advancements/recipes/combat/inferno_shield.json
 ff5d49ad6eafbc8b01b92207fd3106affbb16f96 data/outvoted/advancements/recipes/misc/inferno_shield_part.json
 a406e84be3f37451057e8fb4f2b3fc96c37f659a data/outvoted/advancements/recipes/misc/prismarine_rod.json
@@ -23,3 +24,4 @@ f7097b556b04c13edac4b9c65c5bab05361ab956 data/outvoted/loot_tables/entities/hung
 2f26e6abd7cfd5ae92c14af1fa5e058c81abaabc data/outvoted/recipes/inferno_shield_part.json
 7fcd1edaac35f85102232f3eb9c673ed0cb874e7 data/outvoted/recipes/prismarine_rod.json
 bc22d020c582820db9ef0277dc9bd742774d8a00 data/outvoted/tags/blocks/hunger_can_burrow.json
+f5ed3798b54ed0c5b838dee46d6b51c5ed33b700 data/outvoted/tags/blocks/palm_logs.json
