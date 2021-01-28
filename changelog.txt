@@ -1,3 +1,5 @@
+Heads up! - This version no longer supports 1.16.3. Your 1.16.3 mods will run in 1.16.4 and up, so please switch to using those versions.
+
 Inferno
 - Fireballs can be configured to explode (obviously disabled by default)
 - More configuration to its attacks
@@ -11,4 +13,4 @@ Kraken
 - Marginally increased hitbox size
 
 Misc
-- No longer officially supports 1.16.3, as newer Geckolib versions are needed for smoothness and necessary bugfixes
+- No longer officially supports 1.16.3, as newer Geckolib versions are needed for improvements and necessary bugfixes
