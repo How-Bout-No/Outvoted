@@ -5,6 +5,8 @@ import io.github.how_bout_no.outvoted.block.ModBlockItem;
 import io.github.how_bout_no.outvoted.block.PalmTreeSaplingBlock;
 import io.github.how_bout_no.outvoted.block.trees.PalmTree;
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,9 +19,9 @@ public class ModBlocks {
 
     //Blocks
     public static final RegistryObject<Block> PALM_PLANKS = BLOCKS.register("palm_planks", () -> new Block(Block.Properties.from(Blocks.JUNGLE_PLANKS)));
-    public static final RegistryObject<Block> PALM_LOG = BLOCKS.register("palm_log", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.JUNGLE_LOG)));
-    public static final RegistryObject<Block> PALM_LEAVES = BLOCKS.register("palm_leaves", () -> new LeavesBlock(Block.Properties.from(Blocks.JUNGLE_LEAVES)));
-    public static final RegistryObject<Block> PALM_SAPLING = BLOCKS.register("palm_sapling", () -> new PalmTreeSaplingBlock(new PalmTree(), Block.Properties.from(Blocks.OAK_SAPLING)));
+    public static final RegistryObject<Block> PALM_LOG = BLOCKS.register("palm_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> PALM_LEAVES = BLOCKS.register("palm_leaves", () -> new LeavesBlock(AbstractBlock.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT).notSolid().setAllowsSpawn(Blocks::allowsSpawnOnLeaves).setSuffocates(Blocks::isntSolid).setBlocksVision(Blocks::isntSolid)));
+    public static final RegistryObject<Block> PALM_SAPLING = BLOCKS.register("palm_sapling", () -> new PalmTreeSaplingBlock(Block.Properties.from(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> PALM_WOOD = BLOCKS.register("palm_wood", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.JUNGLE_WOOD)));
     public static final RegistryObject<Block> STRIPPED_PALM_LOG = BLOCKS.register("stripped_palm_log", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.STRIPPED_JUNGLE_LOG)));
     public static final RegistryObject<Block> STRIPPED_PALM_WOOD = BLOCKS.register("stripped_palm_wood", () -> new RotatedPillarBlock(Block.Properties.from(Blocks.STRIPPED_JUNGLE_WOOD)));
