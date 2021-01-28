@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top",
+  "textures": {
+    "top": "outvoted:block/palm_door_top",
+    "bottom": "outvoted:block/palm_door_bottom"
+  }
+}

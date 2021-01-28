@@ -21,8 +21,8 @@ public class InfernoRenderer extends GeoEntityRenderer<InfernoEntity> {
         super(renderManager, new InfernoModel());
     }
 
-    private static final ResourceLocation NETHER = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno.png");
-    private static final ResourceLocation SOUL = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno_soul.png");
+    private static final ResourceLocation NETHER = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno/inferno.png");
+    private static final ResourceLocation SOUL = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/inferno/inferno_soul.png");
 
     @Override
     public RenderType getRenderType(InfernoEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {

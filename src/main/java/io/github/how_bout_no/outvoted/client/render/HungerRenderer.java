@@ -19,9 +19,9 @@ public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
         super(renderManager, new HungerModel());
     }
 
-    private static final ResourceLocation SAND = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger.png");
-    private static final ResourceLocation RED_SAND = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_red.png");
-    private static final ResourceLocation SWAMP = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger_swamp.png");
+    private static final ResourceLocation SAND = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger/hunger.png");
+    private static final ResourceLocation RED_SAND = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger/hunger_red.png");
+    private static final ResourceLocation SWAMP = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger/hunger_swamp.png");
 
     @Override
     public RenderType getRenderType(HungerEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
