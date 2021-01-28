@@ -3,6 +3,8 @@ package io.github.how_bout_no.outvoted;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.util.ServerEvents;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -10,6 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +35,7 @@ public class Outvoted {
     public Outvoted() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::clientSetup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, OutvotedConfig.CLIENT_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
@@ -65,5 +69,9 @@ public class Outvoted {
             TAB_COMBAT = ItemGroup.COMBAT;
             TAB_MISC = ItemGroup.MISC;
         }
+    }
+
+    public void clientSetup(final FMLClientSetupEvent event) {
+        RenderTypeLookup.setRenderLayer(ModBlocks.PALM_SAPLING.get(), RenderType.getCutoutMipped());
     }
 }

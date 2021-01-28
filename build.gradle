@@ -38,6 +38,7 @@ minecraft {
             /*
             -XX:HotswapAgent=fatjar is an argument related to DCEVM/HotswapAgent, allowing the modification of classes while running in debug
             The JDK pertaining to this option can be found at https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases, otherwise it can be omitted
+            This kinda breaks some stuff, but reduces the amount of times needed to restart the game depending on scenario
              */
             jvmArg '-XX:HotswapAgent=fatjar'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'

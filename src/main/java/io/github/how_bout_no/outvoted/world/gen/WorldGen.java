@@ -36,7 +36,7 @@ public class WorldGen {
     public static void spawnEntities(BiomeLoadingEvent event) {
         String biomename = event.getName().toString();
 
-        // Entities
+        /* Entities */
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
                 if (!OutvotedConfig.COMMON.restrictinferno.get()) {
@@ -58,7 +58,7 @@ public class WorldGen {
             }
         }
 
-        // Features
+        /* Features */
         if (biomename.equals("minecraft:desert")) {
             event.getGeneration().withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE);
         }
