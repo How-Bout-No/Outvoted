@@ -35,7 +35,6 @@ public class Outvoted {
     public Outvoted() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::setup);
-        modEventBus.addListener(this::clientSetup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, OutvotedConfig.CLIENT_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OutvotedConfig.COMMON_SPEC);
 
@@ -69,9 +68,5 @@ public class Outvoted {
             TAB_COMBAT = ItemGroup.COMBAT;
             TAB_MISC = ItemGroup.MISC;
         }
-    }
-
-    public void clientSetup(final FMLClientSetupEvent event) {
-        RenderTypeLookup.setRenderLayer(ModBlocks.PALM_SAPLING.get(), RenderType.getCutoutMipped());
     }
 }

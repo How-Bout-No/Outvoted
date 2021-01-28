@@ -15,6 +15,7 @@ import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.IWorldGenerationReader;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.IPlantable;
@@ -79,14 +80,17 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
                 boolean flag1 = false;
 
                 for (int i2 = 0; i2 < i; ++i2) {
-                    if (!flag1 && ((i2 >= i/3 && random.nextFloat() > 0.5F) || i2 >= i*.75)) {
-                        int rand = random.nextInt(3) - 1;
+                    if (!flag1 && ((i2 >= i/2 && random.nextFloat() > 0.5F) || i2 == i-2)) {
+                        int rand = random.nextInt(2);
+                        if (rand == 0) rand -= 1;
                         if (random.nextFloat() > 0.5F) {
-                            this.placeLogAt(worldIn, position.up(i2).add(rand, 0, 0), random, config);
+                            this.placeWoodAt(worldIn, position.up(i2), random, config);
+                            this.placeWoodAt(worldIn, position.up(i2).add(rand, 0, 0), random, config);
                             blockpos = blockpos.add(rand, 0, 0);
                             position = position.add(rand, 0, 0);
                         } else {
-                            this.placeLogAt(worldIn, position.up(i2).add(0, 0, rand), random, config);
+                            this.placeWoodAt(worldIn, position.up(i2), random, config);
+                            this.placeWoodAt(worldIn, position.up(i2).add(0, 0, rand), random, config);
                             blockpos = blockpos.add(0, 0, rand);
                             position = position.add(0, 0, rand);
                         }
@@ -98,14 +102,17 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
 
                 for (BlockPos blockpos1 : BlockPos.getAllInBoxMutable(blockpos.add(-(i-2), -1, -(i-2)), blockpos.add(i-2, 2, i-2))) {
                     double d0 = blockpos1.distanceSq(blockpos.getX(), blockpos.getY(), blockpos.getZ(), false);
+                    int y1 = blockpos1.getY();
+                    int y2 = blockpos.getY();
                     /* By jode this is ugly */
-                    if ((d0 <= 1 && (blockpos1.getY() > blockpos.getY() || isStraight(blockpos1, blockpos))) ||
-                            (d0 <= 4 && blockpos1.getY() == blockpos.getY() + 1) ||
-                            (d0 <= i*1.75 && isStraight(blockpos1, blockpos) && blockpos1.getY() == blockpos.getY() + 1) ||
-                            (d0 > i*1.75 && d0 < (i-2)*(i-2) && isStraight(blockpos1, blockpos) && blockpos1.getY() == blockpos.getY()) ||
-                            (d0 >= (i-2)*(i-2) && isStraight(blockpos1, blockpos) && blockpos1.getY() == blockpos.getY() - (i - 6)) ||
-                            (d0 > i && d0 < (i-3)*(i-3) + 5 && isDiag(blockpos1, blockpos) && blockpos1.getY() == blockpos.getY() + 1) ||
-                            (d0 > (i-3)*(i-3) + 5 && d0 <= (i-2)*(i-2) * Math.sqrt(2) && isDiag(blockpos1, blockpos) && blockpos1.getY() == blockpos.getY())) {
+                    if ((d0 <= 1 && (y1 > y2 || isStraight(blockpos1, blockpos))) ||
+                            (d0 <= 4 && (y1 == y2 + 1 || y1 == y2 + 2)) ||
+                            (d0 <= 7 && y1 == y2 + 2 && isStraight(blockpos1, blockpos)) ||
+                            (d0 <= i*1.75 && isStraight(blockpos1, blockpos) && y1 == y2 + 1) ||
+                            (d0 > i*1.75 && d0 < (i-2)*(i-2) && isStraight(blockpos1, blockpos) && y1 == y2) ||
+                            (d0 >= (i-2)*(i-2) && isStraight(blockpos1, blockpos) && y1 == y2 - (i - 6)) ||
+                            (d0 > i && d0 < (i-3)*(i-3) + 5 && isDiag(blockpos1, blockpos) && y1 == y2 + 1) ||
+                            (d0 > (i-3)*(i-3) + 5 && d0 <= (i-2)*(i-2) * Math.sqrt(2) && isDiag(blockpos1, blockpos) && y1 == y2)) {
                         if (isAirOrLeaves(worldIn, blockpos1)) {
                             this.placeLeafAt(worldIn, blockpos1, random, config);
                         }
@@ -133,6 +140,10 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
 
     private void placeLogAt(IWorldWriter worldIn, BlockPos pos, Random rand, BaseTreeFeatureConfig config) {
         this.setLogState(worldIn, pos, config.trunkProvider.getBlockState(rand, pos));
+    }
+
+    private void placeWoodAt(IWorldWriter worldIn, BlockPos pos, Random rand, BaseTreeFeatureConfig config) {
+        this.setLogState(worldIn, pos, new SimpleBlockStateProvider(ModBlocks.PALM_WOOD.get().getDefaultState()).getBlockState(rand, pos));
     }
 
     private void placeLeafAt(IWorldGenerationReader world, BlockPos pos, Random rand, BaseTreeFeatureConfig config) {

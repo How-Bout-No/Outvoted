@@ -7,8 +7,11 @@ import io.github.how_bout_no.outvoted.client.render.KrakenRenderer;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.InfernoEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
+import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.item.ModdedSpawnEggItem;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -32,6 +35,8 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.INFERNO.get(), InfernoRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.HUNGER.get(), HungerRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.KRAKEN.get(), KrakenRenderer::new);
+
+        RenderTypeLookup.setRenderLayer(ModBlocks.PALM_SAPLING.get(), RenderType.getCutoutMipped());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
