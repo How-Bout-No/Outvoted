@@ -22,7 +22,9 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(Blocks.GRAVEL, Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.MYCELIUM);
         getOrCreateBuilder(ModTags.PALM_LOGS)
                 .add(ModBlocks.PALM_LOG.get(), ModBlocks.STRIPPED_PALM_LOG.get());
-        getOrCreateBuilder(ModTags.LOGS)
+        getOrCreateBuilder(BlockTags.LOGS)
+                .addTag(ModTags.PALM_LOGS);
+        getOrCreateBuilder(BlockTags.LOGS_THAT_BURN)
                 .addTag(ModTags.PALM_LOGS);
     }
 }
