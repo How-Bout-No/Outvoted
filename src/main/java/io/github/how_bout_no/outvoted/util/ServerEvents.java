@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.util;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.InfernoEntity;
+import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.item.InfernoShieldItem;
@@ -23,6 +24,9 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
@@ -67,20 +71,32 @@ public class ServerEvents {
             World world = event.getWorld();
             BlockPos blockpos = event.getPos();
             BlockState blockstate = world.getBlockState(blockpos);
-            Block block = BlockUtils.Stripping.BLOCK_STRIPPING_MAP.get(blockstate.getBlock());
+            Block block = WoodStripping.BLOCK_STRIPPING_MAP.get(blockstate.getBlock());
             if (block != null) {
                 PlayerEntity playerentity = event.getPlayer();
                 world.playSound(playerentity, blockpos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 if (!world.isRemote) {
                     world.setBlockState(blockpos, block.getDefaultState()
                             .with(RotatedPillarBlock.AXIS, blockstate.get(RotatedPillarBlock.AXIS)), 11);
+                    System.out.println(playerentity);
                     if (playerentity != null) {
+                        System.out.println(event.getItemStack());
+                        System.out.println(event.getHand());
                         event.getItemStack().damageItem(1, playerentity, (p_220040_1_) -> {
                             p_220040_1_.sendBreakAnimation(event.getHand());
                         });
                     }
                 }
             }
+        }
+    }
+
+    static class WoodStripping {
+        public static Map<Block, Block> BLOCK_STRIPPING_MAP = new HashMap<>();
+
+        static {
+            BLOCK_STRIPPING_MAP.put(ModBlocks.PALM_LOG.get(), ModBlocks.STRIPPED_PALM_LOG.get());
+            BLOCK_STRIPPING_MAP.put(ModBlocks.PALM_WOOD.get(), ModBlocks.STRIPPED_PALM_WOOD.get());
         }
     }
 }
