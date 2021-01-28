@@ -3,7 +3,7 @@ package io.github.how_bout_no.outvoted.data;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.item.ModItem;
-import io.github.how_bout_no.outvoted.item.ModdedSpawnEggItem;
+import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -25,7 +25,7 @@ public class Items extends ItemModelProvider {
             if (item.get() instanceof ModItem) {
                 singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/generated"),
                         "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/" + item.get().getRegistryName().getPath()));
-            } else if (item.get() instanceof ModdedSpawnEggItem) {
+            } else if (item.get() instanceof ModSpawnEggItem) {
                 withExistingParent(item.get().getRegistryName().getPath(), new ResourceLocation("item/template_spawn_egg"));
             }
         });

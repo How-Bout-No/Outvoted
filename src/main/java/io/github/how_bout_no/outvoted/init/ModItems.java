@@ -4,7 +4,7 @@ import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.item.InfernoHelmetItem;
 import io.github.how_bout_no.outvoted.item.InfernoShieldItem;
 import io.github.how_bout_no.outvoted.item.ModItem;
-import io.github.how_bout_no.outvoted.item.ModdedSpawnEggItem;
+import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,12 +15,12 @@ public class ModItems {
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Outvoted.MOD_ID);
 
     // Spawn Eggs
-    public static final RegistryObject<ModdedSpawnEggItem> INFERNO_SPAWN_EGG = ITEMS.register("inferno_spawn_egg",
-            () -> new ModdedSpawnEggItem(ModEntityTypes.INFERNO, 0xF6B201, 0x000000, new ModItem.Properties()));
-    public static final RegistryObject<ModdedSpawnEggItem> HUNGER_SPAWN_EGG = ITEMS.register("hunger_spawn_egg",
-            () -> new ModdedSpawnEggItem(ModEntityTypes.HUNGER, 0xF0D786, 0x000000, new ModItem.Properties()));
-    public static final RegistryObject<ModdedSpawnEggItem> KRAKEN_SPAWN_EGG = ITEMS.register("kraken_spawn_egg",
-            () -> new ModdedSpawnEggItem(ModEntityTypes.KRAKEN, 0x5B872E, 0x000000, new ModItem.Properties()));
+    public static final RegistryObject<ModSpawnEggItem> INFERNO_SPAWN_EGG = ITEMS.register("inferno_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.INFERNO, 0xF6B201, 0x000000, new ModItem.Properties()));
+    public static final RegistryObject<ModSpawnEggItem> HUNGER_SPAWN_EGG = ITEMS.register("hunger_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.HUNGER, 0xF0D786, 0x000000, new ModItem.Properties()));
+    public static final RegistryObject<ModSpawnEggItem> KRAKEN_SPAWN_EGG = ITEMS.register("kraken_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.KRAKEN, 0x5B872E, 0x000000, new ModItem.Properties()));
 
     // Items
     public static final RegistryObject<Item> INFERNO_HELMET = ITEMS.register("inferno_helmet", InfernoHelmetItem::new);

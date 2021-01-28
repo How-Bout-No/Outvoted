@@ -9,7 +9,7 @@ import io.github.how_bout_no.outvoted.entity.InfernoEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
-import io.github.how_bout_no.outvoted.item.ModdedSpawnEggItem;
+import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -48,6 +48,6 @@ public class ClientEventBusSubscriber {
         EntitySpawnPlacementRegistry.register(ModEntityTypes.HUNGER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HungerEntity::canSpawn);
         EntitySpawnPlacementRegistry.register(ModEntityTypes.KRAKEN.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, KrakenEntity::canSpawn);
 
-        ModdedSpawnEggItem.initSpawnEggs();
+        ModSpawnEggItem.initSpawnEggs();
     }
 }
