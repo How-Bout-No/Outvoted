@@ -79,7 +79,7 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
                 boolean flag1 = false;
 
                 for (int i2 = 0; i2 < i; ++i2) {
-                    if (!flag1 && (i2 >= i/2 && random.nextFloat() > 0.5F) || i2 >= 3*i/4) {
+                    if (!flag1 && ((i2 >= i/3 && random.nextFloat() > 0.5F) || i2 >= i*.75)) {
                         int rand = random.nextInt(3) - 1;
                         if (random.nextFloat() > 0.5F) {
                             this.placeLogAt(worldIn, position.up(i2).add(rand, 0, 0), random, config);
