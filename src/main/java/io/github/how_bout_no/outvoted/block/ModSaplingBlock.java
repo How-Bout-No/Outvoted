@@ -27,6 +27,7 @@ public class ModSaplingBlock extends BushBlock implements IGrowable {
         this.tree = treeIn;
     }
 
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return SHAPE;
     }
