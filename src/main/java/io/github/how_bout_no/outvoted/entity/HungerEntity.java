@@ -576,7 +576,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         if (rotation < 0) rotation += 360;
         int ordinal = MathHelper.floor(rotation / 45.0D + 0.5D) & 7;
         for (Direction direction : Direction8.values()[ordinal].getDirections()) {
-            vec3d = vec3d.add(new Vector3d(direction.toVector3f()));
+            vec3d = vec3d.add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
         }
         return vec3d;
     }
@@ -608,7 +608,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         }
 
         public void tick() {
-            Vector3d vec3d = this.hunger.directionVector().scale(0.66D);
+            Vector3d vec3d = this.hunger.directionVector().scale(0.6D);
             AxisAlignedBB boundingBox = this.hunger.getBoundingBox().expand(vec3d).expand(vec3d.inverse());
             List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, boundingBox);
             if (!entities.isEmpty()) {

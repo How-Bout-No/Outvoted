@@ -1,7 +1,10 @@
 package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
-import io.github.how_bout_no.outvoted.init.*;
+import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModItems;
+import io.github.how_bout_no.outvoted.init.ModRecipes;
+import io.github.how_bout_no.outvoted.init.ModSounds;
 import io.github.how_bout_no.outvoted.util.ServerEvents;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

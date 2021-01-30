@@ -384,9 +384,6 @@
 							"vector": [-70, 0, 0],
 							"easing": "easeInCirc"
 						}
-					},
-					"position": {
-						"vector": [0, 1, 1]
 					}
 				},
 				"all": {

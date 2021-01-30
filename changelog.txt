@@ -1,16 +1,6 @@
-Heads up! - This version no longer supports 1.16.3. Your 1.16.3 mods will run in 1.16.4 and up, so please switch to using those versions.
-
-Inferno
-- Fireballs can be configured to explode (obviously disabled by default)
-- More configuration to its attacks
-
 Hunger
-- Slightly altered animations
-- Slightly increased hitbox size
-- New hitbox detection method for items and entities (careful! - will now detect entities along its entire mouth instead of just the center)
-
-Kraken
-- Marginally increased hitbox size
+- Fix janky animations
+- Fixed crash on server
 
 Misc
-- No longer officially supports 1.16.3, as newer Geckolib versions are needed for improvements and necessary bugfixes
+- Blaze Renderer Mixin won't try to load on the server anymore
