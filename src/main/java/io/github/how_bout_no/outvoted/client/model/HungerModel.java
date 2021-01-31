@@ -31,11 +31,11 @@ public class HungerModel extends AnimatedGeoModel<HungerEntity> {
     @Override
     public void setLivingAnimations(HungerEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
-        IBone legBR = this.getAnimationProcessor().getBone("LegBR");
-        IBone legBL = this.getAnimationProcessor().getBone("LegBL");
-        IBone legFR = this.getAnimationProcessor().getBone("LegFR");
-        IBone legFL = this.getAnimationProcessor().getBone("LegFL");
+        IBone head = this.getBone("head");
+        IBone legBR = this.getBone("LegBR");
+        IBone legBL = this.getBone("LegBL");
+        IBone legFR = this.getBone("LegFR");
+        IBone legFL = this.getBone("LegFL");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationX(extraData.headPitch * ((float) Math.PI / 330F));

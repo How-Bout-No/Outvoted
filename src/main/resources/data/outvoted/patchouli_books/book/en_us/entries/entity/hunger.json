@@ -1,0 +1,28 @@
+{
+  "name": "Hunger",
+  "icon": "outvoted:hunger_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Hunger is a unique mob that has interesting abilities related to enchantments.$(br2)It is able to consums items thrown into its mouth and store the enchantments with some sort of magic? It can then apply those enchantments to a new bare item thrown in. It is also able to push enchantments one level higher than their max when done properly.$(br)Interestingly enough, it can combine enchantments like Infinity and Mending, but refuses to do so on any sort of protection."
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:hunger",
+      "scale": "0.7",
+      "text": "A very unique mob to say the least."
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:hunger{Variant:1}",
+      "scale": "0.7",
+      "text": "Hungers can camouflage to their environments, like this red sand variant"
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:hunger{Variant:2}",
+      "scale": "0.7"
+    }
+  ]
+}

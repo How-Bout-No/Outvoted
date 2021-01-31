@@ -48,6 +48,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class HungerEntity extends CreatureEntity implements IAnimatable {
     private static final DataParameter<Boolean> BURROWED = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
@@ -372,9 +373,15 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean exec = super.attackEntityAsMob(entityIn);
-        if (exec && entityIn instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entityIn;
-            List<NonNullList<ItemStack>> allInventories = ImmutableList.of(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory);
+        if (exec) {
+            List<NonNullList<ItemStack>> allInventories;
+            if (entityIn instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) entityIn;
+                allInventories = ImmutableList.of(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory);
+            } else {
+                LivingEntity entity = (LivingEntity) entityIn;
+                allInventories = ImmutableList.of((NonNullList<ItemStack>) StreamSupport.stream(entity.getArmorInventoryList().spliterator(), false).collect(Collectors.toList()));
+            }
             List<ItemStack> enchantedItems = new ArrayList<>();
             for (NonNullList<ItemStack> inv : allInventories) {
                 enchantedItems.addAll(inv.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList()));

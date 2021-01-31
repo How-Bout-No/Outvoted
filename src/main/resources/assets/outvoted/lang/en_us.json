@@ -42,5 +42,8 @@
   "advancements.outvoted.use_hunger.title": "What An Appetite",
   "advancements.outvoted.use_hunger.description": "Enchant an item using the Hunger",
   "advancements.outvoted.overenchant_hunger.title": "Unlimited Powah!!!",
-  "advancements.outvoted.overenchant_hunger.description": "Overenchant an item above its max level"
+  "advancements.outvoted.overenchant_hunger.description": "Overenchant an item above its max level",
+
+  "book.outvoted.title": "Outvoted",
+  "book.outvoted.landing": "One stop shop for everything outvoted!"
 }

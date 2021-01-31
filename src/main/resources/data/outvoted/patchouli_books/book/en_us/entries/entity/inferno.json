@@ -1,0 +1,29 @@
+{
+  "name": "Inferno",
+  "icon": "outvoted:inferno_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Hovering Inferno (or just Inferno) is a blaze-like mob that patrols the Nether. It is an uncommon spawn, and when it shows up it brings several Blazes along with it. It is capable of shooting a line of fireballs at its enemies, and can put up its shields to block damage."
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:inferno",
+      "scale": "0.9",
+      "text": "The first mob added to the mod, the Hovering Inferno is a dangerous mob that scouts the Nether."
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:inferno{Variant:1}",
+      "scale": "0.9",
+      "text": "Infernos found in Soul Sand Valleys."
+    },
+    {
+      "type": "entity",
+      "entity": "minecraft:blaze{Variant:1}",
+      "scale": "0.9",
+      "text": "Blazes also get variants with the Inferno."
+    }
+  ]
+}

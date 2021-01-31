@@ -1,0 +1,17 @@
+{
+  "name": "Inferno Shield Part",
+  "icon": "outvoted:inferno_shield_part",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:inferno_shield_part",
+      "link_recipe": true,
+      "text": "Now we're getting somewhere! A necessary component for the Inferno Shield $(l:inferno_shield)"
+    },
+    {
+      "type": "crafting",
+      "recipe": "outvoted:inferno_shield_part"
+    }
+  ]
+}

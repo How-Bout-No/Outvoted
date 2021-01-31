@@ -1,0 +1,17 @@
+{
+  "name": "Prismarine Rod",
+  "icon": "outvoted:prismarine_rod",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:prismarine_rod",
+      "link_recipe": true,
+      "text": "The handle for a trident."
+    },
+    {
+      "type": "crafting",
+      "recipe": "outvoted:prismarine_rod"
+    }
+  ]
+}
