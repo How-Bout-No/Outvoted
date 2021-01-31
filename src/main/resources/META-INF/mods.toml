@@ -14,7 +14,7 @@ version="${version}" #mandatory
 
 displayName="Outvoted" #mandatory
 
-updateJSONURL="https://raw.githubusercontent.com/How-Bout-No/Outvoted/main/update.json" #optional
+updateJSONURL="https://raw.githubusercontent.com/How-Bout-No/Outvoted/1.16.5/update.json" #optional
 
 displayURL="https://www.curseforge.com/minecraft/mc-mods/outvoted" #optional
 
@@ -31,6 +31,6 @@ With generous support from TheMasterBlast_r'''
 [[dependencies.outvoted]]
     modId="geckolib3"
     mandatory=true
-    versionRange="[3.0.6,)"
+    versionRange="[3.0.8,)"
     ordering="NONE"
     side="BOTH"
