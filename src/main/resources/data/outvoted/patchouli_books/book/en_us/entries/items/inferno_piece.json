@@ -1,17 +1,12 @@
 {
-  "name": "Inferno Shard",
+  "name": "Shattered Blaze Piece",
   "icon": "outvoted:inferno_piece",
   "category": "outvoted:item_category",
   "pages": [
     {
       "type": "spotlight",
       "item": "outvoted:inferno_piece",
-      "link_recipe": true,
-      "text": "A shard left behind by an Inferno. Needed for the Inferno Shield $(l:inferno_shield)"
-    },
-    {
-      "type": "crafting",
-      "recipe": "outvoted:inferno_piece"
+      "text": "A shard left behind by an Inferno. Needed for the $(l:items/inferno_shield_part)Inferno Shield Part$(/l)"
     }
   ]
 }

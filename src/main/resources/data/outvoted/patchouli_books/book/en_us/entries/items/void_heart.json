@@ -6,7 +6,7 @@
     {
       "type": "spotlight",
       "item": "outvoted:void_heart",
-      "text": "The heart of the $(l:hunger), when crafted alongside an item, it will reset that item's repair cost (Resets Too Expensive! message)."
+      "text": "The heart of the $(l:entity/hunger)Hunger$(/l), when crafted alongside an item, it will reset that item's repair cost (Resets Too Expensive! message)."
     }
   ]
 }

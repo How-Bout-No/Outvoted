@@ -7,7 +7,7 @@
       "type": "spotlight",
       "item": "outvoted:inferno_shield_part",
       "link_recipe": true,
-      "text": "Now we're getting somewhere! A necessary component for the Inferno Shield $(l:inferno_shield)"
+      "text": "A necessary component for the $(l:items/inferno_shield)Inferno Shield$(/l)"
     },
     {
       "type": "crafting",

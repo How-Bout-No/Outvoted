@@ -6,12 +6,12 @@
     {
       "type": "spotlight",
       "item": "outvoted:inferno_helmet",
-      "link_recipe": true,
       "text": "The helmet of the Infernos, able to supress fire damage at the cost of durability."
     },
     {
-      "type": "crafting",
-      "recipe": "outvoted:inferno_helmet"
+      "type": "spotlight",
+      "item": "outvoted:inferno_helmet{CustomModelData:1.0}",
+      "text": "Variant that drops from Soul Sand Valley variants"
     }
   ]
 }
