@@ -188,6 +188,10 @@ if (file("key.properties").exists()) {
 
             mainArtifact(jar) {
                 displayName = "Outvoted-${minecraft_version}-${mod_version}"
+                relations {
+                    requiredDependency 'geckolib'
+                    optionalDependency 'patchouli'
+                }
             }
         }
     }
