@@ -42,5 +42,8 @@
   "advancements.outvoted.use_hunger.title": "Bom Apetite",
   "advancements.outvoted.use_hunger.description": "Encante um item usando um hunger",
   "advancements.outvoted.overenchant_hunger.title": "Powah Ilimitado!!!",
-  "advancements.outvoted.overenchant_hunger.description": "Encante um item Acima do Nivel Maximo"
+  "advancements.outvoted.overenchant_hunger.description": "Encante um item Acima do Nivel Maximo",
+
+  "book.outvoted.title": "Outvoted",
+  "book.outvoted.landing": "One stop shop for everything outvoted!"
 }

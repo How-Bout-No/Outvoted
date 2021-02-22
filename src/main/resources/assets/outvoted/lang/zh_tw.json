@@ -42,5 +42,8 @@
   "advancements.outvoted.use_hunger.title": "垂涎欲滴",
   "advancements.outvoted.use_hunger.description": "利用大胃怪附魔一件物品",
   "advancements.outvoted.overenchant_hunger.title": "超越無限！！！",
-  "advancements.outvoted.overenchant_hunger.description": "使一件物品附魔可以超過該附魔内容的最大等級"
+  "advancements.outvoted.overenchant_hunger.description": "使一件物品附魔可以超過該附魔内容的最大等級",
+
+  "book.outvoted.title": "Outvoted",
+  "book.outvoted.landing": "One stop shop for everything outvoted!"
 }

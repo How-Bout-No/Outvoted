@@ -1,6 +1,5 @@
-Hunger
-- Fix janky animations
-- Fixed crash on server
+Kraken
+- Fix texture issues maybe
 
 Misc
-- Blaze Renderer Mixin won't try to load on the server anymore
+- Beta Patchouli support which is mostly a direct implementation of the wiki, but with more detail
