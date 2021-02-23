@@ -373,15 +373,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean exec = super.attackEntityAsMob(entityIn);
-        if (exec) {
-            List<NonNullList<ItemStack>> allInventories;
-            if (entityIn instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entityIn;
-                allInventories = ImmutableList.of(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory);
-            } else {
-                LivingEntity entity = (LivingEntity) entityIn;
-                allInventories = ImmutableList.of((NonNullList<ItemStack>) StreamSupport.stream(entity.getArmorInventoryList().spliterator(), false).collect(Collectors.toList()));
-            }
+        if (exec && entityIn instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entityIn;
+            List<NonNullList<ItemStack>> allInventories = ImmutableList.of(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory);
             List<ItemStack> enchantedItems = new ArrayList<>();
             for (NonNullList<ItemStack> inv : allInventories) {
                 enchantedItems.addAll(inv.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList()));
@@ -541,7 +535,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
             for (int i = 0; i < 10; ++i) {
                 BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
-                if (this.hunger.isSuitable(this.hunger, blockpos1)) {
+                if (this.hunger.isSuitable(this.hunger, blockpos1)  && this.hunger.getBlockPathWeight(blockpos1) < 0.0F) {
                     return Vector3d.copyCenteredHorizontally(blockpos1);
                 }
             }

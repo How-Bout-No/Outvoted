@@ -3,10 +3,10 @@ package io.github.how_bout_no.outvoted.config;
 import io.github.how_bout_no.outvoted.Outvoted;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
-import vazkii.patchouli.api.PatchouliAPI;
 
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OutvotedConfig {
@@ -109,11 +109,15 @@ public class OutvotedConfig {
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading event) {
         Outvoted.LOGGER.info(">> Outvoted " + event.getConfig().getType() + " Config Loaded");
-        PatchouliAPI.get().setConfigFlag("outvoted:infvariant", OutvotedConfig.COMMON.infernovariant.get());
+        if (ModList.get().isLoaded("patchouli")) {
+            vazkii.patchouli.api.PatchouliAPI.get().setConfigFlag("outvoted:infvariant", OutvotedConfig.COMMON.infernovariant.get());
+        }
     }
 
     @SubscribeEvent
     public static void onFileChange(final ModConfig.Reloading event) {
-        PatchouliAPI.get().setConfigFlag("outvoted:infvariant", OutvotedConfig.COMMON.infernovariant.get());
+        if (ModList.get().isLoaded("patchouli")) {
+            vazkii.patchouli.api.PatchouliAPI.get().setConfigFlag("outvoted:infvariant", OutvotedConfig.COMMON.infernovariant.get());
+        }
     }
 }

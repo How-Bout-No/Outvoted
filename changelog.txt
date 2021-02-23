@@ -1,5 +1,2 @@
-Kraken
-- Fix texture issues maybe
-
-Misc
-- Beta Patchouli support which is mostly a direct implementation of the wiki, but with more detail
+Hunger
+- Fix crash when biting mobs
