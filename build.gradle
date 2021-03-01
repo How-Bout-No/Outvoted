@@ -99,7 +99,7 @@ dependencies {
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
-    //implementation fg.deobf("curse.maven:extraboats-337396:3154939")
+    //implementation fg.deobf("curse.maven:repurp-368293:3218789")
 }
 
 jar {

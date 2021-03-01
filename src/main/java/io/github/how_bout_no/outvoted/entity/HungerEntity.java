@@ -48,7 +48,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class HungerEntity extends CreatureEntity implements IAnimatable {
     private static final DataParameter<Boolean> BURROWED = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
@@ -198,9 +197,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         int type;
-        if (this.world.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.SAND)) {
+        if (worldIn.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.SAND)) {
             type = 0;
-        } else if (this.world.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.RED_SAND)) {
+        } else if (worldIn.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.RED_SAND)) {
             type = 1;
         } else {
             type = 2;
@@ -535,7 +534,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
             for (int i = 0; i < 10; ++i) {
                 BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
-                if (this.hunger.isSuitable(this.hunger, blockpos1)  && this.hunger.getBlockPathWeight(blockpos1) < 0.0F) {
+                if (this.hunger.isSuitable(this.hunger, blockpos1) && this.hunger.getBlockPathWeight(blockpos1) < 0.0F) {
                     return Vector3d.copyCenteredHorizontally(blockpos1);
                 }
             }

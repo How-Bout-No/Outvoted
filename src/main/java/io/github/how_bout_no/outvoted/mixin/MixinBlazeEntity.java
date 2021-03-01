@@ -55,7 +55,7 @@ public abstract class MixinBlazeEntity extends MonsterEntity implements IMixinBl
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         int type;
-        Block block = this.world.getBlockState(new BlockPos(this.getPositionVec().add(0D, -0.5D, 0D))).getBlock();
+        Block block = worldIn.getBlockState(new BlockPos(this.getPositionVec().add(0D, -0.5D, 0D))).getBlock();
         if (block.matchesBlock(Blocks.SOUL_SAND) || block.matchesBlock(Blocks.SOUL_SOIL)) {
             type = 1;
         } else {
