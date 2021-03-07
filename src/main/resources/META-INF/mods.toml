@@ -29,6 +29,12 @@ description='''Adds in mobs that got outvoted!
 With generous support from TheMasterBlast_r'''
 #A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.outvoted]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36.0.42,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.outvoted]]
     modId="geckolib3"
     mandatory=true
     versionRange="[3.0.14,)"

@@ -153,7 +153,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return world.canBlockSeeSky(blockPos);
+        return world.canBlockSeeSky(blockPos) && canSpawnOn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.HUNGER_CAN_BURROW);
     }
 
     protected SoundEvent getAmbientSound() {

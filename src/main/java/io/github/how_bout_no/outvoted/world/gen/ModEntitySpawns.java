@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.world.gen;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
+import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.InfernoEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
@@ -35,9 +36,7 @@ public class ModEntitySpawns {
         String biomename = event.getName().toString();
         if (OutvotedConfig.COMMON.spawninferno.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
-                if (!OutvotedConfig.COMMON.restrictinferno.get()) {
-                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.INFERNO.get(), OutvotedConfig.COMMON.rateinferno.get(), 1, 1));
-                } else if (biomename.equals("minecraft:nether_wastes")) {
+                if (!OutvotedConfig.COMMON.restrictinferno.get() || biomename.equals("minecraft:nether_wastes")) {
                     event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.INFERNO.get(), OutvotedConfig.COMMON.rateinferno.get(), 1, 1));
                 }
             }
@@ -63,8 +62,8 @@ public class ModEntitySpawns {
     public static void checkMobs(LivingSpawnEvent.CheckSpawn event) {
         double area = 6.0; // Value for x, y, and z expansion to check for entities
         Entity e = event.getEntity();
-        if (OutvotedConfig.COMMON.spawnkraken.get()) {
-            if (e instanceof KrakenEntity) {
+        if (OutvotedConfig.COMMON.spawnkraken.get() || OutvotedConfig.COMMON.spawnhunger.get()) {
+            if (e instanceof KrakenEntity || e instanceof HungerEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
                     List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area, area).expand(-area, -area, -area));
                     if (!entities.isEmpty()) {
@@ -118,13 +117,14 @@ public class ModEntitySpawns {
             }
             if (e instanceof BlazeEntity) {
                 if (event.getSpawnReason() == SpawnReason.SPAWNER) {
-                    if (Math.random() > 0.8) {
+                    if (Math.random() > 0.85) {
                         World world = event.getEntity().getEntityWorld();
 
                         InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                        inferno.setPositionAndRotation(e.getPosXRandom(1.0D), e.getPosY(), e.getPosZRandom(2.0D), e.rotationYaw, e.rotationPitch);
+                        inferno.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
 
                         world.addEntity(inferno);
+                        event.setCanceled(true);
                     }
                 }
             }

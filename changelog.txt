@@ -1,2 +1,8 @@
+Inferno
+- Slightly increased spawn chances out of a Mob Spawner
+
 Hunger
-- Fix crash when biting mobs
+- Adjusted spawning conditions
+
+Misc
+- Backend adjustments (now requires Forge >= 36.0.42)
