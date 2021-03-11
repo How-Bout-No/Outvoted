@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "inferno_piece": {
+    "wildfire_piece": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [

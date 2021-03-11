@@ -4,7 +4,7 @@ package io.github.how_bout_no.outvoted.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import io.github.how_bout_no.outvoted.client.model.InfernoShieldModel;
+import io.github.how_bout_no.outvoted.client.model.WildfireShieldModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
@@ -26,8 +26,8 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
                 : ModelBakery.LOCATION_SHIELD_NO_PATTERN;*/
 
         //Item shield = stack.getItem();
-        //rendermaterial = flag ? InfernoShieldModel.base : InfernoShieldModel.basenop;
-        RenderMaterial rendermaterial = InfernoShieldModel.base;
+        //rendermaterial = flag ? WildfireShieldModel.base : WildfireShieldModel.basenop;
+        RenderMaterial rendermaterial = WildfireShieldModel.base;
 
         IVertexBuilder ivertexbuilder = rendermaterial.getSprite().wrapBuffer(ItemRenderer.getEntityGlintVertexBuilder(
                 buffer, modelShield.getRenderType(rendermaterial.getAtlasLocation()), true, stack.hasEffect()));

@@ -1,0 +1,17 @@
+{
+  "name": "Wildfire Shield Part",
+  "icon": "outvoted:wildfire_shield_part",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:wildfire_shield_part",
+      "link_recipe": true,
+      "text": "A necessary component for the $(l:items/wildfire_shield)Wildfire Shield$(/l)"
+    },
+    {
+      "type": "crafting",
+      "recipe": "outvoted:wildfire_shield_part"
+    }
+  ]
+}

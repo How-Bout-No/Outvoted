@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
-public class InfernoShieldItem extends ShieldItem {
-    public InfernoShieldItem() {
+public class WildfireShieldItem extends ShieldItem {
+    public WildfireShieldItem() {
         super(new Properties().setISTER(() -> getISTER()).maxDamage(750).group(Outvoted.TAB_COMBAT));
         DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }

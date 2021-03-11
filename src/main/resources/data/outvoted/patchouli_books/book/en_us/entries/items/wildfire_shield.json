@@ -1,0 +1,13 @@
+{
+  "name": "Wildfire Shield",
+  "icon": "outvoted:wildfire_shield",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:wildfire_shield",
+      "link_recipe": true,
+      "text": "The Wildfire Shield is much stronger than your everyday run-of-the-mill shield, able to set attacking enemies and projectiles on fire. It also looks cool.\n\nCrafted in a Smithing Table with a normal shield and $(l:items/wildfire_piece)Shattered Blaze Piece$(/l)"
+    }
+  ]
+}

@@ -30,29 +30,29 @@ public class Items extends ItemModelProvider {
             }
         });
 
-        singleTexture(ModItems.INFERNO_HELMET.get().getRegistryName().getPath(), new ResourceLocation("item/generated"),
-                "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/inferno_helmet"))
-                .override().predicate(new ResourceLocation("custom_model_data"), 1).model(new ModelFile(new ResourceLocation(Outvoted.MOD_ID, "item/inferno_helmet_soul")) {
+        singleTexture(ModItems.WILDFIRE_HELMET.get().getRegistryName().getPath(), new ResourceLocation("item/generated"),
+                "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/wildfire_helmet"))
+                .override().predicate(new ResourceLocation("custom_model_data"), 1).model(new ModelFile(new ResourceLocation(Outvoted.MOD_ID, "item/wildfire_helmet_soul")) {
             @Override
             protected boolean exists() {
                 return true;
             }
         });
 
-        singleTexture(ModItems.INFERNO_HELMET.get().getRegistryName().getPath() + "_soul", new ResourceLocation("item/generated"),
-                "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/inferno_helmet_soul"));
+        singleTexture(ModItems.WILDFIRE_HELMET.get().getRegistryName().getPath() + "_soul", new ResourceLocation("item/generated"),
+                "layer0", new ResourceLocation(Outvoted.MOD_ID, "item/wildfire_helmet_soul"));
 
-        singleTexture(ModItems.INFERNO_SHIELD.get().getRegistryName().getPath(), new ResourceLocation("item/shield"),
+        singleTexture(ModItems.WILDFIRE_SHIELD.get().getRegistryName().getPath(), new ResourceLocation("item/shield"),
                 "particles", new ResourceLocation("block/nether_bricks"))
                 .override().predicate(new ResourceLocation(Outvoted.MOD_ID, "blocking"), 1)
-                .model(new ModelFile(new ResourceLocation(Outvoted.MOD_ID, "item/inferno_shield_blocking")) {
+                .model(new ModelFile(new ResourceLocation(Outvoted.MOD_ID, "item/wildfire_shield_blocking")) {
                     @Override
                     protected boolean exists() {
                         return true;
                     }
                 });
 
-        singleTexture(ModItems.INFERNO_SHIELD.get().getRegistryName().getPath() + "_blocking", new ResourceLocation("item/shield_blocking"),
+        singleTexture(ModItems.WILDFIRE_SHIELD.get().getRegistryName().getPath() + "_blocking", new ResourceLocation("item/shield_blocking"),
                 "particles", new ResourceLocation("block/nether_bricks"));
     }
 }

@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.item;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.client.model.InfernoHelmetModel;
+import io.github.how_bout_no.outvoted.client.model.WildfireHelmetModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -22,27 +22,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class InfernoHelmetItem extends ArmorItem {
+public class WildfireHelmetItem extends ArmorItem {
     private int timer = 0;
 //    private boolean timer = true;
 
-    public InfernoHelmetItem() {
-        super(ModArmor.INFERNO, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
+    public WildfireHelmetItem() {
+        super(ModArmor.WILDFIRE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
     }
 
     @SuppressWarnings("unchecked")
     @OnlyIn(Dist.CLIENT)
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) new InfernoHelmetModel<>();
+        return (A) new WildfireHelmetModel<>();
     }
 
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         if (stack.getTag() != null && stack.getTag().getFloat("CustomModelData") == 1.0F) {
-            return "outvoted:textures/entity/inferno_soul.png";
+            return "outvoted:textures/entity/wildfire_soul.png";
         }
-        return "outvoted:textures/entity/inferno.png";
+        return "outvoted:textures/entity/wildfire.png";
     }
 
     @Override
@@ -57,7 +57,7 @@ public class InfernoHelmetItem extends ArmorItem {
         } else {
             timer = 0;
         }
-        /*if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.INFERNO_HELMET.get() && player.isBurning() && !player.isCreative()) {
+        /*if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == ModItems.WILDFIRE_HELMET.get() && player.isBurning() && !player.isCreative()) {
             if (timer) {
                 player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 400, 0, false, false, true));
                 timer = false;

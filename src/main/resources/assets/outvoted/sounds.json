@@ -1,7 +1,7 @@
 {
-  "inferno_ambient": {
+  "wildfire_ambient": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.inferno.ambient",
+    "subtitle": "subtitles.entity.outvoted.wildfire.ambient",
     "sounds": [
       {
         "name": "minecraft:mob/blaze/breathe1",
@@ -21,9 +21,9 @@
       }
     ]
   },
-  "inferno_hurt": {
+  "wildfire_hurt": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.inferno.hurt",
+    "subtitle": "subtitles.entity.outvoted.wildfire.hurt",
     "sounds": [
       {
         "name": "minecraft:mob/blaze/hit1",
@@ -43,9 +43,9 @@
       }
     ]
   },
-  "inferno_death": {
+  "wildfire_death": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.inferno.death",
+    "subtitle": "subtitles.entity.outvoted.wildfire.death",
     "sounds": [
       {
         "name": "minecraft:mob/blaze/death",
@@ -53,18 +53,18 @@
       }
     ]
   },
-  "inferno_burn": {
+  "wildfire_burn": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.inferno.burn",
+    "subtitle": "subtitles.entity.outvoted.wildfire.burn",
     "sounds": [
       {
         "name": "minecraft:fire/fire"
       }
     ]
   },
-  "inferno_shoot": {
+  "wildfire_shoot": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.inferno.shoot",
+    "subtitle": "subtitles.entity.outvoted.wildfire.shoot",
     "sounds": [
       {
         "name": "minecraft:mob/ghast/fireball4"

@@ -18,16 +18,16 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class InfernoShieldModel {
+public class WildfireShieldModel {
 
-    public static final RenderMaterial base = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(Outvoted.MOD_ID, "entity/inferno_shield_base"));
+    public static final RenderMaterial base = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(Outvoted.MOD_ID, "entity/wildfire_shield_base"));
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
         addShieldPropertyOverrides(new ResourceLocation(Outvoted.MOD_ID, "blocking"),
                 (stack, world, entity) -> entity != null && entity.isHandActive()
                         && entity.getActiveItemStack() == stack ? 1.0F : 0.0F,
-                ModItems.INFERNO_SHIELD.get());
+                ModItems.WILDFIRE_SHIELD.get());
     }
 
     private static void addShieldPropertyOverrides(ResourceLocation override, IItemPropertyGetter propertyGetter,

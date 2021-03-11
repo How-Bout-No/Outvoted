@@ -17,11 +17,11 @@ import net.minecraft.world.World;
 
 import static net.minecraft.entity.EntityType.SMALL_FIREBALL;
 
-public class InfernoFireballEntity extends AbstractFireballEntity {
-    public double explosionPower = OutvotedConfig.COMMON.infernofireballexplosionpower.get();
-    public boolean doExplode = OutvotedConfig.COMMON.infernodofireballexplosion.get();
+public class WildfireFireballEntity extends AbstractFireballEntity {
+    public double explosionPower = OutvotedConfig.COMMON.wildfirefireballexplosionpower.get();
+    public boolean doExplode = OutvotedConfig.COMMON.wildfiredofireballexplosion.get();
 
-    public InfernoFireballEntity(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
+    public WildfireFireballEntity(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(SMALL_FIREBALL, shooter, accelX, accelY, accelZ, worldIn);
     }
 

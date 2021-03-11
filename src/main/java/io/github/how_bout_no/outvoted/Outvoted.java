@@ -48,7 +48,7 @@ public class Outvoted {
         if (OutvotedConfig.CLIENT.creativetab.get()) {
             ItemGroup TAB = new ItemGroup("modtab") {
                 public ItemStack createIcon() {
-                    return new ItemStack(ModItems.INFERNO_HELMET.get());
+                    return new ItemStack(ModItems.WILDFIRE_HELMET.get());
                 }
             };
             TAB_COMBAT = TAB;

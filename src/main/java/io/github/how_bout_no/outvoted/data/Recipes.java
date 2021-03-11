@@ -20,16 +20,16 @@ public class Recipes extends RecipeProvider {
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        SmithingBuilder.smithingRecipe(Ingredient.fromItems(Items.SHIELD), Ingredient.fromItems(ModItems.INFERNO_SHIELD_PART.get()), ModItems.INFERNO_SHIELD.get())
-                .addCriterion("has_inferno_part", hasItem(ModItems.INFERNO_SHIELD_PART.get()))
-                .build(consumer, ModItems.INFERNO_SHIELD.getId());
-        ShapedBuilder.shapedRecipe(ModItems.INFERNO_SHIELD_PART.get())
+        SmithingBuilder.smithingRecipe(Ingredient.fromItems(Items.SHIELD), Ingredient.fromItems(ModItems.WILDFIRE_SHIELD_PART.get()), ModItems.WILDFIRE_SHIELD.get())
+                .addCriterion("has_wildfire_part", hasItem(ModItems.WILDFIRE_SHIELD_PART.get()))
+                .build(consumer, ModItems.WILDFIRE_SHIELD.getId());
+        ShapedBuilder.shapedRecipe(ModItems.WILDFIRE_SHIELD_PART.get())
                 .patternLine("MMM")
                 .patternLine("MCM")
                 .patternLine("MMM")
                 .key('M', Blocks.POLISHED_BLACKSTONE)
-                .key('C', ModItems.INFERNO_PIECE.get())
-                .addCriterion("has_inferno_piece", hasItem(ModItems.INFERNO_PIECE.get()))
+                .key('C', ModItems.WILDFIRE_PIECE.get())
+                .addCriterion("has_wildfire_piece", hasItem(ModItems.WILDFIRE_PIECE.get()))
                 .build(consumer);
         ShapedBuilder.shapedRecipe(ModItems.PRISMARINE_ROD.get())
                 .patternLine("P")

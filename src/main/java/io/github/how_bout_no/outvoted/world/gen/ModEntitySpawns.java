@@ -3,7 +3,7 @@ package io.github.how_bout_no.outvoted.world.gen;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
-import io.github.how_bout_no.outvoted.entity.InfernoEntity;
+import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.Entity;
@@ -34,10 +34,10 @@ public class ModEntitySpawns {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void spawnEntities(BiomeLoadingEvent event) {
         String biomename = event.getName().toString();
-        if (OutvotedConfig.COMMON.spawninferno.get()) {
+        if (OutvotedConfig.COMMON.spawnwildfire.get()) {
             if (event.getCategory() == Biome.Category.NETHER) {
-                if (!OutvotedConfig.COMMON.restrictinferno.get() || biomename.equals("minecraft:nether_wastes")) {
-                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.INFERNO.get(), OutvotedConfig.COMMON.rateinferno.get(), 1, 1));
+                if (!OutvotedConfig.COMMON.restrictwildfire.get() || biomename.equals("minecraft:nether_wastes")) {
+                    event.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.WILDFIRE.get(), OutvotedConfig.COMMON.ratewildfire.get(), 1, 1));
                 }
             }
         }
@@ -72,11 +72,11 @@ public class ModEntitySpawns {
                 }
             }
         }
-        if (OutvotedConfig.COMMON.spawninferno.get()) {
-            if (e instanceof InfernoEntity) {
+        if (OutvotedConfig.COMMON.spawnwildfire.get()) {
+            if (e instanceof WildfireEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL && event.getWorld().getDifficulty() != Difficulty.HARD) {
                     List<Entity> entities = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), event.getEntity().getBoundingBox().expand(area, area, area).expand(-area, -area, -area));
-                    if (entities.stream().anyMatch(entity -> entity instanceof InfernoEntity)) {
+                    if (entities.stream().anyMatch(entity -> entity instanceof WildfireEntity)) {
                         event.setResult(Event.Result.DENY);
                     }
                 }
@@ -85,13 +85,13 @@ public class ModEntitySpawns {
     }
 
     /**
-     * Adds Blazes to Inferno spawns and adds Infernos to Mob Spawners
+     * Adds Blazes to Wildfire spawns and adds Wildfires to Mob Spawners
      */
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
         Entity e = event.getEntity();
-        if (OutvotedConfig.COMMON.spawninferno.get()) {
-            if (e instanceof InfernoEntity) {
+        if (OutvotedConfig.COMMON.spawnwildfire.get()) {
+            if (e instanceof WildfireEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
                     World world = event.getEntity().getEntityWorld();
                     int max = 3;
@@ -120,10 +120,10 @@ public class ModEntitySpawns {
                     if (Math.random() > 0.85) {
                         World world = event.getEntity().getEntityWorld();
 
-                        InfernoEntity inferno = ModEntityTypes.INFERNO.get().create(world);
-                        inferno.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
+                        WildfireEntity wildfire = ModEntityTypes.WILDFIRE.get().create(world);
+                        wildfire.setPositionAndRotation(e.getPosX(), e.getPosY(), e.getPosZ(), e.rotationYaw, e.rotationPitch);
 
-                        world.addEntity(inferno);
+                        world.addEntity(wildfire);
                         event.setCanceled(true);
                     }
                 }

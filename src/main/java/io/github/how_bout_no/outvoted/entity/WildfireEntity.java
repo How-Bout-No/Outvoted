@@ -40,14 +40,14 @@ import java.util.EnumSet;
 
 import static java.lang.Math.*;
 
-public class InfernoEntity extends MonsterEntity implements IAnimatable {
+public class WildfireEntity extends MonsterEntity implements IAnimatable {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     private boolean shieldDisabled = false;
-    private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BYTE);
-    private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(InfernoEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SHIELDING = EntityDataManager.createKey(WildfireEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(WildfireEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(WildfireEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(WildfireEntity.class, DataSerializers.VARINT);
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -79,7 +79,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         return this.factory;
     }
 
-    public InfernoEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public WildfireEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super(type, worldIn);
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.setPathPriority(PathNodeType.LAVA, 8.0F);
@@ -92,7 +92,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
                 .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 4.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthinferno.get())
+                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthwildfire.get())
                 .createMutableAttribute(Attributes.ARMOR, 10.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 48.0D);
@@ -100,7 +100,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(4, new InfernoEntity.AttackGoal(this));
+        this.goalSelector.addGoal(4, new WildfireEntity.AttackGoal(this));
         this.goalSelector.addGoal(6, new MoveTowardsRestrictionGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -111,17 +111,17 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSounds.INFERNO_AMBIENT.get();
+        return ModSounds.WILDFIRE_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSounds.INFERNO_DEATH.get();
+        return ModSounds.WILDFIRE_DEATH.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.INFERNO_HURT.get();
+        return ModSounds.WILDFIRE_HURT.get();
     }
 
     @Override
@@ -203,7 +203,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
 
         if (this.world.isRemote) {
             if (this.rand.nextInt(24) == 0 && !this.isSilent()) {
-                this.world.playSound(this.getPosX() + 0.5D, this.getPosY() + 0.5D, this.getPosZ() + 0.5D, ModSounds.INFERNO_BURN.get(), this.getSoundCategory(), 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F, false);
+                this.world.playSound(this.getPosX() + 0.5D, this.getPosY() + 0.5D, this.getPosZ() + 0.5D, ModSounds.WILDFIRE_BURN.get(), this.getSoundCategory(), 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F, false);
             }
 
             for (int i = 0; i < 2; ++i) {
@@ -312,13 +312,13 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
     }
 
     static class AttackGoal extends Goal {
-        private final InfernoEntity inferno;
+        private final WildfireEntity wildfire;
         private int attackStep;
         private int attackTime;
         private int firedRecentlyTimer;
 
-        public AttackGoal(InfernoEntity infernoIn) {
-            this.inferno = infernoIn;
+        public AttackGoal(WildfireEntity wildfireIn) {
+            this.wildfire = wildfireIn;
             this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
@@ -327,8 +327,8 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
          * method as well.
          */
         public boolean shouldExecute() {
-            LivingEntity livingentity = this.inferno.getAttackTarget();
-            return livingentity != null && livingentity.isAlive() && this.inferno.canAttack(livingentity);
+            LivingEntity livingentity = this.wildfire.getAttackTarget();
+            return livingentity != null && livingentity.isAlive() && this.wildfire.canAttack(livingentity);
         }
 
         /**
@@ -342,9 +342,9 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void resetTask() {
-            this.inferno.setOnFire(false);
-            this.inferno.setShielding(false);
-            this.inferno.setAttacking(false);
+            this.wildfire.setOnFire(false);
+            this.wildfire.setShielding(false);
+            this.wildfire.setAttacking(false);
             this.firedRecentlyTimer = 0;
         }
 
@@ -353,36 +353,36 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
          */
         public void tick() {
             --this.attackTime;
-            LivingEntity livingentity = this.inferno.getAttackTarget();
-            this.inferno.setAttacking(false);
+            LivingEntity livingentity = this.wildfire.getAttackTarget();
+            this.wildfire.setAttacking(false);
             if (livingentity != null) {
-                boolean flag = this.inferno.getEntitySenses().canSee(livingentity);
+                boolean flag = this.wildfire.getEntitySenses().canSee(livingentity);
                 if (flag) {
                     this.firedRecentlyTimer = 0;
                 } else {
                     ++this.firedRecentlyTimer;
                 }
 
-                double d0 = this.inferno.getDistanceSq(livingentity);
+                double d0 = this.wildfire.getDistanceSq(livingentity);
                 if (d0 < 4.0D) {
 
-                    this.inferno.setOnFire(true);
+                    this.wildfire.setOnFire(true);
 
                     if (this.attackTime <= 0) {
-                        this.inferno.setAttacking(true);
+                        this.wildfire.setAttacking(true);
                         this.attackTime = 5;
-                        this.inferno.attackEntityAsMob(livingentity);
+                        this.wildfire.attackEntityAsMob(livingentity);
                         livingentity.setFire(4);
                     }
 
-                    this.inferno.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
+                    this.wildfire.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
-                    double d1 = livingentity.getPosX() - this.inferno.getPosX();
-                    double d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
-                    double d3 = livingentity.getPosZ() - this.inferno.getPosZ();
+                    double d1 = livingentity.getPosX() - this.wildfire.getPosX();
+                    double d2 = livingentity.getPosYHeight(0.5D) - this.wildfire.getPosYHeight(0.5D);
+                    double d3 = livingentity.getPosZ() - this.wildfire.getPosZ();
 
-                    float health = (this.inferno.getMaxHealth() - this.inferno.getHealth()) / 2;
-                    float healthPercent = this.inferno.getHealth() / this.inferno.getMaxHealth();
+                    float health = (this.wildfire.getMaxHealth() - this.wildfire.getHealth()) / 2;
+                    float healthPercent = this.wildfire.getHealth() / this.wildfire.getMaxHealth();
 
                     int maxAttackSteps = 3;
 
@@ -394,26 +394,26 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                     }
 
                     if (this.attackTime <= 0) {
-                        this.inferno.setShielding(false);
+                        this.wildfire.setShielding(false);
                         ++this.attackStep;
                         if (this.attackStep == 1) {
                             this.attackTime = (int) (40 * healthPercent + 20);
-                            this.inferno.setOnFire(true);
+                            this.wildfire.setOnFire(true);
                         } else if (this.attackStep <= maxAttackSteps) {
                             this.attackTime = (int) (25 * healthPercent + 5);
                         } else {
                             this.attackTime = 200;
                             this.attackStep = 0;
-                            this.inferno.setOnFire(false);
-                            this.inferno.setAttacking(false);
+                            this.wildfire.setOnFire(false);
+                            this.wildfire.setAttacking(false);
                         }
 
                         if (this.attackStep > 1) {
 
-                            this.inferno.setAttacking(true);
+                            this.wildfire.setAttacking(true);
 
-                            if (!this.inferno.isSilent()) {
-                                this.inferno.world.playSound(null, this.inferno.getPosition(), ModSounds.INFERNO_SHOOT.get(), this.inferno.getSoundCategory(), 1.0F, 1.0F);
+                            if (!this.wildfire.isSilent()) {
+                                this.wildfire.world.playSound(null, this.wildfire.getPosition(), ModSounds.WILDFIRE_SHOOT.get(), this.wildfire.getSoundCategory(), 1.0F, 1.0F);
                             }
 
                             double fireballcount = OutvotedConfig.COMMON.fireballcount.get();
@@ -421,13 +421,13 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                             double maxdepressangle = toRadians(OutvotedConfig.COMMON.maxdepressangle.get());
 
                             //update target pos
-                            d1 = livingentity.getPosX() - this.inferno.getPosX();
-                            d2 = livingentity.getPosYHeight(0.5D) - this.inferno.getPosYHeight(0.5D);
-                            d3 = livingentity.getPosZ() - this.inferno.getPosZ();
+                            d1 = livingentity.getPosX() - this.wildfire.getPosX();
+                            d2 = livingentity.getPosYHeight(0.5D) - this.wildfire.getPosYHeight(0.5D);
+                            d3 = livingentity.getPosZ() - this.wildfire.getPosZ();
 
                             //shoot fireballs
                             for (int i = 0; i <= (fireballcount - 1); ++i) {
-                                InfernoFireballEntity infernofireballentity;
+                                WildfireFireballEntity wildfirefireballentity;
                                 double angle = (i - ((fireballcount - 1) / 2)) * offsetangle;
                                 double x = d1 * cos(angle) + d3 * sin(angle);
                                 double y = d2;
@@ -435,23 +435,23 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
                                 if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
                                     y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
                                 }
-                                infernofireballentity = new InfernoFireballEntity(this.inferno.world, this.inferno, x, y, z);
-                                infernofireballentity.setPosition(infernofireballentity.getPosX(), this.inferno.getPosYHeight(0.5D), infernofireballentity.getPosZ());
-                                this.inferno.world.addEntity(infernofireballentity);
+                                wildfirefireballentity = new WildfireFireballEntity(this.wildfire.world, this.wildfire, x, y, z);
+                                wildfirefireballentity.setPosition(wildfirefireballentity.getPosX(), this.wildfire.getPosYHeight(0.5D), wildfirefireballentity.getPosZ());
+                                this.wildfire.world.addEntity(wildfirefireballentity);
                             }
                         }
                     } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {
-                        this.inferno.setShielding(true);
+                        this.wildfire.setShielding(true);
                     } else if (this.attackTime >= 30 && this.attackTime >= 50) {
-                        this.inferno.setShielding(false);
-                        this.inferno.shieldDisabled = false;
+                        this.wildfire.setShielding(false);
+                        this.wildfire.shieldDisabled = false;
                     }
 
-                    this.inferno.setInvulnerable(this.inferno.getShielding());
+                    this.wildfire.setInvulnerable(this.wildfire.getShielding());
 
-                    this.inferno.getLookController().setLookPositionWithEntity(livingentity, 10.0F, 10.0F);
+                    this.wildfire.getLookController().setLookPositionWithEntity(livingentity, 10.0F, 10.0F);
                 } else if (this.firedRecentlyTimer < 5) {
-                    this.inferno.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
+                    this.wildfire.getMoveHelper().setMoveTo(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), 1.0D);
                 }
 
                 super.tick();
@@ -459,7 +459,7 @@ public class InfernoEntity extends MonsterEntity implements IAnimatable {
         }
 
         private double getFollowDistance() {
-            return this.inferno.getAttributeValue(Attributes.FOLLOW_RANGE);
+            return this.wildfire.getAttributeValue(Attributes.FOLLOW_RANGE);
         }
     }
 }

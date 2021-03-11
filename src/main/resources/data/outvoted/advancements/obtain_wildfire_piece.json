@@ -2,13 +2,13 @@
   "parent": "minecraft:nether/obtain_blaze_rod",
   "display": {
     "icon": {
-      "item": "outvoted:inferno_piece"
+      "item": "outvoted:wildfire_piece"
     },
     "title": {
-      "translate": "advancements.outvoted.obtain_inferno_piece.title"
+      "translate": "advancements.outvoted.obtain_wildfire_piece.title"
     },
     "description": {
-      "translate": "advancements.outvoted.obtain_inferno_piece.description"
+      "translate": "advancements.outvoted.obtain_wildfire_piece.description"
     },
     "frame": "goal",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "inferno_piece": {
+    "wildfire_piece": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "outvoted:inferno_piece"
+            "item": "outvoted:wildfire_piece"
           }
         ]
       }

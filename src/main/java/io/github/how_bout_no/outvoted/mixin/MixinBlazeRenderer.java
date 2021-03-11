@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Replace Blaze textures with soul/blue variant when in Soul Sand Valleys, akin to Infernos
+ * Replace Blaze textures with soul/blue variant when in Soul Sand Valleys, akin to Wildfires
  */
 @Mixin(BlazeRenderer.class)
 public abstract class MixinBlazeRenderer {
@@ -20,7 +20,7 @@ public abstract class MixinBlazeRenderer {
 
     @Inject(method = "getEntityTexture", at = @At("RETURN"), cancellable = true)
     private void soulTextures(BlazeEntity entity, CallbackInfoReturnable<ResourceLocation> cir) {
-        if (!OutvotedConfig.COMMON.infernovariant.get()) return;
+        if (!OutvotedConfig.COMMON.wildfirevariant.get()) return;
         if (((IMixinBlazeEntity) entity).getVariant() == 1) cir.setReturnValue(BLAZE_TEXTURES_SOUL);
     }
 }

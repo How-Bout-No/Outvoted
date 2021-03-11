@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.client.model;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.InfernoEntity;
+import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -11,24 +11,24 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @OnlyIn(Dist.CLIENT)
-public class InfernoModel extends AnimatedGeoModel<InfernoEntity> {
+public class WildfireModel extends AnimatedGeoModel<WildfireEntity> {
     @Override
-    public ResourceLocation getAnimationFileLocation(InfernoEntity entity) {
-        return new ResourceLocation(Outvoted.MOD_ID, "animations/inferno.animation.json");
+    public ResourceLocation getAnimationFileLocation(WildfireEntity entity) {
+        return new ResourceLocation(Outvoted.MOD_ID, "animations/wildfire.animation.json");
     }
 
     @Override
-    public ResourceLocation getModelLocation(InfernoEntity entity) {
-        return new ResourceLocation(Outvoted.MOD_ID, "geo/inferno.geo.json");
+    public ResourceLocation getModelLocation(WildfireEntity entity) {
+        return new ResourceLocation(Outvoted.MOD_ID, "geo/wildfire.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(InfernoEntity entity) {
+    public ResourceLocation getTextureLocation(WildfireEntity entity) {
         return null;
     }
 
     @Override
-    public void setLivingAnimations(InfernoEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(WildfireEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getBone("head");
 

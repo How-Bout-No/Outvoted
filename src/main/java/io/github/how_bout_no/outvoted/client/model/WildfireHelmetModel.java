@@ -8,11 +8,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class InfernoHelmetModel<T extends LivingEntity> extends BipedModel<T> {
+public class WildfireHelmetModel<T extends LivingEntity> extends BipedModel<T> {
 
     public ModelRenderer head;
 
-    public InfernoHelmetModel() {
+    public WildfireHelmetModel() {
         super(1.0F);
         this.textureWidth = 64;
         this.textureHeight = 64;

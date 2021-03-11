@@ -1,14 +1,14 @@
 {
-  "parent": "outvoted:obtain_inferno_piece",
+  "parent": "outvoted:obtain_wildfire_piece",
   "display": {
     "icon": {
-      "item": "outvoted:inferno_helmet"
+      "item": "outvoted:wildfire_helmet"
     },
     "title": {
-      "translate": "advancements.outvoted.obtain_inferno_helmet.title"
+      "translate": "advancements.outvoted.obtain_wildfire_helmet.title"
     },
     "description": {
-      "translate": "advancements.outvoted.obtain_inferno_helmet.description"
+      "translate": "advancements.outvoted.obtain_wildfire_helmet.description"
     },
     "frame": "challenge",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "inferno_helmet": {
+    "wildfire_helmet": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "outvoted:inferno_helmet"
+            "item": "outvoted:wildfire_helmet"
           }
         ]
       }

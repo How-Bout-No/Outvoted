@@ -55,7 +55,7 @@ public class LootTables extends LootTableProvider {
 
         @Override
         protected void addTables() {
-            this.registerLootTable(ModEntityTypes.INFERNO.get(), LootTable.builder()
+            this.registerLootTable(ModEntityTypes.WILDFIRE.get(), LootTable.builder()
                     .addLootPool(LootPool.builder()
                             .rolls(ConstantRange.of(1))
                             .addEntry(ItemLootEntry.builder(net.minecraft.item.Items.BLAZE_ROD)
@@ -64,12 +64,12 @@ public class LootTables extends LootTableProvider {
                                     .acceptCondition(KilledByPlayer.builder())))
                     .addLootPool(LootPool.builder()
                             .rolls(ConstantRange.of(1))
-                            .addEntry(ItemLootEntry.builder(ModItems.INFERNO_PIECE.get())
+                            .addEntry(ItemLootEntry.builder(ModItems.WILDFIRE_PIECE.get())
                                     .acceptCondition(RandomChanceWithLooting.builder(0.15F, 0.05F))
                                     .acceptCondition(KilledByPlayer.builder())))
                     .addLootPool(LootPool.builder()
                             .rolls(ConstantRange.of(1))
-                            .addEntry(ItemLootEntry.builder(ModItems.INFERNO_HELMET.get())
+                            .addEntry(ItemLootEntry.builder(ModItems.WILDFIRE_HELMET.get())
                                     .acceptCondition(RandomChanceWithLooting.builder(0.05F, 0.025F))
                                     .acceptCondition(KilledByPlayer.builder())))
             );

@@ -11,16 +11,16 @@ public class ModSounds {
 
     public static DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Outvoted.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> INFERNO_AMBIENT = SOUNDS.register("inferno_ambient",
-            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "inferno_ambient")));
-    public static final RegistryObject<SoundEvent> INFERNO_HURT = SOUNDS.register("inferno_hurt",
-            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "inferno_hurt")));
-    public static final RegistryObject<SoundEvent> INFERNO_DEATH = SOUNDS.register("inferno_death",
-            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "inferno_death")));
-    public static final RegistryObject<SoundEvent> INFERNO_BURN = SOUNDS.register("inferno_burn",
-            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "inferno_burn")));
-    public static final RegistryObject<SoundEvent> INFERNO_SHOOT = SOUNDS.register("inferno_shoot",
-            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "inferno_shoot")));
+    public static final RegistryObject<SoundEvent> WILDFIRE_AMBIENT = SOUNDS.register("wildfire_ambient",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "wildfire_ambient")));
+    public static final RegistryObject<SoundEvent> WILDFIRE_HURT = SOUNDS.register("wildfire_hurt",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "wildfire_hurt")));
+    public static final RegistryObject<SoundEvent> WILDFIRE_DEATH = SOUNDS.register("wildfire_death",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "wildfire_death")));
+    public static final RegistryObject<SoundEvent> WILDFIRE_BURN = SOUNDS.register("wildfire_burn",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "wildfire_burn")));
+    public static final RegistryObject<SoundEvent> WILDFIRE_SHOOT = SOUNDS.register("wildfire_shoot",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "wildfire_shoot")));
 
     public static final RegistryObject<SoundEvent> KRAKEN_AMBIENT = SOUNDS.register("kraken_ambient",
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "kraken_ambient")));
