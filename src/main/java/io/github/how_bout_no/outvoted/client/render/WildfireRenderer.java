@@ -26,16 +26,16 @@ public class WildfireRenderer extends GeoEntityRenderer<WildfireEntity> {
 
     @Override
     public RenderType getRenderType(WildfireEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
+        return RenderType.entityTranslucent(this.getTextureLocation(animatable));
     }
 
     @Override
-    protected int getBlockLight(WildfireEntity entityIn, BlockPos partialTicks) {
+    protected int getBlockLightLevel(WildfireEntity entityIn, BlockPos partialTicks) {
         return 15;
     }
 
     @Override
-    public ResourceLocation getEntityTexture(WildfireEntity entity) {
+    public ResourceLocation getTextureLocation(WildfireEntity entity) {
         if (entity.getVariant() == 0 || !OutvotedConfig.COMMON.wildfirevariant.get()) {
             return NETHER;
         } else {

@@ -47,7 +47,7 @@
               "condition": "minecraft:killed_by_player"
             }
           ],
-          "name": "outvoted:inferno_piece"
+          "name": "outvoted:wildfire_piece"
         }
       ]
     },
@@ -66,7 +66,7 @@
               "condition": "minecraft:killed_by_player"
             }
           ],
-          "name": "outvoted:inferno_helmet"
+          "name": "outvoted:wildfire_helmet"
         }
       ]
     }

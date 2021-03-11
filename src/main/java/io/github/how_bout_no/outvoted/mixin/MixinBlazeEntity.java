@@ -30,43 +30,43 @@ public abstract class MixinBlazeEntity extends MonsterEntity implements IMixinBl
         super(type, worldIn);
     }
 
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(BlazeEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(BlazeEntity.class, DataSerializers.INT);
 
     @Override
     public void setVariant(int type) {
-        this.dataManager.set(VARIANT, type);
+        this.entityData.set(VARIANT, type);
     }
 
     @Override
     public int getVariant() {
-        return this.dataManager.get(VARIANT);
+        return this.entityData.get(VARIANT);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         int type;
-        Block block = worldIn.getBlockState(new BlockPos(this.getPositionVec().add(0D, -0.5D, 0D))).getBlock();
-        if (block.matchesBlock(Blocks.SOUL_SAND) || block.matchesBlock(Blocks.SOUL_SOIL)) {
+        Block block = worldIn.getBlockState(new BlockPos(this.position().add(0D, -0.5D, 0D))).getBlock();
+        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
             type = 1;
         } else {
             type = 0;
         }
         this.setVariant(type);
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Inject(method = "registerData", at = @At("TAIL"))
     protected void registerVariant(CallbackInfo info) {
-        this.dataManager.register(VARIANT, 0);
+        this.entityData.define(VARIANT, 0);
     }
 }

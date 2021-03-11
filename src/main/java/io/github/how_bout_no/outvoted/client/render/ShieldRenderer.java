@@ -18,9 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ShieldRenderer extends ItemStackTileEntityRenderer {
 
     @Override
-    public void func_239207_a_(ItemStack stack, TransformType p_239207_2_, MatrixStack matrixStack,
+    public void renderByItem(ItemStack stack, TransformType p_239207_2_, MatrixStack matrixStack,
                                IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.scale(1, -1, -1);
         /*RenderMaterial rendermaterial = flag ? ModelBakery.LOCATION_SHIELD_BASE
                 : ModelBakery.LOCATION_SHIELD_NO_PATTERN;*/
@@ -29,13 +29,13 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
         //rendermaterial = flag ? WildfireShieldModel.base : WildfireShieldModel.basenop;
         RenderMaterial rendermaterial = WildfireShieldModel.base;
 
-        IVertexBuilder ivertexbuilder = rendermaterial.getSprite().wrapBuffer(ItemRenderer.getEntityGlintVertexBuilder(
-                buffer, modelShield.getRenderType(rendermaterial.getAtlasLocation()), true, stack.hasEffect()));
-        this.modelShield.func_228294_b_().render(matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F,
+        IVertexBuilder ivertexbuilder = rendermaterial.sprite().wrap(ItemRenderer.getFoilBufferDirect(
+                buffer, shieldModel.renderType(rendermaterial.atlasLocation()), true, stack.hasFoil()));
+        this.shieldModel.handle().render(matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F,
                 1.0F, 1.0F, 1.0F);
-        this.modelShield.func_228293_a_().render(matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F,
+        this.shieldModel.plate().render(matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F,
                 1.0F, 1.0F, 1.0F);
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
 }

@@ -19,34 +19,34 @@ public class Recipes extends RecipeProvider {
     }
 
     @Override
-    protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        SmithingBuilder.smithingRecipe(Ingredient.fromItems(Items.SHIELD), Ingredient.fromItems(ModItems.WILDFIRE_SHIELD_PART.get()), ModItems.WILDFIRE_SHIELD.get())
-                .addCriterion("has_wildfire_part", hasItem(ModItems.WILDFIRE_SHIELD_PART.get()))
-                .build(consumer, ModItems.WILDFIRE_SHIELD.getId());
+    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+        SmithingBuilder.smithingRecipe(Ingredient.of(Items.SHIELD), Ingredient.of(ModItems.WILDFIRE_SHIELD_PART.get()), ModItems.WILDFIRE_SHIELD.get())
+                .unlocks("has_wildfire_part", has(ModItems.WILDFIRE_SHIELD_PART.get()))
+                .save(consumer, ModItems.WILDFIRE_SHIELD.getId());
         ShapedBuilder.shapedRecipe(ModItems.WILDFIRE_SHIELD_PART.get())
-                .patternLine("MMM")
-                .patternLine("MCM")
-                .patternLine("MMM")
-                .key('M', Blocks.POLISHED_BLACKSTONE)
-                .key('C', ModItems.WILDFIRE_PIECE.get())
-                .addCriterion("has_wildfire_piece", hasItem(ModItems.WILDFIRE_PIECE.get()))
-                .build(consumer);
+                .pattern("MMM")
+                .pattern("MCM")
+                .pattern("MMM")
+                .define('M', Blocks.POLISHED_BLACKSTONE)
+                .define('C', ModItems.WILDFIRE_PIECE.get())
+                .unlockedBy("has_wildfire_piece", has(ModItems.WILDFIRE_PIECE.get()))
+                .save(consumer);
         ShapedBuilder.shapedRecipe(ModItems.PRISMARINE_ROD.get())
-                .patternLine("P")
-                .patternLine("P")
-                .patternLine("P")
-                .key('P', Blocks.PRISMARINE_BRICKS)
-                .addCriterion("has_prismarine", hasItem(Blocks.PRISMARINE_BRICKS))
-                .build(consumer);
+                .pattern("P")
+                .pattern("P")
+                .pattern("P")
+                .define('P', Blocks.PRISMARINE_BRICKS)
+                .unlockedBy("has_prismarine", has(Blocks.PRISMARINE_BRICKS))
+                .save(consumer);
         ShapedBuilder.shapedRecipe(Items.TRIDENT)
-                .patternLine(" TT")
-                .patternLine(" HT")
-                .patternLine("R  ")
-                .key('T', ModItems.KRAKEN_TOOTH.get())
-                .key('H', Items.HEART_OF_THE_SEA)
-                .key('R', ModItems.PRISMARINE_ROD.get())
-                .addCriterion("has_tooth", hasItem(ModItems.KRAKEN_TOOTH.get()))
-                .build(consumer);
-        CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_COST.get()).build(consumer, ModRecipes.REPAIR_COST.getId().getPath());
+                .pattern(" TT")
+                .pattern(" HT")
+                .pattern("R  ")
+                .define('T', ModItems.KRAKEN_TOOTH.get())
+                .define('H', Items.HEART_OF_THE_SEA)
+                .define('R', ModItems.PRISMARINE_ROD.get())
+                .unlockedBy("has_tooth", has(ModItems.KRAKEN_TOOTH.get()))
+                .save(consumer);
+        CustomRecipeBuilder.special(ModRecipes.REPAIR_COST.get()).save(consumer, ModRecipes.REPAIR_COST.getId().getPath());
     }
 }

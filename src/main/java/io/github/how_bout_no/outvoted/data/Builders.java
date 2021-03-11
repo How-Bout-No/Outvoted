@@ -31,7 +31,7 @@ class ShapedBuilder extends ShapedRecipeBuilder {
     private final int count;
     private final List<String> pattern = Lists.newArrayList();
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
-    private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+    private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
     private String group;
 
     public ShapedBuilder(IItemProvider resultIn, int countIn) {
@@ -49,17 +49,17 @@ class ShapedBuilder extends ShapedRecipeBuilder {
     }
 
     @Override
-    public ShapedRecipeBuilder key(Character symbol, ITag<Item> tagIn) {
-        return this.key(symbol, Ingredient.fromTag(tagIn));
+    public ShapedRecipeBuilder define(Character symbol, ITag<Item> tagIn) {
+        return this.define(symbol, Ingredient.of(tagIn));
     }
 
     @Override
-    public ShapedRecipeBuilder key(Character symbol, IItemProvider itemIn) {
-        return this.key(symbol, Ingredient.fromItems(itemIn));
+    public ShapedRecipeBuilder define(Character symbol, IItemProvider itemIn) {
+        return this.define(symbol, Ingredient.of(itemIn));
     }
 
     @Override
-    public ShapedRecipeBuilder key(Character symbol, Ingredient ingredientIn) {
+    public ShapedRecipeBuilder define(Character symbol, Ingredient ingredientIn) {
         if (this.key.containsKey(symbol)) {
             throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
         } else if (symbol == ' ') {
@@ -71,7 +71,7 @@ class ShapedBuilder extends ShapedRecipeBuilder {
     }
 
     @Override
-    public ShapedRecipeBuilder patternLine(String patternIn) {
+    public ShapedRecipeBuilder pattern(String patternIn) {
         if (!this.pattern.isEmpty() && patternIn.length() != this.pattern.get(0).length()) {
             throw new IllegalArgumentException("Pattern must be the same width on every line!");
         } else {
@@ -81,35 +81,35 @@ class ShapedBuilder extends ShapedRecipeBuilder {
     }
 
     @Override
-    public ShapedRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-        this.advancementBuilder.withCriterion(name, criterionIn);
+    public ShapedRecipeBuilder unlockedBy(String name, ICriterionInstance criterionIn) {
+        this.advancementBuilder.addCriterion(name, criterionIn);
         return this;
     }
 
     @Override
-    public ShapedRecipeBuilder setGroup(String groupIn) {
+    public ShapedRecipeBuilder group(String groupIn) {
         this.group = groupIn;
         return this;
     }
 
     @Override
-    public void build(Consumer<IFinishedRecipe> consumerIn) {
-        this.build(consumerIn, Registry.ITEM.getKey(this.result));
+    public void save(Consumer<IFinishedRecipe> consumerIn) {
+        this.save(consumerIn, Registry.ITEM.getKey(this.result));
     }
 
     @Override
-    public void build(Consumer<IFinishedRecipe> consumerIn, String save) {
+    public void save(Consumer<IFinishedRecipe> consumerIn, String save) {
         ResourceLocation resourcelocation = Registry.ITEM.getKey(this.result);
         if ((new ResourceLocation(save)).equals(resourcelocation)) {
             throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument");
         } else {
-            this.build(consumerIn, new ResourceLocation(save));
+            this.save(consumerIn, new ResourceLocation(save));
         }
     }
 
     @Override
-    public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
+    public void save(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
+        this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
         consumerIn.accept(new ShapedRecipeBuilder.Result(id, this.result, this.count, this.group == null ? "" : this.group, this.pattern, this.key, this.advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/misc/" + id.getPath())));
     }
 }
@@ -118,7 +118,7 @@ class SmithingBuilder extends SmithingRecipeBuilder {
     private final Ingredient base;
     private final Ingredient addition;
     private final Item output;
-    private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+    private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
     private final IRecipeSerializer<?> serializer;
 
     public SmithingBuilder(IRecipeSerializer<?> serializer, Ingredient base, Ingredient addition, Item output) {
@@ -134,19 +134,19 @@ class SmithingBuilder extends SmithingRecipeBuilder {
     }
 
     @Override
-    public SmithingRecipeBuilder addCriterion(String name, ICriterionInstance criterion) {
-        this.advancementBuilder.withCriterion(name, criterion);
+    public SmithingRecipeBuilder unlocks(String name, ICriterionInstance criterion) {
+        this.advancementBuilder.addCriterion(name, criterion);
         return this;
     }
 
     @Override
-    public void build(Consumer<IFinishedRecipe> consumer, String id) {
-        this.build(consumer, new ResourceLocation(id));
+    public void save(Consumer<IFinishedRecipe> consumer, String id) {
+        this.save(consumer, new ResourceLocation(id));
     }
 
     @Override
-    public void build(Consumer<IFinishedRecipe> recipe, ResourceLocation id) {
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
+    public void save(Consumer<IFinishedRecipe> recipe, ResourceLocation id) {
+        this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
         recipe.accept(new SmithingRecipeBuilder.Result(id, this.serializer, this.base, this.addition, this.output, this.advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/combat/" + id.getPath())));
     }
 }

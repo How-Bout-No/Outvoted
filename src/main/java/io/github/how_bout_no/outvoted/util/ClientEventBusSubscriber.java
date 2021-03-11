@@ -36,14 +36,14 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes().create());
-        event.put(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes().create());
-        event.put(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes().create());
+        event.put(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes().build());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPostRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
-        EntitySpawnPlacementRegistry.register(ModEntityTypes.WILDFIRE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
+        EntitySpawnPlacementRegistry.register(ModEntityTypes.WILDFIRE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(ModEntityTypes.HUNGER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HungerEntity::canSpawn);
         EntitySpawnPlacementRegistry.register(ModEntityTypes.KRAKEN.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, KrakenEntity::canSpawn);
 

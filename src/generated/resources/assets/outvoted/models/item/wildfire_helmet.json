@@ -1,14 +1,14 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "outvoted:item/inferno_helmet"
+    "layer0": "outvoted:item/wildfire_helmet"
   },
   "overrides": [
     {
       "predicate": {
         "minecraft:custom_model_data": 1.0
       },
-      "model": "outvoted:item/inferno_helmet_soul"
+      "model": "outvoted:item/wildfire_helmet_soul"
     }
   ]
 }

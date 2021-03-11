@@ -18,7 +18,7 @@ public enum ModArmor implements IArmorMaterial {
         return Ingredient.fromItems(Items.BLAZE_ROD.getItem());
     }, 0.0F);*/
 
-    WILDFIRE(Outvoted.MOD_ID + ":wildfire", 25, new int[]{2, 2, 2, 2}, 0, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+    WILDFIRE(Outvoted.MOD_ID + ":wildfire", 25, new int[]{2, 2, 2, 2}, 0, SoundEvents.ARMOR_EQUIP_NETHERITE,
             0.5F, () -> Ingredient.EMPTY, 0.0F);
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[]{11, 16, 15, 13};
@@ -44,27 +44,27 @@ public enum ModArmor implements IArmorMaterial {
     }
 
     @Override
-    public int getDurability(EquipmentSlotType slotIn) {
+    public int getDurabilityForSlot(EquipmentSlotType slotIn) {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
     }
 
     @Override
-    public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+    public int getDefenseForSlot(EquipmentSlotType slotIn) {
         return this.damageReductionAmountArray[slotIn.getIndex()];
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return this.enchantability;
     }
 
     @Override
-    public SoundEvent getSoundEvent() {
+    public SoundEvent getEquipSound() {
         return this.soundEvent;
     }
 
     @Override
-    public Ingredient getRepairMaterial() {
+    public Ingredient getRepairIngredient() {
         return this.repairMaterial.get();
     }
 

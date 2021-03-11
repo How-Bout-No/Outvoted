@@ -25,7 +25,7 @@ public class ModItems {
     // Items
     public static final RegistryObject<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);
     public static final RegistryObject<Item> WILDFIRE_SHIELD = ITEMS.register("wildfire_shield", WildfireShieldItem::new);
-    public static final RegistryObject<Item> WILDFIRE_SHIELD_PART = ITEMS.register("wildfire_shield_part", () -> new ModItem(new Item.Properties().isImmuneToFire()));
+    public static final RegistryObject<Item> WILDFIRE_SHIELD_PART = ITEMS.register("wildfire_shield_part", () -> new ModItem(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> WILDFIRE_PIECE = ITEMS.register("wildfire_piece", () -> new ModItem(new Item.Properties()));
     public static final RegistryObject<Item> VOID_HEART = ITEMS.register("void_heart", () -> new ModItem(new Item.Properties()));
     public static final RegistryObject<Item> KRAKEN_TOOTH = ITEMS.register("kraken_tooth", () -> new ModItem(new Item.Properties()));
