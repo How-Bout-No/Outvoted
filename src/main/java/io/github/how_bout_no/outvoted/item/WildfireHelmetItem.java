@@ -27,7 +27,7 @@ public class WildfireHelmetItem extends ArmorItem {
 //    private boolean timer = true;
 
     public WildfireHelmetItem() {
-        super(ModArmor.WILDFIRE, EquipmentSlotType.HEAD, new Item.Properties().tab(Outvoted.TAB_COMBAT));
+        super(ModArmor.WILDFIRE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
     }
 
     @SuppressWarnings("unchecked")
@@ -47,10 +47,10 @@ public class WildfireHelmetItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1, 0, false, false, true));
-        if (player.isOnFire()) {
+        player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1, 0, false, false, true));
+        if (player.isBurning()) {
             if (timer % 40 == 0) {
-                stack.hurtAndBreak(1 + (timer / 600), player, consumer -> consumer.broadcastBreakEvent(EquipmentSlotType.HEAD));
+                stack.damageItem(1 + (timer / 600), player, consumer -> consumer.sendBreakAnimation(EquipmentSlotType.HEAD));
                 //timer = 0;
             }
             timer++;
@@ -71,7 +71,7 @@ public class WildfireHelmetItem extends ArmorItem {
     public Collection<ItemGroup> getCreativeTabs() {
         Collection<ItemGroup> groups = new ArrayList<>();
         groups.add(Outvoted.TAB_COMBAT);
-        groups.add(ItemGroup.TAB_SEARCH);
+        groups.add(ItemGroup.SEARCH);
         return groups;
     }
 
@@ -88,7 +88,7 @@ public class WildfireHelmetItem extends ArmorItem {
     }
 
     @Override
-    public boolean isFireResistant() {
+    public boolean isImmuneToFire() {
         return true;
     }
 }

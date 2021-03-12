@@ -21,11 +21,11 @@ public class KrakenRenderer extends GeoEntityRenderer<KrakenEntity> {
 
     @Override
     public RenderType getRenderType(KrakenEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityTranslucent(this.getTextureLocation(animatable));
+        return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(KrakenEntity entity) {
+    public ResourceLocation getEntityTexture(KrakenEntity entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken.png");
     }
 }

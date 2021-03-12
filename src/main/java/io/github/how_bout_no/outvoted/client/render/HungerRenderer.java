@@ -25,11 +25,11 @@ public class HungerRenderer extends GeoEntityRenderer<HungerEntity> {
 
     @Override
     public RenderType getRenderType(HungerEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityTranslucent(this.getTextureLocation(animatable));
+        return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HungerEntity entity) {
+    public ResourceLocation getEntityTexture(HungerEntity entity) {
         if (entity.getVariant() == 1) {
             return RED_SAND;
         } else if (entity.getVariant() == 2) {

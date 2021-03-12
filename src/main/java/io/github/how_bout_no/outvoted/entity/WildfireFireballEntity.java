@@ -28,33 +28,33 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
     /**
      * Called when the fireball hits an entity
      */
-    protected void onHitEntity(EntityRayTraceResult p_213868_1_) {
-        super.onHitEntity(p_213868_1_);
-        if (!this.level.isClientSide) {
-            Entity entity = p_213868_1_.getEntity();
-            if (!entity.fireImmune()) {
-                Entity entity1 = this.getOwner();
-                int i = entity.getRemainingFireTicks();
-                entity.setSecondsOnFire(5);
-                boolean flag = entity.hurt(DamageSource.fireball(this, entity1), 5.0F);
+    protected void onEntityHit(EntityRayTraceResult result) {
+        super.onEntityHit(result);
+        if (!this.world.isRemote) {
+            Entity entity = result.getEntity();
+            if (!entity.isImmuneToFire()) {
+                Entity entity1 = this.getShooter();
+                int i = entity.getFireTimer();
+                entity.setFire(5);
+                boolean flag = entity.attackEntityFrom(DamageSource.causeOnFireDamage(this, entity1), 5.0F);
                 if (!flag) {
-                    entity.setRemainingFireTicks(i);
+                    entity.forceFireTicks(i);
                 } else if (entity1 instanceof LivingEntity) {
-                    this.doEnchantDamageEffects((LivingEntity) entity1, entity);
+                    this.applyEnchantments((LivingEntity) entity1, entity);
                 }
             }
 
         }
     }
 
-    protected void onHitBlock(BlockRayTraceResult p_230299_1_) {
-        super.onHitBlock(p_230299_1_);
-        if (!this.level.isClientSide) {
-            Entity entity = this.getOwner();
-            if (entity == null || !(entity instanceof MobEntity) || this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getEntity())) {
-                BlockPos blockpos = p_230299_1_.getBlockPos().relative(p_230299_1_.getDirection());
-                if (this.level.isEmptyBlock(blockpos)) {
-                    this.level.setBlockAndUpdate(blockpos, AbstractFireBlock.getState(this.level, blockpos));
+    protected void func_230299_a_(BlockRayTraceResult result) {
+        super.func_230299_a_(result);
+        if (!this.world.isRemote) {
+            Entity entity = this.getShooter();
+            if (entity == null || !(entity instanceof MobEntity) || this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.getEntity())) {
+                BlockPos blockpos = result.getPos().offset(result.getFace());
+                if (this.world.isAirBlock(blockpos)) {
+                    this.world.setBlockState(blockpos, AbstractFireBlock.getFireForPlacement(this.world, blockpos));
                 }
             }
 
@@ -64,12 +64,12 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
     /**
      * Called when this EntityFireball hits a block or entity.
      */
-    protected void onHit(RayTraceResult result) {
-        super.onHit(result);
-        if (!this.level.isClientSide) {
+    protected void onImpact(RayTraceResult result) {
+        super.onImpact(result);
+        if (!this.world.isRemote) {
             if (doExplode) {
-                boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner()) && doExplode;
-                this.level.explode((Entity) null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
+                boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.getShooter()) && doExplode;
+                this.world.createExplosion((Entity) null, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
             }
             this.remove();
         }
@@ -79,14 +79,14 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean isPickable() {
+    public boolean canBeCollidedWith() {
         return false;
     }
 
     /**
      * Called when the entity is attacked.
      */
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
 }

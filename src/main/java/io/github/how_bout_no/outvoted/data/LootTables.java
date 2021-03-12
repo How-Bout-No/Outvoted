@@ -34,7 +34,7 @@ public class LootTables extends LootTableProvider {
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
         map.forEach((id, table) -> {
-            LootTableManager.validate(validationtracker, id, table);
+            LootTableManager.validateLootTable(validationtracker, id, table);
         });
     }
 
@@ -55,46 +55,46 @@ public class LootTables extends LootTableProvider {
 
         @Override
         protected void addTables() {
-            this.add(ModEntityTypes.WILDFIRE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantRange.exactly(1))
-                            .add(ItemLootEntry.lootTableItem(net.minecraft.item.Items.BLAZE_ROD)
-                                    .apply(SetCount.setCount(RandomValueRange.between(1.0F, 3.0F)))
-                                    .apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0.0F, 1.0F)))
-                                    .when(KilledByPlayer.killedByPlayer())))
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantRange.exactly(1))
-                            .add(ItemLootEntry.lootTableItem(ModItems.WILDFIRE_PIECE.get())
-                                    .when(RandomChanceWithLooting.randomChanceAndLootingBoost(0.15F, 0.05F))
-                                    .when(KilledByPlayer.killedByPlayer())))
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantRange.exactly(1))
-                            .add(ItemLootEntry.lootTableItem(ModItems.WILDFIRE_HELMET.get())
-                                    .when(RandomChanceWithLooting.randomChanceAndLootingBoost(0.05F, 0.025F))
-                                    .when(KilledByPlayer.killedByPlayer())))
+            this.registerLootTable(ModEntityTypes.WILDFIRE.get(), LootTable.builder()
+                    .addLootPool(LootPool.builder()
+                            .rolls(ConstantRange.of(1))
+                            .addEntry(ItemLootEntry.builder(net.minecraft.item.Items.BLAZE_ROD)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
+                                    .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
+                                    .acceptCondition(KilledByPlayer.builder())))
+                    .addLootPool(LootPool.builder()
+                            .rolls(ConstantRange.of(1))
+                            .addEntry(ItemLootEntry.builder(ModItems.WILDFIRE_PIECE.get())
+                                    .acceptCondition(RandomChanceWithLooting.builder(0.15F, 0.05F))
+                                    .acceptCondition(KilledByPlayer.builder())))
+                    .addLootPool(LootPool.builder()
+                            .rolls(ConstantRange.of(1))
+                            .addEntry(ItemLootEntry.builder(ModItems.WILDFIRE_HELMET.get())
+                                    .acceptCondition(RandomChanceWithLooting.builder(0.05F, 0.025F))
+                                    .acceptCondition(KilledByPlayer.builder())))
             );
 
-            this.add(ModEntityTypes.HUNGER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantRange.exactly(1))
-                            .add(ItemLootEntry.lootTableItem(net.minecraft.item.Items.EXPERIENCE_BOTTLE)
-                                    .apply(SetCount.setCount(RandomValueRange.between(0.0F, 1.0F)))
-                                    .apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0.0F, 1.0F)))
-                                    .when(KilledByPlayer.killedByPlayer())))
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantRange.exactly(1))
-                            .add(ItemLootEntry.lootTableItem(ModItems.VOID_HEART.get())
-                                    .when(RandomChanceWithLooting.randomChanceAndLootingBoost(0.1F, 0.05F))
-                                    .when(KilledByPlayer.killedByPlayer())))
+            this.registerLootTable(ModEntityTypes.HUNGER.get(), LootTable.builder()
+                    .addLootPool(LootPool.builder()
+                            .rolls(ConstantRange.of(1))
+                            .addEntry(ItemLootEntry.builder(net.minecraft.item.Items.EXPERIENCE_BOTTLE)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 1.0F)))
+                                    .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
+                                    .acceptCondition(KilledByPlayer.builder())))
+                    .addLootPool(LootPool.builder()
+                            .rolls(ConstantRange.of(1))
+                            .addEntry(ItemLootEntry.builder(ModItems.VOID_HEART.get())
+                                    .acceptCondition(RandomChanceWithLooting.builder(0.1F, 0.05F))
+                                    .acceptCondition(KilledByPlayer.builder())))
             );
 
-            this.add(ModEntityTypes.KRAKEN.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantRange.exactly(1))
-                            .add(ItemLootEntry.lootTableItem(ModItems.KRAKEN_TOOTH.get())
-                                    .apply(SetCount.setCount(RandomValueRange.between(0.0F, 1.0F)))
-                                    .apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0.0F, 1.0F)))
-                                    .when(KilledByPlayer.killedByPlayer())))
+            this.registerLootTable(ModEntityTypes.KRAKEN.get(), LootTable.builder()
+                    .addLootPool(LootPool.builder()
+                            .rolls(ConstantRange.of(1))
+                            .addEntry(ItemLootEntry.builder(ModItems.KRAKEN_TOOTH.get())
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 1.0F)))
+                                    .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
+                                    .acceptCondition(KilledByPlayer.builder())))
             );
         }
     }

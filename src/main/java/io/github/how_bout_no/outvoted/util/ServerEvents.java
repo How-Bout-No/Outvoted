@@ -19,16 +19,16 @@ public class ServerEvents {
      */
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event) {
-        if (event.getSource().getEntity() != null) {
-            Entity attacker = event.getSource().getEntity();
+        if (event.getSource().getTrueSource() != null) {
+            Entity attacker = event.getSource().getTrueSource();
             LivingEntity player = event.getEntityLiving();
-            Item shield = player.getUseItem().getItem();
+            Item shield = player.getActiveItemStack().getItem();
             if (shield instanceof WildfireShieldItem) {
-                if (player.isBlocking()) {
+                if (player.isActiveItemStackBlocking()) {
                     if (event.getSource().isProjectile()) {
-                        event.getSource().getDirectEntity().setSecondsOnFire(5);
+                        event.getSource().getImmediateSource().setFire(5);
                     } else {
-                        attacker.setSecondsOnFire(5);
+                        attacker.setFire(5);
                     }
                 }
             }

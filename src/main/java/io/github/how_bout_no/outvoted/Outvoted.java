@@ -47,15 +47,15 @@ public class Outvoted {
     public void setup(final FMLCommonSetupEvent event) {
         if (OutvotedConfig.CLIENT.creativetab.get()) {
             ItemGroup TAB = new ItemGroup("modtab") {
-                public ItemStack makeIcon() {
+                public ItemStack createIcon() {
                     return new ItemStack(ModItems.WILDFIRE_HELMET.get());
                 }
             };
             TAB_COMBAT = TAB;
             TAB_MISC = TAB;
         } else {
-            TAB_COMBAT = ItemGroup.TAB_COMBAT;
-            TAB_MISC = ItemGroup.TAB_MISC;
+            TAB_COMBAT = ItemGroup.COMBAT;
+            TAB_MISC = ItemGroup.MISC;
         }
     }
 }

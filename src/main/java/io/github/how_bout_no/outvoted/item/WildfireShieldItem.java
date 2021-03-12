@@ -21,8 +21,8 @@ import net.minecraft.item.Item.Properties;
 
 public class WildfireShieldItem extends ShieldItem {
     public WildfireShieldItem() {
-        super(new Properties().setISTER(() -> getISTER()).durability(750).tab(Outvoted.TAB_COMBAT));
-        DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
+        super(new Properties().setISTER(() -> getISTER()).maxDamage(750).group(Outvoted.TAB_COMBAT));
+        DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -39,12 +39,12 @@ public class WildfireShieldItem extends ShieldItem {
     public Collection<ItemGroup> getCreativeTabs() {
         Collection<ItemGroup> groups = new ArrayList<>();
         groups.add(Outvoted.TAB_COMBAT);
-        groups.add(ItemGroup.TAB_SEARCH);
+        groups.add(ItemGroup.SEARCH);
         return groups;
     }
 
     @Override
-    public boolean isFireResistant() {
+    public boolean isImmuneToFire() {
         return true;
     }
 }

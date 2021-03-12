@@ -50,10 +50,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class HungerEntity extends CreatureEntity implements IAnimatable {
-    private static final DataParameter<Boolean> BURROWED = EntityDataManager.defineId(HungerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ATTACKING = EntityDataManager.defineId(HungerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ENCHANTING = EntityDataManager.defineId(HungerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(HungerEntity.class, DataSerializers.INT);
+    private static final DataParameter<Boolean> BURROWED = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ENCHANTING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(HungerEntity.class, DataSerializers.VARINT);
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -94,13 +94,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
         if (event.sound.equals("chomp")) {
-            level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_BITE.get(), this.getSoundSource(), 1.0F, 1.0F, false);
+            world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.HUNGER_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
-            BlockState block = level.getBlockState(new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ()));
-            if (block.is(BlockTags.SAND)) {
-                level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            BlockState block = world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 0.5D, this.getPosZ()));
+            if (block.isIn(BlockTags.SAND)) {
+                world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.HUNGER_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             } else {
-                level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.HUNGER_DIG.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
         }
     }
@@ -108,9 +108,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     private <E extends IAnimatable> void particleListener(ParticleKeyFrameEvent<E> event) {
         if (event.effect.equals("dig")) {
             for (int i = 0; i < 2; ++i) {
-                BlockPos blockpos = new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ());
-                BlockState blockstate = this.level.getBlockState(blockpos);
-                this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), this.getRandomX(0.5D), this.getY(0), this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+                BlockPos blockpos = new BlockPos(this.getPosX(), this.getPosY() - 0.5D, this.getPosZ());
+                BlockState blockstate = this.world.getBlockState(blockpos);
+                this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), this.getPosXRandom(0.5D), this.getPosYHeight(0), this.getPosZRandom(0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
             }
         }
     }
@@ -130,16 +130,16 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     public HungerEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
         super(type, worldIn);
-        this.xpReward = 5;
+        this.experienceValue = 5;
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return CreatureEntity.createLivingAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 19.0D)
-                .add(Attributes.ATTACK_KNOCKBACK)
-                .add(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthhunger.get())
-                .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.FOLLOW_RANGE, 15.0D);
+        return CreatureEntity.registerAttributes()
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 19.0D)
+                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK)
+                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthhunger.get())
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 15.0D);
     }
 
     protected void registerGoals() {
@@ -153,7 +153,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return world.canSeeSkyFromBelowWater(blockPos) && checkMobSpawnRules(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.below()).is(ModTags.HUNGER_CAN_BURROW);
+        return world.canBlockSeeSky(blockPos) && canSpawnOn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.HUNGER_CAN_BURROW);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -168,85 +168,85 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         return ModSounds.HUNGER_DEATH.get();
     }
 
-    public SoundCategory getSoundSource() {
+    public SoundCategory getSoundCategory() {
         return SoundCategory.HOSTILE;
     }
 
-    public void addAdditionalSaveData(CompoundNBT compound) {
-        super.addAdditionalSaveData(compound);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
         compound.putInt("Variant", this.getVariant());
 
         ItemStack item = ItemStack.EMPTY; // Store enchantments in an empty ItemStack
         EnchantmentHelper.setEnchantments(storedEnchants, item);
         CompoundNBT compoundNBT = new CompoundNBT();
-        item.save(compoundNBT);
+        item.write(compoundNBT);
         compound.put("Enchantments", compoundNBT);
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readAdditionalSaveData(CompoundNBT compound) {
-        super.readAdditionalSaveData(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         this.setVariant(compound.getInt("Variant"));
 
-        ItemStack item = ItemStack.of(compound.getCompound("Enchantments"));
-        storedEnchants = EnchantmentHelper.deserializeEnchantments(item.getEnchantmentTags());
+        ItemStack item = ItemStack.read(compound.getCompound("Enchantments"));
+        storedEnchants = EnchantmentHelper.deserializeEnchantments(item.getEnchantmentTagList());
     }
 
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         int type;
-        if (worldIn.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getBlock().is(Blocks.SAND)) {
+        if (worldIn.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.SAND)) {
             type = 0;
-        } else if (worldIn.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getBlock().is(Blocks.RED_SAND)) {
+        } else if (worldIn.getBlockState(this.getPositionUnderneath()).getBlock().matchesBlock(Blocks.RED_SAND)) {
             type = 1;
         } else {
             type = 2;
         }
         this.setVariant(type);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BURROWED, Boolean.FALSE);
-        this.entityData.define(ATTACKING, Boolean.FALSE);
-        this.entityData.define(ENCHANTING, Boolean.FALSE);
-        this.entityData.define(VARIANT, 0);
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(BURROWED, Boolean.FALSE);
+        this.dataManager.register(ATTACKING, Boolean.FALSE);
+        this.dataManager.register(ENCHANTING, Boolean.FALSE);
+        this.dataManager.register(VARIANT, 0);
     }
 
     public void setBurrowed(boolean burrowed) {
-        this.entityData.set(BURROWED, burrowed);
+        this.dataManager.set(BURROWED, burrowed);
     }
 
     public boolean isBurrowed() {
-        return this.entityData.get(BURROWED);
+        return this.dataManager.get(BURROWED);
     }
 
     public void setAttacking(boolean attacking) {
-        this.entityData.set(ATTACKING, attacking);
+        this.dataManager.set(ATTACKING, attacking);
     }
 
     public boolean isAttacking() {
-        return this.entityData.get(ATTACKING);
+        return this.dataManager.get(ATTACKING);
     }
 
     public void setEnchanting(boolean enchanting) {
-        this.entityData.set(ENCHANTING, enchanting);
+        this.dataManager.set(ENCHANTING, enchanting);
     }
 
     public boolean isEnchanting() {
-        return this.entityData.get(ENCHANTING);
+        return this.dataManager.get(ENCHANTING);
     }
 
     public void setVariant(int type) {
-        this.entityData.set(VARIANT, type);
+        this.dataManager.set(VARIANT, type);
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT);
+        return this.dataManager.get(VARIANT);
     }
 
     private static boolean hasEnchantibility(ItemStack itemStack) {
@@ -256,12 +256,12 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     public MutablePair<Integer, ItemStack> modifyEnchantments(ItemStack stack, int damage, int count) {
         ItemStack itemstack = stack.copy();
         Map<Enchantment, Integer> cacheEnchants = new ConcurrentHashMap<>(storedEnchants);
-        itemstack.removeTagKey("Enchantments");
-        itemstack.removeTagKey("StoredEnchantments");
+        itemstack.removeChildTag("Enchantments");
+        itemstack.removeChildTag("StoredEnchantments");
         if (damage > 0) {
-            itemstack.setDamageValue(damage);
+            itemstack.setDamage(damage);
         } else {
-            itemstack.removeTagKey("Damage");
+            itemstack.removeChildTag("Damage");
         }
 
         if (itemstack.getItem() == Items.BOOK) {
@@ -283,7 +283,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             if (hasCurses[0]) {
-                this.addEffect(new EffectInstance(Effects.WITHER, 600, 1));
+                this.addPotionEffect(new EffectInstance(Effects.WITHER, 600, 1));
                 pair.setLeft(1);
                 return pair;
             } else if (itemstack.getTag() != null && itemstack.getTag().contains("Bitten")) {
@@ -322,7 +322,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                     } else if (!storedEnchants.isEmpty()) {
                         for (Enchantment ench : storedEnchants.keySet()) {
                             if (enchantment instanceof ProtectionEnchantment && ench instanceof ProtectionEnchantment) {
-                                if (((ProtectionEnchantment) enchantment).checkCompatibility(ench)) {
+                                if (((ProtectionEnchantment) enchantment).canApplyTogether(ench)) {
                                     cacheEnchants.put(enchantment, level);
                                 } else {
                                     pair.setLeft(1);
@@ -366,27 +366,27 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
      */
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) && !source.msgId.equals("wither") && !source.isMagic() && !source.isExplosion();
+        return super.isInvulnerableTo(source) && !source.damageType.equals("wither") && !source.isMagicDamage() && !source.isExplosion();
     }
 
     @Override
-    public boolean doHurtTarget(Entity entityIn) {
-        boolean exec = super.doHurtTarget(entityIn);
+    public boolean attackEntityAsMob(Entity entityIn) {
+        boolean exec = super.attackEntityAsMob(entityIn);
         if (exec && entityIn instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entityIn;
-            List<NonNullList<ItemStack>> allInventories = ImmutableList.of(player.inventory.items, player.inventory.armor, player.inventory.offhand);
+            List<NonNullList<ItemStack>> allInventories = ImmutableList.of(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory);
             List<ItemStack> enchantedItems = new ArrayList<>();
             for (NonNullList<ItemStack> inv : allInventories) {
                 enchantedItems.addAll(inv.stream().filter((item) -> !EnchantmentHelper.getEnchantments(item).isEmpty()).collect(Collectors.toList()));
             }
             enchantedItems.removeIf((item) -> item.getItem() instanceof AirItem);
             if (!enchantedItems.isEmpty()) {
-                ItemStack item = enchantedItems.get(this.random.nextInt(enchantedItems.size()));
+                ItemStack item = enchantedItems.get(this.rand.nextInt(enchantedItems.size()));
                 Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
-                item.removeTagKey("Enchantments");
-                item.removeTagKey("StoredEnchantments");
+                item.removeChildTag("Enchantments");
+                item.removeChildTag("StoredEnchantments");
                 Object[] enchants = enchantments.keySet().toArray();
-                Enchantment enchant = (Enchantment) enchants[this.random.nextInt(enchants.length)];
+                Enchantment enchant = (Enchantment) enchants[this.rand.nextInt(enchants.length)];
                 if (enchantments.get(enchant) > 1) {
                     enchantments.put(enchant, enchantments.get(enchant) - 1);
                 } else {
@@ -410,15 +410,15 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void aiStep() {
+    public void livingTick() {
         if (this.isAlive()) {
             this.setInvulnerable(this.isBurrowed());
         }
-        super.aiStep();
+        super.livingTick();
     }
 
-    public boolean isPushable() {
-        return !this.isInvulnerable() && super.isPushable();
+    public boolean canBePushed() {
+        return !this.isInvulnerable() && super.canBePushed();
     }
 
     static class BiteGoal extends MeleeAttackGoal {
@@ -429,37 +429,37 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             this.hunger = entityIn;
         }
 
-        public boolean canUse() {
-            this.hunger.setAttacking(this.hunger.getTarget() != null && !this.hunger.isBurrowed());
-            return super.canUse() && this.hunger.level.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
+        public boolean shouldExecute() {
+            this.hunger.setAttacking(this.hunger.getAttackTarget() != null && !this.hunger.isBurrowed());
+            return super.shouldExecute() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
         }
 
-        public boolean canContinueToUse() {
-            return super.canContinueToUse() && this.hunger.level.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
         }
 
-        public void start() {
-            super.start();
+        public void startExecuting() {
+            super.startExecuting();
             this.hunger.setAttacking(true);
         }
 
-        public void stop() {
-            super.stop();
-            this.hunger.setAttacking(this.mob.getTarget() != null);
+        public void resetTask() {
+            super.resetTask();
+            this.hunger.setAttacking(this.attacker.getAttackTarget() != null);
         }
     }
 
     /* Determines whether a 3x3 section of ground below is suitable for burrowing */
     public boolean isSuitable(HungerEntity hungerIn, @Nullable BlockPos pos) {
-        if (this.getEffect(Effects.WITHER) != null) return false;
-        World world = hungerIn.level;
+        if (this.getActivePotionEffect(Effects.WITHER) != null) return false;
+        World world = hungerIn.world;
         double posX;
         double posY;
         double posZ;
         if (pos == null) {
-            posX = hungerIn.getX();
-            posY = hungerIn.getY();
-            posZ = hungerIn.getZ();
+            posX = hungerIn.getPosX();
+            posY = hungerIn.getPosY();
+            posZ = hungerIn.getPosZ();
         } else {
             posX = pos.getX();
             posY = pos.getY();
@@ -470,9 +470,9 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             if (ret) {
                 for (double l = posZ - 1; l <= posZ + 1; ++l) {
                     BlockState block = world.getBlockState(new BlockPos(k, posY - 1, l));
-                    if (block.is(ModTags.HUNGER_CAN_BURROW) && !hungerIn.isInWater()) {
+                    if (block.isIn(ModTags.HUNGER_CAN_BURROW) && !hungerIn.isInWater()) {
                         if (ret) {
-                            ret = !hungerIn.isLeashed();
+                            ret = !hungerIn.getLeashed();
                         }
                     } else {
                         ret = false;
@@ -496,11 +496,11 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         public FindSpotGoal(HungerEntity theCreatureIn, double movementSpeedIn) {
             this.hunger = theCreatureIn;
             this.movementSpeed = movementSpeedIn;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
-        public boolean canUse() {
-            return this.isPossibleSpot() && this.hunger.getTarget() == null && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
+        public boolean shouldExecute() {
+            return this.isPossibleSpot() && this.hunger.getAttackTarget() == null && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
         }
 
         protected boolean isPossibleSpot() {
@@ -515,27 +515,27 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             }
         }
 
-        public boolean canContinueToUse() {
-            return !this.hunger.getNavigation().isDone() && !this.hunger.isBurrowed();
+        public boolean shouldContinueExecuting() {
+            return !this.hunger.getNavigator().noPath() && !this.hunger.isBurrowed();
         }
 
-        public void start() {
-            this.hunger.getNavigation().moveTo(this.spotX, this.spotY, this.spotZ, this.movementSpeed);
+        public void startExecuting() {
+            this.hunger.getNavigator().tryMoveToXYZ(this.spotX, this.spotY, this.spotZ, this.movementSpeed);
         }
 
-        public void stop() {
-            this.hunger.getNavigation().stop();
+        public void resetTask() {
+            this.hunger.getNavigator().clearPath();
         }
 
         @Nullable
         protected Vector3d findPossibleSpot() {
-            Random random = this.hunger.getRandom();
-            BlockPos blockpos = this.hunger.blockPosition();
+            Random random = this.hunger.getRNG();
+            BlockPos blockpos = this.hunger.getPosition();
 
             for (int i = 0; i < 10; ++i) {
-                BlockPos blockpos1 = blockpos.offset(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
-                if (this.hunger.isSuitable(this.hunger, blockpos1) && this.hunger.getWalkTargetValue(blockpos1) < 0.0F) {
-                    return Vector3d.atBottomCenterOf(blockpos1);
+                BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
+                if (this.hunger.isSuitable(this.hunger, blockpos1) && this.hunger.getBlockPathWeight(blockpos1) < 0.0F) {
+                    return Vector3d.copyCenteredHorizontally(blockpos1);
                 }
             }
 
@@ -551,17 +551,17 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             this.hunger = entityIn;
         }
 
-        public boolean canUse() {
-            return super.canUse() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
+        public boolean shouldExecute() {
+            return super.shouldExecute() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
         }
 
-        public boolean canContinueToUse() {
-            return super.canContinueToUse() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
         }
 
         public void tick() {
             if (this.hunger.isBurrowed() || this.hunger.isSuitable(this.hunger, null))
-                this.mob.getNavigation().stop();
+                this.creature.getNavigator().clearPath();
         }
     }
 
@@ -572,11 +572,11 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
      */
     private Vector3d directionVector() {
         Vector3d vec3d = Vector3d.ZERO;
-        double rotation = this.yRot - 180;
+        double rotation = this.rotationYaw - 180;
         if (rotation < 0) rotation += 360;
         int ordinal = MathHelper.floor(rotation / 45.0D + 0.5D) & 7;
         for (Direction direction : Direction8.values()[ordinal].getDirections()) {
-            vec3d = vec3d.add(direction.getStepX(), direction.getStepY(), direction.getStepZ());
+            vec3d = vec3d.add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
         }
         return vec3d;
     }
@@ -590,36 +590,36 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             this.hunger = entityIn;
         }
 
-        public boolean canUse() {
+        public boolean shouldExecute() {
             return !this.hunger.isAttacking() && this.hunger.isSuitable(this.hunger, null);
         }
 
-        public boolean canContinueToUse() {
+        public boolean shouldContinueExecuting() {
             return !this.hunger.isAttacking() && this.hunger.isSuitable(this.hunger, null);
         }
 
-        public void start() {
+        public void startExecuting() {
             this.hunger.setBurrowed(true);
         }
 
-        public void stop() {
+        public void resetTask() {
             this.tick = 0;
             this.hunger.setBurrowed(false);
         }
 
         public void tick() {
             Vector3d vec3d = this.hunger.directionVector().scale(0.6D);
-            AxisAlignedBB boundingBox = this.hunger.getBoundingBox().expandTowards(vec3d).expandTowards(vec3d.reverse());
-            List<Entity> entities = this.hunger.level.getEntities(this.hunger, boundingBox);
+            AxisAlignedBB boundingBox = this.hunger.getBoundingBox().expand(vec3d).expand(vec3d.inverse());
+            List<Entity> entities = this.hunger.world.getEntitiesWithinAABBExcludingEntity(this.hunger, boundingBox);
             if (!entities.isEmpty()) {
                 if (!this.hunger.isAttacking() && !this.hunger.isEnchanting()) {
                     for (Entity entity : entities) {
-                        if (boundingBox.contains(entity.position())) {
+                        if (boundingBox.contains(entity.getPositionVec())) {
                             if (entity instanceof ItemEntity) {
                                 ItemStack item = ((ItemEntity) entity).getItem();
-                                if (((ItemEntity) entity).getThrower() != this.hunger.getUUID()) {
+                                if (((ItemEntity) entity).getThrowerId() != this.hunger.getUniqueID()) {
                                     this.cacheitem = item.copy();
-                                    this.hunger.level.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), ModSounds.HUNGER_EAT.get(), this.hunger.getSoundSource(), 0.8F, 0.9F);
+                                    this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), ModSounds.HUNGER_EAT.get(), this.hunger.getSoundCategory(), 0.8F, 0.9F);
                                     entity.remove();
                                     this.hunger.setEnchanting(true);
                                     break;
@@ -628,7 +628,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                                 if (entity.isAlive() && this.hunger.canAttack((LivingEntity) entity)) {
                                     this.hunger.setBurrowed(false);
                                     this.hunger.setAttacking(true);
-                                    this.hunger.doHurtTarget(entity);
+                                    this.hunger.attackEntityAsMob(entity);
                                 }
                             }
                         }
@@ -639,28 +639,28 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
                 this.tick++;
 
                 if (this.tick % 16 == 0) {
-                    MutablePair<Integer, ItemStack> pair = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamageValue(), 1);
+                    MutablePair<Integer, ItemStack> pair = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
                     ItemStack item = pair.getRight();
                     if (cacheitem.getItem().equals(ModItems.VOID_HEART.get())) {
-                        Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.hunger.level, this.hunger) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-                        this.hunger.level.explode(this.hunger, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), 2.0F, explosion$mode);
+                        Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.hunger.world, this.hunger) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+                        this.hunger.world.createExplosion(this.hunger, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), 2.0F, explosion$mode);
                         this.hunger.remove();
                     }
                     if (pair.getLeft() == 0) {
                         if (item != ItemStack.EMPTY) {
-                            this.hunger.level.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, this.hunger.getSoundSource(), 0.8F, 0.6F);
+                            this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
                         }
                     } else if (pair.getLeft() == 1) {
-                        this.hunger.level.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), ModSounds.HUNGER_SPIT.get(), this.hunger.getSoundSource(), 0.8F, 0.8F);
-                        ItemEntity newitem = new ItemEntity(this.hunger.level, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), cacheitem);
-                        newitem.setThrower(this.hunger.getUUID());
-                        this.hunger.level.addFreshEntity(newitem);
+                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), ModSounds.HUNGER_SPIT.get(), this.hunger.getSoundCategory(), 0.8F, 0.8F);
+                        ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), cacheitem);
+                        newitem.setThrowerId(this.hunger.getUniqueID());
+                        this.hunger.world.addEntity(newitem);
                     } else {
-                        this.hunger.level.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), SoundEvents.PLAYER_LEVELUP, this.hunger.getSoundSource(), 0.8F, 0.6F);
+                        this.hunger.world.playSound(null, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
                         item.getOrCreateTag().putInt("Bitten", 1);
-                        ItemEntity newitem = new ItemEntity(this.hunger.level, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), item);
-                        newitem.setThrower(this.hunger.getUUID());
-                        this.hunger.level.addFreshEntity(newitem);
+                        ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getPosX(), this.hunger.getPosY(), this.hunger.getPosZ(), item);
+                        newitem.setThrowerId(this.hunger.getUniqueID());
+                        this.hunger.world.addEntity(newitem);
                     }
                     this.cacheitem = ItemStack.EMPTY;
                     this.tick = 0;
@@ -678,12 +678,12 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             this.hunger = entitylivingIn;
         }
 
-        public boolean canUse() {
-            return super.canUse() && !this.hunger.isBurrowed();
+        public boolean shouldExecute() {
+            return super.shouldExecute() && !this.hunger.isBurrowed();
         }
 
-        public boolean canContinueToUse() {
-            return super.canContinueToUse() && !this.hunger.isBurrowed();
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && !this.hunger.isBurrowed();
         }
     }
 }

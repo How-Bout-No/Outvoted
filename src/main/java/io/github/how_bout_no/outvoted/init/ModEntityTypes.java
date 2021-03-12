@@ -16,18 +16,18 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<WildfireEntity>> WILDFIRE = ENTITY_TYPES
             .register("wildfire", () -> EntityType.Builder
-                    .of(WildfireEntity::new, EntityClassification.MONSTER)
-                    .fireImmune()
-                    .sized(0.8F, 2.0F)
+                    .create(WildfireEntity::new, EntityClassification.MONSTER)
+                    .immuneToFire()
+                    .size(0.8F, 2.0F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "wildfire").toString()));
     public static final RegistryObject<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES
             .register("hunger", () -> EntityType.Builder
-                    .of(HungerEntity::new, EntityClassification.CREATURE)
-                    .sized(1.0F, 1.2F)
+                    .create(HungerEntity::new, EntityClassification.CREATURE)
+                    .size(1.0F, 1.2F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "hunger").toString()));
     public static final RegistryObject<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES
             .register("kraken", () -> EntityType.Builder
-                    .of(KrakenEntity::new, EntityClassification.MONSTER)
-                    .sized(1.2F, 1.2F)
+                    .create(KrakenEntity::new, EntityClassification.MONSTER)
+                    .size(1.2F, 1.2F)
                     .build(new ResourceLocation(Outvoted.MOD_ID, "kraken").toString()));
 }

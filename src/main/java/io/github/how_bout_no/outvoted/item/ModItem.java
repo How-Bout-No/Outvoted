@@ -16,14 +16,14 @@ import net.minecraft.item.Item.Properties;
 public class ModItem extends Item {
 
     public ModItem(Properties properties) {
-        super(properties.tab(Outvoted.TAB_MISC));
+        super(properties.group(Outvoted.TAB_MISC));
     }
 
     @Override
     public Collection<ItemGroup> getCreativeTabs() {
         Collection<ItemGroup> groups = new ArrayList<>();
         groups.add(Outvoted.TAB_MISC);
-        groups.add(ItemGroup.TAB_SEARCH);
+        groups.add(ItemGroup.SEARCH);
         return groups;
     }
 }

@@ -26,8 +26,8 @@ public class RepairCostRecipe extends SpecialRecipe {
     public boolean matches(CraftingInventory inv, World worldIn) {
         List<ItemStack> list = new ArrayList<>();
 
-        for (int i = 0; i < inv.getContainerSize(); ++i) {
-            ItemStack itemstack = inv.getItem(i);
+        for (int i = 0; i < inv.getSizeInventory(); ++i) {
+            ItemStack itemstack = inv.getStackInSlot(i);
             if (!itemstack.isEmpty()) {
                 list.add(itemstack);
                 if (list.size() > 1) {
@@ -45,11 +45,11 @@ public class RepairCostRecipe extends SpecialRecipe {
     /**
      * Returns an Item that is the result of this recipe
      */
-    public ItemStack assemble(CraftingInventory inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         List<ItemStack> list = new ArrayList<>();
 
-        for (int i = 0; i < inv.getContainerSize(); ++i) {
-            ItemStack itemstack = inv.getItem(i);
+        for (int i = 0; i < inv.getSizeInventory(); ++i) {
+            ItemStack itemstack = inv.getStackInSlot(i);
             if (!itemstack.isEmpty()) {
                 list.add(itemstack);
                 if (list.size() > 1) {
@@ -72,7 +72,7 @@ public class RepairCostRecipe extends SpecialRecipe {
 
                 ItemStack itemstack2 = new ItemStack(item.getItem());
                 itemstack2.setRepairCost(0);
-                itemstack2.setDamageValue(item.getDamageValue());
+                itemstack2.setDamage(item.getDamage());
                 EnchantmentHelper.setEnchantments(map, itemstack2);
 
                 return itemstack2;
@@ -89,7 +89,7 @@ public class RepairCostRecipe extends SpecialRecipe {
     /**
      * Used to determine if this recipe can fit in a grid of the given width/height
      */
-    public boolean canCraftInDimensions(int width, int height) {
+    public boolean canFit(int width, int height) {
         return width * height >= 2;
     }
 
