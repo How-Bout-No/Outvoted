@@ -18,31 +18,23 @@ import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.FakePlayer;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.item.GeoArmorItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class WildfireHelmetItem extends ArmorItem {
+public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private int timer = 0;
 //    private boolean timer = true;
 
+    private AnimationFactory factory = new AnimationFactory(this);
+
     public WildfireHelmetItem() {
         super(ModArmor.WILDFIRE, EquipmentSlotType.HEAD, new Item.Properties().group(Outvoted.TAB_COMBAT));
-    }
-
-    @SuppressWarnings("unchecked")
-    @OnlyIn(Dist.CLIENT)
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) new WildfireHelmetModel<>();
-    }
-
-
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        if (stack.getTag() != null && stack.getTag().getFloat("CustomModelData") == 1.0F) {
-            return "outvoted:textures/entity/wildfire_soul.png";
-        }
-        return "outvoted:textures/entity/wildfire.png";
     }
 
     @Override
@@ -90,5 +82,14 @@ public class WildfireHelmetItem extends ArmorItem {
     @Override
     public boolean isImmuneToFire() {
         return true;
+    }
+
+    @Override
+    public void registerControllers(AnimationData animationData) {
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }

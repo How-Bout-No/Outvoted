@@ -20,8 +20,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.item.Item.Properties;
-
 public class ModdedSpawnEggItem extends SpawnEggItem {
     protected static final List<ModdedSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
@@ -36,7 +34,7 @@ public class ModdedSpawnEggItem extends SpawnEggItem {
      * Basically copies dispenser behavior from vanilla spawn eggs
      */
     public static void initSpawnEggs() {
-        final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "BY_ID");
+        final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
         DefaultDispenseItemBehavior dispenseBehavior = new DefaultDispenseItemBehavior() {
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {

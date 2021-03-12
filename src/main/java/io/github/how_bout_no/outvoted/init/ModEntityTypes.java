@@ -2,8 +2,8 @@ package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
-import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
+import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -15,11 +15,11 @@ public class ModEntityTypes {
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Outvoted.MOD_ID);
 
     public static final RegistryObject<EntityType<WildfireEntity>> WILDFIRE = ENTITY_TYPES
-            .register("wildfire", () -> EntityType.Builder
+            .register("inferno", () -> EntityType.Builder
                     .create(WildfireEntity::new, EntityClassification.MONSTER)
                     .immuneToFire()
                     .size(0.8F, 2.0F)
-                    .build(new ResourceLocation(Outvoted.MOD_ID, "wildfire").toString()));
+                    .build(new ResourceLocation(Outvoted.MOD_ID, "inferno").toString()));
     public static final RegistryObject<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES
             .register("hunger", () -> EntityType.Builder
                     .create(HungerEntity::new, EntityClassification.CREATURE)

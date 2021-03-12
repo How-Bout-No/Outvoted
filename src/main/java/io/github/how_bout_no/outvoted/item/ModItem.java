@@ -11,8 +11,6 @@ import net.minecraft.item.ItemGroup;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.minecraft.item.Item.Properties;
-
 public class ModItem extends Item {
 
     public ModItem(Properties properties) {
