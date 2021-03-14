@@ -14,7 +14,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ServerEvents {
 
@@ -57,7 +56,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void fixItemMappings(RegistryEvent.MissingMappings<Item> event) {
-        for(RegistryEvent.MissingMappings.Mapping<Item> entry : event.getAllMappings()) {
+        for (RegistryEvent.MissingMappings.Mapping<Item> entry : event.getAllMappings()) {
             if (entry.key.getNamespace().equals(Outvoted.MOD_ID)) {
                 if (entry.key.getPath().equals("inferno_helmet")) {
                     entry.remap(ModItems.WILDFIRE_HELMET.get());
@@ -80,7 +79,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void fixEntityMappings(RegistryEvent.MissingMappings<EntityType<?>> event) {
-        for(RegistryEvent.MissingMappings.Mapping<EntityType<?>> entry : event.getAllMappings()) {
+        for (RegistryEvent.MissingMappings.Mapping<EntityType<?>> entry : event.getAllMappings()) {
             if (entry.key.getNamespace().equals(Outvoted.MOD_ID)) {
                 if (entry.key.getPath().equals("inferno")) {
                     entry.remap(ModEntityTypes.WILDFIRE.get());

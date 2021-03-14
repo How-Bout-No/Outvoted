@@ -1,6 +1,6 @@
 Wildfire
-- Renamed mob + items from Inferno which hopefully doesn't break anything
-- Fix visual bugs when wearing a Helmet
+- Fix issues with recipes
+- Fully replace internal naming to Wildfire and add necessary conversion to new names (please let me know if anything is still borked)
 
 Misc
-- Further backend changes
+- Require Forge >= 36.0.58 bc older versions break with the name conversion
