@@ -1,8 +1,6 @@
-Inferno
-- Slightly increased spawn chances out of a Mob Spawner
-
-Hunger
-- Adjusted spawning conditions
+Wildfire
+- Renamed mob + items from Inferno which hopefully doesn't break anything
+- Fix visual bugs when wearing a Helmet
 
 Misc
-- Backend adjustments (now requires Forge >= 36.0.42)
+- Further backend changes

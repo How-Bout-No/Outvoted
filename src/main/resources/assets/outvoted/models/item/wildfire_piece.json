@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "outvoted:item/inferno_helmet_soul"
+    "layer0": "outvoted:item/wildfire_piece"
   }
 }

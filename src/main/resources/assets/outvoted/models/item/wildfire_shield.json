@@ -8,7 +8,7 @@
       "predicate": {
         "outvoted:blocking": 1.0
       },
-      "model": "outvoted:item/inferno_shield_blocking"
+      "model": "outvoted:item/wildfire_shield_blocking"
     }
   ]
 }

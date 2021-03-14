@@ -198,7 +198,6 @@ if (file("key.properties").exists()) {
             changelog = file('changelog.txt')
             addGameVersion("1.16.5")
             addGameVersion("Forge")
-            addGameVersion("Java 8")
 
             mainArtifact(jar) {
                 displayName = "Outvoted-${minecraft_version}-${mod_version}"
