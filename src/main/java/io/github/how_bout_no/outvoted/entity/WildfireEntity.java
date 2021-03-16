@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.init.ModSounds;
+import io.github.how_bout_no.outvoted.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -86,13 +87,13 @@ public class WildfireEntity extends MonsterEntity implements IAnimatable {
         this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
         this.experienceValue = 20;
+        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthwildfire.get());
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
                 .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 4.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthwildfire.get())
                 .createMutableAttribute(Attributes.ARMOR, 10.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 48.0D);

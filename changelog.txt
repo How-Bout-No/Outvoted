@@ -1,6 +1,2 @@
-Wildfire
-- Fix issues with recipes
-- Fully replace internal naming to Wildfire and add necessary conversion to new names (please let me know if anything is still borked)
-
 Misc
-- Require Forge >= 36.0.58 bc older versions break with the name conversion
+- Fix bug where "Max Health" values in config weren't being set

@@ -5,6 +5,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import io.github.how_bout_no.outvoted.init.ModTags;
+import io.github.how_bout_no.outvoted.util.EntityUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.*;
@@ -131,15 +132,13 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
     public HungerEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 5;
+        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthhunger.get());
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return CreatureEntity.registerAttributes()
+        return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 19.0D)
-                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK)
-                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthhunger.get())
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 15.0D);
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     protected void registerGoals() {

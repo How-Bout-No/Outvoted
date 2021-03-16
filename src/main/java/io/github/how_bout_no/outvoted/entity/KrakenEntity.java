@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.init.ModSounds;
+import io.github.how_bout_no.outvoted.util.EntityUtils;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -55,6 +56,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         this.experienceValue = 10;
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.moveController = new KrakenEntity.MoveHelperController(this);
+        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthkraken.get());
     }
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -86,8 +88,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
         return MonsterEntity.registerAttributes()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.1D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 48.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, OutvotedConfig.COMMON.healthkraken.get());
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 48.0D);
     }
 
     protected void registerGoals() {

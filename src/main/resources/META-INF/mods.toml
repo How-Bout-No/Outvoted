@@ -31,7 +31,7 @@ With generous support from TheMasterBlast_r'''
 [[dependencies.outvoted]]
     modId="forge"
     mandatory=true
-    versionRange="[36.0.42,)"
+    versionRange="[36.0.58,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.outvoted]]
