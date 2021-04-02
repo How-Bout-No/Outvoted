@@ -14,6 +14,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AirItem;
 import net.minecraft.item.EnchantedBookItem;
@@ -50,7 +51,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class HungerEntity extends CreatureEntity implements IAnimatable {
+public class HungerEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Boolean> BURROWED = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ENCHANTING = EntityDataManager.createKey(HungerEntity.class, DataSerializers.BOOLEAN);
@@ -129,7 +130,7 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
         return this.factory;
     }
 
-    public HungerEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
+    public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 5;
         EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthhunger.get());
@@ -153,6 +154,10 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
 
     public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
         return world.canBlockSeeSky(blockPos) && canSpawnOn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.HUNGER_CAN_BURROW);
+    }
+
+    protected boolean isDespawnPeaceful() {
+        return false;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -532,12 +537,11 @@ public class HungerEntity extends CreatureEntity implements IAnimatable {
             BlockPos blockpos = this.hunger.getPosition();
 
             for (int i = 0; i < 10; ++i) {
-                BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
+                BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(3) - 1, random.nextInt(20) - 10);
                 if (this.hunger.isSuitable(this.hunger, blockpos1) && this.hunger.getBlockPathWeight(blockpos1) < 0.0F) {
                     return Vector3d.copyCenteredHorizontally(blockpos1);
                 }
             }
-
             return null;
         }
     }
