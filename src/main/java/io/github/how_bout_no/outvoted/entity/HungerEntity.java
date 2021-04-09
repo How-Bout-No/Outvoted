@@ -58,6 +58,12 @@ public class HungerEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(HungerEntity.class, DataSerializers.VARINT);
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
 
+    public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
+        super(type, worldIn);
+        this.experienceValue = 5;
+        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthhunger.get());
+    }
+
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -128,12 +134,6 @@ public class HungerEntity extends MonsterEntity implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
-    }
-
-    public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
-        super(type, worldIn);
-        this.experienceValue = 5;
-        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthhunger.get());
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {

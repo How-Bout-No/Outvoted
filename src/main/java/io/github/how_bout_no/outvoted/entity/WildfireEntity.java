@@ -50,6 +50,15 @@ public class WildfireEntity extends MonsterEntity implements IAnimatable {
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(WildfireEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(WildfireEntity.class, DataSerializers.VARINT);
 
+    public WildfireEntity(EntityType<? extends WildfireEntity> type, World worldIn) {
+        super(type, worldIn);
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
+        this.setPathPriority(PathNodeType.LAVA, 8.0F);
+        this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
+        this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
+        this.experienceValue = 20;
+        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthwildfire.get());
+    }
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -78,16 +87,6 @@ public class WildfireEntity extends MonsterEntity implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
-    }
-
-    public WildfireEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
-        super(type, worldIn);
-        this.setPathPriority(PathNodeType.WATER, -1.0F);
-        this.setPathPriority(PathNodeType.LAVA, 8.0F);
-        this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
-        this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
-        this.experienceValue = 20;
-        EntityUtils.setConfigHealth(this, OutvotedConfig.COMMON.healthwildfire.get());
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
