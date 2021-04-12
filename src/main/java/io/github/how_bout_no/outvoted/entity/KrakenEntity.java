@@ -50,6 +50,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
     protected RandomWalkingGoal wander;
+    private boolean initAttack = false;
 
     public KrakenEntity(EntityType<? extends KrakenEntity> type, World worldIn) {
         super(type, worldIn);
@@ -300,7 +301,13 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
                             }
                         }
                         if (this.getAttackPhase() != 0) {
+                            if (!initAttack) {
+                                livingentity.attackEntityFrom(DamageSource.DROWN, 0.1F);
+                                initAttack = true;
+                            }
                             livingentity.addVelocity(-d0 / 50, -d1 / 50, -d2 / 50);
+                        } else if (initAttack) {
+                            initAttack = false;
                         }
                     }
                 }
