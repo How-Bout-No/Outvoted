@@ -1,6 +1,2 @@
-Hunger
-- Made "spot finding" marginally more optimized
-- Now classified as a Monster but still does not despawn in peaceful (for mod compatibility)
-
 Misc
-- Fix bug where "Max Health" values in config weren't being set
+- Fix crash with latest Geckolib

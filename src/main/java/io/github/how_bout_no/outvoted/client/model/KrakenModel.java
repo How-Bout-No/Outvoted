@@ -24,7 +24,7 @@ public class KrakenModel extends AnimatedGeoModel<KrakenEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(KrakenEntity entity) {
-        return null;
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/kraken.png");
     }
 
     @Override

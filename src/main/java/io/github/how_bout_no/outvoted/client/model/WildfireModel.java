@@ -24,7 +24,7 @@ public class WildfireModel extends AnimatedGeoModel<WildfireEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(WildfireEntity entity) {
-        return null;
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/wildfire.png");
     }
 
     @Override

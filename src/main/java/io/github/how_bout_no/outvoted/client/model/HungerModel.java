@@ -25,7 +25,7 @@ public class HungerModel extends AnimatedGeoModel<HungerEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(HungerEntity entity) {
-        return null;
+        return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/hunger.png");
     }
 
     @Override
