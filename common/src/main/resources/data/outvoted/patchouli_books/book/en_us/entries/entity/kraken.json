@@ -1,0 +1,17 @@
+{
+  "name": "Kraken",
+  "icon": "outvoted:kraken_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:kraken",
+      "scale": "0.2",
+      "text": "A terrifying monster that lurks in the deepest of oceans, waiting for its next victim"
+    },
+    {
+      "type": "text",
+      "text": "The Kraken, originally referred to as the Monster of the Ocean Depths (real catchy) is an utterly terrifying creature, it only spawns in the deepest of oceans and will chase any travelers that happen to stumble into its home. It has the ability to destroy boats and make players drown faster than normal. It doesn't seem to like dolphins however...$(br2)Drops: $(l:items/kraken_tooth)Kraken Tooth$(/l)"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "Hunger",
+  "icon": "outvoted:hunger_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:hunger{Variant:0}",
+      "scale": "0.7",
+      "text": "The Hunger is a unique mob that has interesting abilities related to enchantments."
+    },
+    {
+      "type": "text",
+      "text": "The Hunger is able to consume items thrown into its mouth and store the enchantments. It can then apply those enchantments to a new enchantable item thrown in, given that the item has no enchantments to begin with. Any unenchantable items will be deleted, like a trash can. It is also able to get enchantments one level higher than the max when 2 max level enchants are combined. It can not go any higher than 1 above max, and only works on enchantments that have levels higher than 1."
+    },
+    {
+      "type": "text",
+      "text": "It can combine enchantments that wouldn't be able to normally like Infinity and Mending, but refuses to do so on any sort of protection. Once and item is used in the Hunger, it can no longer be used with a Hunger, but can still be modified in an anvil or grindstone."
+    },
+    {
+      "type": "text",
+      "text": "Taking damage from the Hunger will cause 1 random enchanted item in your inventory to lose an enchantment level. If the enchantment is already at minimum level, it will remove the enchantment entirely.$(br2)Drops: Bottle o' Enchanting, $(l:items/void_heart)Void Heart$(/l)"
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:hunger{Variant:1}",
+      "scale": "0.7",
+      "text": "Red Sand Variant"
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:hunger{Variant:2}",
+      "scale": "0.7",
+      "text": "Swamp Variant"
+    }
+  ]
+}

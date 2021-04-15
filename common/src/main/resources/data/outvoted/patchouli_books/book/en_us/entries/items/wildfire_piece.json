@@ -1,0 +1,12 @@
+{
+  "name": "Shattered Blaze Piece",
+  "icon": "outvoted:wildfire_piece",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:wildfire_piece",
+      "text": "A shard left behind by an Wildfire. Needed for the $(l:items/wildfire_shield_part)Wildfire Shield Part$(/l)"
+    }
+  ]
+}

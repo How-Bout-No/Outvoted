@@ -1,0 +1,12 @@
+{
+  "name": "Void Heart",
+  "icon": "outvoted:void_heart",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:void_heart",
+      "text": "The heart of the $(l:entity/hunger)Hunger$(/l), when crafted alongside an item, it will reset that item's repair cost (Resets Too Expensive! message)."
+    }
+  ]
+}

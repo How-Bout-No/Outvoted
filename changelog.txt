@@ -1,0 +1,22 @@
+>> Entities <<
+@a
+- Fully configurable spawn biomes
+
+Hunger
+- Can no longer be moved when burrowed
+
+>> Items <<
+Wildfire Helmet
+- Item textures now adhere to Wildfire variant config option
+- Can now change its mechanics in config
+
+Wildfire Shield
+- Fix model rendering when blocking
+
+>> Misc <<
+Palm
+- Palm trees added, generates in the Desert Lakes biome
+
+Baobab
+- Baobab trees added, generates in the Savanna biome
+- Generation type is configurable, between Mojang's rendition and a more "realistic"" variety

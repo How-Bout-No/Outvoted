@@ -1,0 +1,31 @@
+{
+  "name": "Wildfire",
+  "icon": "outvoted:wildfire_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:wildfire",
+      "scale": "0.9",
+      "text": "The first mob added to the mod, the Wildfire is a dangerous Nether mob"
+    },
+    {
+      "type": "text",
+      "text": "The Wildfire is a blaze-like mob that patrols the Nether. It is an uncommon \"random encounter\" spawn, and when it shows up it spawns several Blazes along with it. It is capable of shooting a line of fireballs at its enemies, and can put up its shields to block damage which can be disabled like a normal shield.$(br2)Drops: Blaze Rod, $(l:items/wildfire_piece)Shattered Blaze Piece$(/l), $(l:items/wildfire_helmet)Wildfire Helmet$(/l)"
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:wildfire{Variant:1}",
+      "scale": "0.9",
+      "text": "Soul Sand Valley Wildfires",
+      "flag": "outvoted:infvariant"
+    },
+    {
+      "type": "entity",
+      "entity": "minecraft:blaze{Variant:1}",
+      "scale": "0.9",
+      "text": "Soul Sand Valley Blazes",
+      "flag": "outvoted:infvariant"
+    }
+  ]
+}

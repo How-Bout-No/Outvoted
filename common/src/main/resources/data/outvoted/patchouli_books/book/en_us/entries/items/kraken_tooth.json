@@ -1,0 +1,17 @@
+{
+  "name": "Kraken Tooth",
+  "icon": "outvoted:kraken_tooth",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:kraken_tooth",
+      "text": "A tooth from the great Kraken. Very sharp!"
+    },
+    {
+      "type": "crafting",
+      "recipe": "outvoted:kraken_tooth",
+      "recipe2": "minecraft:trident"
+    }
+  ]
+}

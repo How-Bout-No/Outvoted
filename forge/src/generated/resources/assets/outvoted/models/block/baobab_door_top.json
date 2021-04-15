@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top",
+  "textures": {
+    "bottom": "outvoted:block/baobab/baobab_door_bottom",
+    "top": "outvoted:block/baobab/baobab_door_top"
+  }
+}

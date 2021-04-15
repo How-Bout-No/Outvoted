@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "outvoted:block/baobab/baobab_leaves"
+  }
+}

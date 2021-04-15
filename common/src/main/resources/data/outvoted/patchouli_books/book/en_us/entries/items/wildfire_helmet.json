@@ -1,0 +1,17 @@
+{
+  "name": "Wildfire Helmet",
+  "icon": "outvoted:wildfire_helmet",
+  "category": "outvoted:item_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:wildfire_helmet",
+      "text": "The helmet of the Wildfires, able to supress fire damage at the cost of durability."
+    },
+    {
+      "type": "spotlight",
+      "item": "outvoted:wildfire_helmet{CustomModelData:1.0}",
+      "text": "Variant that drops from Soul Sand Valley variants"
+    }
+  ]
+}

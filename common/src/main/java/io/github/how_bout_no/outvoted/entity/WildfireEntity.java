@@ -1,0 +1,463 @@
+package io.github.how_bout_no.outvoted.entity;
+
+import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
+import io.github.how_bout_no.outvoted.init.ModSounds;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.PathNodeType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.EnumSet;
+
+import static java.lang.Math.*;
+
+public class WildfireEntity extends HostileEntity implements IAnimatable {
+    private float heightOffset = 0.5F;
+    private int heightOffsetUpdateTime;
+    private boolean shieldDisabled = false;
+    private static final TrackedData<Boolean> SHIELDING = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Byte> ON_FIRE = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BYTE);
+    private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> VARIANT = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
+    public WildfireEntity(EntityType<? extends HostileEntity> type, World worldIn) {
+        super(type, worldIn);
+        this.setPathfindingPenalty(PathNodeType.WATER, -1.0F);
+        this.setPathfindingPenalty(PathNodeType.LAVA, 8.0F);
+        this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 0.0F);
+        this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE, 0.0F);
+        this.experiencePoints = 20;
+        EntityUtils.setConfigHealth(this, Outvoted.config.get().entities.wildfire.health);
+    }
+
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
+
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || !animname.equals("attack")) {
+            if (this.getIsAttacking()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            } else if (this.getShielding()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("shieldtransition").addAnimation("shielding"));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
+            }
+        }
+
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
+    public static DefaultAttributeContainer.Builder setCustomAttributes() {
+        return HostileEntity.createLivingAttributes()
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 4.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, 10.0D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
+    }
+
+    @Override
+    protected void initGoals() {
+        this.goalSelector.add(4, new WildfireEntity.AttackGoal(this));
+        this.goalSelector.add(6, new GoToWalkTargetGoal(this, 1.0D));
+        this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D, 0.0F));
+        this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(8, new LookAroundGoal(this));
+        this.targetSelector.add(1, (new RevengeGoal(this)).setGroupRevenge());
+        this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.WILDFIRE_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.WILDFIRE_DEATH.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.WILDFIRE_HURT.get();
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose poseIn, EntityDimensions sizeIn) {
+        return 1.8F;
+    }
+
+    public void writeCustomDataToTag(CompoundTag compound) {
+        super.writeCustomDataToTag(compound);
+        compound.putInt("Variant", this.getVariant());
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readCustomDataFromTag(CompoundTag compound) {
+        super.readCustomDataFromTag(compound);
+        this.setVariant(compound.getInt("Variant"));
+    }
+
+    @Nullable
+    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+        int type;
+        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
+        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+            type = 1;
+        } else {
+            type = 0;
+        }
+        this.setVariant(type);
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(SHIELDING, Boolean.FALSE);
+        this.dataTracker.startTracking(ATTACKING, Boolean.FALSE);
+        this.dataTracker.startTracking(ON_FIRE, (byte) 0);
+        this.dataTracker.startTracking(VARIANT, 0);
+    }
+
+    public void setShielding(boolean shielding) {
+        if (!this.shieldDisabled) {
+            this.dataTracker.set(SHIELDING, shielding);
+        } else {
+            this.dataTracker.set(SHIELDING, false);
+        }
+    }
+
+    public boolean getShielding() {
+        return this.dataTracker.get(SHIELDING) && !this.shieldDisabled;
+    }
+
+    public void setVariant(int type) {
+        this.dataTracker.set(VARIANT, type);
+    }
+
+    public int getVariant() {
+        return this.dataTracker.get(VARIANT);
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.dataTracker.set(ATTACKING, attacking);
+    }
+
+    public boolean getIsAttacking() {
+        return this.dataTracker.get(ATTACKING);
+    }
+
+    public float getBrightnessAtEyes() {
+        return 1.0F;
+    }
+
+    public void tickMovement() {
+        if (!this.onGround && this.getVelocity().y < 0.0D) {
+            this.setVelocity(this.getVelocity().multiply(1.0D, 0.6D, 1.0D));
+        }
+
+        if (this.world.isClient) {
+            if (this.random.nextInt(24) == 0 && !this.isSilent()) {
+                this.world.playSound(this.getX() + 0.5D, this.getY() + 0.5D, this.getZ() + 0.5D, ModSounds.WILDFIRE_BURN.get(), this.getSoundCategory(), 1.0F + this.random.nextFloat(), this.random.nextFloat() * 0.7F + 0.3F, false);
+            }
+
+            for (int i = 0; i < 2; ++i) {
+                this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+                //this.world.addParticle(ParticleTypes.FLAME, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), 0.0D, 0.0D, 0.0D);
+            }
+
+        }
+        if (this.getShielding()) {
+            this.world.addParticle(ParticleTypes.LAVA, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+        }
+        if (this.getIsAttacking()) {
+            for (int particlei = 0; particlei < 16; ++particlei) {
+                this.world.addParticle(ParticleTypes.FLAME, this.getParticleX(0.75D), this.getRandomBodyY(), this.getParticleZ(0.75D), 0.0D, 0.0D, 0.0D);
+            }
+        }
+
+        super.tickMovement();
+    }
+
+    public boolean hurtByWater() {
+        return true;
+    }
+
+    protected void mobTick() {
+        --this.heightOffsetUpdateTime;
+        if (this.heightOffsetUpdateTime <= 0) {
+            this.heightOffsetUpdateTime = 100;
+            this.heightOffset = 0.5F + (float) this.random.nextGaussian() * (3 / ((this.getHealth() / 25) + 1));
+        }
+
+        LivingEntity livingentity = this.getTarget();
+        if (livingentity != null && livingentity.getEyeY() > this.getEyeY() + (double) this.heightOffset && this.canTarget(livingentity)) {
+            Vec3d vector3d = this.getVelocity();
+            this.setVelocity(this.getVelocity().add(0.0D, ((double) 0.3F - vector3d.y) * (double) 0.3F, 0.0D));
+            this.velocityDirty = true;
+        }
+
+        super.mobTick();
+    }
+
+    public boolean handleFallDamage(float distance, float damageMultiplier) {
+        return false;
+    }
+
+    /**
+     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
+     * Copied from BlazeEntity.java
+     */
+    public boolean isOnFire() {
+        return this.isCharged();
+    }
+
+    private boolean isCharged() {
+        return (this.dataTracker.get(ON_FIRE) & 1) != 0;
+    }
+
+    private void setOnFire(boolean onFire) {
+        byte b0 = this.dataTracker.get(ON_FIRE);
+        if (onFire) {
+            b0 = (byte) (b0 | 1);
+        } else {
+            b0 = (byte) (b0 & -2);
+        }
+
+        this.dataTracker.set(ON_FIRE, b0);
+    }
+
+    public boolean damage(DamageSource source, float amount) {
+        if (!this.world.isClient) {
+            if (source.getSource() instanceof LivingEntity && this.isInvulnerable()) {
+                LivingEntity entity = (LivingEntity) source.getSource();
+                // Shield disabling on critical axe hit
+                if (entity.getMainHandStack().getItem() instanceof AxeItem) {
+                    double itemDamage = ((AxeItem) entity.getMainHandStack().getItem()).getAttackDamage() + 1;
+                    if (amount >= itemDamage + (itemDamage / 2)) { // Only disable shields on a critical axe hit
+                        this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 1.5F);
+                        this.shieldDisabled = true;
+                        this.setShielding(false);
+                        this.setInvulnerable(false);
+                        return false;
+                    }
+                }
+            }
+            if (this.isInvulnerableTo(source)) {
+                this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
+                if (source.isProjectile()) {
+                    source.getSource().setOnFireFor(12);
+                } else if (source.getSource() != null) {
+                    source.getSource().setOnFireFor(8);
+                }
+
+                return false;
+            }
+        }
+        return super.damage(source, amount);
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        if ((source == DamageSource.GENERIC || source instanceof EntityDamageSource) && !source.isSourceCreativePlayer()) {
+            return this.isInvulnerable();
+        } else {
+            return false;
+        }
+    }
+
+    static class AttackGoal extends Goal {
+        private final WildfireEntity wildfire;
+        private int attackStep;
+        private int attackTime;
+        private int firedRecentlyTimer;
+
+        public AttackGoal(WildfireEntity wildfireIn) {
+            this.wildfire = wildfireIn;
+            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canStart() {
+            LivingEntity livingentity = this.wildfire.getTarget();
+            return livingentity != null && livingentity.isAlive() && this.wildfire.canTarget(livingentity);
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.attackStep = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            this.wildfire.setOnFire(false);
+            this.wildfire.setShielding(false);
+            this.wildfire.setAttacking(false);
+            this.firedRecentlyTimer = 0;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            --this.attackTime;
+            LivingEntity livingentity = this.wildfire.getTarget();
+            this.wildfire.setAttacking(false);
+            if (livingentity != null) {
+                boolean flag = this.wildfire.getVisibilityCache().canSee(livingentity);
+                if (flag) {
+                    this.firedRecentlyTimer = 0;
+                } else {
+                    ++this.firedRecentlyTimer;
+                }
+
+                double d0 = this.wildfire.squaredDistanceTo(livingentity);
+                if (d0 < 4.0D) {
+                    this.wildfire.setOnFire(true);
+
+                    if (this.attackTime <= 0) {
+                        this.wildfire.setAttacking(true);
+                        this.attackTime = 5;
+                        this.wildfire.tryAttack(livingentity);
+                        livingentity.setOnFireFor(4);
+                    }
+
+                    this.wildfire.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
+                } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
+                    double d1 = livingentity.getX() - this.wildfire.getX();
+                    double d2 = livingentity.getBodyY(0.5D) - this.wildfire.getBodyY(0.5D);
+                    double d3 = livingentity.getZ() - this.wildfire.getZ();
+
+                    float health = (this.wildfire.getMaxHealth() - this.wildfire.getHealth()) / 2;
+                    float healthPercent = this.wildfire.getHealth() / this.wildfire.getMaxHealth();
+
+                    int maxAttackSteps = 3;
+
+                    if (d0 < 36.0D) {
+                        ++maxAttackSteps;
+                    }
+                    if (healthPercent < 0.6) {
+                        ++maxAttackSteps;
+                    }
+
+                    if (this.attackTime <= 0) {
+                        this.wildfire.setShielding(false);
+                        ++this.attackStep;
+                        if (this.attackStep == 1) {
+                            this.attackTime = (int) (40 * healthPercent + 20);
+                            this.wildfire.setOnFire(true);
+                        } else if (this.attackStep <= maxAttackSteps) {
+                            this.attackTime = (int) (25 * healthPercent + 5);
+                        } else {
+                            this.attackTime = 200;
+                            this.attackStep = 0;
+                            this.wildfire.setOnFire(false);
+                            this.wildfire.setAttacking(false);
+                        }
+
+                        if (this.attackStep > 1) {
+                            this.wildfire.setAttacking(true);
+
+                            if (!this.wildfire.isSilent()) {
+                                this.wildfire.world.playSound(null, this.wildfire.getBlockPos(), ModSounds.WILDFIRE_SHOOT.get(), this.wildfire.getSoundCategory(), 1.0F, 1.0F);
+                            }
+
+                            double fireballcount = Outvoted.config.get().entities.wildfire.attacking.fireballcount;
+                            double offsetangle = toRadians(Outvoted.config.get().entities.wildfire.attacking.offsetangle);
+                            double maxdepressangle = toRadians(Outvoted.config.get().entities.wildfire.attacking.maxdepressangle);
+
+                            //update target pos
+                            d1 = livingentity.getX() - this.wildfire.getX();
+                            d2 = livingentity.getBodyY(0.5D) - this.wildfire.getBodyY(0.5D);
+                            d3 = livingentity.getZ() - this.wildfire.getZ();
+
+                            //shoot fireballs
+                            for (int i = 0; i <= (fireballcount - 1); ++i) {
+                                WildfireFireballEntity wildfirefireballentity;
+                                double angle = (i - ((fireballcount - 1) / 2)) * offsetangle;
+                                double x = d1 * cos(angle) + d3 * sin(angle);
+                                double y = d2;
+                                double z = -d1 * sin(angle) + d3 * cos(angle);
+                                if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
+                                    y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
+                                }
+                                wildfirefireballentity = new WildfireFireballEntity(this.wildfire.world, this.wildfire, x, y, z);
+                                wildfirefireballentity.updatePosition(wildfirefireballentity.getX(), this.wildfire.getBodyY(0.5D), wildfirefireballentity.getZ());
+                                this.wildfire.world.spawnEntity(wildfirefireballentity);
+                            }
+                        }
+                    } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {
+                        this.wildfire.setShielding(true);
+                    } else if (this.attackTime >= 30 && this.attackTime >= 50) {
+                        this.wildfire.setShielding(false);
+                        this.wildfire.shieldDisabled = false;
+                    }
+
+                    this.wildfire.setInvulnerable(this.wildfire.getShielding());
+
+                    this.wildfire.getLookControl().lookAt(livingentity, 10.0F, 10.0F);
+                } else if (this.firedRecentlyTimer < 5) {
+                    this.wildfire.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
+                }
+
+                super.tick();
+            }
+        }
+
+        private double getFollowDistance() {
+            return this.wildfire.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
+        }
+    }
+}

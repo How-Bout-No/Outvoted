@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "outvoted:block/baobab_slab"
+    },
+    "type=double": {
+      "model": "outvoted:block/baobab_planks"
+    },
+    "type=top": {
+      "model": "outvoted:block/baobab_slab_top"
+    }
+  }
+}
