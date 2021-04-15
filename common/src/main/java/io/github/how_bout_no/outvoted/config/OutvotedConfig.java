@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Config(name = Outvoted.MOD_ID)
@@ -31,12 +31,10 @@ public class OutvotedConfig implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Kraken kraken = new Kraken();
 
-        public static class Wildfire {
-            public boolean spawn = true;
-            public int rate = 1;
-            public List<String> biomes = new ArrayList<>();
+        public static class Wildfire implements EntityConfigBase {
+            public List<String> biomes = Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley");
             public double health = 50.0D;
-            public boolean variants = false;
+            public boolean variants = true;
 
             @ConfigEntry.Gui.CollapsibleObject
             public WildfireAttacking attacking = new WildfireAttacking();
@@ -50,18 +48,15 @@ public class OutvotedConfig implements ConfigData {
             public float fireballexplosionpower = 0.5F;
         }
 
-        public static class Hunger {
-            public boolean spawn = true;
+        public static class Hunger implements EntityConfigBase {
             public int rate = 5;
-            public List<String> biomes = new ArrayList<>();
-            public double health = 20.0D;
+            public List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");
             public int max_enchants = 5;
         }
 
-        public static class Kraken {
-            public boolean spawn = true;
+        public static class Kraken implements EntityConfigBase {
             public int rate = 2;
-            public List<String> biomes = new ArrayList<>();
+            public List<String> biomes = Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean");
             public double health = 40.0D;
         }
     }

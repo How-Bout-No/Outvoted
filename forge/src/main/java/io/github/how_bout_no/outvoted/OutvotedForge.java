@@ -30,7 +30,6 @@ public class OutvotedForge {
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().register(new ClientRender()));
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent

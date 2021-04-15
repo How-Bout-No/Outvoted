@@ -13,10 +13,6 @@ public class OutvotedFabric implements ModInitializer {
     public void onInitialize() {
         Outvoted.init();
         MobAttributes.init();
-        WorldGen.addSpawnEntries();
-        RegistryEntryAddedCallback.event(BuiltinRegistries.BIOME).register((i, id, biome) -> {
-            WorldGen.addSpawnEntries();
-        });
         ModSpawnEggItem.initSpawnEggs();
         ModFeatures.Configured.registerConfiguredFeatures();
     }

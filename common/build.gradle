@@ -21,6 +21,10 @@ dependencies {
     }
 }
 
+sourceSets.main.resources {
+    srcDirs '../forge/src/generated/resources'
+}
+
 architectury {
     common()
 }

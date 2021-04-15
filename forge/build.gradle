@@ -25,14 +25,14 @@ loom {
     }
 }
 
-minecraft {
-    runs {
-        client {
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-        }
-    }
-}
+//minecraft {
+//    runs {
+//        client {
+//            property 'mixin.env.remapRefMap', 'true'
+//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+//        }
+//    }
+//}
 
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
@@ -94,9 +94,9 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
-}
+//sourceSets.main.resources {
+//    srcDir 'src/generated/resources'
+//}
 
 publishing {
     publications {

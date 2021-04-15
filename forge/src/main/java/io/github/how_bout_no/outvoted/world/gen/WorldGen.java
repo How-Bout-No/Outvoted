@@ -28,33 +28,6 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WorldGen {
     /**
-     * Adds entity spawns and tree generation
-     */
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void spawnEntities(BiomeLoadingEvent event) {
-        String biomename = event.getName().toString();
-
-        /* Entities */
-        if (Outvoted.config.get().entities.wildfire.spawn && Outvoted.config.get().entities.wildfire.biomes.contains(biomename)) {
-            event.getSpawns().spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(), Outvoted.config.get().entities.wildfire.rate, 1, 1));
-        }
-        if (Outvoted.config.get().entities.hunger.spawn && Outvoted.config.get().entities.hunger.biomes.contains(biomename)) {
-            event.getSpawns().spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(ModEntityTypes.HUNGER.get(), Outvoted.config.get().entities.hunger.rate, 1, 1));
-        }
-        if (Outvoted.config.get().entities.kraken.spawn && Outvoted.config.get().entities.kraken.biomes.contains(biomename)) {
-            event.getSpawns().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(ModEntityTypes.KRAKEN.get(), Outvoted.config.get().entities.kraken.rate, 1, 1));
-        }
-
-        /* Features */
-        if (Outvoted.config.get().generation.genpalmtrees && biomename.equals("minecraft:desert_lakes")) {
-            event.getGeneration().feature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE);
-        }
-        if (Outvoted.config.get().generation.genbaobabtrees && biomename.equals("minecraft:savanna")) {
-            event.getGeneration().feature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE);
-        }
-    }
-
-    /**
      * Checks entities in an area to force limit spawn count
      * Probably awful practice, but this is a quick and dirty way to force 1 mob in an area
      */

@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.init.*;
+import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import me.shedaniel.architectury.registry.CreativeTabs;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
@@ -39,7 +40,9 @@ public class Outvoted {
         ModFeatures.FEATURES.register();
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
-        ModTags.init();
+        new ModTags.Blocks();
+        new ModTags.Items();
+        WorldGen.addSpawnEntries();
 
         if (config.get().client.creativetab) {
             ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "modtab"), new Supplier<ItemStack>() {

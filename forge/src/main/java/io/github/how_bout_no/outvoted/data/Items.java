@@ -18,9 +18,6 @@ public class Items extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        /*
-          Iterates through each basic item and spawn egg, each type having the same exact layout so it just uses less lines
-         */
         generated(ModItems.WILDFIRE_SHIELD_PART.get());
         generated(ModItems.WILDFIRE_PIECE.get());
         generated(ModItems.VOID_HEART.get());
@@ -39,7 +36,7 @@ public class Items extends ItemModelProvider {
             }
         });
 
-        generated("wildfire_helmet_soul");
+        generated(ModItems.WILDFIRE_HELMET.get().getRegistryName().getPath() + "_soul");
 
         singleTexture(ModItems.WILDFIRE_SHIELD.get().getRegistryName().getPath(), new Identifier("item/shield"),
                 "particles", new Identifier("block/nether_bricks"))
@@ -52,8 +49,7 @@ public class Items extends ItemModelProvider {
                 });
 
         singleTexture(ModItems.WILDFIRE_SHIELD.get().getRegistryName().getPath() + "_blocking", new Identifier("item/shield_blocking"),
-                "particles", new Identifier("block/nether_bricks"))
-                .override();
+                "particles", new Identifier("block/nether_bricks"));
 
         registerWood("palm");
         registerWood("baobab");

@@ -21,7 +21,7 @@ import software.bernie.geckolib3.item.GeoArmorItem;
 
 public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private int timer = 0;
-    private static final Identifier HELMET_TEXTURE = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfired.png");
+    private static final Identifier HELMET_TEXTURE = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png");
     private static final Identifier HELMET_TEXTURE_SOUL = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
 
     private AnimationFactory factory = new AnimationFactory(this);

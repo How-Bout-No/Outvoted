@@ -1,25 +1,22 @@
 package io.github.how_bout_no.outvoted.init;
 
-import me.shedaniel.architectury.annotations.ExpectPlatform;
+import io.github.how_bout_no.outvoted.Outvoted;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.Tag;
 
 public class ModTags {
     public static class Blocks {
-        public static Tag.Identified<Block> HUNGER_CAN_BURROW = null;
-        public static Tag.Identified<Block> PALM_LOGS = null;
-        public static Tag.Identified<Block> BAOBAB_LOGS = null;
+        public static final Tag.Identified<Block> HUNGER_CAN_BURROW = BlockTags.register(Outvoted.MOD_ID + ":hunger_can_burrow");
+        public static final Tag.Identified<Block> PALM_LOGS = BlockTags.register(Outvoted.MOD_ID + ":palm_logs");
+        public static final Tag.Identified<Block> BAOBAB_LOGS = BlockTags.register(Outvoted.MOD_ID + ":baobab_logs");
     }
 
     public static class Items {
-        public static Tag.Identified<Item> PALM_LOGS = null;
-        public static Tag.Identified<Item> BAOBAB_LOGS = null;
-    }
-
-    @ExpectPlatform
-    public static void init() {
-        throw new AssertionError();
+        public static final Tag.Identified<Item> PALM_LOGS = ItemTags.register(Outvoted.MOD_ID + ":palm_logs");
+        public static final Tag.Identified<Item> BAOBAB_LOGS = ItemTags.register(Outvoted.MOD_ID + ":baobab_logs");
     }
 }
 

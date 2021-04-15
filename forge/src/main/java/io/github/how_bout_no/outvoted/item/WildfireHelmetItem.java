@@ -18,7 +18,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 import javax.annotation.Nullable;
@@ -27,8 +26,6 @@ public class WildfireHelmetItem extends ArmorItem implements IAnimatable {
     private int timer = 0;
     private static final String HELMET_TEXTURE = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png").toString();
     private static final String HELMET_TEXTURE_SOUL = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png").toString();
-
-    private AnimationFactory factory = new AnimationFactory(this);
 
     public WildfireHelmetItem() {
         super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Settings().group(Outvoted.TAB_COMBAT));
@@ -92,6 +89,6 @@ public class WildfireHelmetItem extends ArmorItem implements IAnimatable {
 
     @Override
     public AnimationFactory getFactory() {
-        return this.factory;
+        return new AnimationFactory(this);
     }
 }

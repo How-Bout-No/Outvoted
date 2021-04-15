@@ -16,11 +16,11 @@ public class WildfireHelmetModel extends AnimatedGeoModel<WildfireHelmetItem> {
 
     @Override
     public Identifier getModelLocation(WildfireHelmetItem item) {
-        return new Identifier(Outvoted.MOD_ID, "geo/wildfiredhelmet.geo.json");
+        return new Identifier(Outvoted.MOD_ID, "geo/wildfirehelmet.geo.json");
     }
 
     @Override
     public Identifier getTextureLocation(WildfireHelmetItem item) {
-        return new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfired.png");
+        return new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png");
     }
 }

@@ -19,12 +19,12 @@ public class WildfireModel extends AnimatedGeoModel<WildfireEntity> {
 
     @Override
     public Identifier getModelLocation(WildfireEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "geo/wildfired.geo.json");
+        return new Identifier(Outvoted.MOD_ID, "geo/wildfire.geo.json");
     }
 
     @Override
     public Identifier getTextureLocation(WildfireEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfired.png");
+        return new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png");
     }
 
     @Override

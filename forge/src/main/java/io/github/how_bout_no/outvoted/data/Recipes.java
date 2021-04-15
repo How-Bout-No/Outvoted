@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.registry.Registry;
 
@@ -53,6 +54,8 @@ public class Recipes extends RecipesProvider {
                 .offerTo(consumer);
         ComplexRecipeJsonFactory.create(ModRecipes.REPAIR_COST.get())
                 .offerTo(consumer, ModRecipes.REPAIR_COST.getId().getPath());
+        ComplexRecipeJsonFactory.create(ModRecipes.SHIELD_DECO.get())
+                .offerTo(consumer, ModRecipes.SHIELD_DECO.getId().getPath());
 
         planksFromLogs(consumer, ModBlocks.PALM_PLANKS.get(), ModTags.Items.PALM_LOGS);
         woodFromLogs(consumer, ModBlocks.PALM_WOOD.get(), ModBlocks.PALM_LOG.get());

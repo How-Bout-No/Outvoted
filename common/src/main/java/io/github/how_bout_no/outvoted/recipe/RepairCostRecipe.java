@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.util;
+package io.github.how_bout_no.outvoted.recipe;
 
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.init.ModRecipes;
