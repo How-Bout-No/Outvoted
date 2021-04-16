@@ -54,11 +54,8 @@ public class ModEventBusSubscriber {
         ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.entities.wildfire.variants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         ModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
 
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> {
-            return (client, parent) -> {
-                return AutoConfig.getConfigScreen(OutvotedConfig.class, parent).get();
-            };
-        });
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () ->
+                (client, parent) -> AutoConfig.getConfigScreen(OutvotedConfig.class, parent).get());
     }
 
     @SubscribeEvent

@@ -91,7 +91,7 @@
   "text.autoconfig.outvoted.option.entities.wildfire.biomes": "Spawn Biomes",
   "text.autoconfig.outvoted.option.entities.wildfire.health": "Max Health",
   "text.autoconfig.outvoted.option.entities.wildfire.variants": "Enable Biome Variants",
-  "text.autoconfig.outvoted.option.entities.wildfire.attacking": "Wildfire Attacks",
+  "text.autoconfig.outvoted.option.entities.wildfire.attacking": "Attack Configuration",
   "text.autoconfig.outvoted.option.entities.wildfire.attacking.fireballcount": "Fireball Count",
   "text.autoconfig.outvoted.option.entities.wildfire.attacking.offsetangle": "Angle Between Fireballs",
   "text.autoconfig.outvoted.option.entities.wildfire.attacking.maxdepressangle": "Max Downward Angle",

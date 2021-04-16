@@ -27,6 +27,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
@@ -108,7 +109,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<KrakenEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return blockPos.getY() <= 45.0;
+        return world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
     }
 
     /**

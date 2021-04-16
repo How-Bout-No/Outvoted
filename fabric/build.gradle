@@ -72,9 +72,9 @@ java {
     withSourcesJar()
 }
 
-//sourceSets.main.resources {
-//    srcDir '../forge/src/generated/resources'
-//}
+sourceSets.main.resources {
+    srcDir '../forge/src/generated/resources'
+}
 
 sourcesJar {
     def commonSources = project(":common").sourcesJar

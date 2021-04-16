@@ -232,7 +232,6 @@ public class BaobabTreeFeature extends Feature<TreeFeatureConfig> {
         BlockState floor = world.getBlockState(pos);
         ModSaplingBlock sapling = (ModSaplingBlock) ModBlocks.BAOBAB_SAPLING.get();
         return floor.isIn(sapling.blockTag) || floor.isOf(Blocks.GRASS_BLOCK) || floor.isOf(Blocks.DIRT) || floor.isOf(Blocks.COARSE_DIRT) || floor.isOf(Blocks.PODZOL) || floor.isOf(Blocks.FARMLAND);
-
     }
 
     public static boolean checkValidGround(WorldAccess world, BlockPos pos) {

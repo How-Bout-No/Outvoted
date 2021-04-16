@@ -12,7 +12,7 @@ displayURL = "https://www.curseforge.com/minecraft/mc-mods/outvoted"
 logoFile = "logo.png"
 authors = "HowBoutNo"
 credits = "Curseforge Community, Lord_Noodal for contributions, and Obi and Furti for textures"
-description = '''Adds in mobs that got outvoted!
+description = '''Adds in stuff that got outvoted!
 With generous support from TheMasterBlast_r'''
 
 [[dependencies.outvoted]]

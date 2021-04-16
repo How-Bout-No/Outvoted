@@ -21,10 +21,12 @@ public class ModItems {
             () -> new ModSpawnEggItem(ModEntityTypes.HUNGER, 0xF0D786, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> KRAKEN_SPAWN_EGG = ITEMS.register("kraken_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.KRAKEN, 0x5B872E, 0x000000, new Item.Settings()));
+    public static final RegistrySupplier<ModSpawnEggItem> MEERKAT_SPAWN_EGG = ITEMS.register("meerkat_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.MEERKAT, 0x5B872E, 0x000000, new Item.Settings()));
 
     // Items
     public static final RegistrySupplier<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);
-    public static final RegistrySupplier<Item> WILDFIRE_SHIELD = ITEMS.register("wildfire_shield", () -> new WildfireShieldItem(OutvotedModPlatform.setISTER(new Item.Settings())));
+    public static final RegistrySupplier<Item> WILDFIRE_SHIELD = ITEMS.register("wildfire_shield", WildfireShieldItem::new);
     public static final RegistrySupplier<Item> WILDFIRE_SHIELD_PART = ITEMS.register("wildfire_shield_part", () -> new ModItem(new Item.Settings().fireproof()));
     public static final RegistrySupplier<Item> WILDFIRE_PIECE = ITEMS.register("wildfire_piece", () -> new ModItem(new Item.Settings().fireproof()));
     public static final RegistrySupplier<Item> VOID_HEART = ITEMS.register("void_heart", () -> new ModItem(new Item.Settings()));

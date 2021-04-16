@@ -158,8 +158,13 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
         this.targetSelector.add(1, new FollowTargetGoal<>(this, LivingEntity.class, true));
     }
 
+    @Override
+    public float getPathfindingFavor(BlockPos pos, WorldView world) {
+        return 0.0F;
+    }
+
     public static boolean canSpawn(EntityType<HungerEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return world.isSkyVisibleAllowingSea(blockPos) && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.Blocks.HUNGER_CAN_BURROW);
+        return world.getBaseLightLevel(blockPos, 0) > 8 && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.Blocks.HUNGER_CAN_BURROW);
     }
 
     @Override

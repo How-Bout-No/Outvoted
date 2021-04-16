@@ -26,6 +26,7 @@ public class Items extends ItemModelProvider {
         egg(ModItems.WILDFIRE_SPAWN_EGG.get());
         egg(ModItems.HUNGER_SPAWN_EGG.get());
         egg(ModItems.KRAKEN_SPAWN_EGG.get());
+        egg(ModItems.MEERKAT_SPAWN_EGG.get());
 
         singleTexture(ModItems.WILDFIRE_HELMET.get().getRegistryName().getPath(), new Identifier("item/generated"),
                 "layer0", new Identifier(Outvoted.MOD_ID, "item/wildfire_helmet"))
