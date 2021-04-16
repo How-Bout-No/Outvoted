@@ -2,11 +2,9 @@ package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.entity.util.MobAttributes;
 import io.github.how_bout_no.outvoted.init.ModFeatures;
+import io.github.how_bout_no.outvoted.init.ModFireBlock;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
-import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.minecraft.util.registry.BuiltinRegistries;
 
 public class OutvotedFabric implements ModInitializer {
     @Override
@@ -15,5 +13,6 @@ public class OutvotedFabric implements ModInitializer {
         MobAttributes.init();
         ModSpawnEggItem.initSpawnEggs();
         ModFeatures.Configured.registerConfiguredFeatures();
+        ModFireBlock.init();
     }
 }

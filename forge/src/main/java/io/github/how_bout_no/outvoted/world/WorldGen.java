@@ -52,7 +52,7 @@ public class WorldGen {
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
         Entity e = event.getEntity();
-        if (Outvoted.config.get().entities.wildfire.spawn) {
+        if (Outvoted.config.entities.wildfire.spawn) {
             if (e instanceof WildfireEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
                     World world = event.getEntity().getEntityWorld();

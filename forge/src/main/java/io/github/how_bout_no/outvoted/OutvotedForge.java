@@ -2,8 +2,6 @@ package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.client.render.ClientRender;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
-import io.github.how_bout_no.outvoted.init.ModFeatures;
-import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import io.github.how_bout_no.outvoted.util.ServerEvents;
 import me.shedaniel.architectury.platform.forge.EventBuses;
 import net.minecraft.block.entity.BlockEntityType;

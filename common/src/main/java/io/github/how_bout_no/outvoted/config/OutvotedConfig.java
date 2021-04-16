@@ -14,6 +14,7 @@ public class OutvotedConfig implements ConfigData {
     public Client client = new Client();
 
     public static class Client {
+        @ConfigEntry.Gui.RequiresRestart
         public boolean creativetab = true;
     }
 
@@ -55,6 +56,7 @@ public class OutvotedConfig implements ConfigData {
             public int rate = 5;
             public List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");
             public double health = 20.0D;
+            @ConfigEntry.Gui.Tooltip
             public int max_enchants = 5;
         }
 
@@ -72,6 +74,8 @@ public class OutvotedConfig implements ConfigData {
     public static class Generation {
         public boolean genpalmtrees = true;
         public boolean genbaobabtrees = true;
+        @ConfigEntry.BoundedDiscrete(max = 1)
+        @ConfigEntry.Gui.Tooltip(count = 2)
         public int baobabtype = 0;
     }
 
@@ -79,6 +83,7 @@ public class OutvotedConfig implements ConfigData {
     public Misc misc = new Misc();
 
     public static class Misc {
+        @ConfigEntry.Gui.Tooltip(count = 2)
         public int helmetpenalty = 40;
     }
 }

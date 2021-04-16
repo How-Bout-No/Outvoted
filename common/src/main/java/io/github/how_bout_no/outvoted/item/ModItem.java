@@ -13,6 +13,7 @@ public class ModItem extends Item {
         super(settings.group(Outvoted.TAB_MISC));
     }
 
+    @Override
     protected boolean isIn(ItemGroup group) {
         return GroupCheck.isInMisc(group);
     }

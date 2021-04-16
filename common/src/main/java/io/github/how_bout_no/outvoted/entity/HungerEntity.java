@@ -67,7 +67,7 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 5;
-        EntityUtils.setConfigHealth(this, Outvoted.config.get().entities.hunger.health);
+        EntityUtils.setConfigHealth(this, Outvoted.config.entities.hunger.health);
     }
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -280,7 +280,7 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
          * right: Item to return
          */
         MutablePair<Integer, ItemStack> pair = new MutablePair<>(0, itemstack);
-        if (storedEnchants.size() <= Outvoted.config.get().entities.hunger.max_enchants) {
+        if (storedEnchants.size() <= Outvoted.config.entities.hunger.max_enchants) {
             itemstack.setCount(count);
             final boolean[] hasCurses = {false};
             Map<Enchantment, Integer> map = EnchantmentHelper.get(stack).entrySet().stream().filter((enchant) -> {

@@ -8,15 +8,19 @@ Hunger
 >> Items <<
 Wildfire Helmet
 - Item textures now adhere to Wildfire variant config option
-- Can now change its mechanics in config
+- Can now alter its mechanics in config
 
 Wildfire Shield
 - Fix model rendering when blocking
 
->> Misc <<
+>> Generation <<
 Palm
 - Palm trees added, generates in the Desert Lakes biome
 
 Baobab
 - Baobab trees added, generates in the Savanna biome
-- Generation type is configurable, between Mojang's rendition and a more "realistic"" variety
+- Generation type is configurable, between Mojang's rendition and a more ""realistic"" variety
+
+>> Misc <<
+- Config now utilizes JSON formatting along with having each config side in one file
+- Now has an in-game config screen

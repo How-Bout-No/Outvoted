@@ -9,7 +9,7 @@
   ],
   "contact": {},
   "license": "GPL 3.0",
-  "icon": "../../../../common/src/main/resources/logo.png",
+  "icon": "logo.png",
   "environment": "*",
   "accessWidener": "outvoted.accesswidener",
   "entrypoints": {
@@ -18,6 +18,9 @@
     ],
     "main": [
       "io.github.how_bout_no.outvoted.OutvotedFabric"
+    ],
+    "modmenu": [
+      "io.github.how_bout_no.outvoted.config.ModMenuOutvoted"
     ]
   },
   "mixins": [
@@ -26,7 +29,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": ">=1.16.4",
+    "minecraft": ">=1.16.5",
     "architectury": ">=1.1.55"
   },
   "suggests": {

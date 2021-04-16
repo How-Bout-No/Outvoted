@@ -12,23 +12,23 @@ import net.minecraft.world.gen.GenerationStep;
 
 public class WorldGen {
     public static void addSpawnEntries() {
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.get().entities.wildfire),
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.entities.wildfire),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
-                                Outvoted.config.get().entities.wildfire.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.get().entities.hunger),
+                                Outvoted.config.entities.wildfire.rate, 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.entities.hunger),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.HUNGER.get(),
-                                Outvoted.config.get().entities.hunger.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.get().entities.kraken),
+                                Outvoted.config.entities.hunger.rate, 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.entities.kraken),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.KRAKEN.get(),
-                                Outvoted.config.get().entities.kraken.rate, 1, 1)));
+                                Outvoted.config.entities.kraken.rate, 1, 1)));
 
-        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.config.get().generation.genpalmtrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
+        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.config.generation.genpalmtrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE));
-        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.config.get().generation.genbaobabtrees && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
+        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.config.generation.genbaobabtrees && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE));
     }

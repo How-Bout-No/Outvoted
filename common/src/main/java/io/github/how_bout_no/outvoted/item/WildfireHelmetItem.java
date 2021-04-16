@@ -27,12 +27,12 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
 
     public WildfireHelmetItem() {
-        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Item.Settings().group(Outvoted.TAB_COMBAT));
+        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Item.Settings().fireproof());
     }
 
     @Override
     public Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, Identifier defaultTexture) {
-        if (Outvoted.config.get().entities.wildfire.variants) {
+        if (Outvoted.config.entities.wildfire.variants) {
             if (stack.getTag() != null && stack.getTag().getFloat("SoulTexture") == 1.0F) {
                 return HELMET_TEXTURE_SOUL;
             }
@@ -43,10 +43,10 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         LivingEntity livingEntity = (LivingEntity) entity;
-        if (Outvoted.config.get().misc.helmetpenalty != 0) {
+        if (Outvoted.config.misc.helmetpenalty != 0) {
             if (livingEntity.isOnFire()) {
                 livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));
-                if (timer % Outvoted.config.get().misc.helmetpenalty == 0) {
+                if (timer % Outvoted.config.misc.helmetpenalty == 0) {
                     stack.damage(1 + (timer / 600), livingEntity, consumer -> consumer.sendEquipmentBreakStatus(EquipmentSlot.HEAD));
                     //timer = 0;
                 }
@@ -59,6 +59,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
         }
     }
 
+    @Override
     protected boolean isIn(ItemGroup group) {
         return GroupCheck.isInCombat(group);
     }
@@ -67,11 +68,6 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     public boolean isEnchantable(ItemStack stack) {
         System.out.println(stack);
         return super.isEnchantable(stack);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return true;
     }
 
     @Override

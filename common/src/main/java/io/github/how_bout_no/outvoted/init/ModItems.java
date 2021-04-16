@@ -24,9 +24,9 @@ public class ModItems {
 
     // Items
     public static final RegistrySupplier<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);
-    public static final RegistrySupplier<Item> WILDFIRE_SHIELD = ITEMS.register("wildfire_shield", () -> new WildfireShieldItem(OutvotedModPlatform.setISTER(new Item.Settings().maxDamage(750).group(Outvoted.TAB_COMBAT).fireproof())));
+    public static final RegistrySupplier<Item> WILDFIRE_SHIELD = ITEMS.register("wildfire_shield", () -> new WildfireShieldItem(OutvotedModPlatform.setISTER(new Item.Settings())));
     public static final RegistrySupplier<Item> WILDFIRE_SHIELD_PART = ITEMS.register("wildfire_shield_part", () -> new ModItem(new Item.Settings().fireproof()));
-    public static final RegistrySupplier<Item> WILDFIRE_PIECE = ITEMS.register("wildfire_piece", () -> new ModItem(new Item.Settings()));
+    public static final RegistrySupplier<Item> WILDFIRE_PIECE = ITEMS.register("wildfire_piece", () -> new ModItem(new Item.Settings().fireproof()));
     public static final RegistrySupplier<Item> VOID_HEART = ITEMS.register("void_heart", () -> new ModItem(new Item.Settings()));
     public static final RegistrySupplier<Item> KRAKEN_TOOTH = ITEMS.register("kraken_tooth", () -> new ModItem(new Item.Settings()));
     public static final RegistrySupplier<Item> PRISMARINE_ROD = ITEMS.register("prismarine_rod", () -> new ModItem(new Item.Settings()));
