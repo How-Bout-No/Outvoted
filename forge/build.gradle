@@ -25,14 +25,14 @@ loom {
     }
 }
 
-//minecraft {
-//    runs {
-//        client {
-//            property 'mixin.env.remapRefMap', 'true'
-//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-//        }
-//    }
-//}
+minecraft {
+    runs {
+        client {
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+        }
+    }
+}
 
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }

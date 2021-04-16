@@ -32,6 +32,8 @@ public class OutvotedConfig implements ConfigData {
         public Kraken kraken = new Kraken();
 
         public static class Wildfire implements EntityConfigBase {
+            public boolean spawn = true;
+            public int rate = 1;
             public List<String> biomes = Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley");
             public double health = 50.0D;
             public boolean variants = true;
@@ -49,12 +51,15 @@ public class OutvotedConfig implements ConfigData {
         }
 
         public static class Hunger implements EntityConfigBase {
+            public boolean spawn = true;
             public int rate = 5;
             public List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");
+            public double health = 20.0D;
             public int max_enchants = 5;
         }
 
         public static class Kraken implements EntityConfigBase {
+            public boolean spawn = true;
             public int rate = 2;
             public List<String> biomes = Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean");
             public double health = 40.0D;

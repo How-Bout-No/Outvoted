@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "outvoted.refmap.json",
   "mixins": [
-    "MixinBlazeEntity"
+    "MixinBlazeEntity",
+    "MixinGeoArmorItem"
   ],
   "client": [
     "MixinAtlases",

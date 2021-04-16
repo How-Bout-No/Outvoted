@@ -51,7 +51,6 @@ public class Outvoted {
                     return new ItemStack(ModItems.WILDFIRE_HELMET.get());
                 }
             });
-            TAB.setTexture("item_search.png");
             TAB_BLOCKS = TAB;
             TAB_DECO = TAB;
             TAB_COMBAT = TAB;

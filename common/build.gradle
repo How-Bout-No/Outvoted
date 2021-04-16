@@ -1,5 +1,11 @@
 minecraft {
     accessWidener = file("../fabric/src/main/resources/outvoted.accesswidener")
+
+    runs {
+        client {
+            vmArg '-XX:HotswapAgent=fatjar'
+        }
+    }
 }
 
 repositories {
