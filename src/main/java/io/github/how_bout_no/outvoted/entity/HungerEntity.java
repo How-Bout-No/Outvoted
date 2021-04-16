@@ -152,10 +152,16 @@ public class HungerEntity extends MonsterEntity implements IAnimatable {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true));
     }
 
-    public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return world.canBlockSeeSky(blockPos) && canSpawnOn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.HUNGER_CAN_BURROW);
+    @Override
+    public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
+        return 0.0F;
     }
 
+    public static boolean canSpawn(EntityType<HungerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return world.getLightSubtracted(blockPos, 0) > 8 && canSpawnOn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.HUNGER_CAN_BURROW);
+    }
+
+    @Override
     protected boolean isDespawnPeaceful() {
         return false;
     }

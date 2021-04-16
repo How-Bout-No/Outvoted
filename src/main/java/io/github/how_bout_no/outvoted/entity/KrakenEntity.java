@@ -27,6 +27,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -108,7 +109,7 @@ public class KrakenEntity extends MonsterEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<KrakenEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return blockPos.getY() <= 45.0;
+        return world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isTagged(FluidTags.WATER));
     }
 
     /**
