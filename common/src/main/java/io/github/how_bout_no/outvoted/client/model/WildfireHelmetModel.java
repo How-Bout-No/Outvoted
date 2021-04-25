@@ -11,7 +11,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class WildfireHelmetModel extends AnimatedGeoModel<WildfireHelmetItem> {
     @Override
     public Identifier getAnimationFileLocation(WildfireHelmetItem item) {
-        return null;
+        return new Identifier(Outvoted.MOD_ID, "animations/wildfirehelmet.animation.json");
     }
 
     @Override

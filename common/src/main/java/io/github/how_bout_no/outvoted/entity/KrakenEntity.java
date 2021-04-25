@@ -44,8 +44,8 @@ import software.bernie.geckolib3.resource.GeckoLibCache;
 import java.util.*;
 
 public class KrakenEntity extends HostileEntity implements IAnimatable {
-    private static final TrackedData<Integer> ATTACKING = DataTracker.registerData(KrakenEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Integer> TARGET_ENTITY = DataTracker.registerData(KrakenEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> ATTACKING;
+    private static final TrackedData<Integer> TARGET_ENTITY;
     private LivingEntity targetedEntity;
     private static Map<Integer, UUID> targetedEntities = new HashMap<>();
     private int clientSideAttackTime;
@@ -59,38 +59,6 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.moveControl = new KrakenEntity.MoveHelperController(this);
         EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.kraken.health);
-    }
-
-    private AnimationFactory factory = new AnimationFactory(this);
-
-    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.getAttackPhase() != 0) {
-            if (this.hasTargetedEntity()) {
-                GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
-            }
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
-            return PlayState.CONTINUE;
-        }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
-        data.addAnimationController(controller);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    public static DefaultAttributeContainer.Builder setCustomAttributes() {
-        return HostileEntity.createLivingAttributes()
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1D)
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
     }
 
     protected void initGoals() {
@@ -108,6 +76,13 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
     }
 
+    public static DefaultAttributeContainer.Builder setCustomAttributes() {
+        return HostileEntity.createLivingAttributes()
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1D)
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
+    }
+
     public static boolean canSpawn(EntityType<KrakenEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
         return world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
     }
@@ -117,6 +92,11 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
      */
     protected EntityNavigation createNavigation(World worldIn) {
         return new SwimNavigation(this, worldIn);
+    }
+
+    static {
+        ATTACKING = DataTracker.registerData(KrakenEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        TARGET_ENTITY = DataTracker.registerData(KrakenEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
     protected void initDataTracker() {
@@ -557,5 +537,30 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
                 this.entity.setMovementSpeed(0.0F);
             }
         }
+    }
+
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (this.getAttackPhase() != 0) {
+            if (this.hasTargetedEntity()) {
+                GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
+            }
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
+            return PlayState.CONTINUE;
+        }
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }

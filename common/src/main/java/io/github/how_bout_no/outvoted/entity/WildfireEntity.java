@@ -45,12 +45,12 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     private boolean shieldDisabled = false;
-    private static final TrackedData<Boolean> SHIELDING = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Byte> ON_FIRE = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BYTE);
-    private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Integer> VARIANT = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> SHIELDING;
+    private static final TrackedData<Byte> ON_FIRE;
+    private static final TrackedData<Boolean> ATTACKING;
+    private static final TrackedData<Integer> VARIANT;
 
-    public WildfireEntity(EntityType<? extends HostileEntity> type, World worldIn) {
+    public WildfireEntity(EntityType<? extends WildfireEntity> type, World worldIn) {
         super(type, worldIn);
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F);
         this.setPathfindingPenalty(PathNodeType.LAVA, 8.0F);
@@ -60,33 +60,15 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.wildfire.health);
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
-
-    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
-
-        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || !animname.equals("attack")) {
-            if (this.getIsAttacking()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
-            } else if (this.getShielding()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("shieldtransition").addAnimation("shielding"));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
-            }
-        }
-
-        return PlayState.CONTINUE;
-    }
-
     @Override
-    public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
-        data.addAnimationController(controller);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    protected void initGoals() {
+        this.goalSelector.add(1, new WildfireEntity.AttackGoal(this));
+        this.goalSelector.add(2, new GoToWalkTargetGoal(this, 1.0D));
+        this.goalSelector.add(3, new WanderAroundFarGoal(this, 1.0D, 0.0F));
+        this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(5, new LookAroundGoal(this));
+        this.targetSelector.add(1, (new RevengeGoal(this)).setGroupRevenge());
+        this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
@@ -99,60 +81,22 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(4, new WildfireEntity.AttackGoal(this));
-        this.goalSelector.add(6, new GoToWalkTargetGoal(this, 1.0D));
-        this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D, 0.0F));
-        this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(1, (new RevengeGoal(this)).setGroupRevenge());
-        this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return ModSounds.WILDFIRE_AMBIENT.get();
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return ModSounds.WILDFIRE_DEATH.get();
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.WILDFIRE_HURT.get();
-    }
-
-    @Override
-    protected float getActiveEyeHeight(EntityPose poseIn, EntityDimensions sizeIn) {
-        return 1.8F;
-    }
-
     public void writeCustomDataToTag(CompoundTag compound) {
         super.writeCustomDataToTag(compound);
         compound.putInt("Variant", this.getVariant());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+    @Override
     public void readCustomDataFromTag(CompoundTag compound) {
         super.readCustomDataFromTag(compound);
         this.setVariant(compound.getInt("Variant"));
     }
 
-    @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        int type;
-        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
-        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
-            type = 1;
-        } else {
-            type = 0;
-        }
-        this.setVariant(type);
-        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    static {
+        SHIELDING = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ON_FIRE = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BYTE);
+        ATTACKING = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        VARIANT = DataTracker.registerData(WildfireEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
     @Override
@@ -190,6 +134,39 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     public boolean getIsAttacking() {
         return this.dataTracker.get(ATTACKING);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.WILDFIRE_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.WILDFIRE_DEATH.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.WILDFIRE_HURT.get();
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose poseIn, EntityDimensions sizeIn) {
+        return 1.8F;
+    }
+
+    @Nullable
+    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+        int type;
+        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
+        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+            type = 1;
+        } else {
+            type = 0;
+        }
+        this.setVariant(type);
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public float getBrightnessAtEyes() {
@@ -459,5 +436,34 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         private double getFollowDistance() {
             return this.wildfire.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
         }
+    }
+
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
+
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || !animname.equals("attack")) {
+            if (this.getIsAttacking()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            } else if (this.getShielding()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("shieldtransition").addAnimation("shielding"));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("generaltransition").addAnimation("general"));
+            }
+        }
+
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }

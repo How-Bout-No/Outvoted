@@ -15,7 +15,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "me.shedaniel:architectury:${rootProject.architectury_version}"
 
-    modImplementation 'software.bernie.geckolib:geckolib-fabric-1.16.5:3.0.30:dev'
+    modImplementation "software.bernie.geckolib:geckolib-fabric-1.16.5:${rootProject.geckolib_version}:dev"
 
     modCompileOnly("me.shedaniel.cloth:cloth-config:${rootProject.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")

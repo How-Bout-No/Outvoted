@@ -58,94 +58,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class HungerEntity extends HostileEntity implements IAnimatable {
-    private static final TrackedData<Boolean> BURROWED = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> ENCHANTING = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Integer> VARIANT = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> BURROWED;
+    private static final TrackedData<Boolean> ATTACKING;
+    private static final TrackedData<Boolean> ENCHANTING;
+    private static final TrackedData<Integer> VARIANT;
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
 
     public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 5;
         EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.hunger.health);
-    }
-
-    private AnimationFactory factory = new AnimationFactory(this);
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
-        if (this.isBurrowed()) {
-            if (this.isEnchanting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("bite").addAnimation("biteloop", true));
-            } else {
-                if (event.getController().getCurrentAnimation() != null) {
-                    if (animname.equals("idle") || animname.equals("attacking") || animname.equals("chomp") || animname.equals("burrow")) {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("burrow").addAnimation("burrowed", true));
-                    } else {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("burrowed", true));
-                    }
-                } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("burrow").addAnimation("burrowed", true));
-                }
-            }
-        } else {
-            if (event.getController().getCurrentAnimation() == null || animname.equals("idle") || animname.equals("attacking")) {
-                if (this.isAttacking()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking"));
-                } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
-                }
-            } else {
-                if (this.isAttacking()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("chomp").addAnimation("attacking"));
-                } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("chomp").addAnimation("idle"));
-                }
-            }
-        }
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
-        if (event.sound.equals("chomp")) {
-            world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
-        } else if (event.sound.equals("dig")) {
-            BlockState block = world.getBlockState(new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ()));
-            if (block.isIn(BlockTags.SAND)) {
-                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-            } else {
-                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-            }
-        }
-    }
-
-    private <E extends IAnimatable> void particleListener(ParticleKeyFrameEvent<E> event) {
-        if (event.effect.equals("dig")) {
-            for (int i = 0; i < 2; ++i) {
-                BlockPos blockpos = new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ());
-                BlockState blockstate = this.world.getBlockState(blockpos);
-                this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockstate), this.getParticleX(0.5D), this.getBodyY(0), this.getParticleZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
-            }
-        }
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
-        controller.registerSoundListener(this::soundListener);
-        controller.registerParticleListener(this::particleListener);
-        data.addAnimationController(controller);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    public static DefaultAttributeContainer.Builder setCustomAttributes() {
-        return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 19.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
     }
 
     protected void initGoals() {
@@ -156,6 +78,12 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
         this.goalSelector.add(5, new HungerEntity.WanderGoal(this));
         this.goalSelector.add(6, new HungerEntity.LookGoal(this));
         this.targetSelector.add(1, new FollowTargetGoal<>(this, LivingEntity.class, true));
+    }
+
+    public static DefaultAttributeContainer.Builder setCustomAttributes() {
+        return MobEntity.createMobAttributes()
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 19.0D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -222,6 +150,13 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
         }
         this.setVariant(type);
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    static {
+        BURROWED = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ATTACKING = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ENCHANTING = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        VARIANT = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
     @Override
@@ -704,5 +639,77 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
         public boolean shouldContinue() {
             return super.shouldContinue() && !this.hunger.isBurrowed();
         }
+    }
+
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
+        if (this.isBurrowed()) {
+            if (this.isEnchanting()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("bite").addAnimation("biteloop", true));
+            } else {
+                if (event.getController().getCurrentAnimation() != null) {
+                    if (animname.equals("idle") || animname.equals("attacking") || animname.equals("chomp") || animname.equals("burrow")) {
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("burrow").addAnimation("burrowed", true));
+                    } else {
+                        event.getController().setAnimation(new AnimationBuilder().addAnimation("burrowed", true));
+                    }
+                } else {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("burrow").addAnimation("burrowed", true));
+                }
+            }
+        } else {
+            if (event.getController().getCurrentAnimation() == null || animname.equals("idle") || animname.equals("attacking")) {
+                if (this.isAttacking()) {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking"));
+                } else {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+                }
+            } else {
+                if (this.isAttacking()) {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("chomp").addAnimation("attacking"));
+                } else {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("chomp").addAnimation("idle"));
+                }
+            }
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
+        if (event.sound.equals("chomp")) {
+            world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
+        } else if (event.sound.equals("dig")) {
+            BlockState block = world.getBlockState(new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ()));
+            if (block.isIn(BlockTags.SAND)) {
+                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            } else {
+                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            }
+        }
+    }
+
+    private <E extends IAnimatable> void particleListener(ParticleKeyFrameEvent<E> event) {
+        if (event.effect.equals("dig")) {
+            for (int i = 0; i < 2; ++i) {
+                BlockPos blockpos = new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ());
+                BlockState blockstate = this.world.getBlockState(blockpos);
+                this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockstate), this.getParticleX(0.5D), this.getBodyY(0), this.getParticleZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+            }
+        }
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
+        controller.registerSoundListener(this::soundListener);
+        controller.registerParticleListener(this::particleListener);
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }
