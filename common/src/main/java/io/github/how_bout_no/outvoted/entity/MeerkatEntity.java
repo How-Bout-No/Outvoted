@@ -5,12 +5,10 @@ import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -44,34 +42,19 @@ import java.util.EnumSet;
 import java.util.UUID;
 
 public class MeerkatEntity extends TameableEntity implements IAnimatable {
-    private static final TrackedData<BlockPos> STRUCTURE_POS = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.COD, Items.SALMON);
+    private BlockPos structurepos = null;
     private int animtimer = 0;
 
-    public MeerkatEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+    public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
         super(type, worldIn);
+        this.setPathfindingPenalty(PathNodeType.WATER, -1.0F); // no like da water
         EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.meerkat.health);
-    }
-
-    private AnimationFactory factory = new AnimationFactory(this);
-
-    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.getController().getAnimationState().equals(AnimationState.Stopped)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("standing"));
-        } else if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walking"));
-            animtimer = 0;
-        } else if (animtimer >= 10 && !this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("standing"));
-        } else if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("standingalt"));
-        }
-        animtimer++;
-        return PlayState.CONTINUE;
     }
 
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
+        this.goalSelector.add(1, new SitGoal(this));
         this.goalSelector.add(2, new MeerkatEntity.VentureGoal(this, 1.25D));
         this.goalSelector.add(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.add(4, new AnimalMateGoal(this, 1.0D));
@@ -79,6 +62,23 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         this.goalSelector.add(6, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
+    }
+
+    public static DefaultAttributeContainer.Builder setCustomAttributes() {
+        return MobEntity.createMobAttributes()
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D);
+    }
+
+    public void writeCustomDataToTag(CompoundTag tag) {
+        super.writeCustomDataToTag(tag);
+        if (this.hasStructurePos()) tag.put("StructPos", NbtHelper.fromBlockPos(this.getStructurePos()));
+    }
+
+    public void readCustomDataFromTag(CompoundTag tag) {
+        this.structurepos = null;
+        if (tag.contains("StructPos")) this.structurepos = NbtHelper.toBlockPos(tag.getCompound("StructPos"));
+
+        super.readCustomDataFromTag(tag);
     }
 
     @Override
@@ -96,37 +96,17 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         return SoundEvents.ENTITY_CAT_HURT;
     }
 
-    public static DefaultAttributeContainer.Builder setCustomAttributes() {
-        return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D);
-    }
-
-    private BlockPos getStructurePos() {
-        if (this.dataTracker.get(STRUCTURE_POS) == null) setStructurePos(BlockPos.ORIGIN);
-        return this.dataTracker.get(STRUCTURE_POS);
-    }
-
-    private void setStructurePos(BlockPos pos) {
-        this.dataTracker.set(STRUCTURE_POS, pos);
-    }
-
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
-        tag.put("StructPos", NbtHelper.fromBlockPos(this.getStructurePos()));
-    }
-
-    public void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
-        this.setStructurePos(NbtHelper.toBlockPos(tag.getCompound("StructPos")));
-    }
-
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(STRUCTURE_POS, BlockPos.ORIGIN);
-    }
-
     public boolean isBreedingItem(ItemStack stack) {
         return TAMING_INGREDIENT.test(stack);
+    }
+
+    private boolean hasStructurePos() {
+        return this.structurepos != null;
+    }
+
+    @Nullable
+    private BlockPos getStructurePos() {
+        return this.structurepos;
     }
 
     private BlockPos findStructure(StructureFeature<?> structureFeature) {
@@ -142,6 +122,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         return null;
     }
 
+    @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (this.world.isClient) {
@@ -173,13 +154,12 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
                                 struct = pyramidPos;
                             }
                         }
-                        setStructurePos(struct);
+                        structurepos = struct;
                         return ActionResult.CONSUME;
                     }
 
                     actionResult = super.interactMob(player, hand);
                     if (!actionResult.isAccepted() || this.isBaby()) {
-                        System.out.println(this.isSitting());
                         this.setSitting(!this.isSitting());
                     }
 
@@ -208,8 +188,14 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         }
     }
 
-    public boolean canImmediatelyDespawn(double distanceSquared) {
-        return !this.isTamed() && this.age > 2400;
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            this.setSitting(false);
+            return super.damage(source, amount);
+        }
     }
 
     private static float getDistance(int a, int b, int x, int y) {
@@ -231,7 +217,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            return this.mob.getStructurePos() != BlockPos.ORIGIN && !this.mob.isSitting();
+            return this.mob.getStructurePos() != null && !this.mob.isSitting();
         }
 
         public boolean shouldContinue() {
@@ -239,7 +225,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         }
 
         public void stop() {
-            this.mob.setStructurePos(BlockPos.ORIGIN);
+            this.mob.structurepos = null;
         }
 
         public void start() {
@@ -280,6 +266,21 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         }
 
         return meerkatEntity;
+    }
+
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInSittingPose() && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("standing"));
+        } else if (event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("walking"));
+            animtimer = 0;
+        } else if (this.isInSittingPose()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("standingalt"));
+        }
+        if (animtimer < 10) animtimer++;
+        return PlayState.CONTINUE;
     }
 
     @Override
