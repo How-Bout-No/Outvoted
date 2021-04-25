@@ -37,6 +37,7 @@ minecraft {
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url "https://maven.shedaniel.me/" }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
@@ -46,6 +47,8 @@ dependencies {
     modImplementation 'software.bernie.geckolib:geckolib-forge-1.16.5:3.0.30'
 
     modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+
+    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
 
     implementation(project(path: ":common")) {
         transitive = false

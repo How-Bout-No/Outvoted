@@ -19,6 +19,7 @@ repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url "https://maven.shedaniel.me/" }
     maven { url 'https://maven.terraformersmc.com/releases/' }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
@@ -33,6 +34,8 @@ dependencies {
     }
 
     modImplementation "com.terraformersmc:modmenu:1.16.9"
+
+    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
 
     implementation(project(path: ":common")) {
         transitive = false

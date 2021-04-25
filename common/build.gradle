@@ -1,16 +1,11 @@
 minecraft {
     accessWidener = file("../fabric/src/main/resources/outvoted.accesswidener")
-
-    runs {
-        client {
-            vmArg '-XX:HotswapAgent=fatjar'
-        }
-    }
 }
 
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url "https://maven.shedaniel.me/" }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
@@ -25,6 +20,8 @@ dependencies {
     modCompileOnly("me.shedaniel.cloth:cloth-config:${rootProject.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
 }
 
 //sourceSets.main.resources {
