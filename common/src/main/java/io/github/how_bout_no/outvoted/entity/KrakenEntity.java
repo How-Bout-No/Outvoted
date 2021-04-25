@@ -58,7 +58,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         this.experiencePoints = 10;
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.moveControl = new KrakenEntity.MoveHelperController(this);
-        EntityUtils.setConfigHealth(this, Outvoted.config.entities.kraken.health);
+        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.kraken.health);
     }
 
     private AnimationFactory factory = new AnimationFactory(this);

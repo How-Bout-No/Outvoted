@@ -8,6 +8,7 @@ import me.shedaniel.architectury.registry.CreativeTabs;
 import me.shedaniel.architectury.registry.RenderTypes;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -31,7 +32,7 @@ public class Outvoted {
     public static ItemGroup TAB_REDSTONE;
 
     public static void init() {
-        AutoConfig.register(OutvotedConfig.class, GsonConfigSerializer::new);
+        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
         config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
 
         GeckoLib.initialize();

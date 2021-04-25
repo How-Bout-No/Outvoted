@@ -18,14 +18,14 @@
       "entity": "outvoted:wildfire{Variant:1}",
       "scale": "0.9",
       "text": "Soul Sand Valley Wildfires",
-      "flag": "outvoted:infvariant"
+      "flag": "outvoted:wildfirevariant"
     },
     {
       "type": "entity",
       "entity": "minecraft:blaze{Variant:1}",
       "scale": "0.9",
       "text": "Soul Sand Valley Blazes",
-      "flag": "outvoted:infvariant"
+      "flag": "outvoted:wildfirevariant"
     }
   ]
 }

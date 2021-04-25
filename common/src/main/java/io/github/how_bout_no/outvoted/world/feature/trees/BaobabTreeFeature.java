@@ -78,7 +78,7 @@ public class BaobabTreeFeature extends Feature<TreeFeatureConfig> {
                             if (j % 3 == 0 || k % 3 == 0) {
                                 Random random1 = new Random();
                                 boolean condition;
-                                if (Outvoted.config.generation.baobabtype == 0) {
+                                if (Outvoted.config.common.generation.baobabtype == 0) {
                                     condition = i2 >= treeHeight / (1.5 + ((treeHeight - 7) / 2.0)) && random1.nextFloat() < 0.05F * (treeHeight - 7);
                                 } else {
                                     condition = false;

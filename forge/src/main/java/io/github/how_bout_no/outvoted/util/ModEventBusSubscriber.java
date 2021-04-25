@@ -51,7 +51,7 @@ public class ModEventBusSubscriber {
 
         ShieldModelProvider.registerItemsWithModelProvider();
 
-        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.entities.wildfire.variants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
+        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.common.entities.wildfire.variants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         ModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
 
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () ->

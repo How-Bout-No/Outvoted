@@ -18,8 +18,8 @@ import net.minecraft.world.explosion.Explosion;
 import static net.minecraft.entity.EntityType.SMALL_FIREBALL;
 
 public class WildfireFireballEntity extends AbstractFireballEntity {
-    public double explosionPower = Outvoted.config.entities.wildfire.attacking.fireballexplosionpower;
-    public boolean doExplode = Outvoted.config.entities.wildfire.attacking.dofireballexplosion;
+    public double explosionPower = Outvoted.config.common.entities.wildfire.attacking.fireballexplosionpower;
+    public boolean doExplode = Outvoted.config.common.entities.wildfire.attacking.dofireballexplosion;
 
     public WildfireFireballEntity(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(SMALL_FIREBALL, shooter, accelX, accelY, accelZ, worldIn);
