@@ -9,6 +9,7 @@ import io.github.how_bout_no.outvoted.client.render.WildfireRenderer;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
+import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModFeatures;
@@ -63,6 +64,7 @@ public class ModEventBusSubscriber {
         event.put(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.MEERKAT.get(), MeerkatEntity.setCustomAttributes().build());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

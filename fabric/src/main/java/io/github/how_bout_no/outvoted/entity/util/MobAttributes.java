@@ -12,6 +12,6 @@ public class MobAttributes {
         FabricDefaultAttributeRegistry.register(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes());
         FabricDefaultAttributeRegistry.register(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes());
         FabricDefaultAttributeRegistry.register(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes());
-//        FabricDefaultAttributeRegistry.register(ModEntityTypes.MEERKAT.get(), MeerkatEntity.setCustomAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntityTypes.MEERKAT.get(), MeerkatEntity.setCustomAttributes());
     }
 }
