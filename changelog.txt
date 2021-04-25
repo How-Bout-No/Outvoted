@@ -1,2 +1,3 @@
-Misc
-- Fix crash with latest Geckolib
+Hunger
+- Cater attack damage to scale with difficulty (on Hard getting attacked will leave you with 1 heart w/o armor)
+- Fix oversight where it would only spawn at night

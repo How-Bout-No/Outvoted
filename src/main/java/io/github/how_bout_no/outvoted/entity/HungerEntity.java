@@ -138,7 +138,7 @@ public class HungerEntity extends MonsterEntity implements IAnimatable {
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 19.0D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 12.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
