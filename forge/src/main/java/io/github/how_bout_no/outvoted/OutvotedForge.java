@@ -2,12 +2,11 @@ package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.client.render.ClientRender;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
-import io.github.how_bout_no.outvoted.init.ModBlocks;
+import io.github.how_bout_no.outvoted.init.ModSigns;
 import io.github.how_bout_no.outvoted.util.ServerEvents;
 import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import me.shedaniel.architectury.platform.forge.EventBuses;
 import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.ActionResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,8 +17,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
-import java.util.HashSet;
 
 @Mod("outvoted")
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -52,10 +49,6 @@ public class OutvotedForge {
 
     @SubscribeEvent
     public void setup(final FMLCommonSetupEvent event) {
-        BlockEntityType.SIGN.blocks = new HashSet<>(BlockEntityType.SIGN.blocks);
-        BlockEntityType.SIGN.blocks.add(ModBlocks.PALM_SIGN.get());
-        BlockEntityType.SIGN.blocks.add(ModBlocks.PALM_WALL_SIGN.get());
-        BlockEntityType.SIGN.blocks.add(ModBlocks.BAOBAB_SIGN.get());
-        BlockEntityType.SIGN.blocks.add(ModBlocks.BAOBAB_WALL_SIGN.get());
+        ModSigns.init();
     }
 }

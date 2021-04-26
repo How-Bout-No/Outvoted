@@ -4,6 +4,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.util.MobAttributes;
 import io.github.how_bout_no.outvoted.init.ModFeatures;
 import io.github.how_bout_no.outvoted.init.ModFireBlock;
+import io.github.how_bout_no.outvoted.init.ModSigns;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -19,6 +20,7 @@ public class OutvotedFabric implements ModInitializer {
         ModSpawnEggItem.initSpawnEggs();
         ModFeatures.Configured.registerConfiguredFeatures();
         ModFireBlock.init();
+        ModSigns.init();
 
         AutoConfig.getConfigHolder(OutvotedConfig.class).registerSaveListener((manager, data) -> {
             System.out.println("save");
