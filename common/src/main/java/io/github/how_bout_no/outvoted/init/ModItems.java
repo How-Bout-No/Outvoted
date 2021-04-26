@@ -5,7 +5,6 @@ import io.github.how_bout_no.outvoted.item.ModItem;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
 import io.github.how_bout_no.outvoted.item.WildfireShieldItem;
-import io.github.how_bout_no.outvoted.util.OutvotedModPlatform;
 import me.shedaniel.architectury.registry.DeferredRegister;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.item.Item;
@@ -22,7 +21,7 @@ public class ModItems {
     public static final RegistrySupplier<ModSpawnEggItem> KRAKEN_SPAWN_EGG = ITEMS.register("kraken_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.KRAKEN, 0x5B872E, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> MEERKAT_SPAWN_EGG = ITEMS.register("meerkat_spawn_egg",
-            () -> new ModSpawnEggItem(ModEntityTypes.MEERKAT, 0x5B872E, 0x000000, new Item.Settings()));
+            () -> new ModSpawnEggItem(ModEntityTypes.MEERKAT, 0xC5C085, 0xFBFDD5, new Item.Settings()));
 
     // Items
     public static final RegistrySupplier<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);

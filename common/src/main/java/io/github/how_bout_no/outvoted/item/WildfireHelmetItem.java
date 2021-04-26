@@ -2,7 +2,6 @@ package io.github.how_bout_no.outvoted.item;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
-import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -13,7 +12,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import org.lwjgl.system.CallbackI;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -61,7 +59,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     protected boolean isIn(ItemGroup group) {
-        return GroupCheck.isInCombat(group);
+        return GroupCheck.isIn(group, Outvoted.TAB_COMBAT);
     }
 
     @Override

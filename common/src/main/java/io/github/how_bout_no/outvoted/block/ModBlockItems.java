@@ -13,45 +13,45 @@ import net.minecraft.item.TallBlockItem;
 public class ModBlockItems {
     public static class ModBlockItem extends BlockItem {
         public ModBlockItem(Block blockIn, Settings properties) {
-            super(blockIn, properties.group(Outvoted.TAB_BLOCKS));
+            super(blockIn, properties);
         }
 
         @Override
         protected boolean isIn(ItemGroup group) {
-            return GroupCheck.isInBlocks(group);
+            return GroupCheck.isIn(group, Outvoted.TAB_BLOCKS);
         }
     }
 
     public static class ModDecoBlockItem extends ModBlockItem {
         public ModDecoBlockItem(Block blockIn, Settings properties) {
-            super(blockIn, properties.group(Outvoted.TAB_DECO));
+            super(blockIn, properties);
         }
 
         @Override
         protected boolean isIn(ItemGroup group) {
-            return GroupCheck.isInDeco(group);
+            return GroupCheck.isIn(group, Outvoted.TAB_DECO);
         }
     }
 
     public static class ModTallBlockItem extends TallBlockItem {
         public ModTallBlockItem(Block blockIn, Settings properties) {
-            super(blockIn, properties.group(Outvoted.TAB_REDSTONE));
+            super(blockIn, properties);
         }
 
         @Override
         protected boolean isIn(ItemGroup group) {
-            return GroupCheck.isInRedstone(group);
+            return GroupCheck.isIn(group, Outvoted.TAB_REDSTONE);
         }
     }
 
     public static class ModSignItem extends SignItem {
         public ModSignItem(Settings properties, Block floorBlockIn, Block wallBlockIn) {
-            super(properties.maxCount(16).group(Outvoted.TAB_DECO), floorBlockIn, wallBlockIn);
+            super(properties.maxCount(16), floorBlockIn, wallBlockIn);
         }
 
         @Override
         protected boolean isIn(ItemGroup group) {
-            return GroupCheck.isInDeco(group);
+            return GroupCheck.isIn(group, Outvoted.TAB_DECO);
         }
     }
 }

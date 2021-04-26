@@ -1,8 +1,6 @@
 package io.github.how_bout_no.outvoted.util;
 
 import me.shedaniel.architectury.annotations.ExpectPlatform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 
 public class OutvotedModPlatform {

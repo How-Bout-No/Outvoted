@@ -10,11 +10,11 @@ import net.minecraft.item.ItemGroup;
  */
 public class ModItem extends Item {
     public ModItem(Item.Settings settings) {
-        super(settings.group(Outvoted.TAB_MISC));
+        super(settings);
     }
 
     @Override
     protected boolean isIn(ItemGroup group) {
-        return GroupCheck.isInMisc(group);
+        return GroupCheck.isIn(group, Outvoted.TAB_MISC);
     }
 }

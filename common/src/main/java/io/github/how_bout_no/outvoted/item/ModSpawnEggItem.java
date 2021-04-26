@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.item;
 
+import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
-import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -32,7 +32,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
 
     @Override
     protected boolean isIn(ItemGroup group) {
-        return GroupCheck.isInMisc(group);
+        return GroupCheck.isIn(group, Outvoted.TAB_MISC);
     }
 
     @Override

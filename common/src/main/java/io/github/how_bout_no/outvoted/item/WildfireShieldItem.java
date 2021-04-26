@@ -11,12 +11,12 @@ import net.minecraft.item.ShieldItem;
 
 public class WildfireShieldItem extends ShieldItem {
     public WildfireShieldItem() {
-        super(OutvotedModPlatform.setISTER(new Item.Settings().maxDamage(750).group(Outvoted.TAB_COMBAT).fireproof()));
+        super(OutvotedModPlatform.setISTER(new Item.Settings().maxDamage(750).fireproof()));
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 
     @Override
     protected boolean isIn(ItemGroup group) {
-        return GroupCheck.isInCombat(group);
+        return GroupCheck.isIn(group, Outvoted.TAB_COMBAT);
     }
 }

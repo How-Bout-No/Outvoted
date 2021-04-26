@@ -19,7 +19,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private int timer = 0;
 
     public WildfireHelmetItem() {
-        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Settings().group(Outvoted.TAB_COMBAT));
+        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Settings());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     protected boolean isIn(ItemGroup group) {
-        return GroupCheck.isInCombat(group);
+        return GroupCheck.isIn(group, Outvoted.TAB_COMBAT);
     }
 
     @Override
