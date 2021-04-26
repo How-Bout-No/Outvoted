@@ -3,7 +3,9 @@
   "package": "io.github.how_bout_no.outvoted.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinGeoArmorItem"
+    "MixinEntity",
+    "MixinLivingEntity",
+    "MixinSpawnRestriction"
   ],
   "minVersion": "0.8",
   "injectors": {

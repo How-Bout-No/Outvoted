@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
+import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnRestriction;
@@ -25,5 +26,7 @@ public abstract class MixinSpawnRestriction {
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HungerEntity::canSpawn);
         register(ModEntityTypes.KRAKEN.get(), SpawnRestriction.Location.IN_WATER,
                 Heightmap.Type.MOTION_BLOCKING, KrakenEntity::canSpawn);
+        register(ModEntityTypes.MEERKAT.get(), SpawnRestriction.Location.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MeerkatEntity::canSpawn);
     }
 }

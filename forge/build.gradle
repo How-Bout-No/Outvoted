@@ -12,6 +12,7 @@ architectury {
 }
 
 loom {
+    useFabricMixin = false
     mixinConfig "outvoted-forge.mixins.json"
 
     dataGen {
@@ -21,15 +22,6 @@ loom {
     launches {
         data {
             arg "--existing", file("../common/src/main/resources").absolutePath
-        }
-    }
-}
-
-minecraft {
-    runs {
-        client {
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
     }
 }
@@ -100,23 +92,3 @@ sourcesJar {
 //sourceSets.main.resources {
 //    srcDir 'src/generated/resources'
 //}
-
-publishing {
-    publications {
-        mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                classifier null
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
-}
