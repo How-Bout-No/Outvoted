@@ -5,7 +5,10 @@
 Hunger
 - Can no longer be moved when burrowed
 - No longer makes sounds when burrowed
-- Fix spawns to not only be at night
+
+Kraken
+- No longer affects player's oxygen levels, instead just periodically bites down
+- Will now encase players after a long period of time if neither the player nor mob has died
 
 Meerkat
 - Spawns in Deserts in small groups

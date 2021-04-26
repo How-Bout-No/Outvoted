@@ -16,8 +16,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.Inventory;
@@ -32,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -52,6 +54,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     private boolean clientSideTouchedGround;
     protected net.minecraft.entity.ai.goal.WanderAroundGoal wander;
     private boolean initAttack = false;
+    private int attackCounter = 0;
 
     public KrakenEntity(EntityType<? extends KrakenEntity> type, World worldIn) {
         super(type, worldIn);
@@ -74,6 +77,8 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         this.wander.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         movetowardsrestrictiongoal.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(3, new FollowTargetGoal<>(this, DolphinEntity.class, true));
+        this.targetSelector.add(4, new FollowTargetGoal<>(this, VillagerEntity.class, true));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
@@ -103,27 +108,6 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         super.initDataTracker();
         this.dataTracker.startTracking(TARGET_ENTITY, 0);
         this.dataTracker.startTracking(ATTACKING, 0);
-    }
-
-    public boolean canBreatheInWater() {
-        return true;
-    }
-
-    public net.minecraft.entity.EntityGroup getGroup() {
-        return net.minecraft.entity.EntityGroup.AQUATIC;
-    }
-
-    protected void updateAir(int air) {
-        if (this.isAlive() && !this.isInsideWaterOrBubbleColumn()) {
-            this.setAir(air - 1);
-            if (this.getAir() == -20) {
-                this.setAir(0);
-                this.damage(DamageSource.DROWN, 5.0F);
-            }
-        } else {
-            this.setAir(300);
-        }
-
     }
 
     public int getAttackDuration() {
@@ -165,6 +149,27 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         } else {
             return this.getTarget();
         }
+    }
+
+    public boolean canBreatheInWater() {
+        return true;
+    }
+
+    public net.minecraft.entity.EntityGroup getGroup() {
+        return net.minecraft.entity.EntityGroup.AQUATIC;
+    }
+
+    protected void updateAir(int air) {
+        if (this.isAlive() && !this.isInsideWaterOrBubbleColumn()) {
+            this.setAir(air - 1);
+            if (this.getAir() == -20) {
+                this.setAir(0);
+                this.damage(DamageSource.DROWN, 5.0F);
+            }
+        } else {
+            this.setAir(300);
+        }
+
     }
 
     public void onTrackedDataSet(TrackedData<?> key) {
@@ -282,13 +287,19 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
                             }
                         }
                         if (this.getAttackPhase() != 0) {
-                            if (!initAttack) {
-                                livingentity.damage(DamageSource.DROWN, 0.1F);
-                                initAttack = true;
+                            if (attackCounter > 10) {
+                                if (!initAttack) {
+                                    livingentity.damage(DamageSource.mob(this), 0.1F);
+                                    initAttack = true;
+                                }
+                            } else {
+                                attackCounter++;
                             }
                             livingentity.addVelocity(-d0 / 50, -d1 / 50, -d2 / 50);
                         } else if (initAttack) {
                             initAttack = false;
+                        } else {
+                            attackCounter = 0;
                         }
                     }
                 }
@@ -361,7 +372,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         if (livingentity.getVehicle() != null) {
             return livingentity.getVehicle().isTouchingWater();
         } else {
-            return livingentity.isTouchingWater() && livingentity.getStatusEffect(StatusEffects.DOLPHINS_GRACE) == null && (targetedEntities.get(livingentity.getEntityId()) == null || targetedEntities.get(livingentity.getEntityId()) == this.getUuid());
+            return livingentity.isTouchingWater() && (targetedEntities.get(livingentity.getEntityId()) == null || targetedEntities.get(livingentity.getEntityId()) == this.getUuid());
         }
     }
 
@@ -436,7 +447,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
          */
         public boolean shouldContinue() {
             if (this.entity.getTarget() != null) {
-                return this.entity.squaredDistanceTo(this.entity.getTarget()) < 90.5D && this.entity.getTarget().getStatusEffect(StatusEffects.DOLPHINS_GRACE) == null && this.entity.waterCheck(this.entity.getTarget());
+                return this.entity.squaredDistanceTo(this.entity.getTarget()) < 90.5D && this.entity.waterCheck(this.entity.getTarget());
             } else {
                 return false;
             }
@@ -475,17 +486,18 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
                     this.entity.setTarget(null);
                 } else {
                     ++this.tickCounter;
-                    this.entity.setAttacking(1);
+                    if (this.entity.getAttackPhase() < 1) this.entity.setAttacking(1);
                     if (this.tickCounter == 0) {
                         this.entity.setTargetedEntity(this.entity.getTarget().getEntityId());
                         targetedEntities.put(livingentity.getEntityId(), this.entity.getUuid());
                     } else if (this.tickCounter >= this.entity.getAttackDuration()) {
-                        if (this.tickCounter % 20 == 0) {
-                            //livingentity.attackEntityFrom(DamageSource.causeMobDamage(this.entity), f);
-                            if (livingentity.getStatusEffect(StatusEffects.WATER_BREATHING) != null && livingentity.getAir() == 0) {
-                                livingentity.damage(DamageSource.DROWN, 2.0F);
-                            }
-                            livingentity.setAir(Math.max(livingentity.getAir() - 45, 0));
+                        if (this.tickCounter > 300 && livingentity.getHealth() > livingentity.getMaxHealth() / 2) {
+                            this.entity.setAttacking(2);
+                            if (this.tickCounter % 5 == 0) livingentity.damage(DamageSource.mob(this.entity), 2.0F);
+                        } else if (this.tickCounter % 40 == 0 && this.entity.getAttackPhase() < 2) {
+                            this.entity.setAttacking(3);
+                        } else if (this.entity.getAttackPhase() == 3 && this.tickCounter % 6 == 0) {
+                            livingentity.damage(DamageSource.mob(this.entity), 2.0F);
                         }
                     }
                 }
@@ -542,20 +554,34 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.getAttackPhase() != 0) {
-            if (this.hasTargetedEntity()) {
-                GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
-            }
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
-            return PlayState.CONTINUE;
+        int phase = this.getAttackPhase();
+        if (this.hasTargetedEntity() && phase > 0) {
+            GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
-        return PlayState.CONTINUE;
+        switch (phase) {
+            case 1:
+                if (event.getController().getCurrentAnimation().animationName.equals("bite")) {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("reelin"));
+                } else {
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
+                }
+                return PlayState.CONTINUE;
+            case 2:
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("clamp"));
+                return PlayState.CONTINUE;
+            case 3:
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("bite"));
+                if (event.getController().getAnimationState() == AnimationState.Stopped) this.setAttacking(1);
+                return PlayState.CONTINUE;
+            default:
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
+                return PlayState.CONTINUE;
+        }
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 5, this::predicate);
+        AnimationController controller = new AnimationController(this, "controller", 1, this::predicate);
         data.addAnimationController(controller);
     }
 
