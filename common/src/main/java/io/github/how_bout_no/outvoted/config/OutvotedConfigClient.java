@@ -1,11 +1,16 @@
 package io.github.how_bout_no.outvoted.config;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import io.github.how_bout_no.completeconfig.api.ConfigEntry;
+import io.github.how_bout_no.completeconfig.api.ConfigGroup;
+import lombok.Getter;
 
-@Config(name = "client")
-public class OutvotedConfigClient implements ConfigData {
-    @ConfigEntry.Gui.RequiresRestart
-    public boolean creativetab = true;
+public class OutvotedConfigClient implements ConfigGroup {
+    @Getter
+    @ConfigEntry(requiresRestart = true)
+    private static boolean creativeTab = true;
+
+    @Override
+    public String getID() {
+        return "client";
+    }
 }

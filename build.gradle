@@ -1,6 +1,21 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+        classpath "gradle.plugin.com.modrinth.minotaur:Minotaur:1.1.0"
+    }
+}
+
 plugins {
     id "architectury-plugin" version "3.1.102"
     id "forgified-fabric-loom" version "0.7.0.91" apply false
+    id "io.freefair.lombok" version "5.3.3.3" apply false
+    id "com.modrinth.minotaur" version "1.1.0"
+    id "com.matthewprenger.cursegradle" version "1.4.0" apply false
 }
 
 architectury {
@@ -9,6 +24,9 @@ architectury {
 
 subprojects {
     apply plugin: "forgified-fabric-loom"
+    apply plugin: "io.freefair.lombok"
+
+    generateLombokConfig.enabled = false
 
     loom {
         silentMojangMappingsLicense()
@@ -26,18 +44,18 @@ subprojects {
 allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.archives_base_name
     version = rootProject.mod_version
     group = rootProject.maven_group
 
     repositories {
-        // Add repositories to retrieve artifacts from in here.
-        // You should only use this when depending on other mods because
-        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-        // for more information about repositories.
+        maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url 'https://maven.blamejared.com' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.terraformersmc.com/releases/' }
+        maven { url 'https://repo.repsy.io/mvn/howboutno/main' }
     }
 
     tasks.withType(JavaCompile) {
@@ -54,5 +72,11 @@ allprojects {
 
     java {
         withSourcesJar()
+    }
+}
+
+if (file("key.properties").exists()) {
+    task publishAll {
+        dependsOn = [':forge:curseforge', ':fabric:curseforge', ':forge:modrinthForge', ':fabric:modrinthFabric']
     }
 }

@@ -1,11 +1,17 @@
 package io.github.how_bout_no.outvoted.config;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public interface EntityConfigBase {
-    boolean spawn = true;
-    int rate = 1;
-    List<String> biomes = new ArrayList<>();
-    double health = 20.0D;
+public abstract class EntityConfigBase {
+    @Getter
+    static boolean spawn = true;
+    @Getter
+    static int rate = 1;
+    @Getter
+    static List<String> biomes = new ArrayList<>();
+    @Getter
+    static double health = 20.0D;
 }

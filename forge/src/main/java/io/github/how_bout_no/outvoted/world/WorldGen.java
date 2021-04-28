@@ -1,6 +1,7 @@
 package io.github.how_bout_no.outvoted.world;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
@@ -52,7 +53,7 @@ public class WorldGen {
     @SubscribeEvent
     public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
         Entity e = event.getEntity();
-        if (Outvoted.config.common.entities.wildfire.spawn) {
+        if (OutvotedConfigCommon.Entities.Wildfire.isSpawn()) {
             if (e instanceof WildfireEntity) {
                 if (event.getSpawnReason() == SpawnReason.NATURAL) {
                     World world = event.getEntity().getEntityWorld();

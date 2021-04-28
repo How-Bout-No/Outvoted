@@ -1,6 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.entity.util.IMixinBlazeEntity;
 import net.minecraft.client.render.entity.BlazeEntityRenderer;
 import net.minecraft.entity.mob.BlazeEntity;
@@ -19,7 +20,7 @@ public abstract class MixinBlazeRenderer {
 
     @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
     private void soulTextures(BlazeEntity entity, CallbackInfoReturnable<Identifier> cir) {
-        if (!Outvoted.config.common.entities.wildfire.variants) return;
+        if (!OutvotedConfigCommon.Entities.Wildfire.isVariants()) return;
         if (((IMixinBlazeEntity) entity).getVariant() == 1) cir.setReturnValue(BLAZE_TEXTURES_SOUL);
     }
 }

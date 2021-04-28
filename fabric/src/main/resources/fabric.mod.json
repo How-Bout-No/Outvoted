@@ -28,9 +28,6 @@
     ],
     "main": [
       "io.github.how_bout_no.outvoted.OutvotedFabric"
-    ],
-    "modmenu": [
-      "io.github.how_bout_no.outvoted.config.ModMenuOutvoted"
     ]
   },
   "mixins": [

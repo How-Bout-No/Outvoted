@@ -1,91 +1,108 @@
 package io.github.how_bout_no.outvoted.config;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import io.github.how_bout_no.completeconfig.api.ConfigEntries;
+import io.github.how_bout_no.completeconfig.api.ConfigGroup;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Config(name = "common")
-public class OutvotedConfigCommon implements ConfigData {
-    @ConfigEntry.Gui.CollapsibleObject
-    public Entities entities = new Entities();
+public class OutvotedConfigCommon implements ConfigGroup {
+    @Transitive
+    @ConfigEntries
+    public static class Entities implements ConfigGroup {
+        @Transitive
+        @ConfigEntries
+        public static class Wildfire extends EntityConfigBase implements ConfigGroup {
+            @Getter
+            private static boolean spawn = true;
+            @Getter
+            private static int rate = 1;
+            @Getter
+            private static List<String> biomes = Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley");
+            @Getter
+            private static double health = 50.0D;
+            @Getter
+            private static boolean variants = true;
 
-    public static class Entities {
-        @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Wildfire wildfire = new Entities.Wildfire();
-
-        @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Hunger hunger = new Entities.Hunger();
-
-        @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Kraken kraken = new Entities.Kraken();
-
-        @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Meerkat meerkat = new Entities.Meerkat();
-
-        public static class Wildfire implements EntityConfigBase {
-            public boolean spawn = true;
-            public int rate = 1;
-            public List<String> biomes = Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley");
-            public double health = 50.0D;
-            public boolean variants = true;
-
-            @ConfigEntry.Gui.CollapsibleObject
-            public Entities.WildfireAttacking attacking = new Entities.WildfireAttacking();
+            @Transitive
+            @ConfigEntries
+            public static class Attacking implements ConfigGroup {
+                @Getter
+                private static int fireballCount = 17;
+                @Getter
+                private static float offsetAngle = 4.0F;
+                @Getter
+                private static float maxDepressAngle = 50.0F;
+                @Getter
+                private static boolean doFireballExplosion = false;
+                @Getter
+                private static float fireballExplosionPower = 0.5F;
+            }
         }
 
-        public static class WildfireAttacking {
-            public int fireballcount = 17;
-            public float offsetangle = 4.0F;
-            public float maxdepressangle = 50.0F;
-            public boolean dofireballexplosion = false;
-            public float fireballexplosionpower = 0.5F;
+        @Transitive
+        @ConfigEntries
+        public static class Hunger extends EntityConfigBase implements ConfigGroup {
+            @Getter
+            private static boolean spawn = true;
+            @Getter
+            private static int rate = 1;
+            @Getter
+            private static List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");
+            @Getter
+            private static double health = 20.0D;
+            @Getter
+            private static int maxEnchants = 5;
         }
 
-        public static class Hunger implements EntityConfigBase {
-            public boolean spawn = true;
-            public int rate = 5;
-            public List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");
-            public double health = 20.0D;
-            @ConfigEntry.Gui.Tooltip
-            public int max_enchants = 5;
+        @Transitive
+        @ConfigEntries
+        public static class Kraken extends EntityConfigBase implements ConfigGroup {
+            @Getter
+            private static boolean spawn = true;
+            @Getter
+            private static int rate = 1;
+            @Getter
+            private static List<String> biomes = Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean");
+            @Getter
+            private static double health = 40.0D;
         }
 
-        public static class Kraken implements EntityConfigBase {
-            public boolean spawn = true;
-            public int rate = 2;
-            public List<String> biomes = Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean");
-            public double health = 40.0D;
-        }
-
-        public static class Meerkat implements EntityConfigBase {
-            public boolean spawn = true;
-            public int rate = 2;
-            public List<String> biomes = Arrays.asList("minecraft:desert", "minecraft:desert_hills", "minecraft:desert_lakes");
-            public double health = 10.0D;
+        @Transitive
+        @ConfigEntries
+        public static class Meerkat extends EntityConfigBase implements ConfigGroup {
+            @Getter
+            private static boolean spawn = true;
+            @Getter
+            private static int rate = 1;
+            @Getter
+            private static List<String> biomes = Arrays.asList("minecraft:desert", "minecraft:desert_hills", "minecraft:desert_lakes");
+            @Getter
+            private static double health = 10.0D;
         }
     }
 
-    @ConfigEntry.Gui.CollapsibleObject
-    public Generation generation = new Generation();
-
-    public static class Generation {
-        public boolean genpalmtrees = true;
-        public List<String> palmbiomes = Arrays.asList("minecraft:desert_lakes");
-        public boolean genbaobabtrees = true;
-        public List<String> baobabbiomes = Arrays.asList("minecraft:savanna");
-        @ConfigEntry.BoundedDiscrete(max = 1)
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public int baobabtype = 0;
+    @Transitive
+    @ConfigEntries
+    public static class Generation implements ConfigGroup {
+        @Getter
+        private static boolean genPalmTrees = true;
+        @Getter
+        private static boolean genBaobabTrees = true;
+        @Getter
+        private static boolean baobabType = true;
     }
 
-    @ConfigEntry.Gui.CollapsibleObject
-    public Misc misc = new Misc();
+    @Transitive
+    @ConfigEntries
+    public static class Misc implements ConfigGroup {
+        @Getter
+        private static int helmetPenalty = 40;
+    }
 
-    public static class Misc {
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public int helmetpenalty = 40;
+    @Override
+    public String getID() {
+        return "common";
     }
 }

@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.entity;
 
-import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import net.minecraft.block.Block;
@@ -57,7 +57,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE, 0.0F);
         this.experiencePoints = 20;
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.wildfire.health);
+        EntityUtils.setConfigHealth(this, OutvotedConfigCommon.Entities.Wildfire.getHealth());
     }
 
     @Override
@@ -391,9 +391,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                 this.wildfire.world.playSound(null, this.wildfire.getBlockPos(), ModSounds.WILDFIRE_SHOOT.get(), this.wildfire.getSoundCategory(), 1.0F, 1.0F);
                             }
 
-                            double fireballcount = Outvoted.config.common.entities.wildfire.attacking.fireballcount;
-                            double offsetangle = toRadians(Outvoted.config.common.entities.wildfire.attacking.offsetangle);
-                            double maxdepressangle = toRadians(Outvoted.config.common.entities.wildfire.attacking.maxdepressangle);
+                            double fireballcount = OutvotedConfigCommon.Entities.Wildfire.Attacking.getFireballCount();
+                            double offsetangle = toRadians(OutvotedConfigCommon.Entities.Wildfire.Attacking.getOffsetAngle());
+                            double maxdepressangle = toRadians(OutvotedConfigCommon.Entities.Wildfire.Attacking.getMaxDepressAngle());
 
                             //update target pos
                             d1 = livingentity.getX() - this.wildfire.getX();

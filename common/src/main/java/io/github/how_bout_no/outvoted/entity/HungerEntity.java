@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import com.google.common.collect.ImmutableList;
-import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.init.ModSounds;
@@ -67,7 +67,7 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 5;
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.hunger.health);
+        EntityUtils.setConfigHealth(this, OutvotedConfigCommon.Entities.Hunger.getHealth());
     }
 
     protected void initGoals() {
@@ -220,7 +220,7 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
          * right: Item to return
          */
         MutablePair<Integer, ItemStack> pair = new MutablePair<>(0, itemstack);
-        if (storedEnchants.size() <= Outvoted.config.common.entities.hunger.max_enchants) {
+        if (storedEnchants.size() <= OutvotedConfigCommon.Entities.Hunger.getMaxEnchants()) {
             itemstack.setCount(count);
             final boolean[] hasCurses = {false};
             Map<Enchantment, Integer> map = EnchantmentHelper.get(stack).entrySet().stream().filter((enchant) -> {

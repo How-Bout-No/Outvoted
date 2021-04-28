@@ -1,14 +1,14 @@
 package io.github.how_bout_no.outvoted;
 
-import io.github.how_bout_no.outvoted.config.OutvotedConfig;
+import io.github.how_bout_no.completeconfig.data.Config;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigClient;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.*;
+import io.github.how_bout_no.outvoted.util.OutvotedModPlatform;
 import io.github.how_bout_no.outvoted.util.SignSprites;
 import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import me.shedaniel.architectury.registry.CreativeTabs;
 import me.shedaniel.architectury.registry.RenderTypes;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -18,11 +18,9 @@ import net.minecraft.util.Identifier;
 import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
 
-import java.util.function.Supplier;
-
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
-    public static OutvotedConfig config;
+    public static Config config;
 
     public static ItemGroup TAB_BLOCKS;
     public static ItemGroup TAB_DECO;
@@ -32,8 +30,20 @@ public class Outvoted {
     public static ItemGroup TAB_REDSTONE;
 
     public static void init() {
-        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
-        config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
+        if (OutvotedModPlatform.isClient()) {
+            config = Config.builder("outvoted")
+                    .add(new OutvotedConfigClient())
+                    .add(new OutvotedConfigCommon())
+                    .main()
+                    .setBranch(new String[]{"common"})
+                    .build();
+        } else {
+            config = Config.builder("outvoted")
+                    .add(new OutvotedConfigCommon())
+                    .main()
+                    .setBranch(new String[]{"server"})
+                    .build();
+        }
 
         GeckoLib.initialize();
         GeckoLibMod.DISABLE_IN_DEV = true;
@@ -45,17 +55,13 @@ public class Outvoted {
         ModFeatures.FEATURES.register();
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
-        new ModTags.Blocks();
-        new ModTags.Items();
+        ModTags.init();
         WorldGen.addSpawnEntries();
+    }
 
-        if (config.client.creativetab) {
-            ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "modtab"), new Supplier<ItemStack>() {
-                @Override
-                public ItemStack get() {
-                    return new ItemStack(ModItems.WILDFIRE_HELMET.get());
-                }
-            });
+    public static void clientInit() {
+        if (OutvotedConfigClient.isCreativeTab()) {
+            ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "modtab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
             TAB_BLOCKS = TAB;
             TAB_DECO = TAB;
             TAB_COMBAT = TAB;
@@ -68,9 +74,7 @@ public class Outvoted {
             TAB_MISC = ItemGroup.MISC;
             TAB_REDSTONE = ItemGroup.REDSTONE;
         }
-    }
 
-    public static void clientInit() {
         RenderTypes.register(RenderLayer.getCutoutMipped(), ModBlocks.PALM_SAPLING.get(), ModBlocks.PALM_TRAPDOOR.get(), ModBlocks.PALM_DOOR.get(),
                 ModBlocks.BAOBAB_SAPLING.get(), ModBlocks.BAOBAB_TRAPDOOR.get(), ModBlocks.BAOBAB_DOOR.get());
 

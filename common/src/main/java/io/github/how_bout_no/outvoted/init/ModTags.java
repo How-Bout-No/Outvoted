@@ -18,5 +18,10 @@ public class ModTags {
         public static final Tag.Identified<Item> PALM_LOGS = ItemTags.register(Outvoted.MOD_ID + ":palm_logs");
         public static final Tag.Identified<Item> BAOBAB_LOGS = ItemTags.register(Outvoted.MOD_ID + ":baobab_logs");
     }
+
+    public static void init() {
+        new Blocks();
+        new Items();
+    }
 }
 

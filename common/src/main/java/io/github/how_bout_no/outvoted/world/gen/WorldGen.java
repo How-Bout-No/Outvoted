@@ -1,6 +1,5 @@
 package io.github.how_bout_no.outvoted.world.gen;
 
-import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.config.EntityConfigBase;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
@@ -13,38 +12,34 @@ import net.minecraft.world.gen.GenerationStep;
 
 public class WorldGen {
     public static void addSpawnEntries() {
-        OutvotedConfigCommon common = Outvoted.config.common;
-        OutvotedConfigCommon.Entities entities = common.entities;
-        OutvotedConfigCommon.Generation generation = common.generation;
-
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, entities.wildfire),
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, new OutvotedConfigCommon.Entities.Wildfire()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
-                                entities.wildfire.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, entities.hunger),
+                                OutvotedConfigCommon.Entities.Wildfire.getRate(), 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, new OutvotedConfigCommon.Entities.Hunger()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.HUNGER.get(),
-                                entities.hunger.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, entities.kraken),
+                                OutvotedConfigCommon.Entities.Hunger.getRate(), 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, new OutvotedConfigCommon.Entities.Kraken()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.KRAKEN.get(),
-                                entities.kraken.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, entities.meerkat),
+                                OutvotedConfigCommon.Entities.Kraken.getRate(), 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, new OutvotedConfigCommon.Entities.Meerkat()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
-                                entities.meerkat.rate, 1, 3)));
+                                OutvotedConfigCommon.Entities.Meerkat.getRate(), 1, 3)));
 
-        BiomeModifications.postProcessProperties(biomeContext -> generation.genpalmtrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
+        BiomeModifications.postProcessProperties(biomeContext -> OutvotedConfigCommon.Generation.isGenPalmTrees() && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE));
-        BiomeModifications.postProcessProperties(biomeContext -> generation.genbaobabtrees && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
+        BiomeModifications.postProcessProperties(biomeContext -> OutvotedConfigCommon.Generation.isGenBaobabTrees() && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE));
     }
 
     public static <E extends EntityConfigBase> boolean checkSpawning(BiomeModifications.BiomeContext biomeContext, E entity) {
-        if (!entity.spawn) return false;
-        for (String biome : entity.biomes) {
+        if (!entity.isSpawn()) return false;
+        for (String biome : entity.getBiomes()) {
             if (!biomeContext.getKey().toString().equals(biome)) return false;
         }
         return true;

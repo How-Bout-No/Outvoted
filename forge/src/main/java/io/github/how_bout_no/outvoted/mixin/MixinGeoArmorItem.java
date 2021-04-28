@@ -1,6 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -22,7 +23,7 @@ public abstract class MixinGeoArmorItem {
     @Inject(method = "getArmorTexture", at = @At("RETURN"), cancellable = true, remap = false)
     public void armorTextures(ItemStack stack, Entity entity, EquipmentSlot slot, String type, CallbackInfoReturnable<String> cir) {
         if (!(stack.getItem() instanceof WildfireHelmetItem)) return;
-        if (Outvoted.config.common.entities.wildfire.variants) {
+        if (OutvotedConfigCommon.Entities.Wildfire.isVariants()) {
             if (stack.getTag() != null && stack.getTag().getFloat("SoulTexture") == 1.0F) {
                 cir.setReturnValue(HELMET_TEXTURE_SOUL);
             }

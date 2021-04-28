@@ -1,6 +1,7 @@
 package io.github.how_bout_no.outvoted.item;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -30,7 +31,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     public Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, Identifier defaultTexture) {
-        if (Outvoted.config.common.entities.wildfire.variants) {
+        if (OutvotedConfigCommon.Entities.Wildfire.isVariants()) {
             if (stack.getTag() != null && stack.getTag().getFloat("SoulTexture") == 1.0F) {
                 return HELMET_TEXTURE_SOUL;
             }
@@ -41,10 +42,11 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         LivingEntity livingEntity = (LivingEntity) entity;
-        if (Outvoted.config.common.misc.helmetpenalty != 0) {
+        int helmetPenalty = OutvotedConfigCommon.Misc.getHelmetPenalty();
+        if (helmetPenalty != 0) {
             if (livingEntity.isOnFire()) {
                 livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));
-                if (timer % Outvoted.config.common.misc.helmetpenalty == 0) {
+                if (timer % helmetPenalty == 0) {
                     stack.damage(1 + (timer / 600), livingEntity, consumer -> consumer.sendEquipmentBreakStatus(EquipmentSlot.HEAD));
                     //timer = 0;
                 }

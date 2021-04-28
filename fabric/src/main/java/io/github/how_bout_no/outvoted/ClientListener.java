@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted;
 
 import io.github.how_bout_no.outvoted.client.model.ShieldModelProvider;
 import io.github.how_bout_no.outvoted.client.render.*;
+import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
@@ -30,7 +31,7 @@ public class ClientListener implements ClientModInitializer {
         BuiltinItemRendererRegistry.INSTANCE.register(ModItems.WILDFIRE_SHIELD.get(), ShieldRenderer::render);
         ShieldModelProvider.registerItemsWithModelProvider();
 
-        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.common.entities.wildfire.variants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
+        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && OutvotedConfigCommon.Entities.Wildfire.isVariants() ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         FabricModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
     }
 }

@@ -1,5 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.matthewprenger.cursegradle"
 }
 
 configurations {
@@ -12,7 +13,6 @@ architectury {
 }
 
 loom {
-    useFabricMixin = false
     mixinConfig "outvoted-forge.mixins.json"
 
     dataGen {
@@ -26,21 +26,25 @@ loom {
     }
 }
 
-repositories {
-    maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
-    maven { url "https://maven.shedaniel.me/" }
-    maven { url 'https://maven.blamejared.com' }
-}
-
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
     // Remove the next line if you don't want to depend on the API
     modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"
+
     modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:${rootProject.geckolib_version}"
-
     modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
-
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
+    modCompile("io.github.how_bout_no:completeconfig-forge:${rootProject.compconf_version}")
+    shadowCommon "io.github.how_bout_no:completeconfig-forge:${rootProject.compconf_version}"
+
+//    shadow("io.github.how_bout_no:completeconfig-forge:1.0.0")
+//    modImplementation("com.gitlab.Lortseam:completeconfig:${rootProject.compconf_version}") {
+//        exclude(module: "fabric-loader")
+//        exclude(module: "modmenu")
+//        exclude(module: "config-2")
+//        exclude(module: "fabric-command-api-v1")
+//    }
+//    shadow("com.gitlab.Lortseam:completeconfig:${rootProject.compconf_version}")
 
     implementation(project(path: ":common")) {
         transitive = false
@@ -92,3 +96,46 @@ sourcesJar {
 //sourceSets.main.resources {
 //    srcDir 'src/generated/resources'
 //}
+
+import com.modrinth.minotaur.TaskModrinthUpload
+
+if (file("key.properties").exists()) {
+    curseforge {
+        def curseProp = new Properties()
+        File secretPropsFile = file("key.properties")
+        curseProp.load(secretPropsFile.newInputStream())
+        apiKey = curseProp.getProperty('curseKey')
+
+        project {
+            id = "415057"
+            releaseType = "release"
+            changelogType = 'text'
+            changelog = file('changelog.txt')
+            addGameVersion("1.16.5")
+            addGameVersion("Forge")
+
+            mainArtifact(jar) {
+                displayName = "Outvoted-${minecraft_version}-${mod_version}"
+                relations {
+                    requiredDependency 'geckolib'
+                    requiredDependency 'architectury-forge'
+                    optionalDependency 'patchouli'
+                    optionalDependency 'cloth-config-forge'
+                }
+            }
+        }
+    }
+
+    task modrinthForge (type: TaskModrinthUpload) {
+        def modrinthProp = new Properties()
+        File secretPropsFile = file("key.properties")
+        modrinthProp.load(secretPropsFile.newInputStream())
+        token = modrinthProp.getProperty('modrinthKey')
+        projectId = 'klAfKAj3'
+        versionNumber = project.version + "-forge"
+        uploadFile = remapJar.archivePath // This is the java jar task
+        changelog = file('changelog.txt')
+        addGameVersion('1.16.5')
+        addLoader('forge')
+    }
+}
