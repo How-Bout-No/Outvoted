@@ -14,7 +14,6 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modCompile("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
-    modCompile("io.github.how_bout_no:completeconfig:${rootProject.compconf_version}")
 }
 
 sourceSets.main.resources {

@@ -34,17 +34,6 @@ dependencies {
     modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:${rootProject.geckolib_version}"
     modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
-    modCompile("io.github.how_bout_no:completeconfig-forge:${rootProject.compconf_version}")
-    shadowCommon "io.github.how_bout_no:completeconfig-forge:${rootProject.compconf_version}"
-
-//    shadow("io.github.how_bout_no:completeconfig-forge:1.0.0")
-//    modImplementation("com.gitlab.Lortseam:completeconfig:${rootProject.compconf_version}") {
-//        exclude(module: "fabric-loader")
-//        exclude(module: "modmenu")
-//        exclude(module: "config-2")
-//        exclude(module: "fabric-command-api-v1")
-//    }
-//    shadow("com.gitlab.Lortseam:completeconfig:${rootProject.compconf_version}")
 
     implementation(project(path: ":common")) {
         transitive = false

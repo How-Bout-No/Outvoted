@@ -28,8 +28,6 @@ dependencies {
     }
     modImplementation "com.terraformersmc:modmenu:1.16.9"
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
-    modCompile("io.github.how_bout_no:completeconfig-fabric:${rootProject.compconf_version}")
-    shadowCommon "io.github.how_bout_no:completeconfig-fabric:${rootProject.compconf_version}"
 
     implementation(project(path: ":common")) {
         transitive = false

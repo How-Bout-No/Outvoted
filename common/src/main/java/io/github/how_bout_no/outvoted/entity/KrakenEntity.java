@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.entity;
 
-import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
+import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import net.minecraft.entity.*;
@@ -61,7 +61,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
         this.experiencePoints = 10;
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.moveControl = new KrakenEntity.MoveHelperController(this);
-        EntityUtils.setConfigHealth(this, OutvotedConfigCommon.Entities.Kraken.getHealth());
+        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.kraken.health);
     }
 
     protected void initGoals() {

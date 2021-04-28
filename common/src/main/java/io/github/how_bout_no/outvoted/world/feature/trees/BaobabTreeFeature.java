@@ -1,8 +1,8 @@
 package io.github.how_bout_no.outvoted.world.feature.trees;
 
 import com.mojang.serialization.Codec;
+import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.ModSaplingBlock;
-import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.tag.BlockTags;
@@ -78,7 +78,7 @@ public class BaobabTreeFeature extends Feature<TreeFeatureConfig> {
                             if (j % 3 == 0 || k % 3 == 0) {
                                 Random random1 = new Random();
                                 boolean condition;
-                                if (OutvotedConfigCommon.Generation.isBaobabType()) {
+                                if (Outvoted.config.common.generation.baobabType == 0) {
                                     condition = i2 >= treeHeight / (1.5 + ((treeHeight - 7) / 2.0)) && random1.nextFloat() < 0.05F * (treeHeight - 7);
                                 } else {
                                     condition = false;

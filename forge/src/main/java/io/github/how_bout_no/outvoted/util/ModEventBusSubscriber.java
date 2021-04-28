@@ -3,7 +3,6 @@ package io.github.how_bout_no.outvoted.util;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.ShieldModelProvider;
 import io.github.how_bout_no.outvoted.client.render.*;
-import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
@@ -49,7 +48,7 @@ public class ModEventBusSubscriber {
         GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
         ShieldModelProvider.registerItemsWithModelProvider();
 
-        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && OutvotedConfigCommon.Entities.Wildfire.isVariants() ? stack.getTag().getFloat("SoulTexture") : 0.0F;
+        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.client.wildfireVariants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         ModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
     }
 

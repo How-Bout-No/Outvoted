@@ -1,14 +1,14 @@
 package io.github.how_bout_no.outvoted;
 
-import io.github.how_bout_no.completeconfig.data.Config;
-import io.github.how_bout_no.outvoted.config.OutvotedConfigClient;
-import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
+import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.init.*;
-import io.github.how_bout_no.outvoted.util.OutvotedModPlatform;
 import io.github.how_bout_no.outvoted.util.SignSprites;
 import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import me.shedaniel.architectury.registry.CreativeTabs;
 import me.shedaniel.architectury.registry.RenderTypes;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -20,7 +20,7 @@ import software.bernie.geckolib3.GeckoLib;
 
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
-    public static Config config;
+    public static OutvotedConfig config;
 
     public static ItemGroup TAB_BLOCKS;
     public static ItemGroup TAB_DECO;
@@ -30,20 +30,8 @@ public class Outvoted {
     public static ItemGroup TAB_REDSTONE;
 
     public static void init() {
-        if (OutvotedModPlatform.isClient()) {
-            config = Config.builder("outvoted")
-                    .add(new OutvotedConfigClient())
-                    .add(new OutvotedConfigCommon())
-                    .main()
-                    .setBranch(new String[]{"common"})
-                    .build();
-        } else {
-            config = Config.builder("outvoted")
-                    .add(new OutvotedConfigCommon())
-                    .main()
-                    .setBranch(new String[]{"server"})
-                    .build();
-        }
+        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
+        config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
 
         GeckoLib.initialize();
         GeckoLibMod.DISABLE_IN_DEV = true;
@@ -60,7 +48,7 @@ public class Outvoted {
     }
 
     public static void clientInit() {
-        if (OutvotedConfigClient.isCreativeTab()) {
+        if (config.client.creativeTab) {
             ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "modtab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
             TAB_BLOCKS = TAB;
             TAB_DECO = TAB;

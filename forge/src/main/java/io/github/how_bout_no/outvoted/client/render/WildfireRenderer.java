@@ -2,7 +2,6 @@ package io.github.how_bout_no.outvoted.client.render;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.WildfireModel;
-import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -35,7 +34,7 @@ public class WildfireRenderer extends GeoEntityRenderer<WildfireEntity> {
 
     @Override
     public Identifier getTexture(WildfireEntity entity) {
-        if (entity.getVariant() == 0 || !OutvotedConfigCommon.Entities.Wildfire.isVariants()) {
+        if (entity.getVariant() == 0 || !Outvoted.config.client.wildfireVariants) {
             return super.getTextureLocation(entity);
         }
         return SOUL;

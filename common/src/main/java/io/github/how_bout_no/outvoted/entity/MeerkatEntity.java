@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.entity;
 
-import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
+import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.block.Blocks;
@@ -53,7 +53,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
     public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
         super(type, worldIn);
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F); // no like da water
-        EntityUtils.setConfigHealth(this, OutvotedConfigCommon.Entities.Meerkat.getHealth());
+        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.meerkat.health);
     }
 
     protected void initGoals() {
