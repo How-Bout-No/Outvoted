@@ -35,3 +35,10 @@ mandatory = true
 versionRange = "[1.1.55,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.outvoted]]
+modId = "cloth-config"
+mandatory = true
+versionRange = "[4,)"
+ordering = "AFTER"
+side = "BOTH"

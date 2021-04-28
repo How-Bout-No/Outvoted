@@ -9,7 +9,7 @@ import java.util.List;
 
 @Config(name = "common")
 public class OutvotedConfigCommon implements ConfigData {
-    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public Entities entities = new Entities();
 
     public static class Entities {
@@ -31,6 +31,7 @@ public class OutvotedConfigCommon implements ConfigData {
             public List<String> biomes = Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley");
             public double health = 50.0D;
 
+            @ConfigEntry.Gui.PrefixText
             @ConfigEntry.Gui.CollapsibleObject
             public Entities.WildfireAttacking attacking = new Entities.WildfireAttacking();
         }
@@ -72,9 +73,7 @@ public class OutvotedConfigCommon implements ConfigData {
 
     public static class Generation {
         public boolean genPalmTrees = true;
-        public List<String> palmBiomes = Arrays.asList("minecraft:desert_lakes");
         public boolean genBaobabTrees = true;
-        public List<String> baobabBiomes = Arrays.asList("minecraft:savanna");
         @ConfigEntry.BoundedDiscrete(max = 1)
         @ConfigEntry.Gui.Tooltip(count = 2)
         public int baobabType = 0;

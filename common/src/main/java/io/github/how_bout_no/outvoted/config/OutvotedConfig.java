@@ -7,7 +7,7 @@ import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 
 @Config(name = Outvoted.MOD_ID)
 public class OutvotedConfig extends PartitioningSerializer.GlobalData {
-    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public OutvotedConfigClient client = new OutvotedConfigClient();
 
     @ConfigEntry.Gui.TransitiveObject

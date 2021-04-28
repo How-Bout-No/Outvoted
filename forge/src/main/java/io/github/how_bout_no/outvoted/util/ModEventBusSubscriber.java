@@ -3,6 +3,7 @@ package io.github.how_bout_no.outvoted.util;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.ShieldModelProvider;
 import io.github.how_bout_no.outvoted.client.render.*;
+import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
@@ -13,6 +14,7 @@ import io.github.how_bout_no.outvoted.init.ModFireBlock;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.ModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
@@ -28,6 +30,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -50,6 +54,9 @@ public class ModEventBusSubscriber {
 
         ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.client.wildfireVariants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         ModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
+
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () ->
+                (client, parent) -> AutoConfig.getConfigScreen(OutvotedConfig.class, parent).get());
     }
 
     @SubscribeEvent

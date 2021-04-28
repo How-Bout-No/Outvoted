@@ -82,12 +82,13 @@ import com.modrinth.minotaur.TaskModrinthUpload
 if (file("key.properties").exists()) {
     curseforge {
         def curseProp = new Properties()
+        File secretPropsFile = file("key.properties")
         curseProp.load(secretPropsFile.newInputStream())
         apiKey = curseProp.getProperty('curseKey')
 
         project {
-            id = ""
-            releaseType = "release"
+            id = "476841"
+            releaseType = "alpha"
             changelogType = 'text'
             changelog = file('changelog.txt')
             addGameVersion("1.16.5")
@@ -98,8 +99,8 @@ if (file("key.properties").exists()) {
                 relations {
                     requiredDependency 'geckolib'
                     requiredDependency 'architectury-fabric'
+                    requiredDependency 'cloth-config'
                     optionalDependency 'patchouli'
-                    optionalDependency 'cloth-config'
                     optionalDependency 'modmenu'
                 }
             }
@@ -108,12 +109,14 @@ if (file("key.properties").exists()) {
 
     task modrinthFabric (type: TaskModrinthUpload) {
         def modrinthProp = new Properties()
+        File secretPropsFile = file("key.properties")
         modrinthProp.load(secretPropsFile.newInputStream())
         token = modrinthProp.getProperty('modrinthKey')
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-fabric"
         uploadFile = remapJar.archivePath // This is the java jar task
         changelog = file('changelog.txt')
+        releaseType = "alpha"
         addGameVersion('1.16.5')
         addLoader('fabric')
     }

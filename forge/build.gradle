@@ -97,7 +97,7 @@ if (file("key.properties").exists()) {
 
         project {
             id = "415057"
-            releaseType = "release"
+            releaseType = "alpha"
             changelogType = 'text'
             changelog = file('changelog.txt')
             addGameVersion("1.16.5")
@@ -108,8 +108,8 @@ if (file("key.properties").exists()) {
                 relations {
                     requiredDependency 'geckolib'
                     requiredDependency 'architectury-forge'
+                    requiredDependency 'cloth-config-forge'
                     optionalDependency 'patchouli'
-                    optionalDependency 'cloth-config-forge'
                 }
             }
         }
@@ -124,6 +124,7 @@ if (file("key.properties").exists()) {
         versionNumber = project.version + "-forge"
         uploadFile = remapJar.archivePath // This is the java jar task
         changelog = file('changelog.txt')
+        releaseType = "alpha"
         addGameVersion('1.16.5')
         addLoader('forge')
     }

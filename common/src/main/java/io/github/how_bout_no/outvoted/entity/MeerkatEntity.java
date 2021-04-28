@@ -3,22 +3,31 @@ package io.github.how_bout_no.outvoted.entity;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -43,10 +52,11 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
 import java.util.Random;
-import java.util.UUID;
 
-public class MeerkatEntity extends TameableEntity implements IAnimatable {
+public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.COD, Items.SALMON);
+    private static final TrackedData<Boolean> TRUSTING;
+    private static final TrackedData<Integer> TRUSTED_UUID;
     private BlockPos structurepos = null;
     private int animtimer = 0;
 
@@ -58,9 +68,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
 
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(1, new SitGoal(this));
         this.goalSelector.add(2, new MeerkatEntity.VentureGoal(this, 1.25D));
-        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.add(4, new AnimalMateGoal(this, 1.0D));
         this.goalSelector.add(5, new FollowParentGoal(this, 1.25D));
         this.goalSelector.add(6, new WanderAroundFarGoal(this, 1.0D));
@@ -73,9 +81,22 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D);
     }
 
+    static {
+        TRUSTING = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        TRUSTED_UUID = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    }
+
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(TRUSTING, false);
+        this.dataTracker.startTracking(TRUSTED_UUID, 0);
+    }
+
     public void writeCustomDataToTag(CompoundTag tag) {
         super.writeCustomDataToTag(tag);
         if (this.hasStructurePos()) tag.put("StructPos", NbtHelper.fromBlockPos(this.getStructurePos()));
+        tag.putBoolean("Trusting", this.isTrusting());
+        tag.putInt("Trusted", this.getTrusted());
     }
 
     public void readCustomDataFromTag(CompoundTag tag) {
@@ -83,6 +104,32 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         if (tag.contains("StructPos")) this.structurepos = NbtHelper.toBlockPos(tag.getCompound("StructPos"));
 
         super.readCustomDataFromTag(tag);
+        this.setTrusting(tag.getBoolean("Trusting"));
+        this.setTrusted(tag.getInt("Trusted"));
+    }
+
+    private boolean isTrusting() {
+        return this.dataTracker.get(TRUSTING);
+    }
+
+    private void setTrusting(boolean trusting) {
+        this.dataTracker.set(TRUSTING, trusting);
+    }
+
+    private boolean hasTrusted() {
+        return getTrusted() != 0;
+    }
+
+    private int getTrusted() {
+        return this.dataTracker.get(TRUSTED_UUID);
+    }
+
+    private void setTrusted(int trusted) {
+        this.dataTracker.set(TRUSTED_UUID, trusted);
+    }
+
+    private void setTrusted(LivingEntity entity) {
+        setTrusted(entity.getEntityId());
     }
 
     @Override
@@ -130,80 +177,74 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         return world.getBaseLightLevel(blockPos, 0) > 8 && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isOf(Blocks.SAND);
     }
 
-    @Override
-    public ActionResult interactMob(PlayerEntity player, Hand hand) {
-        ItemStack itemStack = player.getStackInHand(hand);
-        if (this.world.isClient) {
-            if (this.isTamed() && this.isOwner(player)) {
-                return ActionResult.SUCCESS;
-            } else {
-                return !this.isBreedingItem(itemStack) || !(this.getHealth() < this.getMaxHealth()) && this.isTamed() ? ActionResult.PASS : ActionResult.SUCCESS;
-            }
+    @Environment(EnvType.CLIENT)
+    public void handleStatus(byte status) {
+        if (status == 41) {
+            this.showEmoteParticle(true);
+        } else if (status == 40) {
+            this.showEmoteParticle(false);
         } else {
-            ActionResult actionResult;
-            if (this.isTamed()) {
-                if (this.isOwner(player)) {
-                    if (itemStack.getItem().isFood() && this.isBreedingItem(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                        this.eat(player, itemStack);
-                        this.heal((float) itemStack.getItem().getFoodComponent().getHunger());
-                        return ActionResult.CONSUME;
-                    } else if (itemStack.getItem() == Items.STICK) {
-                        BlockPos pyramidPos = findStructure(StructureFeature.DESERT_PYRAMID);
-                        BlockPos treasurePos = findStructure(StructureFeature.BURIED_TREASURE);
-                        BlockPos struct = null;
-                        if (pyramidPos != null) {
-                            struct = pyramidPos;
-                        }
-                        if (treasurePos != null) {
-                            struct = treasurePos;
-                        }
-                        if (pyramidPos != null && treasurePos != null) {
-                            if (getDistance(this.getBlockPos().getX(), this.getBlockPos().getZ(), treasurePos.getX(), treasurePos.getZ()) > getDistance(this.getBlockPos().getX(), this.getBlockPos().getZ(), pyramidPos.getX(), pyramidPos.getZ())) {
-                                struct = pyramidPos;
-                            }
-                        }
-                        structurepos = struct;
-                        return ActionResult.CONSUME;
-                    }
-
-                    actionResult = super.interactMob(player, hand);
-                    if (!actionResult.isAccepted() || this.isBaby()) {
-                        this.setSitting(!this.isSitting());
-                    }
-
-                    return actionResult;
-                }
-            } else if (this.isBreedingItem(itemStack)) {
-                this.eat(player, itemStack);
-                if (this.random.nextInt(3) == 0) {
-                    this.setOwner(player);
-                    this.setSitting(true);
-                    this.world.sendEntityStatus(this, (byte) 7);
-                } else {
-                    this.world.sendEntityStatus(this, (byte) 6);
-                }
-
-                this.setPersistent();
-                return ActionResult.CONSUME;
-            }
-
-            actionResult = super.interactMob(player, hand);
-            if (actionResult.isAccepted()) {
-                this.setPersistent();
-            }
-
-            return actionResult;
+            super.handleStatus(status);
         }
+
+    }
+
+    private void showEmoteParticle(boolean positive) {
+        ParticleEffect particleEffect = ParticleTypes.HEART;
+        if (!positive) {
+            particleEffect = ParticleTypes.SMOKE;
+        }
+
+        for (int i = 0; i < 7; ++i) {
+            double d = this.random.nextGaussian() * 0.02D;
+            double e = this.random.nextGaussian() * 0.02D;
+            double f = this.random.nextGaussian() * 0.02D;
+            this.world.addParticle(particleEffect, this.getParticleX(1.0D), this.getRandomBodyY() + 0.5D, this.getParticleZ(1.0D), d, e, f);
+        }
+
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-            return false;
-        } else {
-            this.setSitting(false);
-            return super.damage(source, amount);
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        if (!this.isTrusting() && this.isBreedingItem(itemStack) && player.squaredDistanceTo(this) < 9.0D) {
+            this.eat(player, itemStack);
+            if (!this.world.isClient) {
+                if (this.random.nextInt(3) == 0) {
+                    this.setTrusting(true);
+                    this.showEmoteParticle(true);
+                    this.world.sendEntityStatus(this, (byte) 41);
+                } else {
+                    this.showEmoteParticle(false);
+                    this.world.sendEntityStatus(this, (byte) 40);
+                }
+            }
+
+            return ActionResult.success(this.world.isClient);
+        } else if (this.isTrusting()) {
+            if (!this.world.isClient) {
+                if (itemStack.getItem() == Items.STICK) {
+                    BlockPos pyramidPos = findStructure(StructureFeature.DESERT_PYRAMID);
+                    BlockPos treasurePos = findStructure(StructureFeature.BURIED_TREASURE);
+                    BlockPos struct = null;
+                    if (pyramidPos != null) {
+                        struct = pyramidPos;
+                    }
+                    if (treasurePos != null) {
+                        struct = treasurePos;
+                    }
+                    if (pyramidPos != null && treasurePos != null) {
+                        if (getDistance(this.getBlockPos().getX(), this.getBlockPos().getZ(), treasurePos.getX(), treasurePos.getZ()) > getDistance(this.getBlockPos().getX(), this.getBlockPos().getZ(), pyramidPos.getX(), pyramidPos.getZ())) {
+                            struct = pyramidPos;
+                        }
+                    }
+                    structurepos = struct;
+                    setTrusted(player);
+                    return ActionResult.CONSUME;
+                }
+            }
         }
+        return super.interactMob(player, hand);
     }
 
     private static float getDistance(int a, int b, int x, int y) {
@@ -225,7 +266,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            return this.mob.getStructurePos() != null && !this.mob.isSitting();
+            return this.mob.getStructurePos() != null && this.mob.isTrusting();
         }
 
         public boolean shouldContinue() {
@@ -234,6 +275,7 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
 
         public void stop() {
             this.mob.structurepos = null;
+            this.mob.setTrusted(0);
         }
 
         public void start() {
@@ -250,10 +292,11 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
         }
 
         public void tick() {
-            if (this.mob.getOwner() != null) {
-                if (this.mob.squaredDistanceTo(this.mob.getOwner()) > 64) {
+            if (this.mob.hasTrusted()) {
+                Entity trusted = this.mob.world.getEntityById(this.mob.getTrusted());
+                if (this.mob.squaredDistanceTo(trusted) > 64) {
                     this.mob.getNavigation().stop();
-                    this.mob.getLookControl().lookAt(this.mob.getOwner().getX(), this.mob.getOwner().getEyeY(), this.mob.getOwner().getZ());
+                    this.mob.getLookControl().lookAt(trusted.getX(), trusted.getEyeY(), trusted.getZ());
                 } else if (this.mob.getNavigation().isIdle() || this.mob.getNavigation().getCurrentPath() == null) {
                     this.startMovingToTarget();
                 }
@@ -266,26 +309,17 @@ public class MeerkatEntity extends TameableEntity implements IAnimatable {
     @Nullable
     @Override
     public MeerkatEntity createChild(ServerWorld world, PassiveEntity entity) {
-        MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
-        UUID uuid = this.getOwnerUuid();
-        if (uuid != null) {
-            meerkatEntity.setOwnerUuid(uuid);
-            meerkatEntity.setTamed(true);
-        }
-
-        return meerkatEntity;
+        return ModEntityTypes.MEERKAT.get().create(world);
     }
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInSittingPose() && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
+        if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("standing"));
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walking"));
             animtimer = 0;
-        } else if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("standingalt"));
         }
         if (animtimer < 10) animtimer++;
         return PlayState.CONTINUE;
