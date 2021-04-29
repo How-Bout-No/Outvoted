@@ -11,8 +11,8 @@ buildscript {
 }
 
 plugins {
-    id "architectury-plugin" version "3.1.102"
-    id "forgified-fabric-loom" version "0.7.0.91" apply false
+    id "architectury-plugin" version "3.1-SNAPSHOT"
+    id "forgified-fabric-loom" version "0.7.0-SNAPSHOT" apply false
     id "io.freefair.lombok" version "5.3.3.3" apply false
     id "com.modrinth.minotaur" version "1.1.0"
     id "com.matthewprenger.cursegradle" version "1.4.0" apply false
