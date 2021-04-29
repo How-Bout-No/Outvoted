@@ -1,6 +1,11 @@
+First 2.0 alpha! Due to many setbacks and extremely experimental changes this is pushed as an alpha rather than a beta. Also because of said setbacks, models + textures are in a very early state and functionality is kinda just in testing for the time being.
+
 >> Entities <<
 @a
 - Fully configurable spawn biomes
+
+Wildfire
+- Now uses the Minecraft Dungeons texture
 
 Hunger
 - Can no longer be moved when burrowed
@@ -8,12 +13,13 @@ Hunger
 
 Kraken
 - No longer affects player's oxygen levels, instead just periodically bites down
-- Will now encase players after a long period of time if neither the player nor mob has died
+- Will now clamp down on players after a period of time which attacks rapidly
 
 Meerkat
 - Spawns in Deserts in small groups
-- Tameable + breedable
-- Will guide players to nearby structures or treasures
+- Needs to gain trust by feeding it cod or salmon (temporary, will most likely be Termites in future)
+- Breedable with same items
+- Will guide players to nearby structures or treasures if it is trusting and if you right-click it with a stick (also temporary)
 
 Ostrich
 - TBD
@@ -23,21 +29,25 @@ Termite
 
 >> Items <<
 Wildfire Helmet
+- Now uses the Minecraft Dungeons texture
 - Item texture now adheres to Wildfire variant config option
-- Can now alter timer in config
+- Can now alter durability timer in config
 
 Wildfire Shield
 - Fix model rendering for blocking
 
 >> Generation <<
 Palm
-- Palm trees added, generates in the Desert Lakes biome
+- Palm trees added, generates in the Desert Lakes biomes
+- Respective blocks are also added (default textures)
 
 Baobab
 - Baobab trees added, generates in the Savanna biome
 - Generation type is configurable, between Mojang's rendition and a more ""realistic"" variety
+- Needs a 4x4 layout and ample height to grow
+- Respective blocks are also added (default textures)
 
 >> Misc <<
 - Now supports Fabric thanks to Architectury
-- Forge versions now require Architectury API
-- Config now utilizes JSON formatting and has an in-game screen; requires Cloth Config
+- Now requires Architectury API
+- Config now utilizes JSON formatting and has an in-game screen (old configs are incompatible); requires Cloth Config

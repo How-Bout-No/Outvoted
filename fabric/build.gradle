@@ -77,12 +77,10 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-import com.modrinth.minotaur.TaskModrinthUpload
-
-if (file("key.properties").exists()) {
-    curseforge {
+curseforge {
+    if (file("../key.properties").exists()) {
         def curseProp = new Properties()
-        File secretPropsFile = file("key.properties")
+        File secretPropsFile = file("../key.properties")
         curseProp.load(secretPropsFile.newInputStream())
         apiKey = curseProp.getProperty('curseKey')
 
@@ -90,26 +88,36 @@ if (file("key.properties").exists()) {
             id = "476841"
             releaseType = "alpha"
             changelogType = 'text'
-            changelog = file('changelog.txt')
+            changelog = file('../changelog.txt')
             addGameVersion("1.16.5")
             addGameVersion("Fabric")
-
-            mainArtifact(jar) {
-                displayName = "Outvoted-${minecraft_version}-${mod_version}"
-                relations {
-                    requiredDependency 'geckolib'
-                    requiredDependency 'architectury-fabric'
-                    requiredDependency 'cloth-config'
-                    optionalDependency 'patchouli'
-                    optionalDependency 'modmenu'
-                }
+            relations {
+                requiredDependency 'geckolib-fabric'
+                requiredDependency 'architectury-fabric'
+                requiredDependency 'cloth-config'
+                optionalDependency 'patchouli-fabric'
+                optionalDependency 'modmenu'
+            }
+            mainArtifact(remapJar.archivePath) {
+                displayName = "Outvoted-${mod_version}-fabric"
+            }
+            afterEvaluate {
+                uploadTask.dependsOn("build")
             }
         }
+        options {
+            forgeGradleIntegration = false
+            javaVersionAutoDetect = false
+        }
     }
+}
 
-    task modrinthFabric (type: TaskModrinthUpload) {
+import com.modrinth.minotaur.TaskModrinthUpload
+
+task modrinthFabric(type: TaskModrinthUpload) {
+    if (file("../key.properties").exists()) {
         def modrinthProp = new Properties()
-        File secretPropsFile = file("key.properties")
+        File secretPropsFile = file("../key.properties")
         modrinthProp.load(secretPropsFile.newInputStream())
         token = modrinthProp.getProperty('modrinthKey')
         projectId = 'klAfKAj3'
