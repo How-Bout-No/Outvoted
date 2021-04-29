@@ -14,6 +14,7 @@ Hunger
 Kraken
 - No longer affects player's oxygen levels, instead just periodically bites down
 - Will now clamp down on players after a period of time which attacks rapidly
+- Will now target Dolphins and Villagers
 
 Meerkat
 - Spawns in Deserts in small groups

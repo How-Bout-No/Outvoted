@@ -6,7 +6,6 @@ import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -51,12 +50,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.COD, Items.SALMON);
     private static final TrackedData<Boolean> TRUSTING;
-    private static final TrackedData<Integer> TRUSTED_UUID;
+    private static final TrackedData<Optional<UUID>> TRUSTED_UUID;
     private BlockPos structurepos = null;
     private int animtimer = 0;
 
@@ -83,20 +84,20 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     static {
         TRUSTING = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-        TRUSTED_UUID = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        TRUSTED_UUID = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     }
 
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(TRUSTING, false);
-        this.dataTracker.startTracking(TRUSTED_UUID, 0);
+        this.dataTracker.startTracking(TRUSTED_UUID, Optional.empty());
     }
 
     public void writeCustomDataToTag(CompoundTag tag) {
         super.writeCustomDataToTag(tag);
         if (this.hasStructurePos()) tag.put("StructPos", NbtHelper.fromBlockPos(this.getStructurePos()));
         tag.putBoolean("Trusting", this.isTrusting());
-        tag.putInt("Trusted", this.getTrusted());
+        if (this.hasTrusted()) tag.putUuid("Trusted", getTrusted());
     }
 
     public void readCustomDataFromTag(CompoundTag tag) {
@@ -105,7 +106,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
         super.readCustomDataFromTag(tag);
         this.setTrusting(tag.getBoolean("Trusting"));
-        this.setTrusted(tag.getInt("Trusted"));
+        if (tag.contains("Trusted")) this.setTrusted(tag.getUuid("Trusted"));
     }
 
     private boolean isTrusting() {
@@ -117,19 +118,20 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     private boolean hasTrusted() {
-        return getTrusted() != 0;
+        return getTrusted() != null;
     }
 
-    private int getTrusted() {
-        return this.dataTracker.get(TRUSTED_UUID);
+    @Nullable
+    private UUID getTrusted() {
+        return (UUID) ((Optional) this.dataTracker.get(TRUSTED_UUID)).orElse((Object) null);
     }
 
-    private void setTrusted(int trusted) {
-        this.dataTracker.set(TRUSTED_UUID, trusted);
+    private void setTrusted(@Nullable UUID trusted) {
+        this.dataTracker.set(TRUSTED_UUID, Optional.ofNullable(trusted));
     }
 
     private void setTrusted(LivingEntity entity) {
-        setTrusted(entity.getEntityId());
+        setTrusted(entity.getUuid());
     }
 
     @Override
@@ -293,7 +295,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
         public void tick() {
             if (this.mob.hasTrusted()) {
-                Entity trusted = this.mob.world.getEntityById(this.mob.getTrusted());
+                PlayerEntity trusted = this.mob.world.getPlayerByUuid(this.mob.getTrusted());
                 if (this.mob.squaredDistanceTo(trusted) > 64) {
                     this.mob.getNavigation().stop();
                     this.mob.getLookControl().lookAt(trusted.getX(), trusted.getEyeY(), trusted.getZ());

@@ -17,6 +17,7 @@ public abstract class MixinSpawnRestriction {
 
     @Shadow
     public static <T extends MobEntity> void register(EntityType<T> type, SpawnRestriction.Location location, Heightmap.Type heightmapType, SpawnRestriction.SpawnPredicate<T> predicate) {
+        throw new AssertionError();
     }
 
     static {
