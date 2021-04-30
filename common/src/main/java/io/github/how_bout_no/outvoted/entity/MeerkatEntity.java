@@ -6,9 +6,7 @@ import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -70,11 +68,16 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new MeerkatEntity.VentureGoal(this, 1.25D));
+        this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.add(4, new AnimalMateGoal(this, 1.0D));
         this.goalSelector.add(5, new FollowParentGoal(this, 1.25D));
         this.goalSelector.add(6, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
+        this.targetSelector.add(1, (new RevengeGoal(this, new Class[]{PlayerEntity.class, MeerkatEntity.class})));
+        this.targetSelector.add(2, new FollowTargetGoal(this, LivingEntity.class, 0, true, false, e ->
+                !(e instanceof PlayerEntity || e instanceof MeerkatEntity)
+        ));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
@@ -128,10 +131,6 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     private void setTrusted(@Nullable UUID trusted) {
         this.dataTracker.set(TRUSTED_UUID, Optional.ofNullable(trusted));
-    }
-
-    private void setTrusted(LivingEntity entity) {
-        setTrusted(entity.getUuid());
     }
 
     @Override
@@ -241,7 +240,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
                         }
                     }
                     structurepos = struct;
-                    setTrusted(player);
+                    setTrusted(player.getUuid());
                     return ActionResult.CONSUME;
                 }
             }
@@ -277,7 +276,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
         public void stop() {
             this.mob.structurepos = null;
-            this.mob.setTrusted(0);
+            this.mob.setTrusted(null);
         }
 
         public void start() {
@@ -306,6 +305,30 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
                     this.reached = true;
             }
         }
+    }
+
+    @Override
+    public boolean tryAttack(Entity target) {
+        float f = (float) this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        float g = (float) this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
+        if (target instanceof LivingEntity) {
+            if (((LivingEntity) target).getGroup() == EntityGroup.ARTHROPOD) {
+                f += 5.0F;
+            }
+        }
+
+        boolean bl = target.damage(DamageSource.mob(this), f);
+        if (bl) {
+            if (g > 0.0F && target instanceof LivingEntity) {
+                ((LivingEntity) target).takeKnockback(g * 0.5F, (double) MathHelper.sin(this.yaw * 0.017453292F), (double) (-MathHelper.cos(this.yaw * 0.017453292F)));
+                this.setVelocity(this.getVelocity().multiply(0.6D, 1.0D, 0.6D));
+            }
+
+            this.dealDamage(this, target);
+            this.onAttacking(target);
+        }
+
+        return bl;
     }
 
     @Nullable

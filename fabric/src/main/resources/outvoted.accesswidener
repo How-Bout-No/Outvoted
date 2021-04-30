@@ -15,3 +15,4 @@ accessible  method  net/minecraft/tag/BlockTags                 register        
 accessible  method  net/minecraft/tag/ItemTags                  register                (Ljava/lang/String;)Lnet/minecraft/tag/Tag$Identified;
 accessible  field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
 mutable     field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
+extendable class  net/minecraft/structure/NetherFortressGenerator$Piece

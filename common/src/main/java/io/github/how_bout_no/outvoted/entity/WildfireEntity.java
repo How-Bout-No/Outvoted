@@ -76,7 +76,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 4.0D)
                 .add(EntityAttributes.GENERIC_ARMOR, 10.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.115D)
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
     }
 

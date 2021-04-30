@@ -50,7 +50,7 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
-        maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
+        maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
         maven { url "https://maven.shedaniel.me/" }
         maven { url 'https://maven.blamejared.com' }
         maven { url 'https://jitpack.io' }
