@@ -377,12 +377,12 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     static class ChaseGoal extends WanderNearTargetGoal {
-        private final BarnacleEntity entity;
+        private final BarnacleEntity mob;
         private final double speed;
 
         public ChaseGoal(BarnacleEntity barnacle, double speedIn, float maxDistanceIn) {
             super(barnacle, speedIn, maxDistanceIn);
-            this.entity = barnacle;
+            this.mob = barnacle;
             this.speed = speedIn;
         }
 
@@ -393,9 +393,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
          * Execute a one shot task or start executing a continuous task
          */
         public boolean canStart() {
-            LivingEntity livingentity = this.entity.getTarget();
+            LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
-                return super.canStart() && this.entity.waterCheck(livingentity) && this.entity.isInWalkTargetRange();
+                return super.canStart() && this.mob.waterCheck(livingentity) && this.mob.isInWalkTargetRange();
             } else {
                 return false;
             }
@@ -405,9 +405,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public boolean shouldContinue() {
-            LivingEntity livingentity = this.entity.getTarget();
+            LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
-                return super.shouldContinue() && this.entity.waterCheck(livingentity) && this.entity.isInWalkTargetRange();
+                return super.shouldContinue() && this.mob.waterCheck(livingentity) && this.mob.isInWalkTargetRange();
             } else {
                 return false;
             }
@@ -417,19 +417,19 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         }
 
         public void tick() {
-            LivingEntity livingentity = this.entity.getTarget();
+            LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
-                this.entity.getNavigation().startMovingTo(livingentity, this.speed);
+                this.mob.getNavigation().startMovingTo(livingentity, this.speed);
             }
         }
     }
 
     static class AttackGoal extends Goal {
-        private final BarnacleEntity entity;
+        private final BarnacleEntity mob;
         private int tickCounter;
 
         public AttackGoal(BarnacleEntity entity) {
-            this.entity = entity;
+            this.mob = entity;
             this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         }
 
@@ -438,16 +438,16 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
          * method as well.
          */
         public boolean canStart() {
-            LivingEntity livingentity = this.entity.getTarget();
-            return livingentity != null && livingentity.isAlive() && this.entity.waterCheck(livingentity) && this.entity.squaredDistanceTo(this.entity.getTarget()) < 64.0D;
+            LivingEntity livingentity = this.mob.getTarget();
+            return livingentity != null && livingentity.isAlive() && this.mob.waterCheck(livingentity) && this.mob.squaredDistanceTo(this.mob.getTarget()) < 64.0D;
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean shouldContinue() {
-            if (this.entity.getTarget() != null) {
-                return this.entity.squaredDistanceTo(this.entity.getTarget()) < 90.5D && this.entity.waterCheck(this.entity.getTarget());
+            if (this.mob.getTarget() != null) {
+                return this.mob.squaredDistanceTo(this.mob.getTarget()) < 90.5D && this.mob.waterCheck(this.mob.getTarget());
             } else {
                 return false;
             }
@@ -458,46 +458,46 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
          */
         public void start() {
             this.tickCounter = -10;
-            this.entity.getNavigation().stop();
-            this.entity.getLookControl().lookAt(this.entity.getTarget(), 90.0F, 90.0F);
-            this.entity.velocityDirty = true;
+            this.mob.getNavigation().stop();
+            this.mob.getLookControl().lookAt(this.mob.getTarget(), 90.0F, 90.0F);
+            this.mob.velocityDirty = true;
         }
 
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void stop() {
-            targetedEntities.remove(this.entity.dataTracker.get(TARGET_ENTITY));
-            this.entity.setTargetedEntity(0);
-            this.entity.setTarget(null);
-            this.entity.wander.ignoreChanceOnce();
-            this.entity.setAttacking(0);
+            targetedEntities.remove(this.mob.dataTracker.get(TARGET_ENTITY));
+            this.mob.setTargetedEntity(0);
+            this.mob.setTarget(null);
+            this.mob.wander.ignoreChanceOnce();
+            this.mob.setAttacking(0);
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
-            LivingEntity livingentity = this.entity.getTarget();
+            LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
-                this.entity.getNavigation().stop();
-                this.entity.getLookControl().lookAt(livingentity, 90.0F, 90.0F);
-                if (!this.entity.canSee(livingentity)) {
-                    this.entity.setTarget(null);
+                this.mob.getNavigation().stop();
+                this.mob.getLookControl().lookAt(livingentity, 90.0F, 90.0F);
+                if (!this.mob.canSee(livingentity)) {
+                    this.mob.setTarget(null);
                 } else {
                     ++this.tickCounter;
-                    if (this.entity.getAttackPhase() < 1) this.entity.setAttacking(1);
+                    if (this.mob.getAttackPhase() < 1) this.mob.setAttacking(1);
                     if (this.tickCounter == 0) {
-                        this.entity.setTargetedEntity(this.entity.getTarget().getEntityId());
-                        targetedEntities.put(livingentity.getEntityId(), this.entity.getUuid());
-                    } else if (this.tickCounter >= this.entity.getAttackDuration()) {
+                        this.mob.setTargetedEntity(this.mob.getTarget().getEntityId());
+                        targetedEntities.put(livingentity.getEntityId(), this.mob.getUuid());
+                    } else if (this.tickCounter >= this.mob.getAttackDuration()) {
                         if (this.tickCounter > 300 && livingentity.getHealth() > livingentity.getMaxHealth() / 2) {
-                            this.entity.setAttacking(2);
-                            if (this.tickCounter % 5 == 0) livingentity.damage(DamageSource.mob(this.entity), 2.0F);
-                        } else if (this.tickCounter % 40 == 0 && this.entity.getAttackPhase() < 2) {
-                            this.entity.setAttacking(3);
-                        } else if (this.entity.getAttackPhase() == 3 && this.tickCounter % 6 == 0) {
-                            livingentity.damage(DamageSource.mob(this.entity), 2.0F);
+                            this.mob.setAttacking(2);
+                            if (this.tickCounter % 5 == 0) livingentity.damage(DamageSource.mob(this.mob), 2.0F);
+                        } else if (this.tickCounter % 40 == 0 && this.mob.getAttackPhase() < 2) {
+                            this.mob.setAttacking(3);
+                        } else if (this.mob.getAttackPhase() == 3 && this.tickCounter % 6 == 0) {
+                            livingentity.damage(DamageSource.mob(this.mob), 2.0F);
                         }
                     }
                 }
@@ -506,35 +506,35 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     static class MoveHelperController extends MoveControl {
-        private final BarnacleEntity entity;
+        private final BarnacleEntity mob;
 
         public MoveHelperController(BarnacleEntity entity) {
             super(entity);
-            this.entity = entity;
+            this.mob = entity;
         }
 
         public void tick() {
-            if (this.state == MoveControl.State.MOVE_TO && !this.entity.getNavigation().isIdle()) {
-                Vec3d vector3d = new Vec3d(this.targetX - this.entity.getX(), this.targetY - this.entity.getY(), this.targetZ - this.entity.getZ());
+            if (this.state == MoveControl.State.MOVE_TO && !this.mob.getNavigation().isIdle()) {
+                Vec3d vector3d = new Vec3d(this.targetX - this.mob.getX(), this.targetY - this.mob.getY(), this.targetZ - this.mob.getZ());
                 double d0 = vector3d.length();
                 double d1 = vector3d.x / d0;
                 double d2 = vector3d.y / d0;
                 double d3 = vector3d.z / d0;
                 float f = (float) (MathHelper.atan2(vector3d.z, vector3d.x) * (double) (180F / (float) Math.PI)) - 90.0F;
-                this.entity.yaw = this.changeAngle(this.entity.yaw, f, 90.0F);
-                this.entity.bodyYaw = this.entity.yaw;
-                float f1 = (float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
-                float f2 = MathHelper.lerp(0.125F, this.entity.getMovementSpeed(), f1);
-                this.entity.setMovementSpeed(f2);
-                double d4 = Math.sin((double) (this.entity.age + this.entity.getEntityId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double) (this.entity.yaw * ((float) Math.PI / 180F)));
-                double d6 = Math.sin((double) (this.entity.yaw * ((float) Math.PI / 180F)));
-                double d7 = Math.sin((double) (this.entity.age + this.entity.getEntityId()) * 0.75D) * 0.05D;
-                this.entity.setVelocity(this.entity.getVelocity().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
-                LookControl lookcontroller = this.entity.getLookControl();
-                double d8 = this.entity.getX() + d1 * 2.0D;
-                double d9 = this.entity.getEyeY() + d2 / d0;
-                double d10 = this.entity.getZ() + d3 * 2.0D;
+                this.mob.yaw = this.changeAngle(this.mob.yaw, f, 90.0F);
+                this.mob.bodyYaw = this.mob.yaw;
+                float f1 = (float) (this.speed * this.mob.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
+                float f2 = MathHelper.lerp(0.125F, this.mob.getMovementSpeed(), f1);
+                this.mob.setMovementSpeed(f2);
+                double d4 = Math.sin((double) (this.mob.age + this.mob.getEntityId()) * 0.5D) * 0.05D;
+                double d5 = Math.cos((double) (this.mob.yaw * ((float) Math.PI / 180F)));
+                double d6 = Math.sin((double) (this.mob.yaw * ((float) Math.PI / 180F)));
+                double d7 = Math.sin((double) (this.mob.age + this.mob.getEntityId()) * 0.75D) * 0.05D;
+                this.mob.setVelocity(this.mob.getVelocity().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
+                LookControl lookcontroller = this.mob.getLookControl();
+                double d8 = this.mob.getX() + d1 * 2.0D;
+                double d9 = this.mob.getEyeY() + d2 / d0;
+                double d10 = this.mob.getZ() + d3 * 2.0D;
                 double d11 = lookcontroller.getLookX();
                 double d12 = lookcontroller.getLookY();
                 double d13 = lookcontroller.getLookZ();
@@ -544,9 +544,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                     d13 = d10;
                 }
 
-                this.entity.getLookControl().lookAt(MathHelper.lerp(0.125D, d11, d8), MathHelper.lerp(0.125D, d12, d9), MathHelper.lerp(0.125D, d13, d10), 10.0F, 40.0F);
+                this.mob.getLookControl().lookAt(MathHelper.lerp(0.125D, d11, d8), MathHelper.lerp(0.125D, d12, d9), MathHelper.lerp(0.125D, d13, d10), 10.0F, 40.0F);
             } else {
-                this.entity.setMovementSpeed(0.0F);
+                this.mob.setMovementSpeed(0.0F);
             }
         }
     }

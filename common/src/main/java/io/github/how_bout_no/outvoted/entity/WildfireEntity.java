@@ -289,13 +289,13 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     }
 
     static class AttackGoal extends Goal {
-        private final WildfireEntity wildfire;
+        private final WildfireEntity mob;
         private int attackStep;
         private int attackTime;
         private int firedRecentlyTimer;
 
         public AttackGoal(WildfireEntity wildfireIn) {
-            this.wildfire = wildfireIn;
+            this.mob = wildfireIn;
             this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         }
 
@@ -304,8 +304,8 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
          * method as well.
          */
         public boolean canStart() {
-            LivingEntity livingentity = this.wildfire.getTarget();
-            return livingentity != null && livingentity.isAlive() && this.wildfire.canTarget(livingentity);
+            LivingEntity livingentity = this.mob.getTarget();
+            return livingentity != null && livingentity.isAlive() && this.mob.canTarget(livingentity);
         }
 
         /**
@@ -319,9 +319,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void stop() {
-            this.wildfire.setOnFire(false);
-            this.wildfire.setShielding(false);
-            this.wildfire.setAttacking(false);
+            this.mob.setOnFire(false);
+            this.mob.setShielding(false);
+            this.mob.setAttacking(false);
             this.firedRecentlyTimer = 0;
         }
 
@@ -330,35 +330,35 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
          */
         public void tick() {
             --this.attackTime;
-            LivingEntity livingentity = this.wildfire.getTarget();
-            this.wildfire.setAttacking(false);
+            LivingEntity livingentity = this.mob.getTarget();
+            this.mob.setAttacking(false);
             if (livingentity != null) {
-                boolean flag = this.wildfire.getVisibilityCache().canSee(livingentity);
+                boolean flag = this.mob.getVisibilityCache().canSee(livingentity);
                 if (flag) {
                     this.firedRecentlyTimer = 0;
                 } else {
                     ++this.firedRecentlyTimer;
                 }
 
-                double d0 = this.wildfire.squaredDistanceTo(livingentity);
+                double d0 = this.mob.squaredDistanceTo(livingentity);
                 if (d0 < 4.0D) {
-                    this.wildfire.setOnFire(true);
+                    this.mob.setOnFire(true);
 
                     if (this.attackTime <= 0) {
-                        this.wildfire.setAttacking(true);
+                        this.mob.setAttacking(true);
                         this.attackTime = 5;
-                        this.wildfire.tryAttack(livingentity);
+                        this.mob.tryAttack(livingentity);
                         livingentity.setOnFireFor(4);
                     }
 
-                    this.wildfire.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
+                    this.mob.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
-                    double d1 = livingentity.getX() - this.wildfire.getX();
-                    double d2 = livingentity.getBodyY(0.5D) - this.wildfire.getBodyY(0.5D);
-                    double d3 = livingentity.getZ() - this.wildfire.getZ();
+                    double d1 = livingentity.getX() - this.mob.getX();
+                    double d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
+                    double d3 = livingentity.getZ() - this.mob.getZ();
 
-                    float health = (this.wildfire.getMaxHealth() - this.wildfire.getHealth()) / 2;
-                    float healthPercent = this.wildfire.getHealth() / this.wildfire.getMaxHealth();
+                    float health = (this.mob.getMaxHealth() - this.mob.getHealth()) / 2;
+                    float healthPercent = this.mob.getHealth() / this.mob.getMaxHealth();
 
                     int maxAttackSteps = 3;
 
@@ -370,25 +370,25 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                     }
 
                     if (this.attackTime <= 0) {
-                        this.wildfire.setShielding(false);
+                        this.mob.setShielding(false);
                         ++this.attackStep;
                         if (this.attackStep == 1) {
                             this.attackTime = (int) (40 * healthPercent + 20);
-                            this.wildfire.setOnFire(true);
+                            this.mob.setOnFire(true);
                         } else if (this.attackStep <= maxAttackSteps) {
                             this.attackTime = (int) (25 * healthPercent + 5);
                         } else {
                             this.attackTime = 200;
                             this.attackStep = 0;
-                            this.wildfire.setOnFire(false);
-                            this.wildfire.setAttacking(false);
+                            this.mob.setOnFire(false);
+                            this.mob.setAttacking(false);
                         }
 
                         if (this.attackStep > 1) {
-                            this.wildfire.setAttacking(true);
+                            this.mob.setAttacking(true);
 
-                            if (!this.wildfire.isSilent()) {
-                                this.wildfire.world.playSound(null, this.wildfire.getBlockPos(), ModSounds.WILDFIRE_SHOOT.get(), this.wildfire.getSoundCategory(), 1.0F, 1.0F);
+                            if (!this.mob.isSilent()) {
+                                this.mob.world.playSound(null, this.mob.getBlockPos(), ModSounds.WILDFIRE_SHOOT.get(), this.mob.getSoundCategory(), 1.0F, 1.0F);
                             }
 
                             double fireballcount = Outvoted.config.common.entities.wildfire.attacking.fireballCount;
@@ -396,9 +396,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                             double maxdepressangle = toRadians(Outvoted.config.common.entities.wildfire.attacking.maxDepressAngle);
 
                             //update target pos
-                            d1 = livingentity.getX() - this.wildfire.getX();
-                            d2 = livingentity.getBodyY(0.5D) - this.wildfire.getBodyY(0.5D);
-                            d3 = livingentity.getZ() - this.wildfire.getZ();
+                            d1 = livingentity.getX() - this.mob.getX();
+                            d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
+                            d3 = livingentity.getZ() - this.mob.getZ();
 
                             //shoot fireballs
                             for (int i = 0; i <= (fireballcount - 1); ++i) {
@@ -410,23 +410,23 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                 if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
                                     y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
                                 }
-                                wildfirefireballentity = new WildfireFireballEntity(this.wildfire.world, this.wildfire, x, y, z);
-                                wildfirefireballentity.updatePosition(wildfirefireballentity.getX(), this.wildfire.getBodyY(0.5D), wildfirefireballentity.getZ());
-                                this.wildfire.world.spawnEntity(wildfirefireballentity);
+                                wildfirefireballentity = new WildfireFireballEntity(this.mob.world, this.mob, x, y, z);
+                                wildfirefireballentity.updatePosition(wildfirefireballentity.getX(), this.mob.getBodyY(0.5D), wildfirefireballentity.getZ());
+                                this.mob.world.spawnEntity(wildfirefireballentity);
                             }
                         }
                     } else if (this.attackTime < 160 + health && this.attackTime > 90 - health) {
-                        this.wildfire.setShielding(true);
+                        this.mob.setShielding(true);
                     } else if (this.attackTime >= 30 && this.attackTime >= 50) {
-                        this.wildfire.setShielding(false);
-                        this.wildfire.shieldDisabled = false;
+                        this.mob.setShielding(false);
+                        this.mob.shieldDisabled = false;
                     }
 
-                    this.wildfire.setInvulnerable(this.wildfire.getShielding());
+                    this.mob.setInvulnerable(this.mob.getShielding());
 
-                    this.wildfire.getLookControl().lookAt(livingentity, 10.0F, 10.0F);
+                    this.mob.getLookControl().lookAt(livingentity, 10.0F, 10.0F);
                 } else if (this.firedRecentlyTimer < 5) {
-                    this.wildfire.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
+                    this.mob.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
                 }
 
                 super.tick();
@@ -434,7 +434,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         }
 
         private double getFollowDistance() {
-            return this.wildfire.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
+            return this.mob.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
         }
     }
 
