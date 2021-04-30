@@ -57,26 +57,26 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class HungerEntity extends HostileEntity implements IAnimatable {
+public class GluttonEntity extends HostileEntity implements IAnimatable {
     private static final TrackedData<Boolean> BURROWED;
     private static final TrackedData<Boolean> ATTACKING;
     private static final TrackedData<Boolean> ENCHANTING;
     private static final TrackedData<Integer> VARIANT;
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
 
-    public HungerEntity(EntityType<? extends HungerEntity> type, World worldIn) {
+    public GluttonEntity(EntityType<? extends GluttonEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 5;
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.hunger.health);
+        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.glutton.health);
     }
 
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(2, new HungerEntity.BiteGoal(this, 1.0D, false));
-        this.goalSelector.add(3, new HungerEntity.BurrowGoal(this));
-        this.goalSelector.add(4, new HungerEntity.FindSpotGoal(this, 1.0D));
-        this.goalSelector.add(5, new HungerEntity.WanderGoal(this));
-        this.goalSelector.add(6, new HungerEntity.LookGoal(this));
+        this.goalSelector.add(2, new GluttonEntity.BiteGoal(this, 1.0D, false));
+        this.goalSelector.add(3, new GluttonEntity.BurrowGoal(this));
+        this.goalSelector.add(4, new GluttonEntity.FindSpotGoal(this, 1.0D));
+        this.goalSelector.add(5, new GluttonEntity.WanderGoal(this));
+        this.goalSelector.add(6, new GluttonEntity.LookGoal(this));
         this.targetSelector.add(1, new FollowTargetGoal<>(this, LivingEntity.class, true));
     }
 
@@ -91,8 +91,8 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
         return 0.0F;
     }
 
-    public static boolean canSpawn(EntityType<HungerEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return world.getBaseLightLevel(blockPos, 0) > 8 && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.Blocks.HUNGER_CAN_BURROW);
+    public static boolean canSpawn(EntityType<GluttonEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return world.getBaseLightLevel(blockPos, 0) > 8 && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.Blocks.GLUTTON_CAN_BURROW);
     }
 
     @Override
@@ -101,15 +101,15 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.HUNGER_AMBIENT.get();
+        return ModSounds.GLUTTON_AMBIENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.HUNGER_HURT.get();
+        return ModSounds.GLUTTON_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.HUNGER_DEATH.get();
+        return ModSounds.GLUTTON_DEATH.get();
     }
 
     public SoundCategory getSoundCategory() {
@@ -153,10 +153,10 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     }
 
     static {
-        BURROWED = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-        ATTACKING = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-        ENCHANTING = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-        VARIANT = DataTracker.registerData(HungerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        BURROWED = DataTracker.registerData(GluttonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ATTACKING = DataTracker.registerData(GluttonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ENCHANTING = DataTracker.registerData(GluttonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        VARIANT = DataTracker.registerData(GluttonEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
          * right: Item to return
          */
         MutablePair<Integer, ItemStack> pair = new MutablePair<>(0, itemstack);
-        if (storedEnchants.size() <= Outvoted.config.common.entities.hunger.maxEnchants) {
+        if (storedEnchants.size() <= Outvoted.config.common.entities.glutton.maxEnchants) {
             itemstack.setCount(count);
             final boolean[] hasCurses = {false};
             Map<Enchantment, Integer> map = EnchantmentHelper.get(stack).entrySet().stream().filter((enchant) -> {
@@ -376,44 +376,44 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     }
 
     static class BiteGoal extends MeleeAttackGoal {
-        private final HungerEntity hunger;
+        private final GluttonEntity mob;
 
-        public BiteGoal(HungerEntity entityIn, double speedIn, boolean useMemory) {
+        public BiteGoal(GluttonEntity entityIn, double speedIn, boolean useMemory) {
             super(entityIn, speedIn, useMemory);
-            this.hunger = entityIn;
+            this.mob = entityIn;
         }
 
         public boolean canStart() {
-            this.hunger.setAttacking(this.hunger.getTarget() != null && !this.hunger.isBurrowed());
-            return super.canStart() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
+            this.mob.setAttacking(this.mob.getTarget() != null && !this.mob.isBurrowed());
+            return super.canStart() && this.mob.world.getDifficulty() != Difficulty.PEACEFUL && !this.mob.isBurrowed();
         }
 
         public boolean shouldContinue() {
-            return super.shouldContinue() && this.hunger.world.getDifficulty() != Difficulty.PEACEFUL && !this.hunger.isBurrowed();
+            return super.shouldContinue() && this.mob.world.getDifficulty() != Difficulty.PEACEFUL && !this.mob.isBurrowed();
         }
 
         public void start() {
             super.start();
-            this.hunger.setAttacking(true);
+            this.mob.setAttacking(true);
         }
 
         public void stop() {
             super.stop();
-            this.hunger.setAttacking(this.mob.getTarget() != null);
+            this.mob.setAttacking(this.mob.getTarget() != null);
         }
     }
 
     /* Determines whether a 3x3 section of ground below is suitable for burrowing */
-    public boolean isSuitable(HungerEntity hungerIn, @Nullable BlockPos pos) {
+    public boolean isSuitable(GluttonEntity gluttonIn, @Nullable BlockPos pos) {
         if (this.getStatusEffect(StatusEffects.WITHER) != null) return false;
-        World world = hungerIn.world;
+        World world = gluttonIn.world;
         double posX;
         double posY;
         double posZ;
         if (pos == null) {
-            posX = hungerIn.getX();
-            posY = hungerIn.getY();
-            posZ = hungerIn.getZ();
+            posX = gluttonIn.getX();
+            posY = gluttonIn.getY();
+            posZ = gluttonIn.getZ();
         } else {
             posX = pos.getX();
             posY = pos.getY();
@@ -424,9 +424,9 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
             if (ret) {
                 for (double l = posZ - 1; l <= posZ + 1; ++l) {
                     BlockState block = world.getBlockState(new BlockPos(k, posY - 1, l));
-                    if (block.isIn(ModTags.Blocks.HUNGER_CAN_BURROW) && !hungerIn.isTouchingWater()) {
+                    if (block.isIn(ModTags.Blocks.GLUTTON_CAN_BURROW) && !gluttonIn.isTouchingWater()) {
                         if (ret) {
-                            ret = !hungerIn.isLeashed();
+                            ret = !gluttonIn.isLeashed();
                         }
                     } else {
                         ret = false;
@@ -441,20 +441,20 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     }
 
     static class FindSpotGoal extends Goal {
-        protected final HungerEntity hunger;
+        protected final GluttonEntity mob;
         private double spotX;
         private double spotY;
         private double spotZ;
         private final double movementSpeed;
 
-        public FindSpotGoal(HungerEntity theCreatureIn, double movementSpeedIn) {
-            this.hunger = theCreatureIn;
+        public FindSpotGoal(GluttonEntity theCreatureIn, double movementSpeedIn) {
+            this.mob = theCreatureIn;
             this.movementSpeed = movementSpeedIn;
             this.setControls(EnumSet.of(Goal.Control.MOVE));
         }
 
         public boolean canStart() {
-            return this.isPossibleSpot() && this.hunger.getTarget() == null && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
+            return this.isPossibleSpot() && this.mob.getTarget() == null && !this.mob.isBurrowed() && !this.mob.isSuitable(this.mob, null);
         }
 
         protected boolean isPossibleSpot() {
@@ -470,25 +470,25 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
         }
 
         public boolean shouldContinue() {
-            return !this.hunger.getNavigation().isIdle() && !this.hunger.isBurrowed();
+            return !this.mob.getNavigation().isIdle() && !this.mob.isBurrowed();
         }
 
         public void start() {
-            this.hunger.getNavigation().startMovingTo(this.spotX, this.spotY, this.spotZ, this.movementSpeed);
+            this.mob.getNavigation().startMovingTo(this.spotX, this.spotY, this.spotZ, this.movementSpeed);
         }
 
         public void stop() {
-            this.hunger.getNavigation().stop();
+            this.mob.getNavigation().stop();
         }
 
         @Nullable
         protected net.minecraft.util.math.Vec3d findPossibleSpot() {
-            Random random = this.hunger.getRandom();
-            BlockPos blockpos = this.hunger.getBlockPos();
+            Random random = this.mob.getRandom();
+            BlockPos blockpos = this.mob.getBlockPos();
 
             for (int i = 0; i < 10; ++i) {
                 BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(3) - 1, random.nextInt(20) - 10);
-                if (this.hunger.isSuitable(this.hunger, blockpos1) && this.hunger.getPathfindingFavor(blockpos1) < 0.0F) {
+                if (this.mob.isSuitable(this.mob, blockpos1) && this.mob.getPathfindingFavor(blockpos1) < 0.0F) {
                     return net.minecraft.util.math.Vec3d.ofBottomCenter(blockpos1);
                 }
             }
@@ -498,23 +498,23 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     }
 
     static class WanderGoal extends WanderAroundFarGoal {
-        private final HungerEntity hunger;
+        private final GluttonEntity mob;
 
-        public WanderGoal(HungerEntity entityIn) {
+        public WanderGoal(GluttonEntity entityIn) {
             super(entityIn, 1.0D, 0.1F);
-            this.hunger = entityIn;
+            this.mob = entityIn;
         }
 
         public boolean canStart() {
-            return super.canStart() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
+            return super.canStart() && !this.mob.isBurrowed() && !this.mob.isSuitable(this.mob, null);
         }
 
         public boolean shouldContinue() {
-            return super.shouldContinue() && !this.hunger.isBurrowed() && !this.hunger.isSuitable(this.hunger, null);
+            return super.shouldContinue() && !this.mob.isBurrowed() && !this.mob.isSuitable(this.mob, null);
         }
 
         public void tick() {
-            if (this.hunger.isBurrowed() || this.hunger.isSuitable(this.hunger, null))
+            if (this.mob.isBurrowed() || this.mob.isSuitable(this.mob, null))
                 this.mob.getNavigation().stop();
         }
     }
@@ -536,108 +536,108 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
     }
 
     static class BurrowGoal extends Goal {
-        private final HungerEntity hunger;
+        private final GluttonEntity mob;
         private int tick = 0;
         private ItemStack cacheitem = ItemStack.EMPTY;
 
-        public BurrowGoal(HungerEntity entityIn) {
-            this.hunger = entityIn;
+        public BurrowGoal(GluttonEntity entityIn) {
+            this.mob = entityIn;
         }
 
         public boolean canStart() {
-            return !this.hunger.isAttacking() && this.hunger.isSuitable(this.hunger, null);
+            return !this.mob.isAttacking() && this.mob.isSuitable(this.mob, null);
         }
 
         public boolean shouldContinue() {
-            return !this.hunger.isAttacking() && this.hunger.isSuitable(this.hunger, null);
+            return !this.mob.isAttacking() && this.mob.isSuitable(this.mob, null);
         }
 
         public void start() {
-            this.hunger.setBurrowed(true);
+            this.mob.setBurrowed(true);
         }
 
         public void stop() {
             this.tick = 0;
-            this.hunger.setBurrowed(false);
+            this.mob.setBurrowed(false);
         }
 
         public void tick() {
-            net.minecraft.util.math.Vec3d vec3d = this.hunger.directionVector().multiply(0.6D);
-            Box boundingBox = this.hunger.getBoundingBox().stretch(vec3d).stretch(vec3d.multiply(-1.0D));
-            List<Entity> entities = this.hunger.world.getOtherEntities(this.hunger, boundingBox);
+            net.minecraft.util.math.Vec3d vec3d = this.mob.directionVector().multiply(0.6D);
+            Box boundingBox = this.mob.getBoundingBox().stretch(vec3d).stretch(vec3d.multiply(-1.0D));
+            List<Entity> entities = this.mob.world.getOtherEntities(this.mob, boundingBox);
             if (!entities.isEmpty()) {
-                if (!this.hunger.isAttacking() && !this.hunger.isEnchanting()) {
+                if (!this.mob.isAttacking() && !this.mob.isEnchanting()) {
                     for (Entity entity : entities) {
                         if (boundingBox.contains(entity.getPos())) {
                             if (entity instanceof ItemEntity) {
                                 ItemStack item = ((ItemEntity) entity).getStack();
-                                if (((ItemEntity) entity).getThrower() != this.hunger.getUuid()) {
+                                if (((ItemEntity) entity).getThrower() != this.mob.getUuid()) {
                                     this.cacheitem = item.copy();
-                                    this.hunger.world.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), ModSounds.HUNGER_EAT.get(), this.hunger.getSoundCategory(), 0.8F, 0.9F);
+                                    this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), ModSounds.GLUTTON_EAT.get(), this.mob.getSoundCategory(), 0.8F, 0.9F);
                                     entity.remove();
-                                    this.hunger.setEnchanting(true);
+                                    this.mob.setEnchanting(true);
                                     break;
                                 }
                             } else if (entity instanceof LivingEntity) {
-                                if (entity.isAlive() && this.hunger.canTarget((LivingEntity) entity) && !this.hunger.isAttacking()) {
-                                    this.hunger.setBurrowed(false);
-                                    this.hunger.setAttacking(true);
-                                    this.hunger.tryAttack(entity);
+                                if (entity.isAlive() && this.mob.canTarget((LivingEntity) entity) && !this.mob.isAttacking()) {
+                                    this.mob.setBurrowed(false);
+                                    this.mob.setAttacking(true);
+                                    this.mob.tryAttack(entity);
                                 }
                             }
                         }
                     }
                 }
             }
-            if (this.hunger.isEnchanting()) {
+            if (this.mob.isEnchanting()) {
                 this.tick++;
 
                 if (this.tick % 16 == 0) {
-                    MutablePair<Integer, ItemStack> pair = this.hunger.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
+                    MutablePair<Integer, ItemStack> pair = this.mob.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
                     ItemStack item = pair.getRight();
                     if (cacheitem.getItem().equals(ModItems.VOID_HEART.get())) {
-                        Explosion.DestructionType explosion$mode = this.hunger.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
-                        this.hunger.world.createExplosion(this.hunger, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), 2.0F, explosion$mode);
-                        this.hunger.remove();
+                        Explosion.DestructionType explosion$mode = this.mob.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
+                        this.mob.world.createExplosion(this.mob, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 2.0F, explosion$mode);
+                        this.mob.remove();
                     }
                     if (pair.getLeft() == 0) {
                         if (item != ItemStack.EMPTY) {
-                            this.hunger.world.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
+                            this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.mob.getSoundCategory(), 0.8F, 0.6F);
                         }
                     } else if (pair.getLeft() == 1) {
-                        this.hunger.world.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), ModSounds.HUNGER_SPIT.get(), this.hunger.getSoundCategory(), 0.8F, 0.8F);
-                        ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), cacheitem);
-                        newitem.setThrower(this.hunger.getUuid());
-                        this.hunger.world.spawnEntity(newitem);
+                        this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), ModSounds.GLUTTON_SPIT.get(), this.mob.getSoundCategory(), 0.8F, 0.8F);
+                        ItemEntity newitem = new ItemEntity(this.mob.world, this.mob.getX(), this.mob.getY(), this.mob.getZ(), cacheitem);
+                        newitem.setThrower(this.mob.getUuid());
+                        this.mob.world.spawnEntity(newitem);
                     } else {
-                        this.hunger.world.playSound(null, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.hunger.getSoundCategory(), 0.8F, 0.6F);
+                        this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.mob.getSoundCategory(), 0.8F, 0.6F);
                         item.getOrCreateTag().putInt("Bitten", 1);
-                        ItemEntity newitem = new ItemEntity(this.hunger.world, this.hunger.getX(), this.hunger.getY(), this.hunger.getZ(), item);
-                        newitem.setThrower(this.hunger.getUuid());
-                        this.hunger.world.spawnEntity(newitem);
+                        ItemEntity newitem = new ItemEntity(this.mob.world, this.mob.getX(), this.mob.getY(), this.mob.getZ(), item);
+                        newitem.setThrower(this.mob.getUuid());
+                        this.mob.world.spawnEntity(newitem);
                     }
                     this.cacheitem = ItemStack.EMPTY;
                     this.tick = 0;
-                    this.hunger.setEnchanting(false);
+                    this.mob.setEnchanting(false);
                 }
             }
         }
     }
 
     static class LookGoal extends LookAroundGoal {
-        private final HungerEntity hunger;
+        private final GluttonEntity mob;
 
-        public LookGoal(HungerEntity entitylivingIn) {
+        public LookGoal(GluttonEntity entitylivingIn) {
             super(entitylivingIn);
-            this.hunger = entitylivingIn;
+            this.mob = entitylivingIn;
         }
 
         public boolean canStart() {
-            return super.canStart() && !this.hunger.isBurrowed();
+            return super.canStart() && !this.mob.isBurrowed();
         }
 
         public boolean shouldContinue() {
-            return super.shouldContinue() && !this.hunger.isBurrowed();
+            return super.shouldContinue() && !this.mob.isBurrowed();
         }
     }
 
@@ -679,13 +679,13 @@ public class HungerEntity extends HostileEntity implements IAnimatable {
 
     private <E extends IAnimatable> void soundListener(SoundKeyframeEvent<E> event) {
         if (event.sound.equals("chomp")) {
-            world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
+            world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.GLUTTON_BITE.get(), this.getSoundCategory(), 1.0F, 1.0F, false);
         } else if (event.sound.equals("dig")) {
             BlockState block = world.getBlockState(new BlockPos(this.getX(), this.getY() - 0.5D, this.getZ()));
             if (block.isIn(BlockTags.SAND)) {
-                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.GLUTTON_DIG_SAND.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             } else {
-                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.HUNGER_DIG.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                world.playSound(this.getX(), this.getY(), this.getZ(), ModSounds.GLUTTON_DIG.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
         }
     }

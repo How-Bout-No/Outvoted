@@ -19,7 +19,7 @@ public class BlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void configure() {
-        getOrCreateTagBuilder(ModTags.Blocks.HUNGER_CAN_BURROW).addTag(BlockTags.SAND)
+        getOrCreateTagBuilder(ModTags.Blocks.GLUTTON_CAN_BURROW).addTag(BlockTags.SAND)
                 .add(Blocks.GRAVEL, Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.MYCELIUM);
 
         getOrCreateTagBuilder(ModTags.Blocks.PALM_LOGS)

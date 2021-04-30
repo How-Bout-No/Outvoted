@@ -7,7 +7,7 @@ First 2.0 alpha! Due to many setbacks and extremely experimental changes this is
 Wildfire
 - Now uses the Minecraft Dungeons texture
 
-Hunger
+Glutton
 - Can no longer be moved when burrowed
 - No longer makes sounds when burrowed
 

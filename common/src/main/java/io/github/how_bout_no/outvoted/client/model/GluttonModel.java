@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.client.model;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.HungerEntity;
+import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
@@ -12,24 +12,24 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @Environment(EnvType.CLIENT)
-public class HungerModel extends AnimatedGeoModel<HungerEntity> {
+public class GluttonModel extends AnimatedGeoModel<GluttonEntity> {
     @Override
-    public Identifier getAnimationFileLocation(HungerEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "animations/hunger.animation.json");
+    public Identifier getAnimationFileLocation(GluttonEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "animations/glutton.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(HungerEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "geo/hunger.geo.json");
+    public Identifier getModelLocation(GluttonEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "geo/glutton.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(HungerEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "textures/entity/hunger/hunger.png");
+    public Identifier getTextureLocation(GluttonEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "textures/entity/glutton/glutton.png");
     }
 
     @Override
-    public void setLivingAnimations(HungerEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(GluttonEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getBone("head");
         IBone legBR = this.getBone("LegBR");

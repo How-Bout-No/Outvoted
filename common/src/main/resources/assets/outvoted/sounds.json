@@ -71,64 +71,64 @@
       }
     ]
   },
-  "hunger_ambient": {
+  "glutton_ambient": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.ambient",
+    "subtitle": "subtitles.entity.outvoted.glutton.ambient",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger",
+        "name": "outvoted:entity/glutton",
         "volume": 0.5
       }
     ]
   },
-  "hunger_hurt": {
+  "glutton_hurt": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.hurt",
+    "subtitle": "subtitles.entity.outvoted.glutton.hurt",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger_hit1",
+        "name": "outvoted:entity/glutton_hit1",
         "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_hit2",
+        "name": "outvoted:entity/glutton_hit2",
         "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_hit3",
+        "name": "outvoted:entity/glutton_hit3",
         "volume": 0.5
       }
     ]
   },
-  "hunger_death": {
+  "glutton_death": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.death",
+    "subtitle": "subtitles.entity.outvoted.glutton.death",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger_death1",
+        "name": "outvoted:entity/glutton_death1",
         "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_death2",
+        "name": "outvoted:entity/glutton_death2",
         "volume": 0.5
       },
       {
-        "name": "outvoted:entity/hunger_death3",
+        "name": "outvoted:entity/glutton_death3",
         "volume": 0.5
       }
     ]
   },
-  "hunger_bite": {
+  "glutton_bite": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.bite",
+    "subtitle": "subtitles.entity.outvoted.glutton.bite",
     "sounds": [
       {
-        "name": "outvoted:entity/hunger_bite"
+        "name": "outvoted:entity/glutton_bite"
       }
     ]
   },
-  "hunger_spit": {
+  "glutton_spit": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.spit",
+    "subtitle": "subtitles.entity.outvoted.glutton.spit",
     "sounds": [
       {
         "name": "minecraft:mob/fox/spit1",
@@ -147,9 +147,9 @@
       }
     ]
   },
-  "hunger_eat": {
+  "glutton_eat": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.eat",
+    "subtitle": "subtitles.entity.outvoted.glutton.eat",
     "sounds": [
       {
         "name": "minecraft:mob/strider/eat1",
@@ -168,9 +168,9 @@
       }
     ]
   },
-  "hunger_dig": {
+  "glutton_dig": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.dig",
+    "subtitle": "subtitles.entity.outvoted.glutton.dig",
     "sounds": [
       {
         "name": "minecraft:dig/gravel1"
@@ -186,9 +186,9 @@
       }
     ]
   },
-  "hunger_dig_sand": {
+  "glutton_dig_sand": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.hunger.dig",
+    "subtitle": "subtitles.entity.outvoted.glutton.dig",
     "sounds": [
       {
         "name": "minecraft:dig/sand1"

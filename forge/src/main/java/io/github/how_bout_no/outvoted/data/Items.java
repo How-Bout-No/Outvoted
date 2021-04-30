@@ -24,7 +24,7 @@ public class Items extends ItemModelProvider {
         generated(ModItems.BARNACLE_TOOTH.get());
         generated(ModItems.PRISMARINE_ROD.get());
         egg(ModItems.WILDFIRE_SPAWN_EGG.get());
-        egg(ModItems.HUNGER_SPAWN_EGG.get());
+        egg(ModItems.GLUTTON_SPAWN_EGG.get());
         egg(ModItems.BARNACLE_SPAWN_EGG.get());
         egg(ModItems.MEERKAT_SPAWN_EGG.get());
 

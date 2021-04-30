@@ -16,8 +16,8 @@ public class ModItems {
     // Spawn Eggs
     public static final RegistrySupplier<ModSpawnEggItem> WILDFIRE_SPAWN_EGG = ITEMS.register("wildfire_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.WILDFIRE, 0xF6B201, 0x000000, new Item.Settings()));
-    public static final RegistrySupplier<ModSpawnEggItem> HUNGER_SPAWN_EGG = ITEMS.register("hunger_spawn_egg",
-            () -> new ModSpawnEggItem(ModEntityTypes.HUNGER, 0xF0D786, 0x000000, new Item.Settings()));
+    public static final RegistrySupplier<ModSpawnEggItem> GLUTTON_SPAWN_EGG = ITEMS.register("glutton_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.GLUTTON, 0xF0D786, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> BARNACLE_SPAWN_EGG = ITEMS.register("barnacle_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.BARNACLE, 0x5B872E, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> MEERKAT_SPAWN_EGG = ITEMS.register("meerkat_spawn_egg",

@@ -3,7 +3,7 @@
   "minecraft:geometry": [
     {
       "description": {
-        "identifier": "geometry.HungerModel",
+        "identifier": "geometry.glutton",
         "texture_width": 160,
         "texture_height": 96,
         "visible_bounds_width": 3,

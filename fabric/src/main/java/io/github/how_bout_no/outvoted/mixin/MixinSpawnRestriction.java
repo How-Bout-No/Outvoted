@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
-import io.github.how_bout_no.outvoted.entity.HungerEntity;
+import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.EntityType;
@@ -23,8 +23,8 @@ public abstract class MixinSpawnRestriction {
     static {
         register(ModEntityTypes.WILDFIRE.get(), SpawnRestriction.Location.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        register(ModEntityTypes.HUNGER.get(), SpawnRestriction.Location.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HungerEntity::canSpawn);
+        register(ModEntityTypes.GLUTTON.get(), SpawnRestriction.Location.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GluttonEntity::canSpawn);
         register(ModEntityTypes.BARNACLE.get(), SpawnRestriction.Location.IN_WATER,
                 Heightmap.Type.MOTION_BLOCKING, BarnacleEntity::canSpawn);
         register(ModEntityTypes.MEERKAT.get(), SpawnRestriction.Location.ON_GROUND,

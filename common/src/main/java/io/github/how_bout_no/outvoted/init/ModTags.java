@@ -9,7 +9,7 @@ import net.minecraft.tag.Tag;
 
 public class ModTags {
     public static class Blocks {
-        public static final Tag.Identified<Block> HUNGER_CAN_BURROW = BlockTags.register(Outvoted.MOD_ID + ":hunger_can_burrow");
+        public static final Tag.Identified<Block> GLUTTON_CAN_BURROW = BlockTags.register(Outvoted.MOD_ID + ":glutton_can_burrow");
         public static final Tag.Identified<Block> PALM_LOGS = BlockTags.register(Outvoted.MOD_ID + ":palm_logs");
         public static final Tag.Identified<Block> BAOBAB_LOGS = BlockTags.register(Outvoted.MOD_ID + ":baobab_logs");
     }

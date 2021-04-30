@@ -22,7 +22,7 @@ public class ClientListener implements ClientModInitializer {
         Outvoted.clientInit();
 
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.WILDFIRE.get(), (entityRenderDispatcher, context) -> new WildfireRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.HUNGER.get(), (entityRenderDispatcher, context) -> new HungerRenderer(entityRenderDispatcher));
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.GLUTTON.get(), (entityRenderDispatcher, context) -> new GluttonRenderer(entityRenderDispatcher));
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.BARNACLE.get(), (entityRenderDispatcher, context) -> new BarnacleRenderer(entityRenderDispatcher));
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.MEERKAT.get(), (entityRenderDispatcher, context) -> new MeerkatRenderer(entityRenderDispatcher));
 

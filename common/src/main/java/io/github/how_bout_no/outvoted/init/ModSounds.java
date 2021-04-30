@@ -30,20 +30,20 @@ public class ModSounds {
     public static final RegistrySupplier<SoundEvent> BARNACLE_FLOP = SOUNDS.register("barnacle_flop",
             () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "barnacle_flop")));
 
-    public static final RegistrySupplier<SoundEvent> HUNGER_AMBIENT = SOUNDS.register("hunger_ambient",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_ambient")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_HURT = SOUNDS.register("hunger_hurt",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_hurt")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_DEATH = SOUNDS.register("hunger_death",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_death")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_BITE = SOUNDS.register("hunger_bite",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_bite")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_SPIT = SOUNDS.register("hunger_spit",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_spit")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_EAT = SOUNDS.register("hunger_eat",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_eat")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_DIG = SOUNDS.register("hunger_dig",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_dig")));
-    public static final RegistrySupplier<SoundEvent> HUNGER_DIG_SAND = SOUNDS.register("hunger_dig_sand",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_dig_sand")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_AMBIENT = SOUNDS.register("glutton_ambient",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_ambient")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_HURT = SOUNDS.register("glutton_hurt",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_hurt")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_DEATH = SOUNDS.register("glutton_death",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_death")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_BITE = SOUNDS.register("glutton_bite",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_bite")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_SPIT = SOUNDS.register("glutton_spit",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_spit")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_EAT = SOUNDS.register("glutton_eat",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_eat")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_DIG = SOUNDS.register("glutton_dig",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_dig")));
+    public static final RegistrySupplier<SoundEvent> GLUTTON_DIG_SAND = SOUNDS.register("glutton_dig_sand",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "glutton_dig_sand")));
 }

@@ -16,10 +16,10 @@ public class WorldGen {
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
                                 Outvoted.config.common.entities.wildfire.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.hunger),
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.glutton),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
-                        new SpawnSettings.SpawnEntry(ModEntityTypes.HUNGER.get(),
-                                Outvoted.config.common.entities.hunger.rate, 1, 1)));
+                        new SpawnSettings.SpawnEntry(ModEntityTypes.GLUTTON.get(),
+                                Outvoted.config.common.entities.glutton.rate, 1, 1)));
         BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.barnacle),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.BARNACLE.get(),

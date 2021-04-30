@@ -17,7 +17,7 @@ public class OutvotedConfigCommon implements ConfigData {
         public Entities.Wildfire wildfire = new Entities.Wildfire();
 
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Hunger hunger = new Entities.Hunger();
+        public Entities.Glutton glutton = new Entities.Glutton();
 
         @ConfigEntry.Gui.CollapsibleObject
         public Entities.Barnacle barnacle = new Entities.Barnacle();
@@ -44,7 +44,7 @@ public class OutvotedConfigCommon implements ConfigData {
             public float fireballExplosionPower = 0.5F;
         }
 
-        public static class Hunger implements EntityConfigBase {
+        public static class Glutton implements EntityConfigBase {
             public boolean spawn = true;
             public int rate = 5;
             public List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");

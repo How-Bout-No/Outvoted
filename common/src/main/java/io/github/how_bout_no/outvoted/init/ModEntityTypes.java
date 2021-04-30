@@ -2,7 +2,7 @@ package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
-import io.github.how_bout_no.outvoted.entity.HungerEntity;
+import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import me.shedaniel.architectury.registry.DeferredRegister;
@@ -21,11 +21,11 @@ public class ModEntityTypes {
                     .makeFireImmune()
                     .setDimensions(0.8F, 2.0F)
                     .build(new Identifier(Outvoted.MOD_ID, "wildfire").toString()));
-    public static final RegistrySupplier<EntityType<HungerEntity>> HUNGER = ENTITY_TYPES
-            .register("hunger", () -> EntityType.Builder
-                    .create(HungerEntity::new, SpawnGroup.CREATURE)
+    public static final RegistrySupplier<EntityType<GluttonEntity>> GLUTTON = ENTITY_TYPES
+            .register("glutton", () -> EntityType.Builder
+                    .create(GluttonEntity::new, SpawnGroup.CREATURE)
                     .setDimensions(1.0F, 1.2F)
-                    .build(new Identifier(Outvoted.MOD_ID, "hunger").toString()));
+                    .build(new Identifier(Outvoted.MOD_ID, "glutton").toString()));
     public static final RegistrySupplier<EntityType<BarnacleEntity>> BARNACLE = ENTITY_TYPES
             .register("barnacle", () -> EntityType.Builder
                     .create(BarnacleEntity::new, SpawnGroup.MONSTER)

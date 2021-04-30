@@ -5,10 +5,10 @@
       "item": "minecraft:name_tag"
     },
     "title": {
-      "translate": "advancements.outvoted.rename_hunger.title"
+      "translate": "advancements.outvoted.rename_glutton.title"
     },
     "description": {
-      "translate": "advancements.outvoted.rename_hunger.description"
+      "translate": "advancements.outvoted.rename_glutton.description"
     },
     "frame": "goal",
     "show_toast": true,
@@ -16,7 +16,7 @@
     "hidden": true
   },
   "criteria": {
-    "rename_hunger": {
+    "rename_glutton": {
       "trigger": "minecraft:player_interacted_with_entity",
       "conditions": {
         "item": {
@@ -24,7 +24,7 @@
           "nbt": "{display:{Name:'{\"text\":\"Dinnerbone\"}'}}"
         },
         "entity": {
-          "type": "outvoted:hunger"
+          "type": "outvoted:glutton"
         }
       }
     }

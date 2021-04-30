@@ -47,7 +47,7 @@ public class LootTables extends LootTablesProvider {
         protected Iterable<EntityType<?>> getKnownEntities() {
             List<EntityType<?>> list = new ArrayList<>();
             list.add(ModEntityTypes.WILDFIRE.get());
-            list.add(ModEntityTypes.HUNGER.get());
+            list.add(ModEntityTypes.GLUTTON.get());
             list.add(ModEntityTypes.BARNACLE.get());
             return list;
         }
@@ -73,7 +73,7 @@ public class LootTables extends LootTablesProvider {
                                     .conditionally(KilledByPlayerLootCondition.builder())))
             );
 
-            this.register(ModEntityTypes.HUNGER.get(), LootTable.builder()
+            this.register(ModEntityTypes.GLUTTON.get(), LootTable.builder()
                     .pool(LootPool.builder()
                             .rolls(ConstantLootTableRange.create(1))
                             .with(ItemEntry.builder(net.minecraft.item.Items.EXPERIENCE_BOTTLE)

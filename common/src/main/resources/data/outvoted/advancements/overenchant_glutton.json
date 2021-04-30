@@ -1,14 +1,14 @@
 {
-  "parent": "outvoted:use_hunger",
+  "parent": "outvoted:use_glutton",
   "display": {
     "icon": {
       "item": "minecraft:enchanted_book"
     },
     "title": {
-      "translate": "advancements.outvoted.overenchant_hunger.title"
+      "translate": "advancements.outvoted.overenchant_glutton.title"
     },
     "description": {
-      "translate": "advancements.outvoted.overenchant_hunger.description"
+      "translate": "advancements.outvoted.overenchant_glutton.description"
     },
     "frame": "challenge",
     "show_toast": true,
