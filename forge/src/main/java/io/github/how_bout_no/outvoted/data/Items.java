@@ -21,11 +21,11 @@ public class Items extends ItemModelProvider {
         generated(ModItems.WILDFIRE_SHIELD_PART.get());
         generated(ModItems.WILDFIRE_PIECE.get());
         generated(ModItems.VOID_HEART.get());
-        generated(ModItems.KRAKEN_TOOTH.get());
+        generated(ModItems.BARNACLE_TOOTH.get());
         generated(ModItems.PRISMARINE_ROD.get());
         egg(ModItems.WILDFIRE_SPAWN_EGG.get());
         egg(ModItems.HUNGER_SPAWN_EGG.get());
-        egg(ModItems.KRAKEN_SPAWN_EGG.get());
+        egg(ModItems.BARNACLE_SPAWN_EGG.get());
         egg(ModItems.MEERKAT_SPAWN_EGG.get());
 
         singleTexture(ModItems.WILDFIRE_HELMET.get().getRegistryName().getPath(), new Identifier("item/generated"),

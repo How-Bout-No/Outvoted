@@ -1,8 +1,8 @@
 package io.github.how_bout_no.outvoted.world;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
-import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.Entity;
@@ -29,7 +29,7 @@ public class WorldGen {
     public static void checkMobs(LivingSpawnEvent.CheckSpawn event) {
         double area = 6.0; // Value for x, y, and z expansion to check for entities
         Entity e = event.getEntity();
-        if (e instanceof KrakenEntity || e instanceof HungerEntity) {
+        if (e instanceof BarnacleEntity || e instanceof HungerEntity) {
             if (event.getSpawnReason() == SpawnReason.NATURAL && !event.getWorld().getLevelProperties().isHardcore()) {
                 List<Entity> entities = event.getWorld().getOtherEntities(event.getEntity(), event.getEntity().getBoundingBox().stretch(area, area, area).stretch(-area, -area, -area));
                 if (!entities.isEmpty()) {

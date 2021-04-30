@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "outvoted:item/kraken_tooth"
+    "layer0": "outvoted:item/barnacle_tooth"
   }
 }

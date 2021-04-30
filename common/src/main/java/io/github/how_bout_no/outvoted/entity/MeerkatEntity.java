@@ -15,6 +15,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -75,9 +76,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(1, (new RevengeGoal(this, new Class[]{PlayerEntity.class, MeerkatEntity.class})));
-        this.targetSelector.add(2, new FollowTargetGoal(this, LivingEntity.class, 0, true, false, e ->
-                !(e instanceof PlayerEntity || e instanceof MeerkatEntity)
-        ));
+        this.targetSelector.add(2, new FollowTargetGoal(this, HostileEntity.class, true));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {

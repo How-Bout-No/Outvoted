@@ -23,7 +23,7 @@ public class ClientListener implements ClientModInitializer {
 
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.WILDFIRE.get(), (entityRenderDispatcher, context) -> new WildfireRenderer(entityRenderDispatcher));
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.HUNGER.get(), (entityRenderDispatcher, context) -> new HungerRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.KRAKEN.get(), (entityRenderDispatcher, context) -> new KrakenRenderer(entityRenderDispatcher));
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.BARNACLE.get(), (entityRenderDispatcher, context) -> new BarnacleRenderer(entityRenderDispatcher));
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.MEERKAT.get(), (entityRenderDispatcher, context) -> new MeerkatRenderer(entityRenderDispatcher));
 
         GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());

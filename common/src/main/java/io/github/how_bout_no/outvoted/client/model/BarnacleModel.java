@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.client.model;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.KrakenEntity;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
@@ -11,24 +11,24 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @Environment(EnvType.CLIENT)
-public class KrakenModel extends AnimatedGeoModel<KrakenEntity> {
+public class BarnacleModel extends AnimatedGeoModel<BarnacleEntity> {
     @Override
-    public Identifier getAnimationFileLocation(KrakenEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "animations/kraken.animation.json");
+    public Identifier getAnimationFileLocation(BarnacleEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "animations/barnacle.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(KrakenEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "geo/kraken.geo.json");
+    public Identifier getModelLocation(BarnacleEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "geo/barnacle.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(KrakenEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "textures/entity/kraken.png");
+    public Identifier getTextureLocation(BarnacleEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "textures/entity/barnacle.png");
     }
 
     @Override
-    public void setLivingAnimations(KrakenEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(BarnacleEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone mob = this.getBone("mob");
 

@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.entity.util;
 
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
-import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
@@ -11,7 +11,7 @@ public class MobAttributes {
     public static void init() {
         FabricDefaultAttributeRegistry.register(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes());
         FabricDefaultAttributeRegistry.register(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes());
-        FabricDefaultAttributeRegistry.register(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntityTypes.BARNACLE.get(), BarnacleEntity.setCustomAttributes());
         FabricDefaultAttributeRegistry.register(ModEntityTypes.MEERKAT.get(), MeerkatEntity.setCustomAttributes());
     }
 }

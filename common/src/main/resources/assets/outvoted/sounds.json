@@ -204,42 +204,42 @@
       }
     ]
   },
-  "kraken_ambient": {
+  "barnacle_ambient": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.kraken.ambient",
+    "subtitle": "subtitles.entity.outvoted.barnacle.ambient",
     "sounds": [
       {
-        "name": "outvoted:entity/kraken1"
+        "name": "outvoted:entity/barnacle1"
       },
       {
-        "name": "outvoted:entity/kraken2"
+        "name": "outvoted:entity/barnacle2"
       },
       {
-        "name": "outvoted:entity/kraken3"
+        "name": "outvoted:entity/barnacle3"
       }
     ]
   },
-  "kraken_hurt": {
+  "barnacle_hurt": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.kraken.hurt",
+    "subtitle": "subtitles.entity.outvoted.barnacle.hurt",
     "sounds": [
       {
-        "name": "outvoted:entity/kraken_hit"
+        "name": "outvoted:entity/barnacle_hit"
       }
     ]
   },
-  "kraken_death": {
+  "barnacle_death": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.kraken.death",
+    "subtitle": "subtitles.entity.outvoted.barnacle.death",
     "sounds": [
       {
-        "name": "outvoted:entity/kraken_death"
+        "name": "outvoted:entity/barnacle_death"
       }
     ]
   },
-  "kraken_flop": {
+  "barnacle_flop": {
     "category": "hostile",
-    "subtitle": "subtitles.entity.outvoted.kraken.flop",
+    "subtitle": "subtitles.entity.outvoted.barnacle.flop",
     "sounds": [
       {
         "name": "minecraft:mob/guardian/flop1"

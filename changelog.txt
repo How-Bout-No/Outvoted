@@ -11,7 +11,7 @@ Hunger
 - Can no longer be moved when burrowed
 - No longer makes sounds when burrowed
 
-Kraken
+Barnacle
 - No longer affects player's oxygen levels, instead just periodically bites down
 - Will now clamp down on players after a period of time which attacks rapidly
 - Will now target Dolphins and Villagers

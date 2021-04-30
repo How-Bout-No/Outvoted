@@ -20,10 +20,10 @@ public class WorldGen {
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.HUNGER.get(),
                                 Outvoted.config.common.entities.hunger.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.kraken),
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.barnacle),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
-                        new SpawnSettings.SpawnEntry(ModEntityTypes.KRAKEN.get(),
-                                Outvoted.config.common.entities.kraken.rate, 1, 1)));
+                        new SpawnSettings.SpawnEntry(ModEntityTypes.BARNACLE.get(),
+                                Outvoted.config.common.entities.barnacle.rate, 1, 1)));
         BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.meerkat),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),

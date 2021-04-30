@@ -64,12 +64,6 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
-        System.out.println(stack);
-        return super.isEnchantable(stack);
-    }
-
-    @Override
     public void registerControllers(AnimationData animationData) {
     }
 

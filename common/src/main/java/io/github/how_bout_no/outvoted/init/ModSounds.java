@@ -21,14 +21,14 @@ public class ModSounds {
     public static final RegistrySupplier<SoundEvent> WILDFIRE_SHOOT = SOUNDS.register("wildfire_shoot",
             () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "wildfire_shoot")));
 
-    public static final RegistrySupplier<SoundEvent> KRAKEN_AMBIENT = SOUNDS.register("kraken_ambient",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "kraken_ambient")));
-    public static final RegistrySupplier<SoundEvent> KRAKEN_HURT = SOUNDS.register("kraken_hurt",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "kraken_hurt")));
-    public static final RegistrySupplier<SoundEvent> KRAKEN_DEATH = SOUNDS.register("kraken_death",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "kraken_death")));
-    public static final RegistrySupplier<SoundEvent> KRAKEN_FLOP = SOUNDS.register("kraken_flop",
-            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "kraken_flop")));
+    public static final RegistrySupplier<SoundEvent> BARNACLE_AMBIENT = SOUNDS.register("barnacle_ambient",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "barnacle_ambient")));
+    public static final RegistrySupplier<SoundEvent> BARNACLE_HURT = SOUNDS.register("barnacle_hurt",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "barnacle_hurt")));
+    public static final RegistrySupplier<SoundEvent> BARNACLE_DEATH = SOUNDS.register("barnacle_death",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "barnacle_death")));
+    public static final RegistrySupplier<SoundEvent> BARNACLE_FLOP = SOUNDS.register("barnacle_flop",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "barnacle_flop")));
 
     public static final RegistrySupplier<SoundEvent> HUNGER_AMBIENT = SOUNDS.register("hunger_ambient",
             () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "hunger_ambient")));

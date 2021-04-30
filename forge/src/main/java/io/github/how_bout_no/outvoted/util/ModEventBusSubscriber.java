@@ -4,8 +4,8 @@ import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.ShieldModelProvider;
 import io.github.how_bout_no.outvoted.client.render.*;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
-import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
@@ -46,7 +46,7 @@ public class ModEventBusSubscriber {
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.WILDFIRE.get(), WildfireRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.HUNGER.get(), HungerRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.KRAKEN.get(), KrakenRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BARNACLE.get(), BarnacleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MEERKAT.get(), MeerkatRenderer::new);
 
         GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
@@ -63,7 +63,7 @@ public class ModEventBusSubscriber {
     public static void onAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HUNGER.get(), HungerEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.KRAKEN.get(), KrakenEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.BARNACLE.get(), BarnacleEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.MEERKAT.get(), MeerkatEntity.setCustomAttributes().build());
     }
 
@@ -71,7 +71,7 @@ public class ModEventBusSubscriber {
     public static void onPostRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
         SpawnRestriction.register(ModEntityTypes.WILDFIRE.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnIgnoreLightLevel);
         SpawnRestriction.register(ModEntityTypes.HUNGER.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HungerEntity::canSpawn);
-        SpawnRestriction.register(ModEntityTypes.KRAKEN.get(), SpawnRestriction.Location.IN_WATER, Heightmap.Type.MOTION_BLOCKING, KrakenEntity::canSpawn);
+        SpawnRestriction.register(ModEntityTypes.BARNACLE.get(), SpawnRestriction.Location.IN_WATER, Heightmap.Type.MOTION_BLOCKING, BarnacleEntity::canSpawn);
         SpawnRestriction.register(ModEntityTypes.MEERKAT.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MeerkatEntity::canSpawn);
 
         ModSpawnEggItem.initSpawnEggs();

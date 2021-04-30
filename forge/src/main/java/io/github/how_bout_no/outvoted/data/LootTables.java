@@ -48,7 +48,7 @@ public class LootTables extends LootTablesProvider {
             List<EntityType<?>> list = new ArrayList<>();
             list.add(ModEntityTypes.WILDFIRE.get());
             list.add(ModEntityTypes.HUNGER.get());
-            list.add(ModEntityTypes.KRAKEN.get());
+            list.add(ModEntityTypes.BARNACLE.get());
             return list;
         }
 
@@ -87,10 +87,10 @@ public class LootTables extends LootTablesProvider {
                                     .conditionally(KilledByPlayerLootCondition.builder())))
             );
 
-            this.register(ModEntityTypes.KRAKEN.get(), LootTable.builder()
+            this.register(ModEntityTypes.BARNACLE.get(), LootTable.builder()
                     .pool(LootPool.builder()
                             .rolls(ConstantLootTableRange.create(1))
-                            .with(ItemEntry.builder(ModItems.KRAKEN_TOOTH.get())
+                            .with(ItemEntry.builder(ModItems.BARNACLE_TOOTH.get())
                                     .apply(SetCountLootFunction.builder(UniformLootTableRange.between(0.0F, 1.0F)))
                                     .apply(LootingEnchantLootFunction.builder(UniformLootTableRange.between(0.0F, 1.0F)))
                                     .conditionally(KilledByPlayerLootCondition.builder())))

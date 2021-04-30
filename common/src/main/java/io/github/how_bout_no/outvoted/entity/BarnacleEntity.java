@@ -45,7 +45,7 @@ import software.bernie.geckolib3.resource.GeckoLibCache;
 
 import java.util.*;
 
-public class KrakenEntity extends HostileEntity implements IAnimatable {
+public class BarnacleEntity extends HostileEntity implements IAnimatable {
     private static final TrackedData<Integer> ATTACKING;
     private static final TrackedData<Integer> TARGET_ENTITY;
     private LivingEntity targetedEntity;
@@ -56,20 +56,20 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     private boolean initAttack = false;
     private int attackCounter = 0;
 
-    public KrakenEntity(EntityType<? extends KrakenEntity> type, World worldIn) {
+    public BarnacleEntity(EntityType<? extends BarnacleEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 10;
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
-        this.moveControl = new KrakenEntity.MoveHelperController(this);
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.kraken.health);
+        this.moveControl = new BarnacleEntity.MoveHelperController(this);
+        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.barnacle.health);
     }
 
     protected void initGoals() {
         GoToWalkTargetGoal movetowardsrestrictiongoal = new GoToWalkTargetGoal(this, 1.0D);
         this.wander = new net.minecraft.entity.ai.goal.WanderAroundGoal(this, 1.0D, 80);
-        this.goalSelector.add(3, new KrakenEntity.AttackGoal(this));
-        this.goalSelector.add(4, new KrakenEntity.ChaseGoal(this, 6.0D, 48.0F));
-        this.goalSelector.add(5, new FleeEntityGoal<>(this, KrakenEntity.class, 72.0F, 4.0D, 4.0D));
+        this.goalSelector.add(3, new BarnacleEntity.AttackGoal(this));
+        this.goalSelector.add(4, new BarnacleEntity.ChaseGoal(this, 6.0D, 48.0F));
+        this.goalSelector.add(5, new FleeEntityGoal<>(this, BarnacleEntity.class, 72.0F, 4.0D, 4.0D));
         this.goalSelector.add(6, movetowardsrestrictiongoal);
         this.goalSelector.add(7, this.wander);
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
@@ -88,7 +88,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
     }
 
-    public static boolean canSpawn(EntityType<KrakenEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+    public static boolean canSpawn(EntityType<BarnacleEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
         return world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
     }
 
@@ -100,8 +100,8 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     static {
-        ATTACKING = DataTracker.registerData(KrakenEntity.class, TrackedDataHandlerRegistry.INTEGER);
-        TARGET_ENTITY = DataTracker.registerData(KrakenEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        ATTACKING = DataTracker.registerData(BarnacleEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        TARGET_ENTITY = DataTracker.registerData(BarnacleEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
     protected void initDataTracker() {
@@ -189,15 +189,15 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.KRAKEN_AMBIENT.get();
+        return ModSounds.BARNACLE_AMBIENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.KRAKEN_HURT.get();
+        return ModSounds.BARNACLE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.KRAKEN_DEATH.get();
+        return ModSounds.BARNACLE_DEATH.get();
     }
 
     protected boolean canClimb() {
@@ -323,7 +323,7 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     protected SoundEvent getFlopSound() {
-        return ModSounds.KRAKEN_FLOP.get();
+        return ModSounds.BARNACLE_FLOP.get();
     }
 
     public float getAttackAnimationScale(float f) {
@@ -377,12 +377,12 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     static class ChaseGoal extends WanderNearTargetGoal {
-        private final KrakenEntity entity;
+        private final BarnacleEntity entity;
         private final double speed;
 
-        public ChaseGoal(KrakenEntity kraken, double speedIn, float maxDistanceIn) {
-            super(kraken, speedIn, maxDistanceIn);
-            this.entity = kraken;
+        public ChaseGoal(BarnacleEntity barnacle, double speedIn, float maxDistanceIn) {
+            super(barnacle, speedIn, maxDistanceIn);
+            this.entity = barnacle;
             this.speed = speedIn;
         }
 
@@ -425,10 +425,10 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     static class AttackGoal extends Goal {
-        private final KrakenEntity entity;
+        private final BarnacleEntity entity;
         private int tickCounter;
 
-        public AttackGoal(KrakenEntity entity) {
+        public AttackGoal(BarnacleEntity entity) {
             this.entity = entity;
             this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         }
@@ -506,9 +506,9 @@ public class KrakenEntity extends HostileEntity implements IAnimatable {
     }
 
     static class MoveHelperController extends MoveControl {
-        private final KrakenEntity entity;
+        private final BarnacleEntity entity;
 
-        public MoveHelperController(KrakenEntity entity) {
+        public MoveHelperController(BarnacleEntity entity) {
             super(entity);
             this.entity = entity;
         }

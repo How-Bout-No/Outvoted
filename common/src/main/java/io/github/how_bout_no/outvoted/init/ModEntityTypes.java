@@ -1,8 +1,8 @@
 package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
-import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import me.shedaniel.architectury.registry.DeferredRegister;
@@ -26,11 +26,11 @@ public class ModEntityTypes {
                     .create(HungerEntity::new, SpawnGroup.CREATURE)
                     .setDimensions(1.0F, 1.2F)
                     .build(new Identifier(Outvoted.MOD_ID, "hunger").toString()));
-    public static final RegistrySupplier<EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES
-            .register("kraken", () -> EntityType.Builder
-                    .create(KrakenEntity::new, SpawnGroup.MONSTER)
+    public static final RegistrySupplier<EntityType<BarnacleEntity>> BARNACLE = ENTITY_TYPES
+            .register("barnacle", () -> EntityType.Builder
+                    .create(BarnacleEntity::new, SpawnGroup.MONSTER)
                     .setDimensions(1.2F, 1.2F)
-                    .build(new Identifier(Outvoted.MOD_ID, "kraken").toString()));
+                    .build(new Identifier(Outvoted.MOD_ID, "barnacle").toString()));
     public static final RegistrySupplier<EntityType<MeerkatEntity>> MEERKAT = ENTITY_TYPES
             .register("meerkat", () -> EntityType.Builder
                     .create(MeerkatEntity::new, SpawnGroup.CREATURE)

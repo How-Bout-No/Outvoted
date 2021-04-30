@@ -20,7 +20,7 @@ public class OutvotedConfigCommon implements ConfigData {
         public Entities.Hunger hunger = new Entities.Hunger();
 
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Kraken kraken = new Entities.Kraken();
+        public Entities.Barnacle barnacle = new Entities.Barnacle();
 
         @ConfigEntry.Gui.CollapsibleObject
         public Entities.Meerkat meerkat = new Entities.Meerkat();
@@ -53,7 +53,7 @@ public class OutvotedConfigCommon implements ConfigData {
             public int maxEnchants = 5;
         }
 
-        public static class Kraken implements EntityConfigBase {
+        public static class Barnacle implements EntityConfigBase {
             public boolean spawn = true;
             public int rate = 2;
             public List<String> biomes = Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean");

@@ -46,10 +46,10 @@ public class Recipes extends RecipesProvider {
                 .pattern(" TT")
                 .pattern(" HT")
                 .pattern("R  ")
-                .input('T', ModItems.KRAKEN_TOOTH.get())
+                .input('T', ModItems.BARNACLE_TOOTH.get())
                 .input('H', Items.HEART_OF_THE_SEA)
                 .input('R', ModItems.PRISMARINE_ROD.get())
-                .criterion("has_tooth", conditionsFromItem(ModItems.KRAKEN_TOOTH.get()))
+                .criterion("has_tooth", conditionsFromItem(ModItems.BARNACLE_TOOTH.get()))
                 .offerTo(consumer);
         ComplexRecipeJsonFactory.create(ModRecipes.REPAIR_COST.get())
                 .offerTo(consumer, ModRecipes.REPAIR_COST.getId().getPath());
