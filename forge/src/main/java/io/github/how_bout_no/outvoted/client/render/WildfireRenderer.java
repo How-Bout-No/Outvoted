@@ -34,7 +34,7 @@ public class WildfireRenderer extends GeoEntityRenderer<WildfireEntity> {
 
     @Override
     public Identifier getTexture(WildfireEntity entity) {
-        if (entity.getVariant() == 0 || !Outvoted.config.client.wildfireVariants) {
+        if (entity.getVariant() == 0 || !Outvoted.clientConfig.wildfireVariants) {
             return super.getTextureLocation(entity);
         }
         return SOUL;

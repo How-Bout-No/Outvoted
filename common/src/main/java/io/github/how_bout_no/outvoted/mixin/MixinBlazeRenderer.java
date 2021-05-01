@@ -19,7 +19,7 @@ public abstract class MixinBlazeRenderer {
 
     @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
     private void soulTextures(BlazeEntity entity, CallbackInfoReturnable<Identifier> cir) {
-        if (!Outvoted.config.client.wildfireVariants) return;
+        if (!Outvoted.clientConfig.wildfireVariants) return;
         if (((IMixinBlazeEntity) entity).getVariant() == 1) cir.setReturnValue(BLAZE_TEXTURES_SOUL);
     }
 }

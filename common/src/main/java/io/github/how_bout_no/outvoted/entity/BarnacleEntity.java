@@ -61,7 +61,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         this.experiencePoints = 10;
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.moveControl = new BarnacleEntity.MoveHelperController(this);
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.barnacle.health);
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
     }
 
     protected void initGoals() {

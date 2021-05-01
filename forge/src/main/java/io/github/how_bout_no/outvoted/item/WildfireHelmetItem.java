@@ -25,7 +25,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         LivingEntity livingEntity = (LivingEntity) entity;
-        int helmetPenalty = Outvoted.config.common.misc.helmetPenalty;
+        int helmetPenalty = Outvoted.commonConfig.misc.helmetPenalty;
         if (helmetPenalty != 0) {
             if (livingEntity.isOnFire()) {
                 livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));

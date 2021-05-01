@@ -63,7 +63,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
         super(type, worldIn);
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F); // no like da water
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.meerkat.health);
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
     }
 
     protected void initGoals() {

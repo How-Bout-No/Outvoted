@@ -8,9 +8,4 @@ public class OutvotedModPlatform {
     public static Item.Settings setISTER(Item.Settings properties) {
         throw new AssertionError();
     }
-
-    @ExpectPlatform
-    public static boolean isClient() {
-        throw new AssertionError();
-    }
 }

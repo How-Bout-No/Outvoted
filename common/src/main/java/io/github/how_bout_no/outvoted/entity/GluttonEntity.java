@@ -67,7 +67,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public GluttonEntity(EntityType<? extends GluttonEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 5;
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.glutton.health);
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.glutton.health);
     }
 
     protected void initGoals() {
@@ -220,7 +220,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
          * right: Item to return
          */
         MutablePair<Integer, ItemStack> pair = new MutablePair<>(0, itemstack);
-        if (storedEnchants.size() <= Outvoted.config.common.entities.glutton.maxEnchants) {
+        if (storedEnchants.size() <= Outvoted.commonConfig.entities.glutton.maxEnchants) {
             itemstack.setCount(count);
             final boolean[] hasCurses = {false};
             Map<Enchantment, Integer> map = EnchantmentHelper.get(stack).entrySet().stream().filter((enchant) -> {

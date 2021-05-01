@@ -9,7 +9,7 @@ import java.util.List;
 
 @Config(name = "common")
 public class OutvotedConfigCommon implements ConfigData {
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @ConfigEntry.Gui.CollapsibleObject
     public Entities entities = new Entities();
 
     public static class Entities {

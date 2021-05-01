@@ -16,7 +16,7 @@ public abstract class MixinEntity {
     @Inject(method = "dropStack(Lnet/minecraft/item/ItemStack;F)Lnet/minecraft/entity/ItemEntity;", at = @At("HEAD"))
     private void dropNewStack(ItemStack stack, float yOffset, CallbackInfoReturnable<ItemEntity> cir) {
         if (stack.getItem() instanceof WildfireHelmetItem) {
-            if (Outvoted.config.client.wildfireVariants && ((WildfireEntity) (Object) this).getVariant() == 1) {
+            if (Outvoted.clientConfig.wildfireVariants && ((WildfireEntity) (Object) this).getVariant() == 1) {
                 stack.getOrCreateTag().putFloat("SoulTexture", 1.0F);
             }
         }

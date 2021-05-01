@@ -22,7 +22,7 @@ public abstract class MixinGeoArmorItem {
     @Inject(method = "getArmorTexture", at = @At("RETURN"), cancellable = true, remap = false)
     public void armorTextures(ItemStack stack, Entity entity, EquipmentSlot slot, String type, CallbackInfoReturnable<String> cir) {
         if (!(stack.getItem() instanceof WildfireHelmetItem)) return;
-        if (Outvoted.config.client.wildfireVariants) {
+        if (Outvoted.clientConfig.wildfireVariants) {
             if (stack.getTag() != null && stack.getTag().getFloat("SoulTexture") == 1.0F) {
                 cir.setReturnValue(HELMET_TEXTURE_SOUL);
             }

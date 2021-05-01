@@ -5,6 +5,6 @@ import vazkii.patchouli.api.PatchouliAPI;
 
 public class PatchouliCompat {
     public static void updateFlag() {
-        PatchouliAPI.get().setConfigFlag("outvoted:wildfirevariant", Outvoted.config.client.wildfireVariants);
+        PatchouliAPI.get().setConfigFlag("outvoted:wildfirevariant", Outvoted.clientConfig.wildfireVariants);
     }
 }

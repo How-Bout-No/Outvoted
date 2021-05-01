@@ -30,7 +30,7 @@ public class ClientListener implements ClientModInitializer {
         BuiltinItemRendererRegistry.INSTANCE.register(ModItems.WILDFIRE_SHIELD.get(), ShieldRenderer::render);
         ShieldModelProvider.registerItemsWithModelProvider();
 
-        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.config.client.wildfireVariants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
+        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.clientConfig.wildfireVariants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         FabricModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
     }
 }

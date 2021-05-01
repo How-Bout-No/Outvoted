@@ -57,7 +57,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE, 0.0F);
         this.experiencePoints = 20;
-        EntityUtils.setConfigHealth(this, Outvoted.config.common.entities.wildfire.health);
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
     }
 
     @Override
@@ -391,9 +391,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                 this.mob.world.playSound(null, this.mob.getBlockPos(), ModSounds.WILDFIRE_SHOOT.get(), this.mob.getSoundCategory(), 1.0F, 1.0F);
                             }
 
-                            double fireballcount = Outvoted.config.common.entities.wildfire.attacking.fireballCount;
-                            double offsetangle = toRadians(Outvoted.config.common.entities.wildfire.attacking.offsetAngle);
-                            double maxdepressangle = toRadians(Outvoted.config.common.entities.wildfire.attacking.maxDepressAngle);
+                            double fireballcount = Outvoted.commonConfig.entities.wildfire.attacking.fireballCount;
+                            double offsetangle = toRadians(Outvoted.commonConfig.entities.wildfire.attacking.offsetAngle);
+                            double maxdepressangle = toRadians(Outvoted.commonConfig.entities.wildfire.attacking.maxDepressAngle);
 
                             //update target pos
                             d1 = livingentity.getX() - this.mob.getX();

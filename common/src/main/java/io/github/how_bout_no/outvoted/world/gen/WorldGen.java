@@ -12,27 +12,27 @@ import net.minecraft.world.gen.GenerationStep;
 
 public class WorldGen {
     public static void addSpawnEntries() {
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.wildfire),
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.commonConfig.entities.wildfire),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
-                                Outvoted.config.common.entities.wildfire.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.glutton),
+                                Outvoted.commonConfig.entities.wildfire.rate, 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.commonConfig.entities.glutton),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.GLUTTON.get(),
-                                Outvoted.config.common.entities.glutton.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.barnacle),
+                                Outvoted.commonConfig.entities.glutton.rate, 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.commonConfig.entities.barnacle),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.BARNACLE.get(),
-                                Outvoted.config.common.entities.barnacle.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.config.common.entities.meerkat),
+                                Outvoted.commonConfig.entities.barnacle.rate, 1, 1)));
+        BiomeModifications.postProcessProperties(biomeContext -> checkSpawning(biomeContext, Outvoted.commonConfig.entities.meerkat),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
-                                Outvoted.config.common.entities.meerkat.rate, 1, 3)));
+                                Outvoted.commonConfig.entities.meerkat.rate, 1, 3)));
 
-        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.config.common.generation.genPalmTrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
+        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.commonConfig.generation.genPalmTrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE));
-        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.config.common.generation.genBaobabTrees && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
+        BiomeModifications.postProcessProperties(biomeContext -> Outvoted.commonConfig.generation.genBaobabTrees && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE));
     }
