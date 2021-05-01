@@ -51,11 +51,11 @@ allprojects {
 
     repositories {
         maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://maven.architectury.dev/" }
         maven { url 'https://maven.blamejared.com' }
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.terraformersmc.com/releases/' }
-        maven { url 'https://repo.repsy.io/mvn/howboutno/main' }
+//        maven { url 'https://repo.repsy.io/mvn/howboutno/main' }
     }
 
     tasks.withType(JavaCompile) {
