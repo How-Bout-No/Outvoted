@@ -34,6 +34,7 @@
     ]
   },
   "mixins": [
+    "outvoted.mixins.json",
     "outvoted-fabric.mixins.json"
   ],
   "depends": {

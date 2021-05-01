@@ -13,7 +13,8 @@ architectury {
 }
 
 loom {
-    mixinConfig "outvoted-forge.mixins.json"
+    mixinConfigs = ["outvoted.mixins.json", "outvoted-forge.mixins.json"]
+    useFabricMixin = true
 
     dataGen {
         mod "outvoted"
@@ -33,6 +34,7 @@ dependencies {
 
     modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:${rootProject.geckolib_version}"
     modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+    shadowCommon("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
 
     implementation(project(path: ":common")) {

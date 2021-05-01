@@ -1,17 +1,17 @@
-First 2.0 alpha! Due to many setbacks and extremely experimental changes this is pushed as an alpha rather than a beta. Also because of said setbacks, models + textures are in a very early state and functionality is kinda just in testing for the time being.
-
 >> Entities <<
 @a
 - Fully configurable spawn biomes
 
 Wildfire
-- Now uses the Minecraft Dungeons texture
+- Now uses the Minecraft Dungeons texture (a resource pack containing pre-2.0 textures is available in the Discord server)
 
 Glutton
+- Renamed from Hunger
 - Can no longer be moved when burrowed
 - No longer makes sounds when burrowed
 
 Barnacle
+- Renamed from Kraken
 - No longer affects player's oxygen levels, instead just periodically bites down
 - Will now clamp down on players after a period of time which attacks rapidly
 - Will now target Dolphins and Villagers

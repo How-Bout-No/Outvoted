@@ -6,7 +6,8 @@
     "MixinBlazeEntity",
     "MixinCorridorExit",
     "MixinMendingEnchantment",
-    "MixinSpiderEntity"
+    "MixinSpiderEntity",
+    "MixinUtils"
   ],
   "client": [
     "MixinAtlases",
