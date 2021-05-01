@@ -14,7 +14,6 @@ architectury {
 
 loom {
     mixinConfigs = ["outvoted.mixins.json", "outvoted-forge.mixins.json"]
-    useFabricMixin = true
 
     dataGen {
         mod "outvoted"

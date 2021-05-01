@@ -40,6 +40,11 @@ public class Outvoted {
         if (Platform.getEnv() == EnvType.SERVER) {
             AutoConfig.register(OutvotedConfigCommon.class, GsonConfigSerializer::new);
             commonConfig = AutoConfig.getConfigHolder(OutvotedConfigCommon.class).getConfig();
+        } else {
+            AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
+            config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
+            clientConfig = config.client;
+            commonConfig = config.common;
         }
 
 //        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
@@ -61,11 +66,6 @@ public class Outvoted {
 
     @Environment(EnvType.CLIENT)
     public static void clientInit() {
-        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
-        config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
-        clientConfig = config.client;
-        commonConfig = config.common;
-
         if (clientConfig.creativeTab) {
             ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "modtab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
             TAB_BLOCKS = TAB;

@@ -5,6 +5,7 @@
   "mixins": [
     "MixinEntity",
     "MixinLivingEntity",
+    "MixinPlayerEntity",
     "MixinSpawnRestriction"
   ],
   "minVersion": "0.8",

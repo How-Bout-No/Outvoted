@@ -1,20 +1,15 @@
 >> Entities <<
 @a
-- Fully configurable spawn biomes
+- Fix the fully configurable spawn biomes
 
 Wildfire
 - Now uses the Minecraft Dungeons texture (a resource pack containing pre-2.0 textures is available in the Discord server)
 
 Glutton
 - Renamed from Hunger
-- Can no longer be moved when burrowed
-- No longer makes sounds when burrowed
 
 Barnacle
 - Renamed from Kraken
-- No longer affects player's oxygen levels, instead just periodically bites down
-- Will now clamp down on players after a period of time which attacks rapidly
-- Will now target Dolphins and Villagers
 
 Meerkat
 - Spawns in Deserts in small groups
@@ -22,33 +17,9 @@ Meerkat
 - Breedable with same items
 - Will guide players to nearby structures or treasures if it is trusting and if you right-click it with a stick (also temporary)
 
-Ostrich
-- TBD
-
-Termite
-- TBD
-
 >> Items <<
-Wildfire Helmet
-- Now uses the Minecraft Dungeons texture
-- Item texture now adheres to Wildfire variant config option
-- Can now alter durability timer in config
-
 Wildfire Shield
-- Fix model rendering for blocking
-
->> Generation <<
-Palm
-- Palm trees added, generates in the Desert Lakes biomes
-- Respective blocks are also added (default textures)
-
-Baobab
-- Baobab trees added, generates in the Savanna biome
-- Generation type is configurable, between Mojang's rendition and a more ""realistic"" variety
-- Needs a 4x4 layout and ample height to grow
-- Respective blocks are also added (default textures)
+- Fix shield consuming no durabiltiy
 
 >> Misc <<
-- Now supports Fabric thanks to Architectury
-- Now requires Architectury API
-- Config now utilizes JSON formatting and has an in-game screen (old configs are incompatible); requires Cloth Config
+- Client configs will no longer be created on the server

@@ -1,11 +1,13 @@
 package io.github.how_bout_no.outvoted.mixin;
 
-import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.structure.NetherFortressGenerator;
+import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -20,14 +22,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Random;
 
 @Mixin(NetherFortressGenerator.CorridorExit.class)
-public abstract class MixinCorridorExit {
+public abstract class MixinCorridorExit extends NetherFortressGenerator.Piece {
+    protected MixinCorridorExit(StructurePieceType structurePieceType, int i) {
+        super(structurePieceType, i);
+    }
+
+    protected void addEntity(StructureWorldAccess structureWorldAccess, EntityType<? extends MobEntity> entityType, int x, int y, int z, BlockBox blockBox) {
+        BlockPos blockPos = new BlockPos(this.applyXTransform(x, z), this.applyYTransform(y), this.applyZTransform(x, z));
+        if (blockBox.contains(blockPos)) {
+            MobEntity livingEntity = entityType.create(structureWorldAccess.toServerWorld());
+            livingEntity.setPersistent();
+            livingEntity.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
+            livingEntity.initialize(structureWorldAccess, structureWorldAccess.getLocalDifficulty(livingEntity.getBlockPos()), SpawnReason.STRUCTURE, (EntityData) null, (CompoundTag) null);
+            structureWorldAccess.spawnEntity(livingEntity);
+
+        }
+    }
+
     @Inject(method = "generate", at = @At("RETURN"))
     private void injectSpawn(StructureWorldAccess structureWorldAccess, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
-        System.out.println("pleasegodwhy");
-        WildfireEntity livingEntity = ModEntityTypes.WILDFIRE.get().create(structureWorldAccess.toServerWorld());
-        livingEntity.setPersistent();
-        livingEntity.refreshPositionAndAngles(blockPos.add(random.nextInt(7) - 3 + blockPos.getX(), blockPos.getY(), random.nextInt(7) - 3 + blockPos.getZ()), 0.0F, 0.0F);
-        livingEntity.initialize(structureWorldAccess, structureWorldAccess.getLocalDifficulty(livingEntity.getBlockPos()), SpawnReason.STRUCTURE, (EntityData) null, (CompoundTag) null);
-        structureWorldAccess.spawnEntity(livingEntity);
+        this.addEntity(structureWorldAccess, ModEntityTypes.WILDFIRE.get(), 5, 5, 7, boundingBox);
     }
 }

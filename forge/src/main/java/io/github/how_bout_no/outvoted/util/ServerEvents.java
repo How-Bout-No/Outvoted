@@ -1,7 +1,6 @@
 package io.github.how_bout_no.outvoted.util;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModItems;
@@ -9,9 +8,7 @@ import io.github.how_bout_no.outvoted.item.WildfireShieldItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -22,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,33 +33,13 @@ public class ServerEvents {
      */
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event) {
-        if (event.getSource().getAttacker() != null) {
-            Entity attacker = event.getSource().getAttacker();
-            LivingEntity player = event.getEntityLiving();
-            Item shield = player.getActiveItem().getItem();
-            if (shield instanceof WildfireShieldItem) {
-                if (player.isBlocking()) {
-                    if (event.getSource().isProjectile()) {
-                        event.getSource().getSource().setOnFireFor(5);
-                    } else {
-                        attacker.setOnFireFor(5);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Sets variant texture tags for Wildfire Helmet
-     */
-    @SubscribeEvent
-    public void onEntityDrops(LivingDropsEvent event) {
-        if (event.getEntity().getType() == ModEntityTypes.WILDFIRE.get()) {
-            WildfireEntity entity = (WildfireEntity) event.getEntityLiving();
-            ItemEntity helmet = event.getDrops().stream().filter(item -> item.getStack().getItem() == ModItems.WILDFIRE_HELMET.get()).findFirst().orElse(null);
-            if (helmet != null) {
-                if (entity.getVariant() == 1) {
-                    helmet.getStack().getOrCreateTag().putFloat("SoulTexture", 1.0F);
+        LivingEntity player = event.getEntityLiving();
+        if (event.getAmount() > 0.0F && player.isBlocking() && player.getActiveItem().getItem() instanceof WildfireShieldItem) {
+            if (event.getSource() != null) {
+                if (event.getSource().isProjectile()) {
+                    event.getSource().getSource().setOnFireFor(5);
+                } else {
+                    event.getSource().getAttacker().setOnFireFor(5);
                 }
             }
         }
