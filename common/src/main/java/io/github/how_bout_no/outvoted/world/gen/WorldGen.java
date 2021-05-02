@@ -13,19 +13,19 @@ import net.minecraft.world.gen.GenerationStep;
 public class WorldGen {
     public static void addSpawnEntries() {
         OutvotedConfigCommon.Entities ent = Outvoted.commonConfig.entities;
-        BiomeModifications.postProcessProperties(biomeContext -> ent.wildfire.spawn && !ent.wildfire.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.wildfire.spawn && ent.wildfire.biomes.contains(biomeContext.getKey().toString()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
                                 Outvoted.commonConfig.entities.wildfire.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> ent.glutton.spawn && !ent.glutton.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.glutton.spawn && ent.glutton.biomes.contains(biomeContext.getKey().toString()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.GLUTTON.get(),
                                 Outvoted.commonConfig.entities.glutton.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> ent.barnacle.spawn && !ent.barnacle.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.barnacle.spawn && ent.barnacle.biomes.contains(biomeContext.getKey().toString()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.BARNACLE.get(),
                                 Outvoted.commonConfig.entities.barnacle.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> ent.meerkat.spawn && !ent.meerkat.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.meerkat.spawn && ent.meerkat.biomes.contains(biomeContext.getKey().toString()),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
                                 Outvoted.commonConfig.entities.meerkat.rate, 1, 3)));
