@@ -24,7 +24,7 @@ public class GluttonRenderer extends GeoEntityRenderer<GluttonEntity> {
 
     @Override
     public RenderLayer getRenderType(GluttonEntity animatable, float partialTicks, MatrixStack stack, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
-        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+        return RenderLayer.getEntityCutoutNoCull(this.getTexture(animatable));
     }
 
     @Override

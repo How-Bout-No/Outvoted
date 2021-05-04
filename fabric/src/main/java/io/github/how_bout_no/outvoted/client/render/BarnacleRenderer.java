@@ -20,6 +20,6 @@ public class BarnacleRenderer extends GeoEntityRenderer<BarnacleEntity> {
 
     @Override
     public RenderLayer getRenderType(BarnacleEntity animatable, float partialTicks, MatrixStack stack, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
-        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+        return RenderLayer.getEntityCutoutNoCull(this.getTexture(animatable));
     }
 }
