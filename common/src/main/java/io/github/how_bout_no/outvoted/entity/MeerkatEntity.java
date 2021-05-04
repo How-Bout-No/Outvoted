@@ -16,6 +16,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -54,7 +57,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class MeerkatEntity extends AnimalEntity implements IAnimatable {
-    private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.COD, Items.SALMON);
+    private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.SPIDER_EYE);
     private static final TrackedData<Boolean> TRUSTING;
     private static final TrackedData<Optional<UUID>> TRUSTED_UUID;
     private BlockPos structurepos = null;
@@ -203,7 +206,15 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             double f = this.random.nextGaussian() * 0.02D;
             this.world.addParticle(particleEffect, this.getParticleX(1.0D), this.getRandomBodyY() + 0.5D, this.getParticleZ(1.0D), d, e, f);
         }
+    }
 
+    @Override
+    public boolean canHaveStatusEffect(StatusEffectInstance effect) {
+        StatusEffect statusEffect = effect.getEffectType();
+        if (statusEffect == StatusEffects.POISON) {
+            return false;
+        }
+        return super.canHaveStatusEffect(effect);
     }
 
     @Override

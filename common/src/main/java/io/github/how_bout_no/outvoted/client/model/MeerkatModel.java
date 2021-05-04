@@ -38,8 +38,8 @@ public class MeerkatModel extends AnimatedGeoModel<MeerkatEntity> {
         IBone legFL = this.getBone("ArmLeft");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX(extraData.headPitch * ((float) Math.PI / 330F));
-        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 330F));
+        head.setRotationX(extraData.headPitch * ((float) Math.PI / 3000F));
+        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 300F));
         float limbSwing = entity.limbAngle;
         float limbSwingAmount = entity.limbDistance;
         legBR.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
