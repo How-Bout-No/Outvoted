@@ -13,8 +13,10 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.UniformIntDistribution;
 import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.foliage.BlobFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
@@ -23,8 +25,8 @@ import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 public class ModFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Outvoted.MOD_ID, Registry.FEATURE_KEY);
 
-    public static final RegistrySupplier<Feature<net.minecraft.world.gen.feature.TreeFeatureConfig>> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(net.minecraft.world.gen.feature.TreeFeatureConfig.CODEC));
-    public static final RegistrySupplier<Feature<net.minecraft.world.gen.feature.TreeFeatureConfig>> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(net.minecraft.world.gen.feature.TreeFeatureConfig.CODEC));
+    public static final RegistrySupplier<Feature<TreeFeatureConfig>> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(TreeFeatureConfig.CODEC));
+    public static final RegistrySupplier<Feature<TreeFeatureConfig>> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(TreeFeatureConfig.CODEC));
 
     public static final class States {
         private static final BlockState PALM_LOG = ModBlocks.PALM_LOG.get().getDefaultState();
@@ -35,21 +37,21 @@ public class ModFeatures {
     }
 
     public static final class Configs {
-        public static final net.minecraft.world.gen.feature.TreeFeatureConfig PALM_TREE_CONFIG = (new net.minecraft.world.gen.feature.TreeFeatureConfig.Builder(new SimpleBlockStateProvider(States.PALM_LOG), new SimpleBlockStateProvider(States.PALM_LEAVES), new BlobFoliagePlacer(UniformIntDistribution.of(0), UniformIntDistribution.of(0), 0), new StraightTrunkPlacer(0, 0, 0), new TwoLayersFeatureSize(0, 0, 0))).ignoreVines().build();
-        public static final net.minecraft.world.gen.feature.TreeFeatureConfig BAOBAB_TREE_CONFIG = (new net.minecraft.world.gen.feature.TreeFeatureConfig.Builder(new SimpleBlockStateProvider(States.BAOBAB_LOG), new SimpleBlockStateProvider(States.BAOBAB_LEAVES), new BlobFoliagePlacer(UniformIntDistribution.of(0), UniformIntDistribution.of(0), 0), new StraightTrunkPlacer(0, 0, 0), new TwoLayersFeatureSize(0, 0, 0))).ignoreVines().build();
+        public static final TreeFeatureConfig PALM_TREE_CONFIG = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(States.PALM_LOG), new SimpleBlockStateProvider(States.PALM_LEAVES), new BlobFoliagePlacer(UniformIntDistribution.of(0), UniformIntDistribution.of(0), 0), new StraightTrunkPlacer(0, 0, 0), new TwoLayersFeatureSize(0, 0, 0))).ignoreVines().build();
+        public static final TreeFeatureConfig BAOBAB_TREE_CONFIG = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(States.BAOBAB_LOG), new SimpleBlockStateProvider(States.BAOBAB_LEAVES), new BlobFoliagePlacer(UniformIntDistribution.of(0), UniformIntDistribution.of(0), 0), new StraightTrunkPlacer(0, 0, 0), new TwoLayersFeatureSize(0, 0, 0))).ignoreVines().build();
     }
 
     public static final class Configured {
-        public static final net.minecraft.world.gen.feature.ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().configure(Configs.PALM_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)));
+        public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().configure(Configs.PALM_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)));
         //        public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().withConfiguration(Configs.PALM_TREE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).withPlacement(Placement.CHANCE.configure(new ChanceConfig(2)));
-        public static final net.minecraft.world.gen.feature.ConfiguredFeature<?, ?> BAOBAB_TREE = ModFeatures.BAOBAB_TREE.get().configure(Configs.BAOBAB_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(10));
+        public static final ConfiguredFeature<?, ?> BAOBAB_TREE = ModFeatures.BAOBAB_TREE.get().configure(Configs.BAOBAB_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(10));
 
         public static RegistryKey<net.minecraft.world.gen.feature.ConfiguredFeature<?, ?>> palmTree = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN,
                 new Identifier(Outvoted.MOD_ID, "palm_tree"));
-        public static RegistryKey<net.minecraft.world.gen.feature.ConfiguredFeature<?, ?>> baobabTree = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN,
+        public static RegistryKey<ConfiguredFeature<?, ?>> baobabTree = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN,
                 new Identifier(Outvoted.MOD_ID, "baobab_tree"));
 
-        private static <FC extends net.minecraft.world.gen.feature.FeatureConfig> void register(String name, net.minecraft.world.gen.feature.ConfiguredFeature<FC, ?> configuredFeature) {
+        private static <FC extends net.minecraft.world.gen.feature.FeatureConfig> void register(String name, ConfiguredFeature<FC, ?> configuredFeature) {
             Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(Outvoted.MOD_ID, name), configuredFeature);
         }
 

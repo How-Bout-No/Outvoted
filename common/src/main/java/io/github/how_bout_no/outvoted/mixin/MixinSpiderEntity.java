@@ -18,7 +18,7 @@ public abstract class MixinSpiderEntity extends HostileEntity {
     }
 
     @Inject(method = "initGoals", at = @At("INVOKE"))
-    private void injectGoals(CallbackInfo ci) {
+    private void addGoals(CallbackInfo ci) {
         this.goalSelector.add(2, new FleeEntityGoal<>(this, MeerkatEntity.class, 6.0F, 1.0D, 1.2D));
     }
 }

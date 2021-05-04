@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 @Mixin(Utils.class)
 public abstract class MixinUtils {
     @Inject(method = "getConfigFolder", at = @At("RETURN"), cancellable = true, remap = false)
-    private static void injectConfig(CallbackInfoReturnable<Path> cir) {
+    private static void changeConfigPath(CallbackInfoReturnable<Path> cir) {
         if (Platform.getEnv() == EnvType.SERVER)
             cir.setReturnValue(Paths.get(cir.getReturnValue().toString(), "/outvoted/"));
     }
