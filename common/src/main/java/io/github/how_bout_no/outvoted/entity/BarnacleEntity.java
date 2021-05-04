@@ -28,12 +28,8 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -89,7 +85,8 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<BarnacleEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
+        System.out.println(blockPos.getY() >= world.getTopY(Heightmap.Type.OCEAN_FLOOR, blockPos.getX(), blockPos.getZ()));
+        return blockPos.getY() >= world.getTopY(Heightmap.Type.OCEAN_FLOOR, blockPos.getX(), blockPos.getZ()) && world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
     }
 
     /**
@@ -427,6 +424,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     static class AttackGoal extends Goal {
         private final BarnacleEntity mob;
         private int tickCounter;
+        private boolean hasAttacked;
 
         public AttackGoal(BarnacleEntity entity) {
             this.mob = entity;
@@ -457,10 +455,11 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
          * Execute a one shot task or start executing a continuous task
          */
         public void start() {
-            this.tickCounter = -10;
+            this.tickCounter = -1;
             this.mob.getNavigation().stop();
             this.mob.getLookControl().lookAt(this.mob.getTarget(), 90.0F, 90.0F);
             this.mob.velocityDirty = true;
+            this.hasAttacked = false;
         }
 
         /**
@@ -472,6 +471,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             this.mob.setTarget(null);
             this.mob.wander.ignoreChanceOnce();
             this.mob.setAttacking(0);
+            this.hasAttacked = false;
         }
 
         /**
@@ -491,13 +491,18 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                         this.mob.setTargetedEntity(this.mob.getTarget().getEntityId());
                         targetedEntities.put(livingentity.getEntityId(), this.mob.getUuid());
                     } else if (this.tickCounter >= this.mob.getAttackDuration()) {
-                        if (this.tickCounter > 300 && livingentity.getHealth() > livingentity.getMaxHealth() / 2) {
+                        if (this.tickCounter >= 600) {
                             this.mob.setAttacking(2);
                             if (this.tickCounter % 5 == 0) livingentity.damage(DamageSource.mob(this.mob), 2.0F);
-                        } else if (this.tickCounter % 40 == 0 && this.mob.getAttackPhase() < 2) {
+                        } else if (this.tickCounter % 40 == 0 && this.mob.getAttackPhase() == 1) {
                             this.mob.setAttacking(3);
                         } else if (this.mob.getAttackPhase() == 3 && this.tickCounter % 6 == 0) {
-                            livingentity.damage(DamageSource.mob(this.mob), 2.0F);
+                            if (!this.hasAttacked) {
+                                livingentity.damage(DamageSource.mob(this.mob), 2.0F);
+                            } else {
+                                this.mob.setAttacking(1);
+                            }
+                            this.hasAttacked = !this.hasAttacked;
                         }
                     }
                 }
@@ -558,6 +563,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         if (this.hasTargetedEntity() && phase > 0) {
             GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
         }
+        if (event.getController().getCurrentAnimation() == null) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
+        }
         switch (phase) {
             case 1:
                 if (event.getController().getCurrentAnimation().animationName.equals("bite")) {
@@ -571,7 +579,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 return PlayState.CONTINUE;
             case 3:
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("bite"));
-                if (event.getController().getAnimationState() == AnimationState.Stopped) this.setAttacking(1);
                 return PlayState.CONTINUE;
             default:
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
@@ -581,7 +588,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 1, this::predicate);
+        AnimationController controller = new AnimationController(this, "controller", 3, this::predicate);
         data.addAnimationController(controller);
     }
 

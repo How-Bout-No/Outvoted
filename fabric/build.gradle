@@ -97,7 +97,7 @@ curseforge {
             relations {
                 requiredDependency 'geckolib-fabric'
                 requiredDependency 'architectury-fabric'
-                requiredDependency 'cloth-config'
+//                requiredDependency 'cloth-config'
                 optionalDependency 'patchouli-fabric'
                 optionalDependency 'modmenu'
             }

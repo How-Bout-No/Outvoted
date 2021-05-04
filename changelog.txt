@@ -1,26 +1,28 @@
 >> Entities <<
 @a
-- Fix spawning
-
-Wildfire
-- Now uses the Minecraft Dungeons texture (a resource pack containing pre-2.0 textures is available in the Discord server)
+- Mostly fix spawning issues
 
 Glutton
 - Renamed from Hunger
 
 Barnacle
 - Renamed from Kraken
+- Fix inconsistent and sometimes broken attacks
 
 Meerkat
 - Changed model + textures
 - Added unique sounds
+- Will now attack hostile mobs; does bonus arthropod damage
+- Now immune to poison
+- Test taming item now switched to spider eyes
+- Fix lang entry for spawn egg
 
 >> Items <<
 Wildfire Helmet
-- Can no longer have a mending enchantment
+- Fix being able to apply mending to the helmet
 
 Wildfire Shield
-- Fix shield consuming no durabiltiy
+- Fix shield consuming no durability
 
 >> Misc <<
 - Client configs will no longer be created on the server

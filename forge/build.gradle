@@ -104,7 +104,7 @@ curseforge {
             relations {
                 requiredDependency 'geckolib'
                 requiredDependency 'architectury-forge'
-                requiredDependency 'cloth-config-forge'
+//                requiredDependency 'cloth-config-forge'
                 optionalDependency 'patchouli'
             }
             mainArtifact(remapJar.archivePath) {

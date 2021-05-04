@@ -33,7 +33,7 @@ public class BarnacleModel extends AnimatedGeoModel<BarnacleEntity> {
         IBone mob = this.getBone("mob");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        mob.setRotationX((extraData.headPitch * ((float) Math.PI / 180F) - 1.7F));
+        mob.setRotationX((extraData.headPitch * ((float) Math.PI / 180F) - ((float) Math.PI / 2F)));
         mob.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
     }
 }
