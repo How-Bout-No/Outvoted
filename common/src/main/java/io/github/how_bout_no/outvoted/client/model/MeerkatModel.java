@@ -31,15 +31,15 @@ public class MeerkatModel extends AnimatedGeoModel<MeerkatEntity> {
     @Override
     public void setLivingAnimations(MeerkatEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getBone("head");
-        IBone legBR = this.getBone("legr");
-        IBone legBL = this.getBone("legl");
-        IBone legFR = this.getBone("armr");
-        IBone legFL = this.getBone("arml");
+        IBone head = this.getBone("Head");
+        IBone legBR = this.getBone("RightLeg");
+        IBone legBL = this.getBone("LeftLeg");
+        IBone legFR = this.getBone("ArmRight");
+        IBone legFL = this.getBone("ArmLeft");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
-        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+        head.setRotationX(extraData.headPitch * ((float) Math.PI / 330F));
+        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 330F));
         float limbSwing = entity.limbAngle;
         float limbSwingAmount = entity.limbDistance;
         legBR.setRotationX(MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);

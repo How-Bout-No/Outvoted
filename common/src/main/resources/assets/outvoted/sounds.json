@@ -254,5 +254,47 @@
         "name": "minecraft:mob/guardian/flop4"
       }
     ]
+  },
+  "meerkat_ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.meerkat.ambient",
+    "sounds": [
+      {
+        "name": "outvoted:entity/meerkat1"
+      },
+      {
+        "name": "outvoted:entity/meerkat2"
+      },
+      {
+        "name": "outvoted:entity/meerkat3"
+      }
+    ]
+  },
+  "meerkat_hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.meerkat.hurt",
+    "sounds": [
+      {
+        "name": "outvoted:entity/meerkat_hit1"
+      },
+      {
+        "name": "outvoted:entity/meerkat_hit2"
+      },
+      {
+        "name": "outvoted:entity/meerkat_hit3"
+      }
+    ]
+  },
+  "meerkat_death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.outvoted.meerkat.death",
+    "sounds": [
+      {
+        "name": "outvoted:entity/meerkat_death1"
+      },
+      {
+        "name": "outvoted:entity/meerkat_death2"
+      }
+    ]
   }
 }

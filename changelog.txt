@@ -1,6 +1,6 @@
 >> Entities <<
 @a
-- Fix the fully configurable spawn biomes
+- Fix spawning
 
 Wildfire
 - Now uses the Minecraft Dungeons texture (a resource pack containing pre-2.0 textures is available in the Discord server)
@@ -12,12 +12,13 @@ Barnacle
 - Renamed from Kraken
 
 Meerkat
-- Spawns in Deserts in small groups
-- Needs to gain trust by feeding it cod or salmon (temporary, will most likely be Termites in future)
-- Breedable with same items
-- Will guide players to nearby structures or treasures if it is trusting and if you right-click it with a stick (also temporary)
+- Changed model + textures
+- Added unique sounds
 
 >> Items <<
+Wildfire Helmet
+- Can no longer have a mending enchantment
+
 Wildfire Shield
 - Fix shield consuming no durabiltiy
 

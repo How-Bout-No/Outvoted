@@ -3,6 +3,7 @@ package io.github.how_bout_no.outvoted.entity;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
@@ -29,7 +30,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -81,7 +81,9 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
     }
 
     static {
@@ -134,17 +136,17 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_CAT_AMBIENT;
+        return ModSounds.MEERKAT_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_CAT_DEATH;
+        return ModSounds.MEERKAT_DEATH.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_CAT_HURT;
+        return ModSounds.MEERKAT_HURT.get();
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -340,9 +342,9 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("standing"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("stand"));
         } else if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walking"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
             animtimer = 0;
         }
         if (animtimer < 10) animtimer++;
