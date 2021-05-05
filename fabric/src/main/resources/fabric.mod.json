@@ -42,7 +42,8 @@
     "fabric": "*",
     "minecraft": ">=1.16.5",
     "architectury": ">=1.1.55",
-    "cloth-config2": "*"
+    "cloth-config2": "*",
+    "geckolib3": "*"
   },
   "suggests": {
     "flamingo": "*"

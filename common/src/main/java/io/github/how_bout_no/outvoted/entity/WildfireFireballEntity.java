@@ -25,9 +25,6 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
         super(SMALL_FIREBALL, shooter, accelX, accelY, accelZ, worldIn);
     }
 
-    /**
-     * Called when the fireball hits an entity
-     */
     protected void onEntityHit(EntityHitResult result) {
         super.onEntityHit(result);
         if (!this.world.isClient) {
@@ -61,9 +58,6 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
         }
     }
 
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
     protected void onCollision(HitResult result) {
         super.onCollision(result);
         if (!this.world.isClient) {
@@ -76,16 +70,10 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
 
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean collides() {
         return false;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean damage(DamageSource source, float amount) {
         return false;
     }
