@@ -31,7 +31,7 @@ public abstract class MixinAnvilScreenHandler extends ForgingScreenHandler {
         stack = this.input.getStack(0);
     }
 
-    @Redirect(method = "updateResult()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
+    @Redirect(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     private Item overwriteResult(ItemStack itemStack) {
         if (stack.getItem() instanceof WildfireHelmetItem && itemStack.getItem() == Items.ENCHANTED_BOOK) {
             if (EnchantmentHelper.get(itemStack).containsKey(Enchantments.MENDING)) {

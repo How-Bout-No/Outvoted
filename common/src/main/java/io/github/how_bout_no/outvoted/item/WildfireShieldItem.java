@@ -1,8 +1,8 @@
 package io.github.how_bout_no.outvoted.item;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.OutvotedModPlatform;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
-import io.github.how_bout_no.outvoted.util.OutvotedModPlatform;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ShieldItem;
