@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "outvoted:textures/entity/wildfire/wildfire_soul.png": "sprite:wildfire_soul.png",
+    "default": "sprite:wildfire.png"
+  }
+}

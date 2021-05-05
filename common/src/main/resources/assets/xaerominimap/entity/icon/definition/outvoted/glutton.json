@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "outvoted:textures/entity/glutton/glutton_swamp.png": "sprite:glutton_swamp.png",
+    "outvoted:textures/entity/glutton/glutton_red.png": "sprite:glutton_red.png",
+    "default": "sprite:glutton.png"
+  }
+}
