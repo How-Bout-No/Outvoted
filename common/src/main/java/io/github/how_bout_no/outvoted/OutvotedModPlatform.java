@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.util;
+package io.github.how_bout_no.outvoted;
 
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.item.Item;

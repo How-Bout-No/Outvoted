@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.util.fabric;
+package io.github.how_bout_no.outvoted.fabric;
 
 import net.minecraft.item.Item;
 

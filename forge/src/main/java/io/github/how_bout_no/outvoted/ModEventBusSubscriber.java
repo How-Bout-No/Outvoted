@@ -1,6 +1,5 @@
-package io.github.how_bout_no.outvoted.util;
+package io.github.how_bout_no.outvoted;
 
-import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.ShieldModelProvider;
 import io.github.how_bout_no.outvoted.client.render.*;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;

@@ -3,8 +3,7 @@
   "package": "io.github.how_bout_no.outvoted.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinGeoArmorItem",
-    "MixinPlayerEntity"
+    "MixinGeoArmorItem"
   ],
   "minVersion": "0.8",
   "injectors": {

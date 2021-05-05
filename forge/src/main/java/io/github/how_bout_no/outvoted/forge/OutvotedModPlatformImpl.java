@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.util.forge;
+package io.github.how_bout_no.outvoted.forge;
 
 import io.github.how_bout_no.outvoted.client.render.ClientRender;
 import net.minecraft.item.Item;

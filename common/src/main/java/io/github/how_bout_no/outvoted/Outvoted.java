@@ -4,6 +4,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigClient;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.*;
+import io.github.how_bout_no.outvoted.util.EventRegister;
 import io.github.how_bout_no.outvoted.util.SignSprites;
 import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import me.shedaniel.architectury.platform.Platform;
@@ -61,6 +62,7 @@ public class Outvoted {
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
         ModTags.init();
+        EventRegister.init();
         WorldGen.addSpawnEntries();
     }
 
