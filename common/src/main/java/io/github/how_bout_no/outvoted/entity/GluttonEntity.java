@@ -127,9 +127,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         compound.put("Enchantments", compoundNBT);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readCustomDataFromTag(CompoundTag compound) {
         super.readCustomDataFromTag(compound);
         this.setVariant(compound.getInt("Variant"));

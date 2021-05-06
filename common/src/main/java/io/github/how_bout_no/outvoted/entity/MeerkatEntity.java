@@ -36,7 +36,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -349,13 +351,34 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         return ModEntityTypes.MEERKAT.get().create(world);
     }
 
+    private EntityPose entityPose = EntityPose.STANDING;
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+        return super.getActiveEyeHeight(pose, dimensions);
+    }
+
+    private Box calcBox() {
+        EntityDimensions entityDimensions = this.getDimensions(EntityPose.STANDING);
+        boolean bl = entityPose == EntityPose.STANDING;
+        double f = (double) entityDimensions.width / (bl ? 4.0F : 2.0F);
+        double height = (double) entityDimensions.height / (bl ? 1.0F : 2.0F);
+        Vec3d vec3d = new Vec3d(this.getX() - f, this.getY(), this.getZ() - f);
+        Vec3d vec3d2 = new Vec3d(this.getX() + f, this.getY() + height, this.getZ() + f);
+        return new Box(vec3d, vec3d2);
+    }
+
     private AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("stand"));
+            entityPose = EntityPose.STANDING;
+            this.setBoundingBox(calcBox());
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
+            entityPose = EntityPose.CROUCHING;
+            this.setBoundingBox(calcBox());
             animtimer = 0;
         }
         if (animtimer < 10) animtimer++;
