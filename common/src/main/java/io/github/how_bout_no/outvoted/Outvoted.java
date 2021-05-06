@@ -30,12 +30,13 @@ public class Outvoted {
     public static OutvotedConfigCommon commonConfig;
     public static OutvotedConfigClient clientConfig;
 
-    public static ItemGroup TAB_BLOCKS;
-    public static ItemGroup TAB_DECO;
-    public static ItemGroup TAB_COMBAT;
+    public static ItemGroup TAB_BLOCKS = ItemGroup.BUILDING_BLOCKS;
+    public static ItemGroup TAB_DECO = ItemGroup.DECORATIONS;
+    public static ItemGroup TAB_COMBAT = ItemGroup.COMBAT;
     //public static ItemGroup TAB_MATERIAL;
-    public static ItemGroup TAB_MISC;
-    public static ItemGroup TAB_REDSTONE;
+    public static ItemGroup TAB_REDSTONE = ItemGroup.REDSTONE;
+    public static ItemGroup TAB_MISC = ItemGroup.MISC;
+    public static ItemGroup[] TABS = new ItemGroup[]{TAB_BLOCKS, TAB_DECO, TAB_COMBAT, TAB_REDSTONE, TAB_MISC};
 
     public static void init() {
         if (Platform.getEnv() == EnvType.SERVER) {
@@ -75,12 +76,6 @@ public class Outvoted {
             TAB_COMBAT = TAB;
             TAB_MISC = TAB;
             TAB_REDSTONE = TAB;
-        } else {
-            TAB_BLOCKS = ItemGroup.BUILDING_BLOCKS;
-            TAB_DECO = ItemGroup.DECORATIONS;
-            TAB_COMBAT = ItemGroup.COMBAT;
-            TAB_MISC = ItemGroup.MISC;
-            TAB_REDSTONE = ItemGroup.REDSTONE;
         }
 
         RenderTypes.register(RenderLayer.getCutoutMipped(), ModBlocks.PALM_SAPLING.get(), ModBlocks.PALM_TRAPDOOR.get(), ModBlocks.PALM_DOOR.get(),

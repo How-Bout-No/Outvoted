@@ -9,7 +9,7 @@ import net.minecraft.item.ShieldItem;
 
 public class WildfireShieldItem extends ShieldItem {
     public WildfireShieldItem() {
-        super(OutvotedModPlatform.setISTER(new Item.Settings().maxDamage(750).fireproof()));
+        super(OutvotedModPlatform.setISTER(new Item.Settings().maxDamage(750).fireproof().group(Outvoted.TAB_COMBAT)));
     }
 
     @Override

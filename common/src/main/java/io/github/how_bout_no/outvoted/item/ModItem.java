@@ -10,7 +10,7 @@ import net.minecraft.item.ItemGroup;
  */
 public class ModItem extends Item {
     public ModItem(Item.Settings settings) {
-        super(settings);
+        super(settings.group(Outvoted.TAB_MISC));
     }
 
     @Override

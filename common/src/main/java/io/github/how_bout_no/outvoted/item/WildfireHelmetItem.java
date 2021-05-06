@@ -25,7 +25,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
 
     public WildfireHelmetItem() {
-        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Item.Settings().fireproof());
+        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Item.Settings().fireproof().group(Outvoted.TAB_COMBAT));
     }
 
     @Override
