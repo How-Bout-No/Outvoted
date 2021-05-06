@@ -1,6 +1,5 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "5.0.0"
-    id "com.matthewprenger.cursegradle"
 }
 
 configurations {
@@ -36,7 +35,8 @@ dependencies {
     modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
 
-    modImplementation("curse.maven:xaero-263420:3298032")
+//    modImplementation("curse.maven:jei-238222:3295418")
+//    modImplementation("curse.maven:xaero-263420:3298032")
 
     implementation(project(path: ":common")) {
         transitive = false
