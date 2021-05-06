@@ -1,28 +1,11 @@
 >> Entities <<
-@a
-- Mostly fix spawning issues
-
-Glutton
-- Renamed from Hunger
-
-Barnacle
-- Renamed from Kraken
-- Fix inconsistent and sometimes broken attacks
-
 Meerkat
-- Changed model + textures
-- Added unique sounds
-- Will now attack hostile mobs; does bonus arthropod damage
-- Now immune to poison
-- Test taming item now switched to spider eyes
-- Fix lang entry for spawn egg
+- Hitbox now changes depending on if it is standing or walking (with limitations)
 
 >> Items <<
-Wildfire Helmet
-- Fix being able to apply mending to the helmet
-
 Wildfire Shield
-- Fix shield consuming no durability
+- Fix missing recipe
 
 >> Misc <<
-- Client configs will no longer be created on the server
+- Fix some mod incompatibilities
+- Xaeros Minimap support

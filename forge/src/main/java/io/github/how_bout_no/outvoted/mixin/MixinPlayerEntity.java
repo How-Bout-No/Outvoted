@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.world.World;
-import net.minecraftforge.common.extensions.IForgeItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -18,9 +17,12 @@ public abstract class MixinPlayerEntity extends LivingEntity implements PlayerUt
         super(entityType, world);
     }
 
-    @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/extensions/IForgeItem;isShield(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Z"), remap = false)
-    private boolean shields(IForgeItem iForgeItem, ItemStack stack, LivingEntity entity) {
-        System.out.println("called");
+    /*
+     This overwrites the call to isShield() which for whatever reason I can't get to run when I specify the target method
+     Thus, we just redirect the first call in this method which doesn't seem like it would work but... it does?
+    */
+    @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", ordinal = 0))
+    private boolean sh(ItemStack stack, LivingEntity entity) {
         return stack.getItem() instanceof ShieldItem;
     }
 }

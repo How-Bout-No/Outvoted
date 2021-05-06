@@ -34,6 +34,6 @@ public class ModEntityTypes {
     public static final RegistrySupplier<EntityType<MeerkatEntity>> MEERKAT = ENTITY_TYPES
             .register("meerkat", () -> EntityType.Builder
                     .create(MeerkatEntity::new, SpawnGroup.CREATURE)
-                    .setDimensions(0.7F, 1.2F)
+                    .setDimensions(0.8F, 1.3F)
                     .build(new Identifier(Outvoted.MOD_ID, "meerkat").toString()));
 }

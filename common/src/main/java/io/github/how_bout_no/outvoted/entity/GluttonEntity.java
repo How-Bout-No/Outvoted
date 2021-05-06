@@ -127,7 +127,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         compound.put("Enchantments", compoundNBT);
     }
 
-    @Override
     public void readCustomDataFromTag(CompoundTag compound) {
         super.readCustomDataFromTag(compound);
         this.setVariant(compound.getInt("Variant"));
@@ -304,6 +303,11 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         return pair;
     }
 
+    /**
+     * Returns whether this Entity is invulnerable to the given DamageSource.
+     *
+     * @param source
+     */
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return super.isInvulnerableTo(source) && !source.name.equals("wither") && !source.getMagic() && !source.isExplosive();
@@ -356,7 +360,10 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         return exec;
     }
 
-    @Override
+    /**
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
+     */
     public void tickMovement() {
         if (this.isAlive()) {
             this.setInvulnerable(this.isBurrowed());
@@ -512,7 +519,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     /**
      * Creates a vector based on caclulated direction of one of the 8 cardinal directions the entity is facing
      *
-     * @return Vec3d
+     * @return
      */
     private net.minecraft.util.math.Vec3d directionVector() {
         net.minecraft.util.math.Vec3d vec3d = net.minecraft.util.math.Vec3d.ZERO;
