@@ -535,7 +535,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         if (this.hasTargetedEntity() && phase > 0) {
             GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
         }
-        if (event.getController().getCurrentAnimation() == null) {
+        if (event.getController().getCurrentAnimation() == null || event.getController().getCurrentAnimation().animationName == null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
         }
         switch (phase) {
