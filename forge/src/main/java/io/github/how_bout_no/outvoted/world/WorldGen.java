@@ -32,7 +32,7 @@ public class WorldGen {
         if (e instanceof BarnacleEntity || e instanceof GluttonEntity) {
             if (event.getSpawnReason() == SpawnReason.NATURAL && !event.getWorld().getLevelProperties().isHardcore()) {
                 List<Entity> entities = event.getWorld().getOtherEntities(event.getEntity(), event.getEntity().getBoundingBox().stretch(area, area, area).stretch(-area, -area, -area));
-                if (!entities.isEmpty()) {
+                if (entities.stream().anyMatch(entity -> entity instanceof BarnacleEntity || entity instanceof GluttonEntity)) {
                     event.setResult(Event.Result.DENY);
                 }
             }
@@ -76,8 +76,7 @@ public class WorldGen {
                         world.spawnEntity(blaze);
                     }
                 }
-            }
-            if (e instanceof BlazeEntity) {
+            } else if (e instanceof BlazeEntity) {
                 if (event.getSpawnReason() == SpawnReason.SPAWNER) {
                     if (Math.random() > 0.85) {
                         World world = event.getEntity().getEntityWorld();
@@ -87,6 +86,7 @@ public class WorldGen {
 
                         world.spawnEntity(wildfire);
                         event.setCanceled(true);
+                        event.setResult(Event.Result.DENY);
                     }
                 }
             }

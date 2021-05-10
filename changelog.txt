@@ -1,4 +1,7 @@
 >> Entities <<
+Barnacle
+- Fix possible crash on spawn
+
 Meerkat
 - Hitbox now changes depending on if it is standing or walking (with limitations)
 

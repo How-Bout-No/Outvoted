@@ -62,6 +62,10 @@ public class EventRegister {
             }
             return ActionResult.PASS;
         });
+
+//        EntityEvent.LIVING_CHECK_SPAWN.register((entity, world, x, y, z, type, spawner) -> {
+//            return EventResult.pass();
+//        });
     }
 
     static class WoodStripping {

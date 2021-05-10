@@ -13,7 +13,6 @@ architectury {
 
 loom {
     mixinConfigs = ["outvoted.mixins.json", "outvoted-forge.mixins.json"]
-    useFabricMixin = true
 
     dataGen {
         mod "outvoted"
@@ -37,6 +36,8 @@ dependencies {
 
 //    modImplementation("curse.maven:jei-238222:3295418")
 //    modImplementation("curse.maven:xaero-263420:3298032")
+//    modImplementation("curse.maven:alex-426558:3297742")
+//    modImplementation("curse.maven:citadel-331936:3299591")
 
     implementation(project(path: ":common")) {
         transitive = false

@@ -1,4 +1,4 @@
-// Adapted from noobutil https://maven.blamejared.com/noobanidus/libs/noobutil/1.16.4-0.0.7.62/
+// Adapted from noobutil https://maven.blamejared.com/noobanidus/libs/noobutil/
 
 package io.github.how_bout_no.outvoted.mixin;
 

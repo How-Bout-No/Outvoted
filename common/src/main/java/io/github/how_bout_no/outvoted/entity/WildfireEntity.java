@@ -299,25 +299,15 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
             this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         }
 
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
         public boolean canStart() {
             LivingEntity livingentity = this.mob.getTarget();
             return livingentity != null && livingentity.isAlive() && this.mob.canTarget(livingentity);
         }
 
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
         public void start() {
             this.attackStep = 0;
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
         public void stop() {
             this.mob.setOnFire(false);
             this.mob.setShielding(false);
@@ -325,9 +315,6 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
             this.firedRecentlyTimer = 0;
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
         public void tick() {
             --this.attackTime;
             LivingEntity livingentity = this.mob.getTarget();

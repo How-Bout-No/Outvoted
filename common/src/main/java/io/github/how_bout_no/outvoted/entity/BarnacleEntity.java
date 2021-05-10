@@ -85,13 +85,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<BarnacleEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        System.out.println(blockPos.getY() >= world.getTopY(Heightmap.Type.OCEAN_FLOOR, blockPos.getX(), blockPos.getZ()));
         return blockPos.getY() >= world.getTopY(Heightmap.Type.OCEAN_FLOOR, blockPos.getX(), blockPos.getZ()) && world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
     }
 
-    /**
-     * Returns new PathNavigateGround instance
-     */
     protected EntityNavigation createNavigation(World worldIn) {
         return new SwimNavigation(this, worldIn);
     }
@@ -101,6 +97,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         TARGET_ENTITY = DataTracker.registerData(BarnacleEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(TARGET_ENTITY, 0);
@@ -148,10 +145,12 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         }
     }
 
+    @Override
     public boolean canBreatheInWater() {
         return true;
     }
 
+    @Override
     public net.minecraft.entity.EntityGroup getGroup() {
         return net.minecraft.entity.EntityGroup.AQUATIC;
     }
@@ -209,11 +208,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         return worldIn.getFluidState(pos).isIn(FluidTags.WATER) ? 10.0F + worldIn.getBrightness(pos) - 0.5F : super.getPathfindingFavor(pos, worldIn);
     }
 
-    /**
-     * Called when the mob's health reaches 0.
-     *
-     * @param cause
-     */
     @Override
     public void onDeath(DamageSource cause) {
         targetedEntities.remove(this.dataTracker.get(TARGET_ENTITY));
@@ -386,9 +380,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         public void stop() {
         }
 
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
         public boolean canStart() {
             LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
@@ -398,9 +389,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             }
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
         public boolean shouldContinue() {
             LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
@@ -431,18 +419,11 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         }
 
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
         public boolean canStart() {
             LivingEntity livingentity = this.mob.getTarget();
             return livingentity != null && livingentity.isAlive() && this.mob.waterCheck(livingentity) && this.mob.squaredDistanceTo(this.mob.getTarget()) < 64.0D;
         }
 
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
         public boolean shouldContinue() {
             if (this.mob.getTarget() != null) {
                 return this.mob.squaredDistanceTo(this.mob.getTarget()) < 90.5D && this.mob.waterCheck(this.mob.getTarget());
@@ -451,9 +432,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             }
         }
 
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
         public void start() {
             this.tickCounter = -1;
             this.mob.getNavigation().stop();
@@ -462,9 +440,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             this.hasAttacked = false;
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
         public void stop() {
             targetedEntities.remove(this.mob.dataTracker.get(TARGET_ENTITY));
             this.mob.setTargetedEntity(0);
@@ -474,9 +449,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             this.hasAttacked = false;
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
         public void tick() {
             LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null) {
@@ -563,7 +535,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         if (this.hasTargetedEntity() && phase > 0) {
             GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
         }
-        if (event.getController().getCurrentAnimation() == null) {
+        if (event.getController().getCurrentAnimation() == null || event.getController().getCurrentAnimation().animationName == null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
         }
         switch (phase) {

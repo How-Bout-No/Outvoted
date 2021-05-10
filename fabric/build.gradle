@@ -96,6 +96,7 @@ curseforge {
                 requiredDependency 'geckolib-fabric'
                 requiredDependency 'architectury-fabric'
                 requiredDependency 'cloth-config'
+                requiredDependency 'fabric-api'
                 optionalDependency 'patchouli-fabric'
                 optionalDependency 'modmenu'
             }
