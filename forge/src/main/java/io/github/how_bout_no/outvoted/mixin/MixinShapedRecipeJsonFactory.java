@@ -19,7 +19,7 @@ public abstract class MixinShapedRecipeJsonFactory {
     @Redirect(method = "offerTo(Ljava/util/function/Consumer;Lnet/minecraft/util/Identifier;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemGroup;getName()Ljava/lang/String;"))
     private String bruh(ItemGroup itemGroup) {
         for (ItemGroup group : Outvoted.TABS) {
-            if (this.output.isIn(group)) {
+            if (((ItemInvoker) this.output).invokeIsIn(group)) {
                 return group.getName();
             }
         }

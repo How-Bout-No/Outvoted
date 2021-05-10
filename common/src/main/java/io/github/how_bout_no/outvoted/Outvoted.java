@@ -6,6 +6,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.util.EventRegister;
 import io.github.how_bout_no.outvoted.util.SignSprites;
+import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.architectury.registry.CreativeTabs;
@@ -20,6 +21,7 @@ import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
@@ -48,9 +50,6 @@ public class Outvoted {
             clientConfig = config.client;
             commonConfig = config.common;
         }
-
-//        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
-//        config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
 
         GeckoLib.initialize();
         GeckoLibMod.DISABLE_IN_DEV = true;
@@ -83,5 +82,14 @@ public class Outvoted {
 
         SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
         SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
+
+        AutoConfig.getConfigHolder(OutvotedConfig.class).registerSaveListener((manager, data) -> {
+            if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
+            return ActionResult.SUCCESS;
+        });
+        AutoConfig.getConfigHolder(OutvotedConfig.class).registerLoadListener((manager, newData) -> {
+            if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
+            return ActionResult.SUCCESS;
+        });
     }
 }
