@@ -260,10 +260,12 @@
     "subtitle": "subtitles.entity.outvoted.meerkat.ambient",
     "sounds": [
       {
-        "name": "outvoted:entity/meerkat1"
+        "name": "outvoted:entity/meerkat1",
+        "volume": 0.8
       },
       {
-        "name": "outvoted:entity/meerkat2"
+        "name": "outvoted:entity/meerkat2",
+        "volume": 0.9
       },
       {
         "name": "outvoted:entity/meerkat3"

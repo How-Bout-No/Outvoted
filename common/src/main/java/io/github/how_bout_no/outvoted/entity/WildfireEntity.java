@@ -15,11 +15,13 @@ import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
+import java.util.Random;
 
 import static java.lang.Math.*;
 
@@ -166,6 +169,30 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
             type = 0;
         }
         this.setVariant(type);
+
+        if (reason == SpawnReason.NATURAL) {
+            ServerWorld serverWorld = worldIn.toServerWorld();
+            int max = 1;
+            switch (difficultyIn.getGlobalDifficulty()) {
+                case NORMAL:
+                    max = 2;
+                    break;
+                case HARD:
+                    max = 3;
+                    break;
+            }
+            int min = Math.max(max - 1, 1);
+            int rand = new Random().nextInt(max - min) + min;
+            for (int i = 1; i <= rand; i++) {
+                BlazeEntity blaze = EntityType.BLAZE.create(serverWorld);
+                blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
+                while (!serverWorld.isAir(blaze.getBlockPos())) { // Should prevent spawning inside of blocks
+                    blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
+                }
+                serverWorld.spawnEntity(blaze);
+            }
+        }
+
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

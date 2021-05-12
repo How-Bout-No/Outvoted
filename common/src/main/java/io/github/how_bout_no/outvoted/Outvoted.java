@@ -69,7 +69,7 @@ public class Outvoted {
     @Environment(EnvType.CLIENT)
     public static void clientInit() {
         if (clientConfig.creativeTab) {
-            ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "modtab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
+            ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "tab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
             TAB_BLOCKS = TAB;
             TAB_DECO = TAB;
             TAB_COMBAT = TAB;

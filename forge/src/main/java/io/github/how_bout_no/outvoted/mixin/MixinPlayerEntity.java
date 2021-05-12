@@ -1,6 +1,5 @@
 package io.github.how_bout_no.outvoted.mixin;
 
-import io.github.how_bout_no.outvoted.util.PlayerUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity extends LivingEntity implements PlayerUtil {
+public abstract class MixinPlayerEntity extends LivingEntity {
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -22,7 +21,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements PlayerUt
      Thus, we just redirect the first call in this method which doesn't seem like it would work but... it does?
     */
     @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", ordinal = 0))
-    private boolean sh(ItemStack stack, LivingEntity entity) {
+    private boolean justWork(ItemStack stack, LivingEntity entity) {
         return stack.getItem() instanceof ShieldItem;
     }
 }

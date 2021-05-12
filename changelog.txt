@@ -1,14 +1,24 @@
 >> Entities <<
+Wildfire
+- Change how additional Blaze spawns are handled (fixes Wildfires spawning alone in Fabric)
+- Reduced max Blaze group size by 1 for each difficulty
+- Blaz groups will spawn slightly more spread out
+
 Barnacle
 - Fix possible crash on spawn
 
 Meerkat
-- Hitbox now changes depending on if it is standing or walking (with limitations)
+- Hitbox now changes depending on if it is standing or walking (kinda janky; may revert)
+- Altered volume of some sounds
 
 >> Items <<
 Wildfire Shield
-- Fix missing recipe
+- Fix possible missing recipe
+- Revert a testing feature that might've slipped in :3
+
+Patchouli Book
+- Now has a crafting recipe (lava bucket + book for now)
 
 >> Misc <<
-- Fix some mod incompatibilities
+- Fix incompatibility with Netherite Plus
 - Xaeros Minimap support

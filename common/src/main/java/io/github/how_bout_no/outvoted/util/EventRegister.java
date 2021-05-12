@@ -31,11 +31,11 @@ public class EventRegister {
                 Block block = WoodStripping.BLOCK_STRIPPING_MAP.get(blockstate.getBlock());
                 if (block != null) {
                     world.playSound(player, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    player.swingHand(hand, true);
                     if (!world.isClient) {
                         world.setBlockState(pos, block.getDefaultState()
                                 .with(PillarBlock.AXIS, blockstate.get(PillarBlock.AXIS)), 11);
                         itemStack.damage(1, player, (player1) -> {
-                            player1.swingHand(hand, true);
                             player1.sendToolBreakStatus(hand);
                         });
 //                        return ActionResult.SUCCESS;
@@ -62,10 +62,6 @@ public class EventRegister {
             }
             return ActionResult.PASS;
         });
-
-//        EntityEvent.LIVING_CHECK_SPAWN.register((entity, world, x, y, z, type, spawner) -> {
-//            return EventResult.pass();
-//        });
     }
 
     static class WoodStripping {
