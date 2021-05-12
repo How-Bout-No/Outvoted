@@ -3,12 +3,15 @@ Barnacle
 - Fix possible crash on spawn
 
 Meerkat
-- Hitbox now changes depending on if it is standing or walking (with limitations)
+- Hitbox now changes depending on if it is standing or walking (kinda janky)
 
 >> Items <<
 Wildfire Shield
-- Fix missing recipe
+- Fix possible missing recipe
+
+Patchouli Book
+- Now has a crafting recipe (lava bucket + book)
 
 >> Misc <<
-- Fix some mod incompatibilities
+- Fix incompatibility with Netherite Plus
 - Xaeros Minimap support
