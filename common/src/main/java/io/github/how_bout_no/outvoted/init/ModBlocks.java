@@ -97,6 +97,8 @@ public class ModBlocks {
     public static final RegistrySupplier<Item> BAOBAB_DOOR_ITEM = BLOCK_ITEMS.register("baobab_door", () -> new ModTallBlockItem(BAOBAB_DOOR.get(), new Item.Settings()));
     public static final RegistrySupplier<Item> BAOBAB_SIGN_ITEM = BLOCK_ITEMS.register("baobab_sign", () -> new ModSignItem(new Item.Settings(), BAOBAB_SIGN.get(), BAOBAB_WALL_SIGN.get()));
 
+    public static final RegistrySupplier<Block> BURROW = BLOCKS.register("burrow", () -> new Block(Block.Settings.copy(Blocks.BEEHIVE)));
+
     private static net.minecraft.block.PillarBlock createLogBlock(MaterialColor topColor, MaterialColor barkColor) {
         return new net.minecraft.block.PillarBlock(AbstractBlock.Settings.of(Material.WOOD, (state) -> {
             return state.get(net.minecraft.block.PillarBlock.AXIS) == Direction.Axis.Y ? topColor : barkColor;

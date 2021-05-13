@@ -58,6 +58,7 @@ public class Outvoted {
         ModItems.ITEMS.register();
         ModBlocks.BLOCKS.register();
         ModBlocks.BLOCK_ITEMS.register();
+        ModBlockEntityTypes.BLOCK_ENTITIES.register();
         ModFeatures.FEATURES.register();
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
