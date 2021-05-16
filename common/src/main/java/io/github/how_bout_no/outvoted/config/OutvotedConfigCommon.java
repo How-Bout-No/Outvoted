@@ -86,7 +86,7 @@ public class OutvotedConfigCommon implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public int helmetPenalty = 40;
 
-        @ConfigEntry.Gui.Tooltip
-        public boolean giveBook = true;
+        @ConfigEntry.Gui.Excluded
+        public boolean givePatchouliBookOnLogin = true;
     }
 }
