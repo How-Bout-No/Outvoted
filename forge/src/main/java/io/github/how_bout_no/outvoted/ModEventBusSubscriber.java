@@ -6,7 +6,6 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
-import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModFeatures;
 import io.github.how_bout_no.outvoted.init.ModFireBlock;
@@ -26,7 +25,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -56,14 +54,6 @@ public class ModEventBusSubscriber {
 
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () ->
                 (client, parent) -> AutoConfig.getConfigScreen(OutvotedConfig.class, parent).get());
-    }
-
-    @SubscribeEvent
-    public static void onAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.GLUTTON.get(), GluttonEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.BARNACLE.get(), BarnacleEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.MEERKAT.get(), MeerkatEntity.setCustomAttributes().build());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

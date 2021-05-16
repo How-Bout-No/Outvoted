@@ -3,6 +3,7 @@ package io.github.how_bout_no.outvoted;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigClient;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
+import io.github.how_bout_no.outvoted.entity.*;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.util.EventRegister;
 import io.github.how_bout_no.outvoted.util.SignSprites;
@@ -11,6 +12,7 @@ import io.github.how_bout_no.outvoted.world.gen.WorldGen;
 import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.architectury.registry.CreativeTabs;
 import me.shedaniel.architectury.registry.RenderTypes;
+import me.shedaniel.architectury.registry.entity.EntityAttributes;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
@@ -65,6 +67,12 @@ public class Outvoted {
         ModTags.init();
         EventRegister.init();
         WorldGen.addSpawnEntries();
+
+        EntityAttributes.register(ModEntityTypes.WILDFIRE::get, WildfireEntity::setCustomAttributes);
+        EntityAttributes.register(ModEntityTypes.GLUTTON::get, GluttonEntity::setCustomAttributes);
+        EntityAttributes.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);
+        EntityAttributes.register(ModEntityTypes.MEERKAT::get, MeerkatEntity::setCustomAttributes);
+        EntityAttributes.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
     }
 
     @Environment(EnvType.CLIENT)
@@ -84,10 +92,13 @@ public class Outvoted {
         SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
         SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
 
+        if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
+
         AutoConfig.getConfigHolder(OutvotedConfig.class).registerSaveListener((manager, data) -> {
             if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
             return ActionResult.SUCCESS;
         });
+
         AutoConfig.getConfigHolder(OutvotedConfig.class).registerLoadListener((manager, newData) -> {
             if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
             return ActionResult.SUCCESS;
