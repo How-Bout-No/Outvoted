@@ -1,11 +1,19 @@
 >> Entities <<
+Wildfire
+- Fix dropping helmets that didn't match variant
+
 Meerkat
 - Now has Patchouli entry
 
 >> Items <<
+Wildfire Helmet
+- Fix rendering bug with baby models
+- Fix helmets not dropping from mobs other than Wildfires
+
 Wildfire Shield
-- Fix recipe crash when using Fastsuite/FastWorkbench
+- Fix recipe crash when using FastSuite
 - Fix lang entries for shields with banners
+- Fix incorrect repair items
 
 >> Misc <<
 - Option to give Patchouli book to every player on first login

@@ -6,6 +6,7 @@
     "MixinAnvilScreenHandler",
     "MixinBlazeEntity",
     "MixinCorridorExit",
+    "MixinEntity",
     "MixinMendingEnchantment",
     "MixinServerPlayerEntity",
     "MixinSpiderEntity",

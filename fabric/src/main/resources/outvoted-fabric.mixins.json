@@ -3,7 +3,6 @@
   "package": "io.github.how_bout_no.outvoted.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinEntity",
     "MixinPlayerEntity",
     "MixinSpawnRestriction"
   ],
