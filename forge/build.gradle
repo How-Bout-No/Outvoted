@@ -34,6 +34,14 @@ dependencies {
     modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
 
+//    modImplementation("curse.maven:jei-238222:3295418")
+//    modImplementation("curse.maven:xaero-263420:3298032")
+//    modImplementation("curse.maven:alex-426558:3297742")
+//    modImplementation("curse.maven:citadel-331936:3299591")
+//    modImplementation("curse.maven:workbench-394185:3276056")
+//    modImplementation("curse.maven:fastsuite-475117:3295233")
+//    modImplementation("curse.maven:placebo-283644:3281276")
+
     implementation(project(path: ":common")) {
         transitive = false
     }

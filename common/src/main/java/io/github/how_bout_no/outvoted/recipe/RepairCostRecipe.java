@@ -86,9 +86,6 @@ public class RepairCostRecipe extends SpecialCraftingRecipe {
         return itemStack.isEnchantable() || itemStack.hasEnchantments();
     }
 
-    /**
-     * Used to determine if this recipe can fit in a grid of the given width/height
-     */
     public boolean fits(int width, int height) {
         return width * height >= 2;
     }

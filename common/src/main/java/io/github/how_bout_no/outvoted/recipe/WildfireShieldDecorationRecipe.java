@@ -2,8 +2,6 @@ package io.github.how_bout_no.outvoted.recipe;
 
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.init.ModRecipes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
@@ -45,7 +43,6 @@ public class WildfireShieldDecorationRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public boolean fits(int width, int height) {
         return width * height >= 2;
     }
