@@ -6,12 +6,13 @@
     {
       "type": "spotlight",
       "item": "outvoted:wildfire_helmet",
-      "text": "The helmet of the Wildfires, able to supress fire damage at the cost of durability."
+      "text": "The helmet of the Wildfires, able to suppress fire damage at the cost of durability."
     },
     {
       "type": "spotlight",
-      "item": "outvoted:wildfire_helmet{CustomModelData:1.0}",
-      "text": "Variant that drops from Soul Sand Valley variants"
+      "item": "outvoted:wildfire_helmet{SoulTexture:1.0}",
+      "text": "Variant that drops from Soul Sand Valley variants",
+      "flag": "outvoted:wildfirevariant"
     }
   ]
 }

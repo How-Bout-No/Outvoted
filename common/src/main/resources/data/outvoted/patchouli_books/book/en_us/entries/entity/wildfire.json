@@ -11,7 +11,7 @@
     },
     {
       "type": "text",
-      "text": "The Wildfire is a blaze-like mob that patrols the Nether. It is an uncommon \"random encounter\" spawn, and when it shows up it spawns several Blazes along with it. It is capable of shooting a line of fireballs at its enemies, and can put up its shields to block damage which can be disabled like a normal shield.$(br2)Drops: Blaze Rod, $(l:items/wildfire_piece)Shattered Blaze Piece$(/l), $(l:items/wildfire_helmet)Wildfire Helmet$(/l)"
+      "text": "The Wildfire is a blaze-like mob that patrols the Nether. It is an uncommon, \"random encounter\" spawn, and when it shows up it spawns several Blazes along with it. It is capable of shooting a line of fireballs at its enemies, and can put up its shields to block damage.$(br2)Drops: Blaze Rod, $(l:items/wildfire_piece)Shattered Blaze Piece$(/l), $(l:items/wildfire_helmet)Wildfire Helmet$(/l)"
     },
     {
       "type": "entity",

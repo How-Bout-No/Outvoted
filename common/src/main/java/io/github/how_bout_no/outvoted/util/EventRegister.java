@@ -2,8 +2,11 @@ package io.github.how_bout_no.outvoted.util;
 
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModItems;
+import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import me.shedaniel.architectury.event.events.EntityEvent;
 import me.shedaniel.architectury.event.events.InteractionEvent;
+import me.shedaniel.architectury.event.events.PlayerEvent;
+import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -62,6 +65,10 @@ public class EventRegister {
             }
             return ActionResult.PASS;
         });
+
+        PlayerEvent.PLAYER_JOIN.register((serverPlayerEntity -> {
+            if (Platform.isModLoaded("patchouli")) PatchouliCompat.giveBook(serverPlayerEntity);
+        }));
     }
 
     static class WoodStripping {
