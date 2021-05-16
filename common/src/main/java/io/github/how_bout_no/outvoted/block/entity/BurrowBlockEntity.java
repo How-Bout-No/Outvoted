@@ -80,7 +80,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
             compoundTag.remove("Passengers");
             compoundTag.remove("Leash");
             compoundTag.remove("UUID");
-            Direction direction = BurrowBlock.getOpening();
+            Direction direction = this.world.getBlockState(blockPos).get(BurrowBlock.FACING);
             BlockPos blockPos2 = blockPos.offset(direction);
             boolean bl = !this.world.getBlockState(blockPos2).getCollisionShape(this.world, blockPos2).isEmpty();
             if (bl && meerkatState != BurrowBlockEntity.MeerkatState.EMERGENCY) {

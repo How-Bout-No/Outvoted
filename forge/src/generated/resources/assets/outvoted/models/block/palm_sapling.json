@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "cross": "outvoted:block/palm/palm_sapling"
+    "all": "outvoted:block/palm_sapling"
   }
 }

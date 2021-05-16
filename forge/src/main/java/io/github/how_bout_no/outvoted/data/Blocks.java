@@ -18,27 +18,32 @@ public class Blocks extends BlockModelProvider {
     protected void registerModels() {
         registerWood("palm");
         registerWood("baobab");
+        orientable("burrow", new Identifier("block/sand"), new Identifier(Outvoted.MOD_ID, "block/burrow"), new Identifier("block/sand"));
     }
 
     private void registerWood(String input) {
         type = input;
-        textureBase = "block/" + type + "/" + type;
+        textureBase = "block/" + type;
         buttonModel();
         doorModel();
         fenceGateModel();
         fenceModel();
-        singleTexture(type + "_leaves", new Identifier("block/leaves"), "all", new Identifier(Outvoted.MOD_ID, textureBase + "_leaves"));
-        cubeColumn(type + "_log", new Identifier(Outvoted.MOD_ID, textureBase + "_log"), new Identifier(Outvoted.MOD_ID, textureBase + "_log_top"));
-        cubeAll(type + "_planks", new Identifier(Outvoted.MOD_ID, textureBase + "_planks"));
+        singleTexture(type + "_leaves", new Identifier("block/leaves"), "all", id("_leaves"));
+        cubeColumn(type + "_log", id("_log"), id("_log_top"));
+        cubeAll(type + "_planks", id("_planks"));
         pressurePlateModel();
-        cross(type + "_sapling", new Identifier(Outvoted.MOD_ID, textureBase + "_sapling"));
+        cross(type + "_sapling", id("_sapling"));
 //        Can't make sign jsons with this...
 //        singleTexture(type + "_sign", new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks"));
         slabModel();
         stairsModel();
         trapdoorModel();
-        cubeColumn(type + "_wood", new Identifier(Outvoted.MOD_ID, textureBase + "_log"), new Identifier(Outvoted.MOD_ID, textureBase + "_log"));
+        cubeColumn(type + "_wood", id("_log"), id("_log"));
         strippedModels();
+    }
+    
+    private Identifier id(String suffix) {
+        return new Identifier(Outvoted.MOD_ID, textureBase + suffix);
     }
 
     private void buttonModel() {
@@ -113,7 +118,7 @@ public class Blocks extends BlockModelProvider {
 
     private void strippedModels() {
         String path = "stripped_" + type;
-        String newTextureBase = "block/" + type + "/" + path;
+        String newTextureBase = "block/" + path;
         cubeColumn(path + "_log", new Identifier(Outvoted.MOD_ID, newTextureBase + "_log"), new Identifier(Outvoted.MOD_ID, newTextureBase + "_log_top"));
         cubeColumnHorizontal(path + "_log_horizontal", new Identifier(Outvoted.MOD_ID, newTextureBase + "_log"), new Identifier(Outvoted.MOD_ID, newTextureBase + "_log_top"));
         cubeColumn(path + "_wood", new Identifier(Outvoted.MOD_ID, newTextureBase + "_log"), new Identifier(Outvoted.MOD_ID, newTextureBase + "_log"));

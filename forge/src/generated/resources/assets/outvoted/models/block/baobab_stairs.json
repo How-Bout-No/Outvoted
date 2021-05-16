@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/stairs",
   "textures": {
-    "side": "outvoted:block/baobab/baobab_planks",
-    "bottom": "outvoted:block/baobab/baobab_planks",
-    "top": "outvoted:block/baobab/baobab_planks"
+    "side": "outvoted:block/baobab_planks",
+    "bottom": "outvoted:block/baobab_planks",
+    "top": "outvoted:block/baobab_planks"
   }
 }

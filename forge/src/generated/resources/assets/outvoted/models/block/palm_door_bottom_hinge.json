@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/door_bottom_rh",
   "textures": {
-    "bottom": "outvoted:block/palm/palm_door_bottom",
-    "top": "outvoted:block/palm/palm_door_top"
+    "bottom": "outvoted:block/palm_door_bottom",
+    "top": "outvoted:block/palm_door_top"
   }
 }

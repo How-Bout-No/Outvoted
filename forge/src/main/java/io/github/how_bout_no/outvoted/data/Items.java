@@ -18,6 +18,7 @@ public class Items extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        generated("book");
         generated(ModItems.WILDFIRE_SHIELD_PART.get());
         generated(ModItems.WILDFIRE_PIECE.get());
         generated(ModItems.VOID_HEART.get());
@@ -27,6 +28,9 @@ public class Items extends ItemModelProvider {
         egg(ModItems.GLUTTON_SPAWN_EGG.get());
         egg(ModItems.BARNACLE_SPAWN_EGG.get());
         egg(ModItems.MEERKAT_SPAWN_EGG.get());
+        egg(ModItems.OSTRICH_SPAWN_EGG.get());
+        withExistingParent("burrow", new Identifier(Outvoted.MOD_ID, "block/burrow"));
+
 
         singleTexture(ModItems.WILDFIRE_HELMET.get().getRegistryName().getPath(), new Identifier("item/generated"),
                 "layer0", new Identifier(Outvoted.MOD_ID, "item/wildfire_helmet"))
@@ -79,7 +83,7 @@ public class Items extends ItemModelProvider {
         withParent("log");
         withParent("planks");
         withParent("pressure_plate");
-        generatedWood("sapling", "block/" + type + "/" + type + "_sapling");
+        generatedWood("sapling", "block/" + type + "_sapling");
         generatedWood("sign");
         withParent("slab");
         withParent("stairs");

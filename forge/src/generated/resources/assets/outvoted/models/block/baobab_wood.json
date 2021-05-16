@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "side": "outvoted:block/baobab/baobab_log",
-    "end": "outvoted:block/baobab/baobab_log"
+    "side": "outvoted:block/baobab_log",
+    "end": "outvoted:block/baobab_log"
   }
 }

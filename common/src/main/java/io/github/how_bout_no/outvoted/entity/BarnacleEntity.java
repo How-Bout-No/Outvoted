@@ -88,6 +88,10 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         return blockPos.getY() >= world.getTopY(Heightmap.Type.OCEAN_FLOOR, blockPos.getX(), blockPos.getZ()) && world.getDifficulty() != Difficulty.PEACEFUL && blockPos.getY() <= 45.0 && (spawnReason == SpawnReason.SPAWNER || world.getFluidState(blockPos).isIn(FluidTags.WATER));
     }
 
+//    public int getLimitPerChunk() {
+//        return 1;
+//    }
+
     protected EntityNavigation createNavigation(World worldIn) {
         return new SwimNavigation(this, worldIn);
     }

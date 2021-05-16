@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "outvoted:block/baobab/baobab_sapling"
+    "layer0": "outvoted:block/baobab_sapling"
   }
 }

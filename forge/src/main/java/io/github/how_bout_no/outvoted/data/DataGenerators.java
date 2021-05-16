@@ -22,6 +22,7 @@ public class DataGenerators {
         if (event.includeClient()) {
             generator.install(new Blocks(generator, event.getExistingFileHelper()));
             generator.install(new Items(generator, event.getExistingFileHelper()));
+            generator.install(new BlockStates(generator, existingFileHelper));
         }
     }
 }

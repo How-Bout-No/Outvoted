@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "cross": "outvoted:block/baobab/baobab_sapling"
+    "all": "outvoted:block/baobab_sapling"
   }
 }

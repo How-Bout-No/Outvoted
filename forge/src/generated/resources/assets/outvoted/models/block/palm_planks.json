@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "outvoted:block/palm/palm_planks"
+    "all": "outvoted:block/palm_planks"
   }
 }

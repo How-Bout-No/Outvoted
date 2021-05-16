@@ -1,6 +1,7 @@
 package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.block.ModBlockItems.ModBlockItem;
 import io.github.how_bout_no.outvoted.block.ModBlockItems.ModDecoBlockItem;
 import io.github.how_bout_no.outvoted.block.ModBlockItems.ModSignItem;
@@ -26,6 +27,8 @@ public class ModBlocks {
     public static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(Outvoted.MOD_ID, Registry.ITEM_KEY);
 
     // Blocks
+    public static final RegistrySupplier<Block> BURROW = BLOCKS.register("burrow", () -> new BurrowBlock(Block.Settings.copy(Blocks.SAND)));
+
     public static final RegistrySupplier<Block> PALM_PLANKS = BLOCKS.register("palm_planks", () -> new Block(Block.Settings.copy(Blocks.JUNGLE_PLANKS)));
     public static final RegistrySupplier<Block> PALM_LOG = BLOCKS.register("palm_log", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.JUNGLE_LOG)));
     public static final RegistrySupplier<Block> PALM_LEAVES = BLOCKS.register("palm_leaves", () -> new LeavesBlock(Block.Settings.copy(Blocks.JUNGLE_LEAVES)));
@@ -63,6 +66,8 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> BAOBAB_WALL_SIGN = BLOCKS.register("baobab_wall_sign", () -> new ModdedWallSignBlock(Block.Settings.copy(Blocks.ACACIA_WALL_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
 
     // Block items
+    public static final RegistrySupplier<Item> BURROW_ITEM = BLOCK_ITEMS.register("burrow", () -> new ModBlockItem(BURROW.get(), new Item.Settings()));
+
     public static final RegistrySupplier<Item> PALM_PLANKS_ITEM = BLOCK_ITEMS.register("palm_planks", () -> new ModBlockItem(PALM_PLANKS.get(), new Item.Settings()));
     public static final RegistrySupplier<Item> PALM_LOG_ITEM = BLOCK_ITEMS.register("palm_log", () -> new ModBlockItem(PALM_LOG.get(), new Item.Settings()));
     public static final RegistrySupplier<Item> PALM_LEAVES_ITEM = BLOCK_ITEMS.register("palm_leaves", () -> new ModBlockItem(PALM_LEAVES.get(), new Item.Settings()));
@@ -96,8 +101,6 @@ public class ModBlocks {
     public static final RegistrySupplier<Item> BAOBAB_TRAPDOOR_ITEM = BLOCK_ITEMS.register("baobab_trapdoor", () -> new ModBlockItem(BAOBAB_TRAPDOOR.get(), new Item.Settings()));
     public static final RegistrySupplier<Item> BAOBAB_DOOR_ITEM = BLOCK_ITEMS.register("baobab_door", () -> new ModTallBlockItem(BAOBAB_DOOR.get(), new Item.Settings()));
     public static final RegistrySupplier<Item> BAOBAB_SIGN_ITEM = BLOCK_ITEMS.register("baobab_sign", () -> new ModSignItem(new Item.Settings(), BAOBAB_SIGN.get(), BAOBAB_WALL_SIGN.get()));
-
-    public static final RegistrySupplier<Block> BURROW = BLOCKS.register("burrow", () -> new Block(Block.Settings.copy(Blocks.BEEHIVE)));
 
     private static net.minecraft.block.PillarBlock createLogBlock(MaterialColor topColor, MaterialColor barkColor) {
         return new net.minecraft.block.PillarBlock(AbstractBlock.Settings.of(Material.WOOD, (state) -> {

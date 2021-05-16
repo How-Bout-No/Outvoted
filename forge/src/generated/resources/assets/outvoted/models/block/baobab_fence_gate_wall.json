@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_fence_gate_wall",
   "textures": {
-    "texture": "outvoted:block/baobab/baobab_planks"
+    "texture": "outvoted:block/baobab_planks"
   }
 }
