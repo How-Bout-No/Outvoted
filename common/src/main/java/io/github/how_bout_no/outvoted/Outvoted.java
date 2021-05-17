@@ -75,6 +75,9 @@ public class Outvoted {
         EntityAttributes.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);
         EntityAttributes.register(ModEntityTypes.MEERKAT::get, MeerkatEntity::setCustomAttributes);
         EntityAttributes.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
+
+        SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
+        SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
     }
 
     @Environment(EnvType.CLIENT)
@@ -90,9 +93,6 @@ public class Outvoted {
 
         RenderTypes.register(RenderLayer.getCutoutMipped(), ModBlocks.PALM_SAPLING.get(), ModBlocks.PALM_TRAPDOOR.get(), ModBlocks.PALM_DOOR.get(),
                 ModBlocks.BAOBAB_SAPLING.get(), ModBlocks.BAOBAB_TRAPDOOR.get(), ModBlocks.BAOBAB_DOOR.get());
-
-        SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
-        SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
 
         if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
 
