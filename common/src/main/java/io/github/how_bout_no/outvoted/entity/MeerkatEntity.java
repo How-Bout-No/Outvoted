@@ -8,6 +8,7 @@ import io.github.how_bout_no.outvoted.init.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetFinder;
@@ -39,10 +40,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -183,7 +181,8 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     private boolean doesBurrowHaveSpace(BlockPos pos) {
         BlockEntity blockEntity = this.world.getBlockEntity(pos);
         if (blockEntity instanceof BurrowBlockEntity) {
-            return !((BurrowBlockEntity) blockEntity).isFullOfMeerkats();
+            Direction dir = this.world.getBlockState(pos).get(FacingBlock.FACING);
+            return !((BurrowBlockEntity) blockEntity).isFullOfMeerkats() && this.world.getBlockState(pos.offset(dir)).isAir();
         } else {
             return false;
         }
@@ -393,9 +392,9 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     class EnterBurrowGoal extends Goal {
         public boolean canStart() {
-            if (MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow() && MeerkatEntity.this.burrowPos.isWithinDistance(MeerkatEntity.this.getPos(), 2.0D)) {
+            if (MeerkatEntity.this.burrowPos != null && MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow()) {
                 BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
-                if (blockEntity instanceof BurrowBlockEntity) {
+                if (blockEntity instanceof BurrowBlockEntity && MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING)).isWithinDistance(MeerkatEntity.this.getPos(), 1.5D)) {
                     BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
                     if (!burrowBlockEntity.isFullOfMeerkats()) {
                         return true;
@@ -447,7 +446,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             BlockPos blockPos = MeerkatEntity.this.getBlockPos();
             PointOfInterestStorage pointOfInterestStorage = ((ServerWorld) MeerkatEntity.this.world).getPointOfInterestStorage();
             Stream<PointOfInterest> stream = pointOfInterestStorage.getInCircle((pointOfInterestType) -> {
-                return pointOfInterestType == ModPOITypes.BURROW;
+                return pointOfInterestType == ModPOITypes.BURROW.get();
             }, blockPos, 20, PointOfInterestStorage.OccupationStatus.ANY);
             return (List) stream.map(PointOfInterest::getPos).filter((blockPosx) -> {
                 return MeerkatEntity.this.doesBurrowHaveSpace(blockPosx);
@@ -507,7 +506,12 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            return MeerkatEntity.this.burrowPos != null && !MeerkatEntity.this.hasPositionTarget() && MeerkatEntity.this.canEnterBurrow() && !this.isCloseEnough(MeerkatEntity.this.burrowPos) && MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).isOf(ModBlocks.BURROW.get());
+            return MeerkatEntity.this.burrowPos != null &&
+                    !MeerkatEntity.this.hasPositionTarget() &&
+                    MeerkatEntity.this.canEnterBurrow() &&
+                    !this.isCloseEnough(MeerkatEntity.this.burrowPos) &&
+                    MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).isOf(ModBlocks.BURROW.get()) &&
+                    MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING))).isAir();
         }
 
         public boolean shouldContinue() {
@@ -529,18 +533,19 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
         public void tick() {
             if (MeerkatEntity.this.burrowPos != null) {
+                BlockPos blockPos = MeerkatEntity.this.burrowPos.offset(world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING));
                 ++this.ticks;
                 if (this.ticks > 600) {
                     this.makeChosenBurrowPossibleBurrow();
                 } else if (!MeerkatEntity.this.navigation.isFollowingPath()) {
-                    if (!MeerkatEntity.this.isWithinDistance(MeerkatEntity.this.burrowPos, 16)) {
-                        if (MeerkatEntity.this.isTooFar(MeerkatEntity.this.burrowPos)) {
+                    if (!MeerkatEntity.this.isWithinDistance(blockPos, 16)) {
+                        if (MeerkatEntity.this.isTooFar(blockPos)) {
                             this.setLost();
                         } else {
-                            MeerkatEntity.this.startMovingTo(MeerkatEntity.this.burrowPos);
+                            MeerkatEntity.this.startMovingTo(blockPos);
                         }
                     } else {
-                        boolean bl = this.startMovingToFar(MeerkatEntity.this.burrowPos);
+                        boolean bl = this.startMovingToFar(blockPos);
                         if (!bl) {
                             this.makeChosenBurrowPossibleBurrow();
                         } else if (this.path != null && MeerkatEntity.this.navigation.getCurrentPath().equalsPath(this.path)) {
@@ -595,7 +600,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         private boolean isCloseEnough(BlockPos pos) {
-            if (MeerkatEntity.this.isWithinDistance(pos, 2)) {
+            if (pos.isWithinDistance(MeerkatEntity.this.getBlockPos(), 1.5D)) {
                 return true;
             } else {
                 Path path = MeerkatEntity.this.navigation.getCurrentPath();

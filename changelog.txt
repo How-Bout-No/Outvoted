@@ -18,3 +18,4 @@ Wildfire Shield
 >> Misc <<
 - Option to give Patchouli book to every player on first login
 - Updated Patchouli entries
+- Fix sign textures on Forge

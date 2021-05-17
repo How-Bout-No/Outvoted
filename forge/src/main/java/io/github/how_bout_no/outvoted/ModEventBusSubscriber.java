@@ -6,10 +6,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
-import io.github.how_bout_no.outvoted.init.ModFeatures;
-import io.github.how_bout_no.outvoted.init.ModFireBlock;
-import io.github.how_bout_no.outvoted.init.ModItems;
+import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -69,6 +66,7 @@ public class ModEventBusSubscriber {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPostRegisterBlocks(final RegistryEvent.Register<Block> event) {
         ModFireBlock.init();
+        ModPOITypes.POINT_OF_INTEREST_TYPES.register();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

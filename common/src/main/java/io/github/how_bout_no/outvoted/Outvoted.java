@@ -64,8 +64,6 @@ public class Outvoted {
         ModFeatures.FEATURES.register();
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
-//        ModPOITypes.POINT_OF_INTEREST_TYPES.register();
-        ModPOITypes.init();
         ModTags.init();
         EventRegister.init();
         WorldGen.addSpawnEntries();

@@ -5,6 +5,7 @@ import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.init.ModBlockEntityTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -39,14 +40,6 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         return this.meerkats.size() == 3;
     }
 
-    private List<Entity> tryReleaseMeerkat(BlockState state, BurrowBlockEntity.MeerkatState meerkatState) {
-        List<Entity> list = Lists.newArrayList();
-        this.meerkats.removeIf((meerkat) -> {
-            return this.releaseMeerkat(state, meerkat, list, meerkatState);
-        });
-        return list;
-    }
-
     public void tryEnterBurrow(Entity entity, boolean hasNectar) {
         this.tryEnterBurrow(entity, hasNectar, 0);
     }
@@ -56,7 +49,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
     }
 
     public void tryEnterBurrow(Entity entity, boolean hasNectar, int ticksInBurrow) {
-        if (this.meerkats.size() < 3) {
+        if (this.meerkats.size() < 5) {
             entity.stopRiding();
             entity.removeAllPassengers();
             CompoundTag compoundTag = new CompoundTag();
@@ -72,7 +65,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
     }
 
     private boolean releaseMeerkat(BlockState state, BurrowBlockEntity.Meerkat meerkat, @Nullable List<Entity> list, BurrowBlockEntity.MeerkatState meerkatState) {
-        if ((this.world.isNight() || this.world.isRaining()) && meerkatState != BurrowBlockEntity.MeerkatState.EMERGENCY) {
+        if ((this.world.isNight() || this.world.isRaining()) && meerkatState != BurrowBlockEntity.MeerkatState.EMERGENCY && !this.world.getBlockState(this.pos.offset(state.get(FacingBlock.FACING))).isAir()) {
             return false;
         } else {
             BlockPos blockPos = this.getPos();

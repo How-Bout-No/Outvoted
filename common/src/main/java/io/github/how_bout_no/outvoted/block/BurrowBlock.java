@@ -5,8 +5,6 @@ import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +16,6 @@ import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,10 +77,15 @@ public class BurrowBlock extends BlockWithEntity {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!world.isClient && blockEntity instanceof BurrowBlockEntity) {
             if (!((BurrowBlockEntity) blockEntity).hasNoMeerkats()) {
-                for (Tag tag : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
+                for (Tag tag1 : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
+                    CompoundTag tag = ((CompoundTag) tag1);
                     MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
-                    meerkatEntity.refreshPositionAndAngles(pos, 0.0F, 0.0F);
-                    meerkatEntity.initialize((ServerWorldAccess) world, world.getLocalDifficulty(pos), SpawnReason.DISPENSER, (EntityData) ((CompoundTag) tag).get("EntityData"), (CompoundTag) null);
+                    meerkatEntity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), 0.0F);
+                    System.out.println(meerkatEntity.toTag(new CompoundTag()));
+                    meerkatEntity.readCustomDataFromTag((CompoundTag) tag.get("EntityData"));
+                    meerkatEntity.age += tag.getInt("TicksInBurrow");
+                    System.out.println(((CompoundTag) tag.get("EntityData")).getFloat("Health"));
+                    System.out.println(meerkatEntity.getHealth());
                     world.spawnEntity(meerkatEntity);
                 }
             }
