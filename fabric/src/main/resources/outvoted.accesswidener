@@ -16,3 +16,4 @@ accessible  method  net/minecraft/tag/ItemTags                  register        
 accessible  field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
 mutable     field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
 extendable class  net/minecraft/structure/NetherFortressGenerator$Piece
+accessible method net/minecraft/world/poi/PointOfInterestType <init>       (Ljava/lang/String;Ljava/util/Set;II)V

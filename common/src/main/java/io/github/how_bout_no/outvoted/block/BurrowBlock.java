@@ -1,20 +1,16 @@
 package io.github.how_bout_no.outvoted.block;
 
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
+import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
+import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.TntEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.WitherSkullEntity;
-import net.minecraft.entity.vehicle.TntMinecartEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.BlockMirror;
@@ -22,19 +18,16 @@ import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class BurrowBlock extends BlockWithEntity {
-    public static final DirectionProperty FACING;
+    public static DirectionProperty FACING;
 
     public BurrowBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.UP));
     }
 
     public BlockRenderType getRenderType(BlockState state) {
@@ -46,83 +39,61 @@ public class BurrowBlock extends BlockWithEntity {
         return new BurrowBlockEntity();
     }
 
-    @Override
+//    @Nullable
+//    private Direction getNewDirection(BlockPos pos, WorldAccess world) {
+//        Direction opening = world.getBlockState(pos).get(FACING);
+//        if (opening != null)
+//            if (world.getBlockState(pos.offset(opening)).isAir())
+//                return null;
+//        for (Direction direction1 : Direction.values()) {
+//            if (direction1 != Direction.DOWN) {
+//                if (world.getBlockState(pos.offset(direction1)).isAir()) {
+//                    return direction1;
+//                }
+//            }
+//        }
+//        world.setBlockState(pos, Blocks.SAND.getDefaultState(), 0);
+//        return null;
+//    }
+//
+//    private void refreshDirection(BlockPos pos, WorldAccess world) {
+//        Direction direction = getNewDirection(pos, world);
+//        if (direction != null)
+//            world.setBlockState(pos, world.getBlockState(pos).with(FACING, direction), 18);
+//    }
+//
+//    @Override
+//    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+//        if (!state.isOf(oldState.getBlock())) {
+//            refreshDirection(pos, world);
+//        }
+//    }
+//
+//    @Override
+//    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+//        refreshDirection(pos, world);
+//
+//        return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
+//    }
+
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isClient && player.isCreative() && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BurrowBlockEntity) {
-                BurrowBlockEntity BurrowBlockEntity = (BurrowBlockEntity) blockEntity;
-                ItemStack itemStack = new ItemStack(this);
-                boolean bl = !BurrowBlockEntity.hasNoMeerkats();
-                if (!bl) {
-                    return;
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (!world.isClient && blockEntity instanceof BurrowBlockEntity) {
+            if (!((BurrowBlockEntity) blockEntity).hasNoMeerkats()) {
+                for (Tag tag : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
+                    MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
+                    meerkatEntity.refreshPositionAndAngles(pos, 0.0F, 0.0F);
+                    meerkatEntity.initialize((ServerWorldAccess) world, world.getLocalDifficulty(pos), SpawnReason.DISPENSER, (EntityData) ((CompoundTag) tag).get("EntityData"), (CompoundTag) null);
+                    world.spawnEntity(meerkatEntity);
                 }
-
-                CompoundTag compoundTag2;
-                if (bl) {
-                    compoundTag2 = new CompoundTag();
-                    compoundTag2.put("Bees", BurrowBlockEntity.getMeerkats());
-                    itemStack.putSubTag("BlockEntityTag", compoundTag2);
-                }
-
-                compoundTag2 = new CompoundTag();
-                itemStack.putSubTag("BlockStateTag", compoundTag2);
-                ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), itemStack);
-                itemEntity.setToDefaultPickupDelay();
-                world.spawnEntity(itemEntity);
             }
         }
 
         super.onBreak(world, pos, state, player);
     }
 
-    @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, net.minecraft.loot.context.LootContext.Builder builder) {
-        Entity entity = (Entity) builder.getNullable(LootContextParameters.THIS_ENTITY);
-        if (entity instanceof TntEntity || entity instanceof CreeperEntity || entity instanceof WitherSkullEntity || entity instanceof WitherEntity || entity instanceof TntMinecartEntity) {
-            BlockEntity blockEntity = (BlockEntity) builder.getNullable(LootContextParameters.BLOCK_ENTITY);
-            if (blockEntity instanceof BurrowBlockEntity) {
-                BurrowBlockEntity BurrowBlockEntity = (BurrowBlockEntity) blockEntity;
-//                BurrowBlockEntity.angerBees((PlayerEntity)null, state, BurrowBlockEntity.BeeState.EMERGENCY);
-            }
-        }
-
-        return super.getDroppedStacks(state, builder);
-    }
-
-    private void refreshOpening(BlockPos pos, WorldAccess world) {
-        Direction opening = (Direction) world.getBlockState(pos).get(FACING);
-        if (opening != null)
-            if (world.getBlockState(pos.offset(opening)).isAir())
-                return;
-        for (Direction direction1 : Direction.values()) {
-            if (direction1 != Direction.DOWN) {
-                if (world.getBlockState(pos.offset(direction1)).isAir()) {
-                    opening = direction1;
-                    this.rotate(world.getBlockState(pos), BlockRotation.NONE);
-                    return;
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        if (!state.isOf(oldState.getBlock())) {
-            refreshOpening(pos, world);
-        }
-    }
-
-    @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-        refreshOpening(pos, world);
-
-        return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
-    }
-
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        System.out.println("yo");
-        return (BlockState) this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {

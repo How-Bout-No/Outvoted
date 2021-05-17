@@ -10,7 +10,8 @@
     "MixinMendingEnchantment",
     "MixinServerPlayerEntity",
     "MixinSpiderEntity",
-    "MixinUtils"
+    "MixinUtils",
+    "PointOfInterestTypeAccessor"
   ],
   "client": [
     "MixinAtlases",

@@ -1,14 +1,18 @@
 package io.github.how_bout_no.outvoted.entity;
 
+import com.google.common.collect.Lists;
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
-import io.github.how_bout_no.outvoted.init.ModSounds;
+import io.github.how_bout_no.outvoted.init.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.TargetFinder;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -43,6 +47,8 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.poi.PointOfInterest;
+import net.minecraft.world.poi.PointOfInterestStorage;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -53,10 +59,9 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.EnumSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.SPIDER_EYE);
@@ -64,6 +69,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     private static final TrackedData<Optional<UUID>> TRUSTED_UUID;
     private BlockPos structurepos = null;
     private int animtimer = 0;
+    private int cannotEnterBurrowTicks;
+    private int ticksLeftToFindBurrow = 0;
+    @Nullable
+    private BlockPos burrowPos = null;
+    private MeerkatEntity.MoveToBurrowGoal moveToBurrowGoal;
 
     public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
         super(type, worldIn);
@@ -72,14 +82,18 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     protected void initGoals() {
-        this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(2, new MeerkatEntity.VentureGoal(this, 1.25D));
-        this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.add(4, new AnimalMateGoal(this, 1.0D));
-        this.goalSelector.add(5, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.add(6, new WanderAroundFarGoal(this, 1.0D));
-        this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.add(8, new LookAroundGoal(this));
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new MeerkatEntity.VentureGoal(this, 1.25D));
+        this.goalSelector.add(2, new MeerkatEntity.EnterBurrowGoal());
+        this.goalSelector.add(3, new AnimalMateGoal(this, 1.0D));
+        this.goalSelector.add(4, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(6, new MeerkatEntity.FindBurrowGoal());
+        this.moveToBurrowGoal = new MeerkatEntity.MoveToBurrowGoal();
+        this.goalSelector.add(7, this.moveToBurrowGoal);
+        this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
+        this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(9, new LookAroundGoal(this));
         this.targetSelector.add(1, (new RevengeGoal(this, PlayerEntity.class, MeerkatEntity.class)));
         this.targetSelector.add(2, new FollowTargetGoal<>(this, HostileEntity.class, true));
     }
@@ -107,11 +121,19 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         if (this.hasStructurePos()) tag.put("StructPos", NbtHelper.fromBlockPos(this.getStructurePos()));
         tag.putBoolean("Trusting", this.isTrusting());
         if (this.hasTrusted()) tag.putUuid("Trusted", getTrusted());
+        if (this.hasBurrow()) {
+            tag.put("BurrowPos", NbtHelper.fromBlockPos(this.getBurrowPos()));
+        }
     }
 
     public void readCustomDataFromTag(CompoundTag tag) {
         this.structurepos = null;
         if (tag.contains("StructPos")) this.structurepos = NbtHelper.toBlockPos(tag.getCompound("StructPos"));
+
+        this.burrowPos = null;
+        if (tag.contains("BurrowPos")) {
+            this.burrowPos = NbtHelper.toBlockPos(tag.getCompound("BurrowPos"));
+        }
 
         super.readCustomDataFromTag(tag);
         this.setTrusting(tag.getBoolean("Trusting"));
@@ -158,6 +180,33 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         return TAMING_INGREDIENT.test(stack);
     }
 
+    private boolean doesBurrowHaveSpace(BlockPos pos) {
+        BlockEntity blockEntity = this.world.getBlockEntity(pos);
+        if (blockEntity instanceof BurrowBlockEntity) {
+            return !((BurrowBlockEntity) blockEntity).isFullOfMeerkats();
+        } else {
+            return false;
+        }
+    }
+
+    public boolean hasBurrow() {
+        return this.burrowPos != null;
+    }
+
+    @Nullable
+    public BlockPos getBurrowPos() {
+        return this.burrowPos;
+    }
+
+    private boolean isBurrowValid() {
+        if (!this.hasBurrow()) {
+            return false;
+        } else {
+            BlockEntity blockEntity = this.world.getBlockEntity(this.burrowPos);
+            return blockEntity != null && blockEntity.getType() == ModBlockEntityTypes.BURROW.get();
+        }
+    }
+
     private boolean hasStructurePos() {
         return this.structurepos != null;
     }
@@ -172,7 +221,6 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             BlockPos blockPos = new BlockPos(this.getBlockPos());
             if (this.getServer().getOverworld() != null) {
                 ServerWorld serverWorld = this.getServer().getOverworld();
-                System.out.println(serverWorld.getBiome(blockPos).getScale());
                 BlockPos blockPos2 = serverWorld.locateStructure(structureFeature, blockPos, (int) Math.floor(10 * serverWorld.getBiome(blockPos).getScale()), false);
                 return blockPos2;
             }
@@ -182,6 +230,24 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     public static boolean canSpawn(EntityType<MeerkatEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
         return world.getBaseLightLevel(blockPos, 0) > 8 && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isOf(Blocks.SAND);
+    }
+
+    public void tickMovement() {
+        super.tickMovement();
+        if (!this.world.isClient) {
+            if (this.cannotEnterBurrowTicks > 0) {
+                --this.cannotEnterBurrowTicks;
+            }
+
+            if (this.ticksLeftToFindBurrow > 0) {
+                --this.ticksLeftToFindBurrow;
+            }
+
+            if (this.age % 20 == 0 && !this.isBurrowValid()) {
+                this.burrowPos = null;
+            }
+        }
+
     }
 
     @Environment(EnvType.CLIENT)
@@ -317,6 +383,223 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
                 }
                 if (this.mob.squaredDistanceTo(this.mob.getStructurePos().getX(), this.mob.getY(), this.mob.getStructurePos().getZ()) <= 100)
                     this.reached = true;
+            }
+        }
+    }
+
+    private boolean canEnterBurrow() {
+        return this.getTarget() == null;
+    }
+
+    class EnterBurrowGoal extends Goal {
+        public boolean canStart() {
+            if (MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow() && MeerkatEntity.this.burrowPos.isWithinDistance(MeerkatEntity.this.getPos(), 2.0D)) {
+                BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
+                if (blockEntity instanceof BurrowBlockEntity) {
+                    BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
+                    if (!burrowBlockEntity.isFullOfMeerkats()) {
+                        return true;
+                    }
+
+                    MeerkatEntity.this.burrowPos = null;
+                }
+            }
+
+            return false;
+        }
+
+        public void start() {
+            BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
+            if (blockEntity instanceof BurrowBlockEntity) {
+                BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
+                burrowBlockEntity.tryEnterBurrow(MeerkatEntity.this, false);
+            }
+        }
+    }
+
+    class FindBurrowGoal extends Goal {
+        public boolean canStart() {
+            return MeerkatEntity.this.ticksLeftToFindBurrow == 0 && !MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow();
+        }
+
+        public void start() {
+            MeerkatEntity.this.ticksLeftToFindBurrow = 200;
+            List<BlockPos> list = this.getNearbyFreeBurrows();
+            if (!list.isEmpty()) {
+                Iterator var2 = list.iterator();
+
+                BlockPos blockPos;
+                do {
+                    if (!var2.hasNext()) {
+                        MeerkatEntity.this.moveToBurrowGoal.clearPossibleBurrows();
+                        MeerkatEntity.this.burrowPos = (BlockPos) list.get(0);
+                        return;
+                    }
+
+                    blockPos = (BlockPos) var2.next();
+                } while (MeerkatEntity.this.moveToBurrowGoal.isPossibleBurrow(blockPos));
+
+                MeerkatEntity.this.burrowPos = blockPos;
+            }
+        }
+
+        private List<BlockPos> getNearbyFreeBurrows() {
+            BlockPos blockPos = MeerkatEntity.this.getBlockPos();
+            PointOfInterestStorage pointOfInterestStorage = ((ServerWorld) MeerkatEntity.this.world).getPointOfInterestStorage();
+            Stream<PointOfInterest> stream = pointOfInterestStorage.getInCircle((pointOfInterestType) -> {
+                return pointOfInterestType == ModPOITypes.BURROW;
+            }, blockPos, 20, PointOfInterestStorage.OccupationStatus.ANY);
+            return (List) stream.map(PointOfInterest::getPos).filter((blockPosx) -> {
+                return MeerkatEntity.this.doesBurrowHaveSpace(blockPosx);
+            }).sorted(Comparator.comparingDouble((blockPos2) -> {
+                return blockPos2.getSquaredDistance(blockPos);
+            })).collect(Collectors.toList());
+        }
+    }
+
+    private boolean isWithinDistance(BlockPos pos, int distance) {
+        return pos.isWithinDistance(this.getBlockPos(), (double) distance);
+    }
+
+    private boolean isTooFar(BlockPos pos) {
+        return !this.isWithinDistance(pos, 32);
+    }
+
+    private void startMovingTo(BlockPos pos) {
+        Vec3d vec3d = Vec3d.ofBottomCenter(pos);
+        int i = 0;
+        BlockPos blockPos = this.getBlockPos();
+        int j = (int) vec3d.y - blockPos.getY();
+        if (j > 2) {
+            i = 4;
+        } else if (j < -2) {
+            i = -4;
+        }
+
+        int k = 6;
+        int l = 8;
+        int m = blockPos.getManhattanDistance(pos);
+        if (m < 15) {
+            k = m / 2;
+            l = m / 2;
+        }
+
+        Vec3d vec3d2 = TargetFinder.findGroundTargetTowards(this, k, l, i, vec3d, 0.3141592741012573D);
+        if (vec3d2 != null) {
+            this.navigation.setRangeMultiplier(0.5F);
+            this.navigation.startMovingTo(vec3d2.x, vec3d2.y, vec3d2.z, 1.0D);
+        }
+    }
+
+    class MoveToBurrowGoal extends Goal {
+        private int ticks;
+        private List<BlockPos> possibleBurrows;
+        @Nullable
+        private Path path;
+        private int ticksUntilLost;
+
+        MoveToBurrowGoal() {
+            super();
+            this.ticks = MeerkatEntity.this.world.random.nextInt(10);
+            this.possibleBurrows = Lists.newArrayList();
+            this.path = null;
+            this.setControls(EnumSet.of(Control.MOVE));
+        }
+
+        public boolean canStart() {
+            return MeerkatEntity.this.burrowPos != null && !MeerkatEntity.this.hasPositionTarget() && MeerkatEntity.this.canEnterBurrow() && !this.isCloseEnough(MeerkatEntity.this.burrowPos) && MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).isOf(ModBlocks.BURROW.get());
+        }
+
+        public boolean shouldContinue() {
+            return this.canStart();
+        }
+
+        public void start() {
+            this.ticks = 0;
+            this.ticksUntilLost = 0;
+            super.start();
+        }
+
+        public void stop() {
+            this.ticks = 0;
+            this.ticksUntilLost = 0;
+            MeerkatEntity.this.navigation.stop();
+            MeerkatEntity.this.navigation.resetRangeMultiplier();
+        }
+
+        public void tick() {
+            if (MeerkatEntity.this.burrowPos != null) {
+                ++this.ticks;
+                if (this.ticks > 600) {
+                    this.makeChosenBurrowPossibleBurrow();
+                } else if (!MeerkatEntity.this.navigation.isFollowingPath()) {
+                    if (!MeerkatEntity.this.isWithinDistance(MeerkatEntity.this.burrowPos, 16)) {
+                        if (MeerkatEntity.this.isTooFar(MeerkatEntity.this.burrowPos)) {
+                            this.setLost();
+                        } else {
+                            MeerkatEntity.this.startMovingTo(MeerkatEntity.this.burrowPos);
+                        }
+                    } else {
+                        boolean bl = this.startMovingToFar(MeerkatEntity.this.burrowPos);
+                        if (!bl) {
+                            this.makeChosenBurrowPossibleBurrow();
+                        } else if (this.path != null && MeerkatEntity.this.navigation.getCurrentPath().equalsPath(this.path)) {
+                            ++this.ticksUntilLost;
+                            if (this.ticksUntilLost > 60) {
+                                this.setLost();
+                                this.ticksUntilLost = 0;
+                            }
+                        } else {
+                            this.path = MeerkatEntity.this.navigation.getCurrentPath();
+                        }
+
+                    }
+                }
+            }
+        }
+
+        private boolean startMovingToFar(BlockPos pos) {
+            MeerkatEntity.this.navigation.setRangeMultiplier(10.0F);
+            MeerkatEntity.this.navigation.startMovingTo((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 1.0D);
+            return MeerkatEntity.this.navigation.getCurrentPath() != null && MeerkatEntity.this.navigation.getCurrentPath().reachesTarget();
+        }
+
+        private boolean isPossibleBurrow(BlockPos pos) {
+            return this.possibleBurrows.contains(pos);
+        }
+
+        private void addPossibleBurrow(BlockPos pos) {
+            this.possibleBurrows.add(pos);
+
+            while (this.possibleBurrows.size() > 3) {
+                this.possibleBurrows.remove(0);
+            }
+
+        }
+
+        private void clearPossibleBurrows() {
+            this.possibleBurrows.clear();
+        }
+
+        private void makeChosenBurrowPossibleBurrow() {
+            if (MeerkatEntity.this.burrowPos != null) {
+                this.addPossibleBurrow(MeerkatEntity.this.burrowPos);
+            }
+
+            this.setLost();
+        }
+
+        private void setLost() {
+            MeerkatEntity.this.burrowPos = null;
+            MeerkatEntity.this.ticksLeftToFindBurrow = 200;
+        }
+
+        private boolean isCloseEnough(BlockPos pos) {
+            if (MeerkatEntity.this.isWithinDistance(pos, 2)) {
+                return true;
+            } else {
+                Path path = MeerkatEntity.this.navigation.getCurrentPath();
+                return path != null && path.getTarget().equals(pos) && path.reachesTarget() && path.isFinished();
             }
         }
     }

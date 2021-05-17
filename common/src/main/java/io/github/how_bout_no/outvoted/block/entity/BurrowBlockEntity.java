@@ -202,7 +202,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         return listTag;
     }
 
-    static class Meerkat {
+    public static class Meerkat {
         private final CompoundTag entityData;
         private int ticksInBurrow;
         private final int minOccupationTicks;
