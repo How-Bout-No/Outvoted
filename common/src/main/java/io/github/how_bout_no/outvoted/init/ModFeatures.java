@@ -2,16 +2,19 @@ package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.world.feature.BurrowGenFeature;
+import io.github.how_bout_no.outvoted.world.feature.OasisFeature;
 import io.github.how_bout_no.outvoted.world.feature.trees.BaobabTreeFeature;
 import io.github.how_bout_no.outvoted.world.feature.trees.PalmTreeFeature;
 import me.shedaniel.architectury.registry.DeferredRegister;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.UniformIntDistribution;
+import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
@@ -23,10 +26,12 @@ public class ModFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Outvoted.MOD_ID, Registry.FEATURE_KEY);
 
     public static final RegistrySupplier<Feature<DefaultFeatureConfig>> BURROW = FEATURES.register("burrow", () -> new BurrowGenFeature(DefaultFeatureConfig.CODEC));
+    public static final RegistrySupplier<Feature<SingleStateFeatureConfig>> OASIS = FEATURES.register("oasis", () -> new OasisFeature(SingleStateFeatureConfig.CODEC));
     public static final RegistrySupplier<Feature<TreeFeatureConfig>> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(TreeFeatureConfig.CODEC));
     public static final RegistrySupplier<Feature<TreeFeatureConfig>> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(TreeFeatureConfig.CODEC));
 
     public static final class States {
+        private static final BlockState WATER_BLOCK = Blocks.WATER.getDefaultState();
         private static final BlockState PALM_LOG = ModBlocks.PALM_LOG.get().getDefaultState();
         private static final BlockState PALM_LEAVES = ModBlocks.PALM_LEAVES.get().getDefaultState();
 
@@ -41,6 +46,7 @@ public class ModFeatures {
 
     public static final class Configured {
         public static final ConfiguredFeature<?, ?> BURROW = ModFeatures.BURROW.get().configure(FeatureConfig.DEFAULT).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(50));
+        public static final ConfiguredFeature<?, ?> OASIS = ModFeatures.OASIS.get().configure(new SingleStateFeatureConfig(States.WATER_BLOCK)).decorate(Decorator.WATER_LAKE.configure(new ChanceDecoratorConfig(4)));
         public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().configure(Configs.PALM_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)));
         //        public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().withConfiguration(Configs.PALM_TREE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).withPlacement(Placement.CHANCE.configure(new ChanceConfig(2)));
         public static final ConfiguredFeature<?, ?> BAOBAB_TREE = ModFeatures.BAOBAB_TREE.get().configure(Configs.BAOBAB_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(10));
@@ -53,6 +59,7 @@ public class ModFeatures {
             register("palm_tree", PALM_TREE);
             register("baobab_tree", BAOBAB_TREE);
             register("burrow", BURROW);
+            register("oasis", OASIS);
         }
     }
 }
