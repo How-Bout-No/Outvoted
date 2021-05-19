@@ -86,6 +86,23 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
     }
 
+    @Nullable
+    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
+
+        int type;
+        if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND)) {
+            type = 0;
+        } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
+            type = 1;
+        } else {
+            type = 2;
+        }
+        this.setVariant(type);
+
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
     @Override
     public float getPathfindingFavor(BlockPos pos, WorldView world) {
         return 0.0F;
@@ -133,20 +150,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
         ItemStack item = ItemStack.fromTag(compound.getCompound("Enchantments"));
         storedEnchants = EnchantmentHelper.fromTag(item.getEnchantments());
-    }
-
-    @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        int type;
-        if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND)) {
-            type = 0;
-        } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
-            type = 1;
-        } else {
-            type = 2;
-        }
-        this.setVariant(type);
-        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     static {

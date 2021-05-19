@@ -60,7 +60,6 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE, 0.0F);
         this.experiencePoints = 20;
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
     }
 
     @Override
@@ -81,6 +80,44 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_ARMOR, 10.0D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.115D)
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
+    }
+
+    @Nullable
+    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
+        int type;
+        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
+        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+            type = 1;
+        } else {
+            type = 0;
+        }
+        this.setVariant(type);
+
+        if (reason == SpawnReason.NATURAL) {
+            ServerWorld serverWorld = worldIn.toServerWorld();
+            int max = 1;
+            switch (difficultyIn.getGlobalDifficulty()) {
+                case NORMAL:
+                    max = 2;
+                    break;
+                case HARD:
+                    max = 3;
+                    break;
+            }
+            int min = Math.max(max - 1, 1);
+            int rand = new Random().nextInt(max - min) + min;
+            for (int i = 1; i <= rand; i++) {
+                BlazeEntity blaze = EntityType.BLAZE.create(serverWorld);
+                blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
+                while (!serverWorld.isAir(blaze.getBlockPos())) { // Should prevent spawning inside of blocks
+                    blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
+                }
+                serverWorld.spawnEntity(blaze);
+            }
+        }
+
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Override
@@ -157,43 +194,6 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     @Override
     protected float getActiveEyeHeight(EntityPose poseIn, EntityDimensions sizeIn) {
         return 1.8F;
-    }
-
-    @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        int type;
-        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
-        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
-            type = 1;
-        } else {
-            type = 0;
-        }
-        this.setVariant(type);
-
-        if (reason == SpawnReason.NATURAL) {
-            ServerWorld serverWorld = worldIn.toServerWorld();
-            int max = 1;
-            switch (difficultyIn.getGlobalDifficulty()) {
-                case NORMAL:
-                    max = 2;
-                    break;
-                case HARD:
-                    max = 3;
-                    break;
-            }
-            int min = Math.max(max - 1, 1);
-            int rand = new Random().nextInt(max - min) + min;
-            for (int i = 1; i <= rand; i++) {
-                BlazeEntity blaze = EntityType.BLAZE.create(serverWorld);
-                blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
-                while (!serverWorld.isAir(blaze.getBlockPos())) { // Should prevent spawning inside of blocks
-                    blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
-                }
-                serverWorld.spawnEntity(blaze);
-            }
-        }
-
-        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public float getBrightnessAtEyes() {

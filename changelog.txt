@@ -1,4 +1,7 @@
 >> Entities <<
+@a
+- Fix health being improperly set on spawn and/or reload
+
 Wildfire
 - Fix dropping helmets that didn't match variant
 
@@ -9,11 +12,13 @@ Meerkat
 Wildfire Helmet
 - Fix rendering bug with baby models
 - Fix helmets not dropping from mobs other than Wildfires
+- Fix bug where having a helmet in your inventory and not equipped glitched out fire damage
 
 Wildfire Shield
 - Fix recipe crash when using FastSuite
 - Fix lang entries for shields with banners
 - Fix incorrect repair items
+- Fix bad code
 
 >> Misc <<
 - Option to give Patchouli book to every player on first login

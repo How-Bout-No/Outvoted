@@ -22,6 +22,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ItemScatterer;
@@ -57,7 +58,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         this.experiencePoints = 10;
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.moveControl = new BarnacleEntity.MoveHelperController(this);
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
     }
 
     protected void initGoals() {
@@ -82,6 +82,13 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1D)
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
+    }
+
+    @Nullable
+    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
+
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public static boolean canSpawn(EntityType<BarnacleEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
@@ -541,6 +548,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         }
         if (event.getController().getCurrentAnimation() == null || event.getController().getCurrentAnimation().animationName == null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
+            return PlayState.CONTINUE;
         }
         switch (phase) {
             case 1:

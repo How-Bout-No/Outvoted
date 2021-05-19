@@ -41,9 +41,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.*;
 import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.poi.PointOfInterest;
 import net.minecraft.world.poi.PointOfInterestStorage;
@@ -76,7 +74,6 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
         super(type, worldIn);
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F); // no like da water
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
     }
 
     protected void initGoals() {
@@ -101,6 +98,13 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
+    }
+
+    @Nullable
+    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
+
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     static {
