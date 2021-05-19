@@ -40,21 +40,23 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        LivingEntity livingEntity = (LivingEntity) entity;
-        int helmetPenalty = Outvoted.commonConfig.misc.helmetPenalty;
-        if (helmetPenalty != 0) {
-            if (livingEntity.isOnFire()) {
-                livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));
-                if (timer % helmetPenalty == 0) {
-                    stack.damage(1 + (timer / 600), livingEntity, consumer -> consumer.sendEquipmentBreakStatus(EquipmentSlot.HEAD));
-                    //timer = 0;
+        if (slot == EquipmentSlot.HEAD.getEntitySlotId()) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            int helmetPenalty = Outvoted.commonConfig.misc.helmetPenalty;
+            if (helmetPenalty != 0) {
+                if (livingEntity.isOnFire()) {
+                    livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));
+                    if (timer % helmetPenalty == 0) {
+                        stack.damage(1 + (timer / 600), livingEntity, consumer -> consumer.sendEquipmentBreakStatus(EquipmentSlot.HEAD));
+                        //timer = 0;
+                    }
+                    timer++;
+                } else {
+                    timer = 0;
                 }
-                timer++;
             } else {
-                timer = 0;
+                livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));
             }
-        } else {
-            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1, 0, false, false, true));
         }
     }
 
