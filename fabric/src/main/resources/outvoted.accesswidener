@@ -17,3 +17,4 @@ accessible  field   net/minecraft/block/entity/BlockEntityType  blocks          
 mutable     field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
 extendable class  net/minecraft/structure/NetherFortressGenerator$Piece
 accessible method net/minecraft/world/poi/PointOfInterestType <init>       (Ljava/lang/String;Ljava/util/Set;II)V
+extendable method net/minecraft/block/dispenser/ItemDispenserBehavior dispense (Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;
