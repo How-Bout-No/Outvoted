@@ -91,12 +91,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
                             list.add(meerkatEntity);
                         }
 
-                        float f = entity.getWidth();
-                        double d = bl ? 0.0D : 0.55D + (double) (f / 2.0F);
-                        double e = (double) blockPos.getX() + 0.5D + d * (double) direction.getOffsetX();
-                        double g = (double) blockPos.getY() + 0.5D - (double) (entity.getHeight() / 2.0F);
-                        double h = (double) blockPos.getZ() + 0.5D + d * (double) direction.getOffsetZ();
-                        entity.refreshPositionAndAngles(e, g, h, entity.yaw, entity.pitch);
+                        entity.refreshPositionAndAngles(blockPos2, entity.yaw, entity.pitch);
                     }
 
                     this.world.playSound((PlayerEntity) null, blockPos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);

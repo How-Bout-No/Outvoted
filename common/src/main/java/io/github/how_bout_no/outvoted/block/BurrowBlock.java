@@ -2,9 +2,10 @@ package io.github.how_bout_no.outvoted.block;
 
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.nbt.CompoundTag;
@@ -78,15 +79,27 @@ public class BurrowBlock extends BlockWithEntity {
         if (!world.isClient && blockEntity instanceof BurrowBlockEntity) {
             if (!((BurrowBlockEntity) blockEntity).hasNoMeerkats()) {
                 for (Tag tag1 : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
-                    CompoundTag tag = ((CompoundTag) tag1);
-                    MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
-                    meerkatEntity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), 0.0F);
-                    System.out.println(meerkatEntity.toTag(new CompoundTag()));
-                    meerkatEntity.readCustomDataFromTag((CompoundTag) tag.get("EntityData"));
-                    meerkatEntity.age += tag.getInt("TicksInBurrow");
-                    System.out.println(((CompoundTag) tag.get("EntityData")).getFloat("Health"));
-                    System.out.println(meerkatEntity.getHealth());
-                    world.spawnEntity(meerkatEntity);
+                    CompoundTag tag = ((CompoundTag) tag1).getCompound("EntityData");
+                    Entity entity = EntityType.loadEntityWithPassengers(tag, world, (entityx) -> {
+                        return entityx;
+                    });
+                    if (entity != null) {
+                        if (entity instanceof MeerkatEntity) {
+                            MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
+
+//                            this.ageMeerkat(((CompoundTag) tag1).getInt("TicksInBurrow"), meerkatEntity);
+
+                            entity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), entity.pitch);
+                        }
+                        world.spawnEntity(entity);
+                    }
+//                    CompoundTag tag = ((CompoundTag) tag1);
+//                    MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
+//                    meerkatEntity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), 0.0F);
+//                    meerkatEntity.readCustomDataFromTag(tag.getCompound("EntityData"));
+//                    meerkatEntity.age += tag.getInt("TicksInBurrow");
+//                    world.spawnEntity(meerkatEntity);
+//                    meerkatEntity.setHealth(tag.getCompound("EntityData").getFloat("Health")); // Sometimes health doesn't get applied from tag, idk why
                 }
             }
         }
@@ -108,6 +121,17 @@ public class BurrowBlock extends BlockWithEntity {
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    private void ageMeerkat(int ticks, MeerkatEntity meerkat) {
+        int i = meerkat.getBreedingAge();
+        if (i < 0) {
+            meerkat.setBreedingAge(Math.min(0, i + ticks));
+        } else if (i > 0) {
+            meerkat.setBreedingAge(Math.max(0, i - ticks));
+        }
+
+        meerkat.setLoveTicks(Math.max(0, meerkat.getLoveTicks() - ticks));
     }
 
     static {
