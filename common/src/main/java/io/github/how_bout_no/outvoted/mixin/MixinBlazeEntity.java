@@ -12,10 +12,10 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,14 +55,21 @@ public abstract class MixinBlazeEntity extends HostileEntity implements IMixinBl
 
     @Nullable
     public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        int type;
-        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
-        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
-            type = 1;
+        int type = 0;
+        if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
+            if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {
+                if (worldIn.getBiomeKey(this.getBlockPos()).get() == BiomeKeys.SOUL_SAND_VALLEY) {
+                    type = 1;
+                }
+            }
         } else {
-            type = 0;
+            Block block = worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock();
+            if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+                type = 1;
+            }
         }
         this.setVariant(type);
+
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

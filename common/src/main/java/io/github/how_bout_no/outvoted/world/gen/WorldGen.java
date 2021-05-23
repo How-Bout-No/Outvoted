@@ -38,11 +38,11 @@ public class WorldGen {
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE));
 
 
-        BiomeModifications.postProcessProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
-                (biomeContext, mutable) -> mutable.getGenerationProperties()
-                        .addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, ModFeatures.Configured.BURROW));
-        BiomeModifications.postProcessProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
-                (biomeContext, mutable) -> mutable.getGenerationProperties()
-                        .addFeature(GenerationStep.Feature.LAKES, ModFeatures.Configured.OASIS));
+//        BiomeModifications.postProcessProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
+//                (biomeContext, mutable) -> mutable.getGenerationProperties()
+//                        .addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, ModFeatures.Configured.BURROW));
+//        BiomeModifications.postProcessProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
+//                (biomeContext, mutable) -> mutable.getGenerationProperties()
+//                        .addFeature(GenerationStep.Feature.LAKES, ModFeatures.Configured.OASIS));
     }
 }

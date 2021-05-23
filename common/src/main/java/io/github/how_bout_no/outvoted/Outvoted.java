@@ -3,7 +3,10 @@ package io.github.how_bout_no.outvoted;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigClient;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
-import io.github.how_bout_no.outvoted.entity.*;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
+import io.github.how_bout_no.outvoted.entity.GluttonEntity;
+import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
+import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.util.EventRegister;
 import io.github.how_bout_no.outvoted.util.SignSprites;
@@ -51,6 +54,9 @@ public class Outvoted {
             config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
             clientConfig = config.client;
             commonConfig = config.common;
+
+            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
+            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
         }
 
         GeckoLib.initialize();
@@ -72,10 +78,7 @@ public class Outvoted {
         EntityAttributes.register(ModEntityTypes.GLUTTON::get, GluttonEntity::setCustomAttributes);
         EntityAttributes.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);
         EntityAttributes.register(ModEntityTypes.MEERKAT::get, MeerkatEntity::setCustomAttributes);
-        EntityAttributes.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
-
-        SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
-        SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
+//        EntityAttributes.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
     }
 
     @Environment(EnvType.CLIENT)

@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
+import io.github.how_bout_no.outvoted.entity.util.IMixinBlazeEntity;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -24,11 +25,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -85,27 +87,34 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
         EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
-        int type;
-        Block block = worldIn.getBlockState(new BlockPos(this.getPos().add(0D, -0.5D, 0D))).getBlock();
-        if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
-            type = 1;
+
+        int type = 0;
+        if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
+            if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {
+                if (worldIn.getBiomeKey(this.getBlockPos()).get() == BiomeKeys.SOUL_SAND_VALLEY) {
+                    type = 1;
+                }
+            }
         } else {
-            type = 0;
+            Block block = worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock();
+            if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+                type = 1;
+            }
         }
         this.setVariant(type);
 
         if (reason == SpawnReason.NATURAL) {
             ServerWorld serverWorld = worldIn.toServerWorld();
-            int max = 1;
+            int max = 2;
             switch (difficultyIn.getGlobalDifficulty()) {
                 case NORMAL:
-                    max = 2;
-                    break;
-                case HARD:
                     max = 3;
                     break;
+                case HARD:
+                    max = 4;
+                    break;
             }
-            int min = Math.max(max - 1, 1);
+            int min = max - 1;
             int rand = new Random().nextInt(max - min) + min;
             for (int i = 1; i <= rand; i++) {
                 BlazeEntity blaze = EntityType.BLAZE.create(serverWorld);
@@ -113,6 +122,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                 while (!serverWorld.isAir(blaze.getBlockPos())) { // Should prevent spawning inside of blocks
                     blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
                 }
+                ((IMixinBlazeEntity) blaze).initialize(worldIn, difficultyIn, reason, null, null);
                 serverWorld.spawnEntity(blaze);
             }
         }
@@ -130,6 +140,10 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     public void readCustomDataFromTag(CompoundTag compound) {
         super.readCustomDataFromTag(compound);
         this.setVariant(compound.getInt("Variant"));
+    }
+
+    public int getLimitPerChunk() {
+        return this.world.getDifficulty() == Difficulty.HARD ? 2 : 1;
     }
 
     static {

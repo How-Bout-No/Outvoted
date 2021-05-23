@@ -91,19 +91,6 @@ public class OasisFeature extends Feature<SingleStateFeatureConfig> {
                     }
                 }
 
-                if (singleStateFeatureConfig.state.getMaterial() == Material.LAVA) {
-                    for(ab = 0; ab < 16; ++ab) {
-                        for(ac = 0; ac < 16; ++ac) {
-                            for(ad = 0; ad < 8; ++ad) {
-                                bl2 = !bls[(ab * 16 + ac) * 8 + ad] && (ab < 15 && bls[((ab + 1) * 16 + ac) * 8 + ad] || ab > 0 && bls[((ab - 1) * 16 + ac) * 8 + ad] || ac < 15 && bls[(ab * 16 + ac + 1) * 8 + ad] || ac > 0 && bls[(ab * 16 + (ac - 1)) * 8 + ad] || ad < 7 && bls[(ab * 16 + ac) * 8 + ad + 1] || ad > 0 && bls[(ab * 16 + ac) * 8 + (ad - 1)]);
-                                if (bl2 && (ad < 4 || random.nextInt(2) != 0) && structureWorldAccess.getBlockState(blockPos.add(ab, ad, ac)).getMaterial().isSolid()) {
-                                    structureWorldAccess.setBlockState(blockPos.add(ab, ad, ac), Blocks.STONE.getDefaultState(), 2);
-                                }
-                            }
-                        }
-                    }
-                }
-
                 return true;
             }
         }

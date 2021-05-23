@@ -28,7 +28,7 @@ public class Items extends ItemModelProvider {
         egg(ModItems.GLUTTON_SPAWN_EGG.get());
         egg(ModItems.BARNACLE_SPAWN_EGG.get());
         egg(ModItems.MEERKAT_SPAWN_EGG.get());
-        egg(ModItems.OSTRICH_SPAWN_EGG.get());
+//        egg(ModItems.OSTRICH_SPAWN_EGG.get());
         withExistingParent("burrow", new Identifier(Outvoted.MOD_ID, "block/burrow"));
 
 

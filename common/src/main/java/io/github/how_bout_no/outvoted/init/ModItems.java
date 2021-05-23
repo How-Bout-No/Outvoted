@@ -21,9 +21,9 @@ public class ModItems {
     public static final RegistrySupplier<ModSpawnEggItem> BARNACLE_SPAWN_EGG = ITEMS.register("barnacle_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.BARNACLE, 0x5B872E, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> MEERKAT_SPAWN_EGG = ITEMS.register("meerkat_spawn_egg",
-            () -> new ModSpawnEggItem(ModEntityTypes.MEERKAT, 0xC5C085, 0x000000, new Item.Settings()));
-    public static final RegistrySupplier<ModSpawnEggItem> OSTRICH_SPAWN_EGG = ITEMS.register("ostrich_spawn_egg",
-            () -> new ModSpawnEggItem(ModEntityTypes.OSTRICH, 0xFED39B, 0x000000, new Item.Settings()));
+            () -> new ModSpawnEggItem(ModEntityTypes.MEERKAT, 0xC19773, 0x000000, new Item.Settings()));
+//    public static final RegistrySupplier<ModSpawnEggItem> OSTRICH_SPAWN_EGG = ITEMS.register("ostrich_spawn_egg",
+//            () -> new ModSpawnEggItem(ModEntityTypes.OSTRICH, 0xFED39B, 0x000000, new Item.Settings()));
 
     // Items
     public static final RegistrySupplier<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);

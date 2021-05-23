@@ -39,7 +39,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.explosion.Explosion;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +66,8 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     private static final TrackedData<Boolean> ENCHANTING;
     private static final TrackedData<Integer> VARIANT;
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
+    private static final ArrayList<RegistryKey<Biome>> desertKeys = new ArrayList<>(Arrays.asList(BiomeKeys.DESERT, BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_HILLS));
+    private static final ArrayList<RegistryKey<Biome>> badlandsKeys = new ArrayList<>(Arrays.asList(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.MODIFIED_BADLANDS_PLATEAU, BiomeKeys.ERODED_BADLANDS));
 
     public GluttonEntity(EntityType<? extends GluttonEntity> type, World worldIn) {
         super(type, worldIn);
@@ -90,13 +95,22 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
         EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
 
-        int type;
-        if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND)) {
-            type = 0;
-        } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
-            type = 1;
+        int type = 2;
+        if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
+            if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {
+                RegistryKey<Biome> key = worldIn.getBiomeKey(this.getBlockPos()).get();
+                if (desertKeys.contains(key)) {
+                    type = 0;
+                } else if (badlandsKeys.contains(key)) {
+                    type = 1;
+                }
+            }
         } else {
-            type = 2;
+            if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
+                type = 1;
+            } else if (!(worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND))) {
+                type = 0;
+            }
         }
         this.setVariant(type);
 
@@ -150,6 +164,10 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
         ItemStack item = ItemStack.fromTag(compound.getCompound("Enchantments"));
         storedEnchants = EnchantmentHelper.fromTag(item.getEnchantments());
+    }
+
+    public int getLimitPerChunk() {
+        return 1;
     }
 
     static {

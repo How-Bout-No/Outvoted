@@ -25,7 +25,7 @@ public class ClientListener implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.GLUTTON.get(), (entityRenderDispatcher, context) -> new GluttonRenderer(entityRenderDispatcher));
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.BARNACLE.get(), (entityRenderDispatcher, context) -> new BarnacleRenderer(entityRenderDispatcher));
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.MEERKAT.get(), (entityRenderDispatcher, context) -> new MeerkatRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.OSTRICH.get(), (entityRenderDispatcher, context) -> new OstrichRenderer(entityRenderDispatcher));
+//        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.OSTRICH.get(), (entityRenderDispatcher, context) -> new OstrichRenderer(entityRenderDispatcher));
 
         GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
         BuiltinItemRendererRegistry.INSTANCE.register(ModItems.WILDFIRE_SHIELD.get(), ShieldRenderer::render);

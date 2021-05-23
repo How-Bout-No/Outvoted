@@ -32,7 +32,7 @@ side = "BOTH"
 [[dependencies.outvoted]]
 modId = "architectury"
 mandatory = true
-versionRange = "[1.1.55,)"
+versionRange = "[1.14.156,)"
 ordering = "AFTER"
 side = "BOTH"
 

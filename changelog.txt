@@ -1,9 +1,15 @@
 >> Entities <<
 @a
 - Fix health being improperly set on spawn and/or reload
+- Fix entities not spawning via dispensers
 
 Wildfire
+- Revert group size nerf
 - Fix dropping helmets that didn't match variant
+- Use new variant code
+
+Glutton
+- Use new variant code
 
 Meerkat
 - Now has Patchouli entry

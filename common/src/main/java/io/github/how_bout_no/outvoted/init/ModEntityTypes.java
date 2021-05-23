@@ -1,7 +1,10 @@
 package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.*;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
+import io.github.how_bout_no.outvoted.entity.GluttonEntity;
+import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
+import io.github.how_bout_no.outvoted.entity.WildfireEntity;
 import me.shedaniel.architectury.registry.DeferredRegister;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.entity.EntityType;
@@ -33,9 +36,9 @@ public class ModEntityTypes {
                     .create(MeerkatEntity::new, SpawnGroup.CREATURE)
                     .setDimensions(0.8F, 1.3F)
                     .build(new Identifier(Outvoted.MOD_ID, "meerkat").toString()));
-    public static final RegistrySupplier<EntityType<OstrichEntity>> OSTRICH = ENTITY_TYPES
-            .register("ostrich", () -> EntityType.Builder
-                    .create(OstrichEntity::new, SpawnGroup.CREATURE)
-                    .setDimensions(1.0F, 1.0F)
-                    .build(new Identifier(Outvoted.MOD_ID, "ostrich").toString()));
+//    public static final RegistrySupplier<EntityType<OstrichEntity>> OSTRICH = ENTITY_TYPES
+//            .register("ostrich", () -> EntityType.Builder
+//                    .create(OstrichEntity::new, SpawnGroup.CREATURE)
+//                    .setDimensions(1.0F, 1.0F)
+//                    .build(new Identifier(Outvoted.MOD_ID, "ostrich").toString()));
 }

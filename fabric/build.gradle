@@ -28,8 +28,8 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:1.16.9"
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
 
-    modImplementation("curse.maven:xaero-263420:3298031")
-    modImplementation("curse.maven:toro-245733:3144149")
+//    modImplementation("curse.maven:xaero-263420:3298031")
+//    modImplementation("curse.maven:toro-245733:3144149")
 
     implementation(project(path: ":common")) {
         transitive = false
