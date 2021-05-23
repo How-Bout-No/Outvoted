@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Config(name = "common")
@@ -47,7 +48,7 @@ public class OutvotedConfigCommon implements ConfigData {
         public static class Glutton {
             public boolean spawn = true;
             public int rate = 5;
-            public List<String> biomes = Arrays.asList("minecraft:swamp", "minecraft:swamp_hills", "minecraft:badlands_plateau", "minecraft:desert", "minecraft:desert_hills", "minecraft:badlands");
+            public List<String> biomes = Arrays.asList("#swamp", "#desert", "minecraft:badlands_plateau", "minecraft:badlands");
             public double health = 20.0D;
             @ConfigEntry.Gui.Tooltip
             public int maxEnchants = 5;
@@ -63,7 +64,7 @@ public class OutvotedConfigCommon implements ConfigData {
         public static class Meerkat {
             public boolean spawn = true;
             public int rate = 1;
-            public List<String> biomes = Arrays.asList("minecraft:desert", "minecraft:desert_hills", "minecraft:desert_lakes");
+            public List<String> biomes = Collections.singletonList("#desert");
             public double health = 10.0D;
         }
     }

@@ -10,22 +10,24 @@ import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 
+import java.util.List;
+
 public class WorldGen {
     public static void addSpawnEntries() {
         OutvotedConfigCommon.Entities ent = Outvoted.commonConfig.entities;
-        BiomeModifications.postProcessProperties(biomeContext -> ent.wildfire.spawn && ent.wildfire.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.wildfire.spawn && parseBiomes(ent.wildfire.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
                                 Outvoted.commonConfig.entities.wildfire.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> ent.glutton.spawn && ent.glutton.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.glutton.spawn && parseBiomes(ent.glutton.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.GLUTTON.get(),
                                 Outvoted.commonConfig.entities.glutton.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> ent.barnacle.spawn && ent.barnacle.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.barnacle.spawn && parseBiomes(ent.barnacle.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.BARNACLE.get(),
                                 Outvoted.commonConfig.entities.barnacle.rate, 1, 1)));
-        BiomeModifications.postProcessProperties(biomeContext -> ent.meerkat.spawn && ent.meerkat.biomes.contains(biomeContext.getKey().toString()),
+        BiomeModifications.postProcessProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
                                 Outvoted.commonConfig.entities.meerkat.rate, 1, 3)));
@@ -44,5 +46,9 @@ public class WorldGen {
 //        BiomeModifications.postProcessProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
 //                (biomeContext, mutable) -> mutable.getGenerationProperties()
 //                        .addFeature(GenerationStep.Feature.LAKES, ModFeatures.Configured.OASIS));
+    }
+
+    private static boolean parseBiomes(List<String> biomes, BiomeModifications.BiomeContext biomeContext) {
+        return biomes.contains(biomeContext.getKey().toString()) || biomes.contains("#" + biomeContext.getProperties().getCategory().asString());
     }
 }
