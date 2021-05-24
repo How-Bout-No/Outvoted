@@ -1,4 +1,8 @@
 >> Entities <<
+Meerkat
+- Fix baby models on Forge
+- Fix eye height when walking
+
 Glutton
 - Fix incorrect variants spawning
 - Correct incorrect lang entries for config

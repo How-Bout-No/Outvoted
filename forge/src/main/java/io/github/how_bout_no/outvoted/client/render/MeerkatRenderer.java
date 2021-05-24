@@ -27,4 +27,13 @@ public class MeerkatRenderer extends GeoEntityRenderer<MeerkatEntity> {
     public Identifier getTexture(MeerkatEntity entity) {
         return super.getTextureLocation(entity);
     }
+
+    @Override
+    public void renderEarly(MeerkatEntity animatable, MatrixStack stackIn, float ticks,
+                            VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
+                            int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
+                red, green, blue, partialTicks);
+        if (animatable.isBaby()) stackIn.scale(0.6F, 0.6F, 0.6F);
+    }
 }

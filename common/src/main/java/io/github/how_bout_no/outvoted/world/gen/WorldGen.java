@@ -15,6 +15,7 @@ import java.util.List;
 public class WorldGen {
     public static void addSpawnEntries() {
         OutvotedConfigCommon.Entities ent = Outvoted.commonConfig.entities;
+
         BiomeModifications.addProperties(biomeContext -> ent.wildfire.spawn && parseBiomes(ent.wildfire.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.MONSTER,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.WILDFIRE.get(),
@@ -30,7 +31,7 @@ public class WorldGen {
         BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
-                                Outvoted.commonConfig.entities.meerkat.rate, 1, 3)));
+                                Outvoted.commonConfig.entities.meerkat.rate, 2, 4)));
 
         BiomeModifications.addProperties(biomeContext -> Outvoted.commonConfig.generation.genPalmTrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()

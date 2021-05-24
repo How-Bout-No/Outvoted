@@ -429,17 +429,17 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             MeerkatEntity.this.ticksLeftToFindBurrow = 200;
             List<BlockPos> list = this.getNearbyFreeBurrows();
             if (!list.isEmpty()) {
-                Iterator var2 = list.iterator();
+                Iterator<BlockPos> var2 = list.iterator();
 
                 BlockPos blockPos;
                 do {
                     if (!var2.hasNext()) {
                         MeerkatEntity.this.moveToBurrowGoal.clearPossibleBurrows();
-                        MeerkatEntity.this.burrowPos = (BlockPos) list.get(0);
+                        MeerkatEntity.this.burrowPos = list.get(0);
                         return;
                     }
 
-                    blockPos = (BlockPos) var2.next();
+                    blockPos = var2.next();
                 } while (MeerkatEntity.this.moveToBurrowGoal.isPossibleBurrow(blockPos));
 
                 MeerkatEntity.this.burrowPos = blockPos;
@@ -449,14 +449,10 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         private List<BlockPos> getNearbyFreeBurrows() {
             BlockPos blockPos = MeerkatEntity.this.getBlockPos();
             PointOfInterestStorage pointOfInterestStorage = ((ServerWorld) MeerkatEntity.this.world).getPointOfInterestStorage();
-            Stream<PointOfInterest> stream = pointOfInterestStorage.getInCircle((pointOfInterestType) -> {
-                return pointOfInterestType == ModPOITypes.BURROW.get();
-            }, blockPos, 20, PointOfInterestStorage.OccupationStatus.ANY);
-            return (List) stream.map(PointOfInterest::getPos).filter((blockPosx) -> {
-                return MeerkatEntity.this.doesBurrowHaveSpace(blockPosx);
-            }).sorted(Comparator.comparingDouble((blockPos2) -> {
-                return blockPos2.getSquaredDistance(blockPos);
-            })).collect(Collectors.toList());
+            Stream<PointOfInterest> stream = pointOfInterestStorage.getInCircle(
+                    (pointOfInterestType) -> pointOfInterestType == ModPOITypes.BURROW.get(), blockPos, 20, PointOfInterestStorage.OccupationStatus.ANY);
+            return stream.map(PointOfInterest::getPos).filter(MeerkatEntity.this::doesBurrowHaveSpace).sorted(Comparator.comparingDouble(
+                    (blockPos2) -> blockPos2.getSquaredDistance(blockPos))).collect(Collectors.toList());
         }
     }
 
@@ -643,16 +639,19 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         return ModEntityTypes.MEERKAT.get().create(world);
     }
 
-    private EntityPose entityPose = EntityPose.STANDING;
-
     @Override
-    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
-        return super.getActiveEyeHeight(pose, dimensions);
+    public float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+        switch(pose) {
+            case CROUCHING:
+                return 0.5F;
+            default:
+                return super.getActiveEyeHeight(pose, dimensions);
+        }
     }
 
     private Box calcBox() {
         EntityDimensions entityDimensions = this.getDimensions(EntityPose.STANDING);
-        boolean bl = entityPose == EntityPose.STANDING;
+        boolean bl = this.getPose() == EntityPose.STANDING;
         double f = (double) entityDimensions.width / (bl ? 4.0F : 2.0F);
         double height = (double) entityDimensions.height / (bl ? 1.0F : 2.0F);
         Vec3d vec3d = new Vec3d(this.getX() - f, this.getY(), this.getZ() - f);
@@ -665,11 +664,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("stand"));
-            entityPose = EntityPose.STANDING;
+            this.setPose(EntityPose.STANDING);
             this.setBoundingBox(calcBox());
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
-            entityPose = EntityPose.CROUCHING;
+            this.setPose(EntityPose.CROUCHING);
             this.setBoundingBox(calcBox());
             animtimer = 0;
         }
