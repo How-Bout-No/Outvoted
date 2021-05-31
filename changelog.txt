@@ -1,11 +1,3 @@
->> Entities <<
-Meerkat
-- Fix baby models on Forge
-- Fix eye height when walking
-
-Glutton
-- Fix incorrect variants spawning
-- Correct incorrect lang entries for config
-
->> Misc <<
-- Allow biome categories in config (i.e. adding an entry like #desert will make that mob spawn in every biome categorized as a desert)
+>> Blocks <<
+Sapling
+- Fix incorrect rendering

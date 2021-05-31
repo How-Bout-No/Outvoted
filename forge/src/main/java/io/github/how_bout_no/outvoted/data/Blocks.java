@@ -32,7 +32,7 @@ public class Blocks extends BlockModelProvider {
         cubeColumn(type + "_log", id("_log"), id("_log_top"));
         cubeAll(type + "_planks", id("_planks"));
         pressurePlateModel();
-        cross(type + "_sapling", id("_sapling"));
+//        cross(type + "_sapling", id("_sapling"));
 //        Can't make sign jsons with this...
 //        singleTexture(type + "_sign", new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks"));
         slabModel();
