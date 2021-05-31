@@ -31,7 +31,6 @@ public class OutvotedConfigCommon implements ConfigData {
             public int rate = 1;
             public List<String> biomes = Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley");
             public double health = 50.0D;
-
             @ConfigEntry.Gui.PrefixText
             @ConfigEntry.Gui.CollapsibleObject
             public Entities.WildfireAttacking attacking = new Entities.WildfireAttacking();
@@ -63,7 +62,9 @@ public class OutvotedConfigCommon implements ConfigData {
 
         public static class Meerkat {
             public boolean spawn = true;
-            public int rate = 1;
+            @ConfigEntry.Gui.Tooltip
+            @ConfigEntry.Gui.RequiresRestart
+            public int burrowRate = 25;
             public List<String> biomes = Collections.singletonList("#desert");
             public double health = 10.0D;
         }
@@ -86,7 +87,6 @@ public class OutvotedConfigCommon implements ConfigData {
     public static class Misc {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public int helmetPenalty = 40;
-
         @ConfigEntry.Gui.Excluded
         public boolean givePatchouliBookOnLogin = true;
     }

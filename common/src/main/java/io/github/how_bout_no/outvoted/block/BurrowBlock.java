@@ -87,7 +87,7 @@ public class BurrowBlock extends BlockWithEntity {
                         if (entity instanceof MeerkatEntity) {
                             MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
 
-//                            this.ageMeerkat(((CompoundTag) tag1).getInt("TicksInBurrow"), meerkatEntity);
+                            this.ageMeerkat(((CompoundTag) tag1).getInt("TicksInBurrow"), meerkatEntity);
 
                             entity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), entity.pitch);
                         }

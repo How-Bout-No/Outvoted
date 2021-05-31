@@ -45,7 +45,7 @@ public class ModFeatures {
     }
 
     public static final class Configured {
-        public static final ConfiguredFeature<?, ?> BURROW = ModFeatures.BURROW.get().configure(FeatureConfig.DEFAULT).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(50));
+        public static final ConfiguredFeature<?, ?> BURROW = ModFeatures.BURROW.get().configure(FeatureConfig.DEFAULT).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(Outvoted.commonConfig.entities.meerkat.burrowRate));
         public static final ConfiguredFeature<?, ?> OASIS = ModFeatures.OASIS.get().configure(new SingleStateFeatureConfig(States.WATER_BLOCK)).decorate(Decorator.WATER_LAKE.configure(new ChanceDecoratorConfig(4)));
         public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().configure(Configs.PALM_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)));
         //        public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().withConfiguration(Configs.PALM_TREE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).withPlacement(Placement.CHANCE.configure(new ChanceConfig(2)));

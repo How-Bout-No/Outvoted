@@ -80,7 +80,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new MeerkatEntity.VentureGoal(this, 1.25D));
         this.goalSelector.add(2, new MeerkatEntity.EnterBurrowGoal());
-        this.goalSelector.add(3, new AnimalMateGoal(this, 1.0D));
+        this.goalSelector.add(3, new AnimalMateGoal(this, 0.8D));
         this.goalSelector.add(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.add(6, new MeerkatEntity.FindBurrowGoal());
@@ -253,18 +253,6 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     }
 
-    @Environment(EnvType.CLIENT)
-    public void handleStatus(byte status) {
-        if (status == 41) {
-            this.showEmoteParticle(true);
-        } else if (status == 40) {
-            this.showEmoteParticle(false);
-        } else {
-            super.handleStatus(status);
-        }
-
-    }
-
     private void showEmoteParticle(boolean positive) {
         ParticleEffect particleEffect = ParticleTypes.HEART;
         if (!positive) {
@@ -329,6 +317,17 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             }
         }
         return super.interactMob(player, hand);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void handleStatus(byte status) {
+        if (status == 41) {
+            this.showEmoteParticle(true);
+        } else if (status == 40) {
+            this.showEmoteParticle(false);
+        } else {
+            super.handleStatus(status);
+        }
     }
 
     private static float getDistance(int a, int b, int x, int y) {
@@ -641,12 +640,10 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
-        switch(pose) {
-            case CROUCHING:
-                return 0.5F;
-            default:
-                return super.getActiveEyeHeight(pose, dimensions);
+        if (pose == EntityPose.CROUCHING) {
+            return 0.5F;
         }
+        return super.getActiveEyeHeight(pose, dimensions);
     }
 
     private Box calcBox() {

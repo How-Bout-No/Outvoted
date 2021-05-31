@@ -28,10 +28,10 @@ public class WorldGen {
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.WATER_CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.BARNACLE.get(),
                                 Outvoted.commonConfig.entities.barnacle.rate, 1, 1)));
-        BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
-                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
-                        new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
-                                Outvoted.commonConfig.entities.meerkat.rate, 2, 4)));
+//        BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
+//                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
+//                        new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
+//                                Outvoted.commonConfig.entities.meerkat.rate, 2, 4)));
 
         BiomeModifications.addProperties(biomeContext -> Outvoted.commonConfig.generation.genPalmTrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
@@ -41,12 +41,13 @@ public class WorldGen {
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE));
 
 
-        BiomeModifications.addProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
+        BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, ModFeatures.Configured.BURROW));
-        BiomeModifications.addProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
-                (biomeContext, mutable) -> mutable.getGenerationProperties()
-                        .addFeature(GenerationStep.Feature.LAKES, ModFeatures.Configured.OASIS));
+//        BiomeModifications.addProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
+//                (biomeContext, mutable) -> mutable.getGenerationProperties()
+//                            .addFeature(GenerationStep.Feature.LAKES, ModFeatures.Configured.OASIS));
+
     }
 
     private static boolean parseBiomes(List<String> biomes, BiomeModifications.BiomeContext biomeContext) {
