@@ -2,7 +2,6 @@ accessWidener v1 named
 
 accessible  field   net/minecraft/world/biome/SpawnSettings     spawners                Ljava/util/Map;
 mutable     field   net/minecraft/world/biome/SpawnSettings     spawners                Ljava/util/Map;
-accessible  method  net/minecraft/entity/SpawnRestriction       register                (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
 accessible  method  net/minecraft/block/StairsBlock             <init>                  (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V
 accessible  method  net/minecraft/block/WoodenButtonBlock       <init>                  (Lnet/minecraft/block/AbstractBlock$Settings;)V
 accessible  method  net/minecraft/block/PressurePlateBlock      <init>                  (Lnet/minecraft/block/PressurePlateBlock$ActivationRule;Lnet/minecraft/block/AbstractBlock$Settings;)V
