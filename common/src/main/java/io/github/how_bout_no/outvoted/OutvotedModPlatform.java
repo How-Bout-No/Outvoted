@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted;
 
-import me.shedaniel.architectury.annotations.ExpectPlatform;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.item.Item;
 
 public class OutvotedModPlatform {

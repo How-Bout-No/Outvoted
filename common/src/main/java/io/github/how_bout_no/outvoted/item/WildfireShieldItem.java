@@ -1,10 +1,10 @@
 package io.github.how_bout_no.outvoted.item;
 
+import dev.architectury.injectables.annotations.PlatformOnly;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.OutvotedModPlatform;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
-import me.shedaniel.architectury.annotations.PlatformOnly;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

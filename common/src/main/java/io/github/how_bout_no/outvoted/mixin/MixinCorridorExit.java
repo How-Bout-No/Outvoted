@@ -1,11 +1,9 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
-import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.structure.NetherFortressGenerator;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.math.BlockBox;
@@ -33,7 +31,7 @@ public abstract class MixinCorridorExit extends NetherFortressGenerator.Piece {
             MobEntity livingEntity = entityType.create(structureWorldAccess.toServerWorld());
             livingEntity.setPersistent();
             livingEntity.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
-            livingEntity.initialize(structureWorldAccess, structureWorldAccess.getLocalDifficulty(livingEntity.getBlockPos()), SpawnReason.STRUCTURE, (EntityData) null, (CompoundTag) null);
+            livingEntity.initialize(structureWorldAccess, structureWorldAccess.getLocalDifficulty(livingEntity.getBlockPos()), SpawnReason.STRUCTURE, null, null);
             structureWorldAccess.spawnEntity(livingEntity);
 
         }

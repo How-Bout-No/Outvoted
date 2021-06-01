@@ -19,5 +19,4 @@ public interface PointOfInterestTypeAccessor {
     static PointOfInterestType callSetup(PointOfInterestType poiType) {
         return poiType;
     }
-
 }
