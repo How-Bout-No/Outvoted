@@ -4,6 +4,7 @@ import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.entity.util.IMixinBlazeEntity;
 import io.github.how_bout_no.outvoted.init.ModSounds;
+import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -20,6 +21,7 @@ import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -244,6 +246,18 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     public boolean hurtByWater() {
         return true;
+    }
+
+    @Override
+    @Nullable
+    public ItemEntity dropStack(ItemStack stack, float yOffset) {
+        if (stack.getItem() instanceof WildfireHelmetItem) {
+            if (Outvoted.clientConfig.wildfireVariants && this.getVariant() == 1) {
+                stack.getOrCreateTag().putFloat("SoulTexture", 1.0F);
+            }
+        }
+
+        return super.dropStack(stack, yOffset);
     }
 
     protected void mobTick() {
