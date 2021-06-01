@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 public class BurrowBlock extends BlockWithEntity {
@@ -37,42 +38,41 @@ public class BurrowBlock extends BlockWithEntity {
         return new BurrowBlockEntity();
     }
 
-//    @Nullable
-//    private Direction getNewDirection(BlockPos pos, WorldAccess world) {
-//        Direction opening = world.getBlockState(pos).get(FACING);
-//        if (opening != null)
-//            if (world.getBlockState(pos.offset(opening)).isAir())
-//                return null;
-//        for (Direction direction1 : Direction.values()) {
-//            if (direction1 != Direction.DOWN) {
-//                if (world.getBlockState(pos.offset(direction1)).isAir()) {
-//                    return direction1;
-//                }
-//            }
-//        }
-//        world.setBlockState(pos, Blocks.SAND.getDefaultState(), 0);
-//        return null;
-//    }
-//
-//    private void refreshDirection(BlockPos pos, WorldAccess world) {
-//        Direction direction = getNewDirection(pos, world);
-//        if (direction != null)
-//            world.setBlockState(pos, world.getBlockState(pos).with(FACING, direction), 18);
-//    }
-//
-//    @Override
-//    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-//        if (!state.isOf(oldState.getBlock())) {
-//            refreshDirection(pos, world);
-//        }
-//    }
-//
-//    @Override
-//    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-//        refreshDirection(pos, world);
-//
-//        return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
-//    }
+    @Nullable
+    private Direction getNewDirection(BlockPos pos, WorldAccess world) {
+        Direction opening = world.getBlockState(pos).get(FACING);
+        if (opening != null && opening != Direction.DOWN)
+            return null;
+        for (Direction direction1 : Direction.values()) {
+            if (direction1 != Direction.DOWN) {
+                if (world.getBlockState(pos.offset(direction1)).isAir()) {
+                    return direction1;
+                }
+            }
+        }
+        world.setBlockState(pos, Blocks.SAND.getDefaultState(), 0);
+        return null;
+    }
+
+    private void refreshDirection(BlockPos pos, WorldAccess world) {
+        Direction direction = getNewDirection(pos, world);
+        if (direction != null)
+            world.setBlockState(pos, world.getBlockState(pos).with(FACING, direction), 18);
+    }
+
+    @Override
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        if (!state.isOf(oldState.getBlock())) {
+            refreshDirection(pos, world);
+        }
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+        refreshDirection(pos, world);
+
+        return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
+    }
 
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);

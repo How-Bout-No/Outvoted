@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.entity;
 
 import com.google.common.collect.Lists;
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
 import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.*;
@@ -411,8 +412,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         public void start() {
-            BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
-            if (blockEntity instanceof BurrowBlockEntity) {
+            World world = MeerkatEntity.this.world;
+            BlockEntity blockEntity = world.getBlockEntity(MeerkatEntity.this.burrowPos);
+            BlockPos pos = blockEntity.getPos().offset(world.getBlockState(blockEntity.getPos()).get(BurrowBlock.FACING));
+            boolean bl = MeerkatEntity.this.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < 1.4;
+            if (blockEntity instanceof BurrowBlockEntity && bl) {
                 BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
                 burrowBlockEntity.tryEnterBurrow(MeerkatEntity.this, false);
             }
@@ -485,7 +489,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         Vec3d vec3d2 = TargetFinder.findGroundTargetTowards(this, k, l, i, vec3d, 0.3141592741012573D);
         if (vec3d2 != null) {
             this.navigation.setRangeMultiplier(0.5F);
-            this.navigation.startMovingTo(vec3d2.x, vec3d2.y, vec3d2.z, 1.0D);
+            this.navigation.startMovingTo(vec3d2.x + 0.5, vec3d2.y, vec3d2.z + 0.5, 1.0D);
         }
     }
 
@@ -564,7 +568,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
         private boolean startMovingToFar(BlockPos pos) {
             MeerkatEntity.this.navigation.setRangeMultiplier(10.0F);
-            MeerkatEntity.this.navigation.startMovingTo((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 1.0D);
+            MeerkatEntity.this.navigation.startMovingTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1.0D);
             return MeerkatEntity.this.navigation.getCurrentPath() != null && MeerkatEntity.this.navigation.getCurrentPath().reachesTarget();
         }
 
@@ -599,7 +603,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         private boolean isCloseEnough(BlockPos pos) {
-            if (pos.isWithinDistance(MeerkatEntity.this.getBlockPos(), 1.5D)) {
+            if (pos.isWithinDistance(MeerkatEntity.this.getBlockPos(), 1.0D)) {
                 return true;
             } else {
                 Path path = MeerkatEntity.this.navigation.getCurrentPath();

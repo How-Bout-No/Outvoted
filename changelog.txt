@@ -1,3 +1,21 @@
+>> Entities <<
+
+Meerkat
+- Will now only attack entities classified as Arthropods
+- Fix inconsistent burrow pathfinding
+- Fix baby Meerkats having too much health
+
+>> Items <<
+Wildfire Helmet
+- Fix some theoretical problems on drop
+
 >> Blocks <<
+Burrow
+- No longer able to place upside down
+
 Sapling
 - Fix incorrect rendering
+
+>> Misc <<
+- Update to latest Arch API
+- Fix several possible and actual game crashes on Fabric
