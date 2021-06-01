@@ -639,7 +639,9 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     @Nullable
     @Override
     public MeerkatEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return ModEntityTypes.MEERKAT.get().create(world);
+        MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
+        meerkatEntity.initialize(world, world.getLocalDifficulty(meerkatEntity.getBlockPos()), SpawnReason.BREEDING, null, null);
+        return meerkatEntity;
     }
 
     @Override
