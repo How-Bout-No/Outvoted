@@ -8,6 +8,7 @@
     "MixinCorridorExit",
     "MixinMendingEnchantment",
     "MixinServerPlayerEntity",
+    "MixinSilverfishEntity",
     "MixinSpiderEntity",
     "MixinUtils",
     "PointOfInterestTypeAccessor"
