@@ -5,6 +5,7 @@ import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
@@ -34,6 +35,7 @@ public class BurrowGenFeature extends Feature<DefaultFeatureConfig> {
                 MeerkatEntity livingEntity = ModEntityTypes.MEERKAT.get().create(structureWorldAccess.toServerWorld());
                 blockPos.add(livingEntity.getParticleX(2.0D), 0, livingEntity.getParticleZ(2.0D));
                 livingEntity.refreshPositionAndAngles(blockPos, livingEntity.yaw, livingEntity.pitch);
+                livingEntity.initialize(structureWorldAccess, structureWorldAccess.getLocalDifficulty(blockPos), SpawnReason.NATURAL, null, null);
                 structureWorldAccess.spawnEntity(livingEntity);
             }
         }
