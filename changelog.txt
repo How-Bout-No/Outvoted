@@ -9,6 +9,7 @@ Meerkat
 - Fix baby Meerkats ignoring health config
 
 Glutton
+- Fix manual spawning sometimes applying wrong variant
 - Fix items affected by mods able to be infinitely levelled up
 
 >> Items <<

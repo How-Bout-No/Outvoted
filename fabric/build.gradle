@@ -128,7 +128,7 @@ task modrinthFabric(type: TaskModrinthUpload) {
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-fabric"
         uploadFile = remapJar.archivePath // This is the java jar task
-        changelog = file('changelog.txt')
+        changelog = file('../changelog.txt')
         releaseType = "alpha"
         addGameVersion('1.16.5')
         addLoader('fabric')

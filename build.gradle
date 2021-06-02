@@ -71,7 +71,7 @@ allprojects {
 
 if (file("key.properties").exists()) {
     task publishAll {
-//        dependsOn = [':forge:curseforge', ':fabric:curseforge', ':forge:modrinthForge', ':fabric:modrinthFabric']
-        dependsOn = [':forge:curseforge', ':fabric:curseforge']
+        dependsOn = [':forge:curseforge', ':fabric:curseforge', ':forge:modrinthForge', ':fabric:modrinthFabric']
+//        dependsOn = [':forge:curseforge', ':fabric:curseforge']
     }
 }

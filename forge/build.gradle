@@ -140,7 +140,7 @@ task modrinthForge(type: TaskModrinthUpload) {
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-forge"
         uploadFile = remapJar.archivePath // This is the java jar task
-        changelog = file('changelog.txt')
+        changelog = file('../changelog.txt')
         releaseType = "alpha"
         addGameVersion('1.16.5')
         addLoader('forge')

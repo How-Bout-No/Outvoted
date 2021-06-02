@@ -108,7 +108,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         } else {
             if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
                 type = 1;
-            } else if (!(worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND))) {
+            } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND)) {
                 type = 0;
             }
         }
