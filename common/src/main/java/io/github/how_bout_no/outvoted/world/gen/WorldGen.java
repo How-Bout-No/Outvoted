@@ -44,9 +44,6 @@ public class WorldGen {
         BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, ModFeatures.Configured.BURROW));
-//        BiomeModifications.addProperties(biomeContext -> biomeContext.getKey().equals(BiomeKeys.DESERT.getValue()),
-//                (biomeContext, mutable) -> mutable.getGenerationProperties()
-//                            .addFeature(GenerationStep.Feature.LAKES, ModFeatures.Configured.OASIS));
 
     }
 

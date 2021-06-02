@@ -266,7 +266,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                     Enchantment enchantment = entry.getKey();
                     Integer level = entry.getValue();
                     if (cacheEnchants.containsKey(enchantment)) {
-                        if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) != enchantment.getMaxLevel() + 1) {
+                        if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) < enchantment.getMaxLevel() + 1) {
                             if (level == enchantment.getMaxLevel() && cacheEnchants.get(enchantment) == enchantment.getMaxLevel()) {
                                 for (Enchantment ench : cacheEnchants.keySet()) {
                                     if (cacheEnchants.get(ench) == ench.getMaxLevel() + 1) {

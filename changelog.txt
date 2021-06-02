@@ -1,9 +1,12 @@
 >> Entities <<
-
 Meerkat
 - Will now only attack entities classified as Arthropods
 - Fix inconsistent burrow pathfinding
-- Fix baby Meerkats having too much health
+- Fix naturally spawned Meerkats ignoring health config
+- Fix baby Meerkats ignoring health config
+
+Glutton
+- Fix items affected by mods able to be infinitely levelled up
 
 >> Items <<
 Wildfire Helmet
