@@ -1,23 +1,25 @@
 package io.github.how_bout_no.outvoted.block.entity;
 
 import com.google.common.collect.Lists;
+import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
 import io.github.how_bout_no.outvoted.init.ModBlockEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.ServerWorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -25,8 +27,7 @@ import java.util.List;
 
 public class BurrowBlockEntity extends BlockEntity implements Tickable {
     private final List<BurrowBlockEntity.Meerkat> meerkats = Lists.newArrayList();
-    @Nullable
-    private BlockPos flowerPos = null;
+    private final int capacity = 4;
 
     public BurrowBlockEntity() {
         super(ModBlockEntityTypes.BURROW.get());
@@ -44,12 +45,8 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         this.tryEnterBurrow(entity, hasNectar, 0);
     }
 
-    public int getMeerkatCount() {
-        return this.meerkats.size();
-    }
-
     public void tryEnterBurrow(Entity entity, boolean hasNectar, int ticksInBurrow) {
-        if (this.meerkats.size() < 5) {
+        if (this.meerkats.size() < capacity) {
             entity.stopRiding();
             entity.removeAllPassengers();
             CompoundTag compoundTag = new CompoundTag();
@@ -57,7 +54,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
             this.meerkats.add(new BurrowBlockEntity.Meerkat(compoundTag, ticksInBurrow, hasNectar ? 2400 : 600));
             if (this.world != null) {
                 BlockPos blockPos = this.getPos();
-                this.world.playSound((PlayerEntity) null, (double) blockPos.getX(), (double) blockPos.getY(), (double) blockPos.getZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                this.world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
 
             entity.remove();
@@ -79,9 +76,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
             if (bl && meerkatState != BurrowBlockEntity.MeerkatState.EMERGENCY) {
                 return false;
             } else {
-                Entity entity = EntityType.loadEntityWithPassengers(compoundTag, this.world, (entityx) -> {
-                    return entityx;
-                });
+                Entity entity = EntityType.loadEntityWithPassengers(compoundTag, this.world, (entityx) -> entityx);
                 if (entity != null) {
                     if (entity instanceof MeerkatEntity) {
                         MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
@@ -94,7 +89,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
                         entity.refreshPositionAndAngles(blockPos2, entity.yaw, entity.pitch);
                     }
 
-                    this.world.playSound((PlayerEntity) null, blockPos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    this.world.playSound(null, blockPos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return this.world.spawnEntity(entity);
                 } else {
                     return false;
@@ -114,21 +109,16 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         meerkat.setLoveTicks(Math.max(0, meerkat.getLoveTicks() - ticks));
     }
 
-    private boolean hasFlowerPos() {
-        return this.flowerPos != null;
-    }
-
     private void tickMeerkats() {
         Iterator<BurrowBlockEntity.Meerkat> iterator = this.meerkats.iterator();
 
         BurrowBlockEntity.Meerkat meerkat;
         for (BlockState blockState = this.getCachedState(); iterator.hasNext(); meerkat.ticksInBurrow++) {
-            meerkat = (BurrowBlockEntity.Meerkat) iterator.next();
+            meerkat = iterator.next();
             if (meerkat.ticksInBurrow > meerkat.minOccupationTicks) {
                 BurrowBlockEntity.MeerkatState meerkatState = meerkat.entityData.getBoolean("HasNectar") ? BurrowBlockEntity.MeerkatState.HONEY_DELIVERED : BurrowBlockEntity.MeerkatState.MEERKAT_RELEASED;
-                if (this.releaseMeerkat(blockState, meerkat, (List) null, meerkatState)) {
+                if (this.releaseMeerkat(blockState, meerkat, null, meerkatState))
                     iterator.remove();
-                }
             }
         }
 
@@ -137,12 +127,21 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
     public void tick() {
         if (!this.world.isClient) {
             this.tickMeerkats();
-            BlockPos blockPos = this.getPos();
-            if (this.meerkats.size() > 0 && this.world.getRandom().nextDouble() < 0.005D) {
-                double d = (double) blockPos.getX() + 0.5D;
-                double e = (double) blockPos.getY();
-                double f = (double) blockPos.getZ() + 0.5D;
-                this.world.playSound((PlayerEntity) null, d, e, f, SoundEvents.BLOCK_BEEHIVE_WORK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            if (this.meerkats.size() > 0 && this.world.getRandom().nextDouble() < 0.001D) {
+                for (Meerkat meerkat : this.meerkats) {
+                    double health = meerkat.entityData.getDouble("Health");
+                    if (health != Outvoted.commonConfig.entities.meerkat.health) {
+                        health = Math.min(health + 1, Outvoted.commonConfig.entities.meerkat.health);
+                        meerkat.entityData.putDouble("Health", health);
+                    }
+                }
+            } else if (this.meerkats.size() > 1 && this.meerkats.size() < capacity && this.world.getRandom().nextDouble() < 0.0001D) {
+                MeerkatEntity entity = ModEntityTypes.MEERKAT.get().create(this.world);
+                CompoundTag compoundTag = new CompoundTag();
+                entity.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getPos()), SpawnReason.BREEDING, null, null);
+                entity.saveToTag(compoundTag);
+                compoundTag.putInt("Age", -25000);
+                this.meerkats.add(new BurrowBlockEntity.Meerkat(compoundTag, 0, 600));
             }
         }
     }
@@ -158,19 +157,11 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
             this.meerkats.add(meerkat);
         }
 
-        this.flowerPos = null;
-        if (tag.contains("FlowerPos")) {
-            this.flowerPos = NbtHelper.toBlockPos(tag.getCompound("FlowerPos"));
-        }
-
     }
 
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
         tag.put("Meerkats", this.getMeerkats());
-        if (this.hasFlowerPos()) {
-            tag.put("FlowerPos", NbtHelper.fromBlockPos(this.flowerPos));
-        }
 
         return tag;
     }

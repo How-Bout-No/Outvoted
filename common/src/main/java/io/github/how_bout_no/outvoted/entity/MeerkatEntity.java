@@ -27,6 +27,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -83,7 +84,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         this.goalSelector.add(2, new MeerkatEntity.EnterBurrowGoal());
         this.goalSelector.add(3, new AnimalMateGoal(this, 0.8D));
         this.goalSelector.add(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(5, new MeerkatEntity.AttackGoal(this, 1.0D, true));
         this.goalSelector.add(6, new MeerkatEntity.FindBurrowGoal());
         this.moveToBurrowGoal = new MeerkatEntity.MoveToBurrowGoal();
         this.goalSelector.add(7, this.moveToBurrowGoal);
@@ -368,7 +369,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         protected void startMovingToTarget() {
-            this.mob.getNavigation().startMovingTo((double) ((float) this.targetPos.getX()) + 0.5D, (double) (this.targetPos.getY()), (double) ((float) this.targetPos.getZ()) + 0.5D, this.speed);
+            this.mob.getNavigation().startMovingTo((double) ((float) this.targetPos.getX()) + 0.5D, this.targetPos.getY(), (double) ((float) this.targetPos.getZ()) + 0.5D, this.speed);
         }
 
         protected boolean hasReached() {
@@ -398,7 +399,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         public boolean canStart() {
             if (MeerkatEntity.this.burrowPos != null && MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow()) {
                 BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
-                if (blockEntity instanceof BurrowBlockEntity && MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING)).isWithinDistance(MeerkatEntity.this.getPos(), 1.5D)) {
+                if (blockEntity instanceof BurrowBlockEntity && MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING)).isWithinDistance(MeerkatEntity.this.getPos(), 1.0D)) {
                     BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
                     if (!burrowBlockEntity.isFullOfMeerkats()) {
                         return true;
@@ -415,7 +416,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             World world = MeerkatEntity.this.world;
             BlockEntity blockEntity = world.getBlockEntity(MeerkatEntity.this.burrowPos);
             BlockPos pos = blockEntity.getPos().offset(world.getBlockState(blockEntity.getPos()).get(BurrowBlock.FACING));
-            boolean bl = MeerkatEntity.this.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < 1.4;
+            boolean bl = MeerkatEntity.this.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < 1.0;
             if (blockEntity instanceof BurrowBlockEntity && bl) {
                 BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
                 burrowBlockEntity.tryEnterBurrow(MeerkatEntity.this, false);
@@ -490,6 +491,22 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         if (vec3d2 != null) {
             this.navigation.setRangeMultiplier(0.5F);
             this.navigation.startMovingTo(vec3d2.x + 0.5, vec3d2.y, vec3d2.z + 0.5, 1.0D);
+        }
+    }
+
+    class AttackGoal extends MeleeAttackGoal {
+        public AttackGoal(PathAwareEntity mob, double speed, boolean pauseWhenMobIdle) {
+            super(mob, speed, pauseWhenMobIdle);
+        }
+
+        @Override
+        public boolean canStart() {
+            return super.canStart() && this.mob.getHealth() > 3.0D;
+        }
+
+        @Override
+        public boolean shouldContinue() {
+            return super.shouldContinue() && this.mob.getHealth() > 3.0D;
         }
     }
 
@@ -625,7 +642,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         boolean bl = target.damage(DamageSource.mob(this), f);
         if (bl) {
             if (g > 0.0F && target instanceof LivingEntity) {
-                ((LivingEntity) target).takeKnockback(g * 0.5F, (double) MathHelper.sin(this.yaw * 0.017453292F), (double) (-MathHelper.cos(this.yaw * 0.017453292F)));
+                ((LivingEntity) target).takeKnockback(g * 0.5F, MathHelper.sin(this.yaw * 0.017453292F), -MathHelper.cos(this.yaw * 0.017453292F));
                 this.setVelocity(this.getVelocity().multiply(0.6D, 1.0D, 0.6D));
             }
 

@@ -1,6 +1,9 @@
 >> Entities <<
 Meerkat
-- Will now only attack entities classified as Arthropods
+- Won't automatically attack mobs if Meerkat health is less than 3 hearts
+- Will now only initiate attacks against entities classified as Arthropods
+- Will slowly regain health when in burrows
+- Will very slowly breed automatically in burrows if there are 2 or more Meerkats and enough space
 - Fix inconsistent burrow pathfinding
 - Fix naturally spawned Meerkats ignoring health config
 - Fix baby Meerkats ignoring health config
@@ -14,7 +17,8 @@ Wildfire Helmet
 
 >> Blocks <<
 Burrow
-- No longer able to place upside down
+- Restrict placing upside down
+- Reduce capacity by 1 (max 4)
 
 Sapling
 - Fix incorrect rendering
@@ -22,3 +26,4 @@ Sapling
 >> Misc <<
 - Update to latest Arch API
 - Fix several possible and actual game crashes on Fabric
+- Reduce mixin count on the backend
