@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 configurations {
@@ -129,7 +129,7 @@ task modrinthFabric(type: TaskModrinthUpload) {
         versionNumber = project.version + "-fabric"
         uploadFile = remapJar.archivePath // This is the java jar task
         changelog = file('../changelog.txt')
-        releaseType = "alpha"
+        versionType = "ALPHA"
         addGameVersion('1.16.5')
         addLoader('fabric')
     }
