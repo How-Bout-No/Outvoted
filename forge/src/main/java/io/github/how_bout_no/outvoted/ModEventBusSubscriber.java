@@ -6,6 +6,7 @@ import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
+import io.github.how_bout_no.outvoted.entity.OstrichEntity;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
@@ -42,6 +43,7 @@ public class ModEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GLUTTON.get(), GluttonRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BARNACLE.get(), BarnacleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MEERKAT.get(), MeerkatRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.OSTRICH.get(), OstrichRenderer::new);
 
         GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
         ShieldModelProvider.registerItemsWithModelProvider();
@@ -59,6 +61,7 @@ public class ModEventBusSubscriber {
         SpawnRestriction.register(ModEntityTypes.GLUTTON.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GluttonEntity::canSpawn);
         SpawnRestriction.register(ModEntityTypes.BARNACLE.get(), SpawnRestriction.Location.IN_WATER, Heightmap.Type.MOTION_BLOCKING, BarnacleEntity::canSpawn);
         SpawnRestriction.register(ModEntityTypes.MEERKAT.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MeerkatEntity::canSpawn);
+        SpawnRestriction.register(ModEntityTypes.OSTRICH.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, OstrichEntity::canSpawn);
 
         ModSpawnEggItem.initSpawnEggs();
     }
