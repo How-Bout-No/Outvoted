@@ -30,5 +30,6 @@ public class MeerkatRenderer extends GeoEntityRenderer<MeerkatEntity> {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
         if (animatable.isBaby()) stackIn.scale(0.6F, 0.6F, 0.6F);
+        else stackIn.scale(0.9F, 0.9F, 0.9F);
     }
 }
