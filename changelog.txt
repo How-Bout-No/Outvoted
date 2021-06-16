@@ -1,20 +1,23 @@
 >> Entities <<
 Glutton
 - Is no longer silent when burrowed but instead very quiet
+- Fix possible health bug... again
 
 Meerkat
 - Slightly decrease adult size
-
-Ostrich
-- Added Ostrich
-- Spawns in Savanna biomes
-- Tameable + Rideable
-- Moves at around 15 blocks/sec
-- Fixed health + speed (A.K.A not Horse behavior)
+- Slightly lower volume of some sounds
+- Fix leads not rendering (credit: Paspartout)
 
 >> Items <<
 Wildfire Helmet
 - Soul variant now appears in creative tabs
+
+Molten Shard
+- Renamed from Shattered Blaze Piece
+- New texture by Furti
+
+Void Heart & Wildfire Shield Part
+- New texture by Furti
 
 >> Misc <<
 - Update dependencies
