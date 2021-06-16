@@ -91,7 +91,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.glutton.health);
 
         int type = 2;
         if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {

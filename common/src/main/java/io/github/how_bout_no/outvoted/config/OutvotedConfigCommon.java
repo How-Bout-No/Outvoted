@@ -66,7 +66,6 @@ public class OutvotedConfigCommon implements ConfigData {
         public static class Meerkat {
             public boolean spawn = true;
             @ConfigEntry.Gui.Tooltip
-            @ConfigEntry.Gui.RequiresRestart
             public int burrowRate = 40;
             public List<String> biomes = Collections.singletonList("#desert");
             public double health = 10.0D;
