@@ -1,30 +1,20 @@
 >> Entities <<
-Meerkat
-- Won't automatically attack mobs if Meerkat health is less than 3 hearts
-- Will now only initiate attacks against entities classified as Arthropods
-- Will slowly regain health when in burrows
-- Will very slowly breed automatically in burrows if there are 2 or more Meerkats and enough space
-- Fix inconsistent burrow pathfinding
-- Fix naturally spawned Meerkats ignoring health config
-- Fix baby Meerkats ignoring health config
-
 Glutton
-- Fix manual spawning sometimes applying wrong variant
-- Fix items affected by mods able to be infinitely levelled up
+- Is no longer silent when burrowed but instead very quiet
+
+Meerkat
+- Slightly decrease adult size
+
+Ostrich
+- Added Ostrich
+- Spawns in Savanna biomes
+- Tameable + Rideable
+- Moves at around 15 blocks/sec
+- Fixed health + speed (A.K.A not Horse behavior)
 
 >> Items <<
 Wildfire Helmet
-- Fix some theoretical problems on drop
-
->> Blocks <<
-Burrow
-- Restrict placing upside down
-- Reduce capacity by 1 (max 4)
-
-Sapling
-- Fix incorrect rendering
+- Soul variant now appears in creative tabs
 
 >> Misc <<
-- Update to latest Arch API
-- Fix several possible and actual game crashes on Fabric
-- Reduce mixin count on the backend
+- Update dependencies

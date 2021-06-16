@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -21,8 +22,6 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private int timer = 0;
     private static final Identifier HELMET_TEXTURE = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png");
     private static final Identifier HELMET_TEXTURE_SOUL = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
-
-    private AnimationFactory factory = new AnimationFactory(this);
 
     public WildfireHelmetItem() {
         super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Item.Settings().fireproof().group(Outvoted.TAB_COMBAT));
@@ -64,6 +63,18 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     protected boolean isIn(ItemGroup group) {
         return GroupCheck.isIn(group, Outvoted.TAB_COMBAT);
     }
+
+    @Override
+    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+        if (this.isIn(group)) {
+            stacks.add(new ItemStack(this));
+            ItemStack soul = new ItemStack(this);
+            soul.getOrCreateTag().putFloat("SoulTexture", 1.0F);
+            stacks.add(soul);
+        }
+    }
+
+    private AnimationFactory factory = new AnimationFactory(this);
 
     @Override
     public void registerControllers(AnimationData animationData) {
