@@ -23,11 +23,6 @@ public class MeerkatRenderer extends GeoMobRenderer<MeerkatEntity> {
     }
 
     @Override
-    public Identifier getTexture(MeerkatEntity entity) {
-        return super.getTextureLocation(entity);
-    }
-
-    @Override
     public void renderEarly(MeerkatEntity animatable, MatrixStack stackIn, float ticks,
                             VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
                             int packedOverlayIn, float red, float green, float blue, float partialTicks) {

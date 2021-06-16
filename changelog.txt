@@ -1,13 +1,13 @@
 >> Entities <<
 Glutton
 - Adjust knockback
-- Is no longer silent when burrowed but instead very quiet
-- Fix possible health bug... again
+- No longer silent when burrowed but instead very quiet
+- Fix another possible health bug
 
 Meerkat
 - Slightly decrease adult size
 - Slightly lower volume of some sounds
-- Fix leads not rendering (credit: Paspartout)
+- Fix leads not rendering
 
 >> Items <<
 Wildfire Helmet
