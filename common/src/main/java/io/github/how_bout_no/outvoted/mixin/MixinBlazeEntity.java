@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.mixin;
 
-import io.github.how_bout_no.outvoted.entity.util.IMixinBlazeEntity;
+import io.github.how_bout_no.outvoted.util.IMixinBlazeEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityData;

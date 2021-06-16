@@ -1,7 +1,6 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.LookControl;
@@ -86,7 +85,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }

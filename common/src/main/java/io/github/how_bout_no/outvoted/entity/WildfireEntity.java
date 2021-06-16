@@ -1,10 +1,9 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
-import io.github.how_bout_no.outvoted.entity.util.IMixinBlazeEntity;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
+import io.github.how_bout_no.outvoted.util.IMixinBlazeEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -88,7 +87,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
 
         int type = 0;
         if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {

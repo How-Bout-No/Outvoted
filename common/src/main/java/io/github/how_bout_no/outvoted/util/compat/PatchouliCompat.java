@@ -1,7 +1,6 @@
 package io.github.how_bout_no.outvoted.util.compat;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.util.IMixinPlayerEntity;
 import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

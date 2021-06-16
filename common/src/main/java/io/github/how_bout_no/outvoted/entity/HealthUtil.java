@@ -1,10 +1,10 @@
-package io.github.how_bout_no.outvoted.entity.util;
+package io.github.how_bout_no.outvoted.entity;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 
-public class EntityUtils {
+public class HealthUtil {
     /**
      * Sets entity max health to that of its appropriate config value
      */

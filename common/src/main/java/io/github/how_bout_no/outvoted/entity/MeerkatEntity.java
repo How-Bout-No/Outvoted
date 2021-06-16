@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
-import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -104,7 +103,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }

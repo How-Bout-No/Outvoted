@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.util.IMixinBlazeEntity;
+import io.github.how_bout_no.outvoted.util.IMixinBlazeEntity;
 import net.minecraft.client.render.entity.BlazeEntityRenderer;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.util.Identifier;

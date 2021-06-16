@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import com.mojang.authlib.GameProfile;
-import io.github.how_bout_no.outvoted.entity.util.IMixinPlayerEntity;
+import io.github.how_bout_no.outvoted.util.compat.IMixinPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;

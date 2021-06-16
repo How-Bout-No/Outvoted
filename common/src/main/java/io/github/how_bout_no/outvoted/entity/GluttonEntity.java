@@ -2,7 +2,6 @@ package io.github.how_bout_no.outvoted.entity;
 
 import com.google.common.collect.ImmutableList;
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import io.github.how_bout_no.outvoted.init.ModTags;
@@ -72,7 +71,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public GluttonEntity(EntityType<? extends GluttonEntity> type, World worldIn) {
         super(type, worldIn);
         this.experiencePoints = 5;
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.glutton.health);
     }
 
     protected void initGoals() {
@@ -93,7 +91,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        EntityUtils.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
 
         int type = 2;
         if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
@@ -145,6 +143,11 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     public SoundCategory getSoundCategory() {
         return SoundCategory.HOSTILE;
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return this.isBurrowed() ? 0.25F : super.getSoundVolume();
     }
 
     public void writeCustomDataToTag(CompoundTag compound) {
@@ -340,8 +343,8 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    public boolean isPushable() {
-        return !this.isInvulnerable() && super.isPushable();
+    protected boolean isImmobile() {
+        return !this.isInvulnerable() && super.isImmobile();
     }
 
     @Override
@@ -388,7 +391,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public void tickMovement() {
         if (this.isAlive()) {
             this.setInvulnerable(this.isBurrowed());
-            this.setSilent(this.isBurrowed());
         }
         super.tickMovement();
     }

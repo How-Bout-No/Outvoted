@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.entity.util;
+package io.github.how_bout_no.outvoted.util;
 
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
