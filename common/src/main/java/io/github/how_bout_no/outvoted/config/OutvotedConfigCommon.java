@@ -26,6 +26,9 @@ public class OutvotedConfigCommon implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Entities.Meerkat meerkat = new Entities.Meerkat();
 
+        @ConfigEntry.Gui.CollapsibleObject
+        public Entities.Ostrich ostrich = new Entities.Ostrich();
+
         public static class Wildfire {
             public boolean spawn = true;
             public int rate = 1;
@@ -64,9 +67,16 @@ public class OutvotedConfigCommon implements ConfigData {
             public boolean spawn = true;
             @ConfigEntry.Gui.Tooltip
             @ConfigEntry.Gui.RequiresRestart
-            public int burrowRate = 25;
+            public int burrowRate = 40;
             public List<String> biomes = Collections.singletonList("#desert");
             public double health = 10.0D;
+        }
+
+        public static class Ostrich {
+            public boolean spawn = true;
+            public int rate = 2;
+            public List<String> biomes = Collections.singletonList("#savanna");
+            public double health = 15.0D;
         }
     }
 

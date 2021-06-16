@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import com.google.common.collect.UnmodifiableIterator;
-import io.github.how_bout_no.outvoted.entity.util.EntityUtils;
+import io.github.how_bout_no.outvoted.Outvoted;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -75,14 +75,13 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.HORSE_JUMP_STRENGTH)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 53.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.22499999403953552D);
+                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.5D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.35D);
     }
 
     @Nullable
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
-        EntityUtils.setConfigHealth(this, 20.0D);
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.ostrich.health);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -109,7 +108,6 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         if (!this.items.getStack(0).isEmpty()) {
             tag.put("SaddleItem", this.items.getStack(0).toTag(new CompoundTag()));
         }
-
     }
 
     public void readCustomDataFromTag(CompoundTag tag) {
@@ -139,11 +137,11 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     }
 
     protected boolean getOstrichFlag(int bitmask) {
-        return ((Byte) this.dataTracker.get(OSTRICH_FLAGS) & bitmask) != 0;
+        return (this.dataTracker.get(OSTRICH_FLAGS) & bitmask) != 0;
     }
 
     protected void setOstrichFlag(int bitmask, boolean flag) {
-        byte b = (Byte) this.dataTracker.get(OSTRICH_FLAGS);
+        byte b = this.dataTracker.get(OSTRICH_FLAGS);
         if (flag) {
             this.dataTracker.set(OSTRICH_FLAGS, (byte) (b | bitmask));
         } else {
@@ -191,9 +189,8 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     public void saddle(@Nullable SoundCategory sound) {
         this.items.setStack(0, new ItemStack(Items.SADDLE));
         if (sound != null) {
-            this.world.playSoundFromEntity((PlayerEntity) null, this, SoundEvents.ENTITY_HORSE_SADDLE, sound, 0.5F, 1.0F);
+            this.world.playSoundFromEntity(null, this, SoundEvents.ENTITY_HORSE_SADDLE, sound, 0.5F, 1.0F);
         }
-
     }
 
     public boolean isSaddled() {
@@ -230,6 +227,11 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
             this.playBlockFallSound();
             return true;
         }
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose poseIn, EntityDimensions sizeIn) {
+        return 1.7F;
     }
 
     protected int computeFallDamage(float fallDistance, float damageMultiplier) {
@@ -365,7 +367,8 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         float f = MathHelper.sin(this.bodyYaw * 0.017453292F);
         float g = MathHelper.cos(this.bodyYaw * 0.017453292F);
         float h = 0.2F;
-        float i = 0.15F;
+//        float i = 0.10F;
+        float i = 0.0F;
         passenger.updatePosition(this.getX() + (double) (h * f), this.getY() + this.getMountedHeightOffset() + passenger.getHeightOffset() + (double) i, this.getZ() - (double) (h * g));
         if (passenger instanceof LivingEntity) {
             ((LivingEntity) passenger).bodyYaw = this.bodyYaw;
@@ -442,7 +445,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
                 this.flyingSpeed = this.getMovementSpeed() * 0.1F;
                 if (this.isLogicalSideForUpdatingMovement()) {
                     this.setMovementSpeed((float) this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
-                    super.travel(new Vec3d((double) f, movementInput.y, (double) g));
+                    super.travel(new Vec3d(f, movementInput.y, g));
                 } else if (livingEntity instanceof PlayerEntity) {
                     this.setVelocity(Vec3d.ZERO);
                 }

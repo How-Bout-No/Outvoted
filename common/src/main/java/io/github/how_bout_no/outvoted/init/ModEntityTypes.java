@@ -36,6 +36,6 @@ public class ModEntityTypes {
     public static final RegistrySupplier<EntityType<OstrichEntity>> OSTRICH = ENTITY_TYPES
             .register("ostrich", () -> EntityType.Builder
                     .create(OstrichEntity::new, SpawnGroup.CREATURE)
-                    .setDimensions(1.0F, 1.5F)
+                    .setDimensions(1.0F, 1.7F)
                     .build(new Identifier(Outvoted.MOD_ID, "ostrich").toString()));
 }
