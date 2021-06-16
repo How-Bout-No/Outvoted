@@ -10,10 +10,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderer.geo.GeoEntityRenderer;
 
 @Environment(EnvType.CLIENT)
-public class MeerkatRenderer extends GeoEntityRenderer<MeerkatEntity> {
+public class MeerkatRenderer extends GeoMobRenderer<MeerkatEntity> {
     public MeerkatRenderer(EntityRenderDispatcher renderManager) {
         super(renderManager, new MeerkatModel());
     }

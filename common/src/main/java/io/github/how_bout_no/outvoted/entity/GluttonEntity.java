@@ -339,7 +339,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void takeKnockback(float strength, double ratioX, double ratioZ) {
-        super.takeKnockback(this.isBurrowed() ? 0 : strength / 4, ratioX, ratioZ);
+        super.takeKnockback(this.isBurrowed() ? 0 : strength, ratioX, ratioZ);
     }
 
     @Override

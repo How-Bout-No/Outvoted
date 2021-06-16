@@ -1,5 +1,6 @@
 >> Entities <<
 Glutton
+- Adjust knockback
 - Is no longer silent when burrowed but instead very quiet
 - Fix possible health bug... again
 

@@ -30,6 +30,7 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
@@ -61,7 +62,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MeerkatEntity extends AnimalEntity implements IAnimatable {
-    private static final Ingredient TAMING_INGREDIENT = Ingredient.ofItems(Items.SPIDER_EYE);
+    private static final Ingredient TAMING_INGREDIENT;
     private static final TrackedData<Boolean> TRUSTING;
     private static final TrackedData<Optional<UUID>> TRUSTED_UUID;
     private BlockPos structurepos = null;
@@ -71,6 +72,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     @Nullable
     private BlockPos burrowPos = null;
     private MeerkatEntity.MoveToBurrowGoal moveToBurrowGoal;
+    private TemptGoal temptGoal;
 
     public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
         super(type, worldIn);
@@ -78,18 +80,19 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new MeerkatEntity.VentureGoal(this, 1.25D));
-        this.goalSelector.add(2, new MeerkatEntity.EnterBurrowGoal());
-        this.goalSelector.add(3, new AnimalMateGoal(this, 0.8D));
-        this.goalSelector.add(4, new FollowParentGoal(this, 1.25D));
+        this.temptGoal = new TemptGoal(this, 0.6D, TAMING_INGREDIENT, false);
+        this.goalSelector.add(1, new SwimGoal(this));
+        this.goalSelector.add(2, this.temptGoal);
+        this.goalSelector.add(3, new MeerkatEntity.VentureGoal(this, 1.25D));
+        this.goalSelector.add(4, new MeerkatEntity.EnterBurrowGoal());
         this.goalSelector.add(5, new MeerkatEntity.AttackGoal(this, 1.0D, true));
         this.goalSelector.add(6, new MeerkatEntity.FindBurrowGoal());
         this.moveToBurrowGoal = new MeerkatEntity.MoveToBurrowGoal();
         this.goalSelector.add(7, this.moveToBurrowGoal);
-        this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
-        this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.add(9, new LookAroundGoal(this));
+        this.goalSelector.add(8, new AnimalMateGoal(this, 0.8D));
+        this.goalSelector.add(9, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.add(10, new WanderAroundFarGoal(this, 1.0D));
+        this.goalSelector.add(11, new LookAtEntityGoal(this, PlayerEntity.class, 10.0F));
         this.targetSelector.add(1, (new RevengeGoal(this, PlayerEntity.class, MeerkatEntity.class)));
         this.targetSelector.add(2, new FollowTargetGoal<>(this, HostileEntity.class, 10, true, false, e -> e.getGroup() == EntityGroup.ARTHROPOD));
     }
@@ -105,12 +108,17 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
 
+        if (spawnDataIn == null) {
+            spawnDataIn = new PassiveData(1.0F);
+        }
+
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     static {
         TRUSTING = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
         TRUSTED_UUID = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+        TAMING_INGREDIENT = Ingredient.ofItems(new ItemConvertible[]{Items.SPIDER_EYE});
     }
 
     protected void initDataTracker() {
@@ -280,7 +288,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!this.isTrusting() && this.isBreedingItem(itemStack) && player.squaredDistanceTo(this) < 9.0D) {
+        if ((this.temptGoal == null || this.temptGoal.isActive()) && !this.isTrusting() && this.isBreedingItem(itemStack) && player.squaredDistanceTo(this) < 9.0D) {
             this.eat(player, itemStack);
             if (!this.world.isClient) {
                 if (this.random.nextInt(3) == 0) {
@@ -294,9 +302,9 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             }
 
             return ActionResult.success(this.world.isClient);
-        } else if (this.isTrusting()) {
-            if (!this.world.isClient) {
-                if (itemStack.getItem() == Items.STICK) {
+        } else if (this.isTrusting() && player.squaredDistanceTo(this) < 9.0D) {
+            if (itemStack.getItem() == Items.STICK) {
+                if (!this.world.isClient) {
                     BlockPos pyramidPos = findStructure(StructureFeature.DESERT_PYRAMID);
                     BlockPos treasurePos = findStructure(StructureFeature.BURIED_TREASURE);
                     BlockPos struct = null;
@@ -313,8 +321,8 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
                     }
                     structurepos = struct;
                     setTrusted(player.getUuid());
-                    return ActionResult.CONSUME;
                 }
+                return ActionResult.CONSUME;
             }
         }
         return super.interactMob(player, hand);
@@ -329,6 +337,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         } else {
             super.handleStatus(status);
         }
+    }
+
+    @Override
+    public Vec3d method_29919() {
+        return new Vec3d(0.0D, (0.5F * this.getStandingEyeHeight()), (this.getWidth() * 0.05F));
     }
 
     private static float getDistance(int a, int b, int x, int y) {

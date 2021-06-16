@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Mixin(PointOfInterestType.class)
 public interface PointOfInterestTypeAccessor {
-
     @Invoker("<init>")
     static PointOfInterestType create(String id, Set<BlockState> blocks, int ticketCount, int searchDistance) {
         throw new AssertionError();

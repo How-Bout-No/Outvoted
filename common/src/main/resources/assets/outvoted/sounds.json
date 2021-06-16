@@ -261,14 +261,15 @@
     "sounds": [
       {
         "name": "outvoted:entity/meerkat1",
-        "volume": 0.8
+        "volume": 0.7
       },
       {
         "name": "outvoted:entity/meerkat2",
-        "volume": 0.9
+        "volume": 0.8
       },
       {
-        "name": "outvoted:entity/meerkat3"
+        "name": "outvoted:entity/meerkat3",
+        "volume": 0.9
       }
     ]
   },
