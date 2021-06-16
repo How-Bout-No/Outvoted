@@ -343,8 +343,8 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    protected boolean isImmobile() {
-        return !this.isInvulnerable() && super.isImmobile();
+    public boolean isPushable() {
+        return !this.isBurrowed() && super.isPushable();
     }
 
     @Override

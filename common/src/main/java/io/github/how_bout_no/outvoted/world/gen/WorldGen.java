@@ -32,10 +32,10 @@ public class WorldGen {
 //                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
 //                        new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
 //                                Outvoted.commonConfig.entities.meerkat.rate, 2, 4)));
-        BiomeModifications.addProperties(biomeContext -> ent.ostrich.spawn && parseBiomes(ent.ostrich.biomes, biomeContext),
-                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
-                        new SpawnSettings.SpawnEntry(ModEntityTypes.OSTRICH.get(),
-                                Outvoted.commonConfig.entities.ostrich.rate, 1, 3)));
+//        BiomeModifications.addProperties(biomeContext -> ent.ostrich.spawn && parseBiomes(ent.ostrich.biomes, biomeContext),
+//                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
+//                        new SpawnSettings.SpawnEntry(ModEntityTypes.OSTRICH.get(),
+//                                Outvoted.commonConfig.entities.ostrich.rate, 1, 3)));
 
         BiomeModifications.addProperties(biomeContext -> Outvoted.commonConfig.generation.genPalmTrees && biomeContext.getKey().equals(BiomeKeys.DESERT_LAKES.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
