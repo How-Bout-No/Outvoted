@@ -350,7 +350,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     @Override
     public boolean tryAttack(Entity entityIn) {
         boolean exec = super.tryAttack(entityIn);
-        if (exec && entityIn instanceof PlayerEntity) {
+        if (exec && entityIn instanceof PlayerEntity && Outvoted.commonConfig.entities.glutton.stealEnchants) {
             PlayerEntity player = (PlayerEntity) entityIn;
             List<DefaultedList<ItemStack>> allInventories = ImmutableList.of(player.inventory.main, player.inventory.armor, player.inventory.offHand);
             List<ItemStack> enchantedItems = new ArrayList<>();

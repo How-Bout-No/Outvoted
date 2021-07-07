@@ -52,6 +52,7 @@ public class OutvotedConfigCommon implements ConfigData {
             public int rate = 5;
             public List<String> biomes = Arrays.asList("#swamp", "#desert", "minecraft:badlands_plateau", "minecraft:badlands");
             public double health = 20.0D;
+            public boolean stealEnchants = true;
             @ConfigEntry.Gui.Tooltip
             public int maxEnchants = 5;
         }
