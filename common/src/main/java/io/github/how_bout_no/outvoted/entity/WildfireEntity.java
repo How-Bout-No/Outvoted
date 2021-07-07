@@ -21,7 +21,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -67,7 +67,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(1, new WildfireEntity.AttackGoal(this));
+        this.goalSelector.add(1, new AttackGoal(this));
         this.goalSelector.add(2, new GoToWalkTargetGoal(this, 1.0D));
         this.goalSelector.add(3, new WanderAroundFarGoal(this, 1.0D, 0.0F));
         this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
@@ -86,7 +86,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     }
 
     @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
 
         int type = 0;
@@ -132,14 +132,14 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    public void writeCustomDataToTag(CompoundTag compound) {
-        super.writeCustomDataToTag(compound);
+    public void writeCustomDataToNbt(NbtCompound compound) {
+        super.writeCustomDataToNbt(compound);
         compound.putInt("Variant", this.getVariant());
     }
 
     @Override
-    public void readCustomDataFromTag(CompoundTag compound) {
-        super.readCustomDataFromTag(compound);
+    public void readCustomDataFromNbt(NbtCompound compound) {
+        super.readCustomDataFromNbt(compound);
         this.setVariant(compound.getInt("Variant"));
     }
 
@@ -350,7 +350,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
         public AttackGoal(WildfireEntity wildfireIn) {
             this.mob = wildfireIn;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         public boolean canStart() {
@@ -452,7 +452,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                     y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
                                 }
                                 wildfirefireballentity = new WildfireFireballEntity(this.mob.world, this.mob, x, y, z);
-                                wildfirefireballentity.updatePosition(wildfirefireballentity.getX(), this.mob.getBodyY(0.5D), wildfirefireballentity.getZ());
+                                wildfirefireballentity.setPosition(wildfirefireballentity.getX(), this.mob.getBodyY(0.5D), wildfirefireballentity.getZ());
                                 this.mob.world.spawnEntity(wildfirefireballentity);
                             }
                         }

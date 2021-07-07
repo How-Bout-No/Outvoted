@@ -21,7 +21,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ItemScatterer;
@@ -48,7 +48,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     private static Map<Integer, UUID> targetedEntities = new HashMap<>();
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
-    protected net.minecraft.entity.ai.goal.WanderAroundGoal wander;
+    protected WanderAroundGoal wander;
     private boolean initAttack = false;
     private int attackCounter = 0;
 
@@ -56,14 +56,14 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         super(type, worldIn);
         this.experiencePoints = 10;
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
-        this.moveControl = new BarnacleEntity.MoveHelperController(this);
+        this.moveControl = new MoveHelperController(this);
     }
 
     protected void initGoals() {
         GoToWalkTargetGoal movetowardsrestrictiongoal = new GoToWalkTargetGoal(this, 1.0D);
-        this.wander = new net.minecraft.entity.ai.goal.WanderAroundGoal(this, 1.0D, 80);
-        this.goalSelector.add(3, new BarnacleEntity.AttackGoal(this));
-        this.goalSelector.add(4, new BarnacleEntity.ChaseGoal(this, 6.0D, 48.0F));
+        this.wander = new WanderAroundGoal(this, 1.0D, 80);
+        this.goalSelector.add(3, new AttackGoal(this));
+        this.goalSelector.add(4, new ChaseGoal(this, 6.0D, 48.0F));
         this.goalSelector.add(5, new FleeEntityGoal<>(this, BarnacleEntity.class, 72.0F, 4.0D, 4.0D));
         this.goalSelector.add(6, movetowardsrestrictiongoal);
         this.goalSelector.add(7, this.wander);
@@ -84,7 +84,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.barnacle.health);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -161,8 +161,8 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    public net.minecraft.entity.EntityGroup getGroup() {
-        return net.minecraft.entity.EntityGroup.AQUATIC;
+    public EntityGroup getGroup() {
+        return EntityGroup.AQUATIC;
     }
 
     protected void updateAir(int air) {
@@ -426,7 +426,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
         public AttackGoal(BarnacleEntity entity) {
             this.mob = entity;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         public boolean canStart() {
@@ -501,14 +501,14 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         }
 
         public void tick() {
-            if (this.state == MoveControl.State.MOVE_TO && !this.mob.getNavigation().isIdle()) {
+            if (this.state == State.MOVE_TO && !this.mob.getNavigation().isIdle()) {
                 Vec3d vector3d = new Vec3d(this.targetX - this.mob.getX(), this.targetY - this.mob.getY(), this.targetZ - this.mob.getZ());
                 double d0 = vector3d.length();
                 double d1 = vector3d.x / d0;
                 double d2 = vector3d.y / d0;
                 double d3 = vector3d.z / d0;
                 float f = (float) (MathHelper.atan2(vector3d.z, vector3d.x) * (double) (180F / (float) Math.PI)) - 90.0F;
-                this.mob.yaw = this.changeAngle(this.mob.yaw, f, 90.0F);
+                this.mob.yaw = this.wrapDegrees(this.mob.yaw, f, 90.0F);
                 this.mob.bodyYaw = this.mob.yaw;
                 float f1 = (float) (this.speed * this.mob.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
                 float f2 = MathHelper.lerp(0.125F, this.mob.getMovementSpeed(), f1);

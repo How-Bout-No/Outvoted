@@ -28,7 +28,7 @@ public abstract class GiantTree extends SaplingGenerator {
     }
 
     /**
-     * Get a {@link net.minecraft.world.gen.feature.ConfiguredFeature} of the huge variant of this tree
+     * Get a {@link ConfiguredFeature} of the huge variant of this tree
      */
     @Nullable
     protected abstract ConfiguredFeature<TreeFeatureConfig, ?> getGiantTreeFeature(Random rand);

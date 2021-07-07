@@ -45,7 +45,7 @@ public class ModFeatures {
         //        public static final ConfiguredFeature<?, ?> PALM_TREE = ModFeatures.PALM_TREE.get().withConfiguration(Configs.PALM_TREE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).withPlacement(Placement.CHANCE.configure(new ChanceConfig(2)));
         public static final ConfiguredFeature<?, ?> BAOBAB_TREE = ModFeatures.BAOBAB_TREE.get().configure(Configs.BAOBAB_TREE_CONFIG).decorate(ConfiguredFeatures.Decorators.SQUARE_HEIGHTMAP).decorate(Decorator.COUNT.configure(new CountConfig(1)).applyChance(10));
 
-        private static <FC extends net.minecraft.world.gen.feature.FeatureConfig> void register(String name, ConfiguredFeature<FC, ?> configuredFeature) {
+        private static <FC extends FeatureConfig> void register(String name, ConfiguredFeature<FC, ?> configuredFeature) {
             Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(Outvoted.MOD_ID, name), configuredFeature);
         }
 

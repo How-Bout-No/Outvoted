@@ -147,7 +147,7 @@ public class PalmTreeFeature extends Feature<TreeFeatureConfig> {
     }
 
     public static boolean isAirOrLeaves(TestableWorld worldIn, BlockPos pos) {
-        if (worldIn instanceof net.minecraft.world.WorldView) {
+        if (worldIn instanceof WorldView) {
             return worldIn.testBlockState(pos, state ->
                     state.isAir() || state.isIn(BlockTags.LEAVES));
         }

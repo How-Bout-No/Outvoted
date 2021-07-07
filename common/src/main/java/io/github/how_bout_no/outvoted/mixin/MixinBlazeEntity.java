@@ -11,7 +11,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -43,18 +43,18 @@ public abstract class MixinBlazeEntity extends HostileEntity implements IMixinBl
         return this.dataTracker.get(VARIANT);
     }
 
-    public void writeCustomDataToTag(CompoundTag compound) {
-        super.writeCustomDataToTag(compound);
+    public void writeCustomDataToNbt(NbtCompound compound) {
+        super.writeCustomDataToNbt(compound);
         compound.putInt("Variant", this.getVariant());
     }
 
-    public void readCustomDataFromTag(CompoundTag compound) {
-        super.readCustomDataFromTag(compound);
+    public void readCustomDataFromNbt(NbtCompound compound) {
+        super.readCustomDataFromNbt(compound);
         this.setVariant(compound.getInt("Variant"));
     }
 
     @Nullable
-    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         int type = 0;
         if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
             if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {

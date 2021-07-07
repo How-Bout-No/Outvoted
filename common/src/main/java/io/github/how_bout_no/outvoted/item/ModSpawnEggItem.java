@@ -7,11 +7,10 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
@@ -24,7 +23,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
     protected static final List<ModSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
 
-    public ModSpawnEggItem(RegistrySupplier<? extends EntityType<?>> entityTypeSupplier, int primaryColor, int secondaryColor, Item.Settings settings) {
+    public ModSpawnEggItem(RegistrySupplier<? extends EntityType<?>> entityTypeSupplier, int primaryColor, int secondaryColor, Settings settings) {
         super(null, primaryColor, secondaryColor, settings);
         this.entityTypeSupplier = new Lazy(entityTypeSupplier);
         UNADDED_EGGS.add(this);
@@ -54,7 +53,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
     }
 
     @Override
-    public EntityType<?> getEntityType(@Nullable CompoundTag tag) {
+    public EntityType<?> getEntityType(@Nullable NbtCompound tag) {
         return this.entityTypeSupplier.get();
     }
 }

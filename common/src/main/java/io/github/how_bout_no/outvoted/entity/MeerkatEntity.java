@@ -33,7 +33,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -71,7 +71,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     private int ticksLeftToFindBurrow = 0;
     @Nullable
     private BlockPos burrowPos = null;
-    private MeerkatEntity.MoveToBurrowGoal moveToBurrowGoal;
+    private MoveToBurrowGoal moveToBurrowGoal;
     private TemptGoal temptGoal;
 
     public MeerkatEntity(EntityType<? extends MeerkatEntity> type, World worldIn) {
@@ -83,11 +83,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         this.temptGoal = new TemptGoal(this, 0.6D, TAMING_INGREDIENT, false);
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, this.temptGoal);
-        this.goalSelector.add(3, new MeerkatEntity.VentureGoal(this, 1.25D));
-        this.goalSelector.add(4, new MeerkatEntity.EnterBurrowGoal());
-        this.goalSelector.add(5, new MeerkatEntity.AttackGoal(this, 1.0D, true));
-        this.goalSelector.add(6, new MeerkatEntity.FindBurrowGoal());
-        this.moveToBurrowGoal = new MeerkatEntity.MoveToBurrowGoal();
+        this.goalSelector.add(3, new VentureGoal(this, 1.25D));
+        this.goalSelector.add(4, new EnterBurrowGoal());
+        this.goalSelector.add(5, new AttackGoal(this, 1.0D, true));
+        this.goalSelector.add(6, new FindBurrowGoal());
+        this.moveToBurrowGoal = new MoveToBurrowGoal();
         this.goalSelector.add(7, this.moveToBurrowGoal);
         this.goalSelector.add(8, new AnimalMateGoal(this, 0.8D));
         this.goalSelector.add(9, new FollowParentGoal(this, 1.25D));
@@ -105,7 +105,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.meerkat.health);
 
         if (spawnDataIn == null) {
@@ -127,8 +127,8 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         this.dataTracker.startTracking(TRUSTED_UUID, Optional.empty());
     }
 
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
+    public void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
         if (this.hasStructurePos()) tag.put("StructPos", NbtHelper.fromBlockPos(this.getStructurePos()));
         tag.putBoolean("Trusting", this.isTrusting());
         if (this.hasTrusted()) tag.putUuid("Trusted", getTrusted());
@@ -137,7 +137,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
     }
 
-    public void readCustomDataFromTag(CompoundTag tag) {
+    public void readCustomDataFromNbt(NbtCompound tag) {
         this.structurepos = null;
         if (tag.contains("StructPos")) this.structurepos = NbtHelper.toBlockPos(tag.getCompound("StructPos"));
 
@@ -146,7 +146,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             this.burrowPos = NbtHelper.toBlockPos(tag.getCompound("BurrowPos"));
         }
 
-        super.readCustomDataFromTag(tag);
+        super.readCustomDataFromNbt(tag);
         this.setTrusting(tag.getBoolean("Trusting"));
         if (tag.contains("Trusted")) this.setTrusted(tag.getUuid("Trusted"));
     }

@@ -5,7 +5,7 @@ import io.github.how_bout_no.outvoted.init.ModRecipes;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
@@ -35,8 +35,8 @@ public class WildfireShieldDecorationRecipe extends SpecialCraftingRecipe {
         if (itemStack2.isEmpty()) {
             return itemStack2;
         }
-        CompoundTag compoundTag = itemStack.getSubTag("BlockEntityTag");
-        CompoundTag compoundTag2 = compoundTag == null ? new CompoundTag() : compoundTag.copy();
+        NbtCompound compoundTag = itemStack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag2 = compoundTag == null ? new NbtCompound() : compoundTag.copy();
         compoundTag2.putInt("Base", ((BannerItem) itemStack.getItem()).getColor().getId());
         itemStack2.putSubTag("BlockEntityTag", compoundTag2);
         return itemStack2;

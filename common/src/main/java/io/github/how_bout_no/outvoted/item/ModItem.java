@@ -7,7 +7,7 @@ import net.minecraft.item.ItemGroup;
 
 // This class only exists to make the Creative Tab config option work with normal items, however this can be easily expanded
 public class ModItem extends Item {
-    public ModItem(Item.Settings settings) {
+    public ModItem(Settings settings) {
         super(settings.group(Outvoted.TAB_MISC));
     }
 

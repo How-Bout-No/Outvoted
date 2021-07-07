@@ -8,8 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.BlockMirror;
@@ -78,8 +78,8 @@ public class BurrowBlock extends BlockWithEntity {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!world.isClient && blockEntity instanceof BurrowBlockEntity) {
             if (!((BurrowBlockEntity) blockEntity).hasNoMeerkats()) {
-                for (Tag tag1 : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
-                    CompoundTag tag = ((CompoundTag) tag1).getCompound("EntityData");
+                for (NbtElement tag1 : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
+                    NbtCompound tag = ((NbtCompound) tag1).getCompound("EntityData");
                     Entity entity = EntityType.loadEntityWithPassengers(tag, world, (entityx) -> {
                         return entityx;
                     });
@@ -87,13 +87,13 @@ public class BurrowBlock extends BlockWithEntity {
                         if (entity instanceof MeerkatEntity) {
                             MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
 
-                            this.ageMeerkat(((CompoundTag) tag1).getInt("TicksInBurrow"), meerkatEntity);
+                            this.ageMeerkat(((NbtCompound) tag1).getInt("TicksInBurrow"), meerkatEntity);
 
                             entity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), entity.pitch);
                         }
                         world.spawnEntity(entity);
                     }
-//                    CompoundTag tag = ((CompoundTag) tag1);
+//                    NbtCompound tag = ((NbtCompound) tag1);
 //                    MeerkatEntity meerkatEntity = ModEntityTypes.MEERKAT.get().create(world);
 //                    meerkatEntity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), 0.0F);
 //                    meerkatEntity.readCustomDataFromTag(tag.getCompound("EntityData"));

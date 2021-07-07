@@ -7,7 +7,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -24,7 +23,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private static final Identifier HELMET_TEXTURE_SOUL = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
 
     public WildfireHelmetItem() {
-        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Item.Settings().fireproof().group(Outvoted.TAB_COMBAT));
+        super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Settings().fireproof().group(Outvoted.TAB_COMBAT));
     }
 
     @Override

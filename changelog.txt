@@ -1,24 +1,6 @@
 > Entities
 Glutton
-- Adjust knockback
-- No longer silent when burrowed but instead very quiet
-- Fix another possible health bug
-
-Meerkat
-- Slightly decrease adult size
-- Slightly lower volume of some sounds
-- Fix leads not rendering
-
-> Items
-Wildfire Helmet
-- Soul variant now appears in creative tabs
-
-Molten Shard
-- Renamed from Shattered Blaze Piece
-- New texture by Furti
-
-Void Heart, Barnacle Tooth, & Wildfire Shield Part
-- New texture by Furti
+- Config for stealing enchantments
 
 > Misc
 - Update dependencies

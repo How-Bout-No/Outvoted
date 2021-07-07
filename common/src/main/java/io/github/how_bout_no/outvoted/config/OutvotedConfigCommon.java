@@ -15,19 +15,19 @@ public class OutvotedConfigCommon implements ConfigData {
 
     public static class Entities {
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Wildfire wildfire = new Entities.Wildfire();
+        public Wildfire wildfire = new Wildfire();
 
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Glutton glutton = new Entities.Glutton();
+        public Glutton glutton = new Glutton();
 
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Barnacle barnacle = new Entities.Barnacle();
+        public Barnacle barnacle = new Barnacle();
 
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Meerkat meerkat = new Entities.Meerkat();
+        public Meerkat meerkat = new Meerkat();
 
         @ConfigEntry.Gui.CollapsibleObject
-        public Entities.Ostrich ostrich = new Entities.Ostrich();
+        public Ostrich ostrich = new Ostrich();
 
         public static class Wildfire {
             public boolean spawn = true;
@@ -36,7 +36,7 @@ public class OutvotedConfigCommon implements ConfigData {
             public double health = 50.0D;
             @ConfigEntry.Gui.PrefixText
             @ConfigEntry.Gui.CollapsibleObject
-            public Entities.WildfireAttacking attacking = new Entities.WildfireAttacking();
+            public WildfireAttacking attacking = new WildfireAttacking();
         }
 
         public static class WildfireAttacking {

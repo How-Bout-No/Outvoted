@@ -3,7 +3,7 @@ package io.github.how_bout_no.outvoted.mixin;
 import com.mojang.authlib.GameProfile;
 import io.github.how_bout_no.outvoted.util.compat.IMixinPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,13 +20,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements IM
         super(world, pos, yaw, profile);
     }
 
-    @Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
-    public void readInject(CompoundTag tag, CallbackInfo ci) {
+    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+    public void readInject(NbtCompound tag, CallbackInfo ci) {
         this.hasBook = tag.getBoolean("hasBook");
     }
 
-    @Inject(method = "writeCustomDataToTag", at = @At("TAIL"))
-    public void writeInject(CompoundTag tag, CallbackInfo ci) {
+    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
+    public void writeInject(NbtCompound tag, CallbackInfo ci) {
         tag.putBoolean("hasBook", this.hasBook);
     }
 

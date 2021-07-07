@@ -6,7 +6,6 @@ import io.github.how_bout_no.outvoted.OutvotedModPlatform;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class WildfireShieldItem extends ShieldItem {
     public WildfireShieldItem() {
-        super(OutvotedModPlatform.setISTER(new Item.Settings().maxDamage(750).fireproof().group(Outvoted.TAB_COMBAT)));
+        super(OutvotedModPlatform.setISTER(new Settings().maxDamage(750).fireproof().group(Outvoted.TAB_COMBAT)));
     }
 
     @Override

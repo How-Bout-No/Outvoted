@@ -24,7 +24,7 @@ import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.ServerConfigHandler;
@@ -80,7 +80,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     }
 
     @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.ostrich.health);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -97,8 +97,8 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         this.dataTracker.startTracking(OWNER_UUID, Optional.empty());
     }
 
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
+    public void writeCustomDataToTag(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
         tag.putBoolean("Bred", this.isBred());
         tag.putBoolean("Tame", this.isTame());
         if (this.getOwnerUuid() != null) {
@@ -106,12 +106,12 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         }
 
         if (!this.items.getStack(0).isEmpty()) {
-            tag.put("SaddleItem", this.items.getStack(0).toTag(new CompoundTag()));
+            tag.put("SaddleItem", this.items.getStack(0).writeNbt(new NbtCompound()));
         }
     }
 
-    public void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
+    public void readCustomDataFromTag(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
         this.setBred(tag.getBoolean("Bred"));
         this.setTame(tag.getBoolean("Tame"));
         UUID uUID2;
@@ -127,7 +127,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         }
 
         if (tag.contains("SaddleItem", 10)) {
-            ItemStack itemStack = ItemStack.fromTag(tag.getCompound("SaddleItem"));
+            ItemStack itemStack = ItemStack.fromNbt(tag.getCompound("SaddleItem"));
             if (itemStack.getItem() == Items.SADDLE) {
                 this.items.setStack(0, itemStack);
             }
@@ -369,7 +369,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         float h = 0.2F;
 //        float i = 0.10F;
         float i = 0.0F;
-        passenger.updatePosition(this.getX() + (double) (h * f), this.getY() + this.getMountedHeightOffset() + passenger.getHeightOffset() + (double) i, this.getZ() - (double) (h * g));
+        passenger.setPosition(this.getX() + (double) (h * f), this.getY() + this.getMountedHeightOffset() + passenger.getHeightOffset() + (double) i, this.getZ() - (double) (h * g));
         if (passenger instanceof LivingEntity) {
             ((LivingEntity) passenger).bodyYaw = this.bodyYaw;
         }

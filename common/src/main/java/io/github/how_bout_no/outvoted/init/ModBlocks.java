@@ -30,12 +30,12 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> BURROW = BLOCKS.register("burrow", () -> new BurrowBlock(Block.Settings.copy(Blocks.SAND)));
 
     public static final RegistrySupplier<Block> PALM_PLANKS = BLOCKS.register("palm_planks", () -> new Block(Block.Settings.copy(Blocks.JUNGLE_PLANKS)));
-    public static final RegistrySupplier<Block> PALM_LOG = BLOCKS.register("palm_log", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.JUNGLE_LOG)));
+    public static final RegistrySupplier<Block> PALM_LOG = BLOCKS.register("palm_log", () -> new PillarBlock(Block.Settings.copy(Blocks.JUNGLE_LOG)));
     public static final RegistrySupplier<Block> PALM_LEAVES = BLOCKS.register("palm_leaves", () -> new LeavesBlock(Block.Settings.copy(Blocks.JUNGLE_LEAVES)));
     public static final RegistrySupplier<Block> PALM_SAPLING = BLOCKS.register("palm_sapling", () -> new ModSaplingBlock(new PalmTree(), Block.Settings.copy(Blocks.JUNGLE_SAPLING), BlockTags.SAND));
-    public static final RegistrySupplier<Block> PALM_WOOD = BLOCKS.register("palm_wood", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.JUNGLE_WOOD)));
-    public static final RegistrySupplier<Block> STRIPPED_PALM_LOG = BLOCKS.register("stripped_palm_log", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.STRIPPED_JUNGLE_LOG)));
-    public static final RegistrySupplier<Block> STRIPPED_PALM_WOOD = BLOCKS.register("stripped_palm_wood", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.STRIPPED_JUNGLE_WOOD)));
+    public static final RegistrySupplier<Block> PALM_WOOD = BLOCKS.register("palm_wood", () -> new PillarBlock(Block.Settings.copy(Blocks.JUNGLE_WOOD)));
+    public static final RegistrySupplier<Block> STRIPPED_PALM_LOG = BLOCKS.register("stripped_palm_log", () -> new PillarBlock(Block.Settings.copy(Blocks.STRIPPED_JUNGLE_LOG)));
+    public static final RegistrySupplier<Block> STRIPPED_PALM_WOOD = BLOCKS.register("stripped_palm_wood", () -> new PillarBlock(Block.Settings.copy(Blocks.STRIPPED_JUNGLE_WOOD)));
     public static final RegistrySupplier<Block> PALM_STAIRS = BLOCKS.register("palm_stairs", () -> new ModReplaceBlocks.Stairs(PALM_PLANKS.get().getDefaultState(), Block.Settings.copy(Blocks.JUNGLE_STAIRS)));
     public static final RegistrySupplier<Block> PALM_SLAB = BLOCKS.register("palm_slab", () -> new SlabBlock(AbstractBlock.Settings.copy(Blocks.JUNGLE_SLAB)));
     public static final RegistrySupplier<Block> PALM_BUTTON = BLOCKS.register("palm_button", () -> new ModReplaceBlocks.WoodenButton(AbstractBlock.Settings.copy(Blocks.JUNGLE_BUTTON)));
@@ -47,13 +47,13 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> PALM_SIGN = BLOCKS.register("palm_sign", () -> new ModdedStandingSignBlock(Block.Settings.copy(Blocks.JUNGLE_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
     public static final RegistrySupplier<Block> PALM_WALL_SIGN = BLOCKS.register("palm_wall_sign", () -> new ModdedWallSignBlock(Block.Settings.copy(Blocks.JUNGLE_WALL_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
 
-    public static final RegistrySupplier<Block> BAOBAB_PLANKS = BLOCKS.register("baobab_planks", () -> new Block(AbstractBlock.Settings.of(Material.WOOD, MaterialColor.ORANGE).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD)));
-    public static final RegistrySupplier<Block> BAOBAB_LOG = BLOCKS.register("baobab_log", () -> createLogBlock(MaterialColor.ORANGE, MaterialColor.STONE));
+    public static final RegistrySupplier<Block> BAOBAB_PLANKS = BLOCKS.register("baobab_planks", () -> new Block(AbstractBlock.Settings.of(Material.WOOD, MapColor.ORANGE).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD)));
+    public static final RegistrySupplier<Block> BAOBAB_LOG = BLOCKS.register("baobab_log", () -> createLogBlock(MapColor.ORANGE, MapColor.STONE_GRAY));
     public static final RegistrySupplier<Block> BAOBAB_LEAVES = BLOCKS.register("baobab_leaves", () -> new LeavesBlock(Block.Settings.copy(Blocks.ACACIA_LEAVES)));
     public static final RegistrySupplier<Block> BAOBAB_SAPLING = BLOCKS.register("baobab_sapling", () -> new ModSaplingBlock(new BaobabTree(), Block.Settings.copy(Blocks.ACACIA_SAPLING)));
-    public static final RegistrySupplier<Block> BAOBAB_WOOD = BLOCKS.register("baobab_wood", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.ACACIA_WOOD)));
-    public static final RegistrySupplier<Block> STRIPPED_BAOBAB_LOG = BLOCKS.register("stripped_baobab_log", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.STRIPPED_ACACIA_LOG)));
-    public static final RegistrySupplier<Block> STRIPPED_BAOBAB_WOOD = BLOCKS.register("stripped_baobab_wood", () -> new net.minecraft.block.PillarBlock(Block.Settings.copy(Blocks.STRIPPED_ACACIA_WOOD)));
+    public static final RegistrySupplier<Block> BAOBAB_WOOD = BLOCKS.register("baobab_wood", () -> new PillarBlock(Block.Settings.copy(Blocks.ACACIA_WOOD)));
+    public static final RegistrySupplier<Block> STRIPPED_BAOBAB_LOG = BLOCKS.register("stripped_baobab_log", () -> new PillarBlock(Block.Settings.copy(Blocks.STRIPPED_ACACIA_LOG)));
+    public static final RegistrySupplier<Block> STRIPPED_BAOBAB_WOOD = BLOCKS.register("stripped_baobab_wood", () -> new PillarBlock(Block.Settings.copy(Blocks.STRIPPED_ACACIA_WOOD)));
     public static final RegistrySupplier<Block> BAOBAB_STAIRS = BLOCKS.register("baobab_stairs", () -> new ModReplaceBlocks.Stairs(BAOBAB_PLANKS.get().getDefaultState(), Block.Settings.copy(Blocks.ACACIA_STAIRS)));
     public static final RegistrySupplier<Block> BAOBAB_SLAB = BLOCKS.register("baobab_slab", () -> new SlabBlock(AbstractBlock.Settings.copy(Blocks.ACACIA_SLAB)));
     public static final RegistrySupplier<Block> BAOBAB_BUTTON = BLOCKS.register("baobab_button", () -> new ModReplaceBlocks.WoodenButton(AbstractBlock.Settings.copy(Blocks.ACACIA_BUTTON)));
@@ -102,9 +102,9 @@ public class ModBlocks {
     public static final RegistrySupplier<Item> BAOBAB_DOOR_ITEM = BLOCK_ITEMS.register("baobab_door", () -> new ModTallBlockItem(BAOBAB_DOOR.get(), new Item.Settings()));
     public static final RegistrySupplier<Item> BAOBAB_SIGN_ITEM = BLOCK_ITEMS.register("baobab_sign", () -> new ModSignItem(new Item.Settings(), BAOBAB_SIGN.get(), BAOBAB_WALL_SIGN.get()));
 
-    private static net.minecraft.block.PillarBlock createLogBlock(MaterialColor topColor, MaterialColor barkColor) {
-        return new net.minecraft.block.PillarBlock(AbstractBlock.Settings.of(Material.WOOD, (state) -> {
-            return state.get(net.minecraft.block.PillarBlock.AXIS) == Direction.Axis.Y ? topColor : barkColor;
+    private static PillarBlock createLogBlock(MapColor topColor, MapColor barkColor) {
+        return new PillarBlock(AbstractBlock.Settings.of(Material.WOOD, (state) -> {
+            return state.get(PillarBlock.AXIS) == Direction.Axis.Y ? topColor : barkColor;
         }).strength(2.0F).sounds(BlockSoundGroup.WOOD));
     }
 }

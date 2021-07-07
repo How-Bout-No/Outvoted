@@ -25,7 +25,7 @@ import net.minecraft.item.AirBlockItem;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -75,11 +75,11 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(2, new GluttonEntity.BiteGoal(this, 1.0D, false));
-        this.goalSelector.add(3, new GluttonEntity.BurrowGoal(this));
-        this.goalSelector.add(4, new GluttonEntity.FindSpotGoal(this, 1.0D));
-        this.goalSelector.add(5, new GluttonEntity.WanderGoal(this));
-        this.goalSelector.add(6, new GluttonEntity.LookGoal(this));
+        this.goalSelector.add(2, new BiteGoal(this, 1.0D, false));
+        this.goalSelector.add(3, new BurrowGoal(this));
+        this.goalSelector.add(4, new FindSpotGoal(this, 1.0D));
+        this.goalSelector.add(5, new WanderGoal(this));
+        this.goalSelector.add(6, new LookGoal(this));
         this.targetSelector.add(1, new FollowTargetGoal<>(this, LivingEntity.class, true));
     }
 
@@ -90,7 +90,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     }
 
     @Nullable
-    public net.minecraft.entity.EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable net.minecraft.entity.EntityData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.glutton.health);
 
         int type = 2;
@@ -150,23 +150,23 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         return this.isBurrowed() ? 0.25F : super.getSoundVolume();
     }
 
-    public void writeCustomDataToTag(CompoundTag compound) {
-        super.writeCustomDataToTag(compound);
+    public void writeCustomDataToNbt(NbtCompound compound) {
+        super.writeCustomDataToNbt(compound);
         compound.putInt("Variant", this.getVariant());
 
         ItemStack item = ItemStack.EMPTY; // Store enchantments in an empty ItemStack
         EnchantmentHelper.set(storedEnchants, item);
-        CompoundTag compoundNBT = new CompoundTag();
-        item.toTag(compoundNBT);
+        NbtCompound compoundNBT = new NbtCompound();
+        item.writeNbt(compoundNBT);
         compound.put("Enchantments", compoundNBT);
     }
 
-    public void readCustomDataFromTag(CompoundTag compound) {
-        super.readCustomDataFromTag(compound);
+    public void readCustomDataFromNbt(NbtCompound compound) {
+        super.readCustomDataFromNbt(compound);
         this.setVariant(compound.getInt("Variant"));
 
-        ItemStack item = ItemStack.fromTag(compound.getCompound("Enchantments"));
-        storedEnchants = EnchantmentHelper.fromTag(item.getEnchantments());
+        ItemStack item = ItemStack.fromNbt(compound.getCompound("Enchantments"));
+        storedEnchants = EnchantmentHelper.fromNbt(item.getEnchantments());
     }
 
     public int getLimitPerChunk() {
@@ -334,7 +334,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
      */
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) && !source.name.equals("wither") && !source.getMagic() && !source.isExplosive();
+        return super.isInvulnerableTo(source) && !source.name.equals("wither") && !source.isMagic() && !source.isExplosive();
     }
 
     @Override
@@ -470,7 +470,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         public FindSpotGoal(GluttonEntity theCreatureIn, double movementSpeedIn) {
             this.mob = theCreatureIn;
             this.movementSpeed = movementSpeedIn;
-            this.setControls(EnumSet.of(Goal.Control.MOVE));
+            this.setControls(EnumSet.of(Control.MOVE));
         }
 
         public boolean canStart() {

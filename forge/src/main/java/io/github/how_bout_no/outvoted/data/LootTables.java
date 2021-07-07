@@ -33,7 +33,7 @@ public class LootTables extends LootTablesProvider {
     @Override
     protected void validate(Map<Identifier, LootTable> map, LootTableReporter validationtracker) {
         map.forEach((id, table) -> {
-            net.minecraft.loot.LootManager.validate(validationtracker, id, table);
+            LootManager.validate(validationtracker, id, table);
         });
     }
 
