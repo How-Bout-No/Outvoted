@@ -75,7 +75,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.5D)
+                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 1.0D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.35D);
     }
 
@@ -97,7 +97,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         this.dataTracker.startTracking(OWNER_UUID, Optional.empty());
     }
 
-    public void writeCustomDataToTag(NbtCompound tag) {
+    public void writeCustomDataToNbt(NbtCompound tag) {
         super.writeCustomDataToNbt(tag);
         tag.putBoolean("Bred", this.isBred());
         tag.putBoolean("Tame", this.isTame());
@@ -110,7 +110,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         }
     }
 
-    public void readCustomDataFromTag(NbtCompound tag) {
+    public void readCustomDataFromNbt(NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
         this.setBred(tag.getBoolean("Bred"));
         this.setTame(tag.getBoolean("Tame"));

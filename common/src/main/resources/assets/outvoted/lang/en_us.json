@@ -101,6 +101,8 @@
   "advancements.outvoted.use_glutton.description": "Enchant an item using the Glutton",
   "advancements.outvoted.overenchant_glutton.title": "Unlimited Powah!!!",
   "advancements.outvoted.overenchant_glutton.description": "Overenchant an item above its max level",
+  "advancements.outvoted.one_mil.title": "One Million",
+  "advancements.outvoted.one_mil.description": "Thank you for 1M downloads!",
 
   "text.autoconfig.outvoted.title": "Outvoted",
   "text.autoconfig.outvoted.option.client": "Client Only",
@@ -124,6 +126,7 @@
   "text.autoconfig.outvoted.option.common.entities.glutton.rate": "Spawn Weight",
   "text.autoconfig.outvoted.option.common.entities.glutton.biomes": "Spawn Biomes",
   "text.autoconfig.outvoted.option.common.entities.glutton.health": "Max Health",
+  "text.autoconfig.outvoted.option.common.entities.glutton.stealEnchants": "Enable stealing enchantments on bite",
   "text.autoconfig.outvoted.option.common.entities.glutton.maxEnchants": "Max Enchants",
   "text.autoconfig.outvoted.option.common.entities.glutton.maxEnchants.@Tooltip": "Max # of enchantments a Glutton can store at once",
   "text.autoconfig.outvoted.option.common.entities.barnacle": "Barnacle",
