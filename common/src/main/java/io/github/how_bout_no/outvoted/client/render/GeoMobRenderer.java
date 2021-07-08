@@ -28,7 +28,7 @@ import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
@@ -40,7 +40,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderer.geo.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 /**
  * This renderer extends GeoEntityRenderer to render leashes for Geckolib Entities by using vanillas code from MobEntityRenderer.
@@ -50,8 +50,8 @@ import software.bernie.geckolib3.renderer.geo.GeoEntityRenderer;
  */
 
 public class GeoMobRenderer<T extends MobEntity & IAnimatable> extends GeoEntityRenderer<T> {
-    protected GeoMobRenderer(EntityRenderDispatcher renderManager, AnimatedGeoModel<T> modelProvider) {
-        super(renderManager, modelProvider);
+    protected GeoMobRenderer(EntityRendererFactory.Context ctx, AnimatedGeoModel<T> modelProvider) {
+        super(ctx, modelProvider);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GeoMobRenderer<T extends MobEntity & IAnimatable> extends GeoEntity
         stack.push();
         Vec3d lv = leashHolder.method_30951(partialTicks);
         double d = (double) (MathHelper.lerp(partialTicks, entity.bodyYaw, entity.prevBodyYaw) * 0.017453292F) + 1.5707963267948966D;
-        Vec3d lv2 = entity.method_29919();
+        Vec3d lv2 = entity.getLeashOffset();
         double e = Math.cos(d) * lv2.z + Math.sin(d) * lv2.x;
         double g = Math.sin(d) * lv2.z - Math.cos(d) * lv2.x;
         double h = MathHelper.lerp(partialTicks, entity.prevX, entity.getX()) + e;

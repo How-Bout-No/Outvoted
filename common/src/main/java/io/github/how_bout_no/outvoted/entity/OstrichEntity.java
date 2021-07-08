@@ -282,7 +282,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     public ActionResult tryTame(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (!this.isTame() && this.isBreedingItem(itemStack) && player.squaredDistanceTo(this) < 9.0D) {
-            this.eat(player, itemStack);
+            this.eat(player, hand, itemStack);
             if (!this.world.isClient) {
                 if (this.random.nextInt(3) == 0) {
                     this.setTame(true);
@@ -377,8 +377,8 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     protected void putPlayerOnBack(PlayerEntity player) {
         if (!this.world.isClient) {
-            player.yaw = this.yaw;
-            player.pitch = this.pitch;
+            player.setYaw(this.getYaw());
+            player.setPitch(this.getPitch());
             player.startRiding(this);
         }
     }
@@ -403,11 +403,11 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         if (this.isAlive()) {
             if (this.hasPassengers() && this.canBeControlledByRider() && this.isSaddled()) {
                 LivingEntity livingEntity = (LivingEntity) this.getPrimaryPassenger();
-                this.yaw = livingEntity.yaw;
-                this.prevYaw = this.yaw;
-                this.pitch = livingEntity.pitch * 0.5F;
-                this.setRotation(this.yaw, this.pitch);
-                this.bodyYaw = this.yaw;
+                this.setYaw(livingEntity.getYaw());
+                this.prevYaw = this.getYaw();
+                this.setPitch(livingEntity.getPitch() * 0.5F);
+                this.setRotation(this.getYaw(), this.getPitch());
+                this.bodyYaw = this.getYaw();
                 this.headYaw = this.bodyYaw;
                 float f = livingEntity.sidewaysSpeed * 0.5F;
                 float g = livingEntity.forwardSpeed;
@@ -434,8 +434,8 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
                     this.setInAir(true);
                     this.velocityDirty = true;
                     if (g > 0.0F) {
-                        float i = MathHelper.sin(this.yaw * 0.017453292F);
-                        float j = MathHelper.cos(this.yaw * 0.017453292F);
+                        float i = MathHelper.sin(this.getYaw() * 0.017453292F);
+                        float j = MathHelper.cos(this.getYaw() * 0.017453292F);
                         this.setVelocity(this.getVelocity().add((double) (-0.4F * i * this.jumpStrength), 0.0D, (double) (0.4F * j * this.jumpStrength)));
                     }
 
@@ -455,7 +455,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
                     this.setInAir(false);
                 }
 
-                this.method_29242(this, false);
+                this.updateLimbs(this, false);
             } else {
                 this.flyingSpeed = 0.02F;
                 super.travel(movementInput);
@@ -519,12 +519,12 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     }
 
     public Vec3d updatePassengerForDismount(LivingEntity passenger) {
-        Vec3d vec3d = getPassengerDismountOffset((double) this.getWidth(), (double) passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
+        Vec3d vec3d = getPassengerDismountOffset((double) this.getWidth(), (double) passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
         Vec3d vec3d2 = this.method_27930(vec3d, passenger);
         if (vec3d2 != null) {
             return vec3d2;
         } else {
-            Vec3d vec3d3 = getPassengerDismountOffset((double) this.getWidth(), (double) passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.LEFT ? 90.0F : -90.0F));
+            Vec3d vec3d3 = getPassengerDismountOffset((double) this.getWidth(), (double) passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.LEFT ? 90.0F : -90.0F));
             Vec3d vec3d4 = this.method_27930(vec3d3, passenger);
             return vec3d4 != null ? vec3d4 : this.getPos();
         }

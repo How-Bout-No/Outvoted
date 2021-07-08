@@ -98,7 +98,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
             }
         } else {
             Block block = worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock();
-            if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+            if (block == Blocks.SOUL_SAND || block == Blocks.SOUL_SOIL) {
                 type = 1;
             }
         }
@@ -119,9 +119,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
             int rand = new Random().nextInt(max - min) + min;
             for (int i = 1; i <= rand; i++) {
                 BlazeEntity blaze = EntityType.BLAZE.create(serverWorld);
-                blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
+                blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.getYaw(), this.getPitch());
                 while (!serverWorld.isAir(blaze.getBlockPos())) { // Should prevent spawning inside of blocks
-                    blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.yaw, this.pitch);
+                    blaze.updatePositionAndAngles(this.getParticleX(3.0D), this.getY(), this.getParticleZ(3.0D), this.getYaw(), this.getPitch());
                 }
                 ((IMixinBlazeEntity) blaze).initialize(worldIn, difficultyIn, reason, null, null);
                 serverWorld.spawnEntity(blaze);
@@ -292,7 +292,8 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         return (this.dataTracker.get(ON_FIRE) & 1) != 0;
     }
 
-    private void setOnFire(boolean onFire) {
+    @Override
+    public void setOnFire(boolean onFire) {
         byte b0 = this.dataTracker.get(ON_FIRE);
         if (onFire) {
             b0 = (byte) (b0 | 1);

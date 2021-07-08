@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.util.compat;
 
+import dev.architectury.platform.Platform;
 import io.github.how_bout_no.outvoted.Outvoted;
-import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import vazkii.patchouli.api.PatchouliAPI;

@@ -3,7 +3,7 @@ package io.github.how_bout_no.outvoted;
 import io.github.how_bout_no.outvoted.client.render.ClientRender;
 import io.github.how_bout_no.outvoted.init.ModSigns;
 import io.github.how_bout_no.outvoted.util.ServerEvents;
-import me.shedaniel.architectury.platform.forge.EventBuses;
+import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

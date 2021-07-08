@@ -4,16 +4,14 @@ import io.github.how_bout_no.outvoted.client.model.ShieldModelProvider;
 import io.github.how_bout_no.outvoted.client.render.*;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModItems;
-import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
-import net.minecraft.client.item.ModelPredicateProvider;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderer.geo.GeoArmorRenderer;
 
 @Environment(EnvType.CLIENT)
 public class ClientListener implements ClientModInitializer {
@@ -21,17 +19,16 @@ public class ClientListener implements ClientModInitializer {
     public void onInitializeClient() {
         Outvoted.clientInit();
 
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.WILDFIRE.get(), (entityRenderDispatcher, context) -> new WildfireRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.GLUTTON.get(), (entityRenderDispatcher, context) -> new GluttonRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.BARNACLE.get(), (entityRenderDispatcher, context) -> new BarnacleRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.MEERKAT.get(), (entityRenderDispatcher, context) -> new MeerkatRenderer(entityRenderDispatcher));
-        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.OSTRICH.get(), (entityRenderDispatcher, context) -> new OstrichRenderer(entityRenderDispatcher));
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.WILDFIRE.get(), WildfireRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.GLUTTON.get(), GluttonRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.BARNACLE.get(), BarnacleRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.MEERKAT.get(), MeerkatRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ModEntityTypes.OSTRICH.get(), OstrichRenderer::new);
 
-        GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
-        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.WILDFIRE_SHIELD.get(), ShieldRenderer::render);
+//        GeoArmorRendererRegistry.INSTANCE.register(WildfireHelmetItem.class, (context) -> new WildfireHelmetRenderer(context));
         ShieldModelProvider.registerItemsWithModelProvider();
 
-        ModelPredicateProvider prop = (stack, world, entity) -> stack.hasTag() && Outvoted.clientConfig.wildfireVariants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
+        UnclampedModelPredicateProvider prop = (stack, world, entity, seed) -> stack.hasTag() && Outvoted.clientConfig.wildfireVariants ? stack.getTag().getFloat("SoulTexture") : 0.0F;
         FabricModelPredicateProviderRegistry.register(ModItems.WILDFIRE_HELMET.get(), new Identifier(Outvoted.MOD_ID, "soul_texture"), prop);
     }
 }

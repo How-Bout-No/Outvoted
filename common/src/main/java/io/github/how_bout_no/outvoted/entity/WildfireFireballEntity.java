@@ -37,7 +37,7 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
                 if (!flag) {
                     entity.setFireTicks(i);
                 } else if (entity1 instanceof LivingEntity) {
-                    this.dealDamage((LivingEntity) entity1, entity);
+                    this.applyDamageEffects((LivingEntity) entity1, entity);
                 }
             }
 
@@ -65,7 +65,7 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
                 boolean flag = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && doExplode;
                 this.world.createExplosion((Entity) null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE);
             }
-            this.remove();
+            this.discard();
         }
 
     }

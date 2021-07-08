@@ -21,8 +21,8 @@ import java.util.Random;
 
 @Mixin(NetherFortressGenerator.CorridorExit.class)
 public abstract class MixinCorridorExit extends NetherFortressGenerator.Piece {
-    protected MixinCorridorExit(StructurePieceType structurePieceType, int i) {
-        super(structurePieceType, i);
+    protected MixinCorridorExit(StructurePieceType structurePieceType, int i, BlockBox blockBox) {
+        super(structurePieceType, i, blockBox);
     }
 
     protected void addEntity(StructureWorldAccess structureWorldAccess, EntityType<? extends MobEntity> entityType, int x, int y, int z, BlockBox blockBox) {

@@ -8,15 +8,15 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderer.geo.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 @Environment(EnvType.CLIENT)
 public class GluttonRenderer extends GeoEntityRenderer<GluttonEntity> {
-    public GluttonRenderer(EntityRenderDispatcher renderManager) {
-        super(renderManager, new GluttonModel());
+    public GluttonRenderer(EntityRendererFactory.Context ctx) {
+        super(ctx, new GluttonModel());
     }
 
     private static final Identifier RED_SAND = new Identifier(Outvoted.MOD_ID, "textures/entity/glutton/glutton_red.png");

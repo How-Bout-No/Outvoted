@@ -1,5 +1,9 @@
 package io.github.how_bout_no.outvoted;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.registry.CreativeTabRegistry;
+import dev.architectury.registry.client.rendering.RenderTypeRegistry;
+import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigClient;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
@@ -9,10 +13,6 @@ import io.github.how_bout_no.outvoted.util.EventRegister;
 import io.github.how_bout_no.outvoted.util.SignSprites;
 import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import io.github.how_bout_no.outvoted.world.gen.WorldGen;
-import me.shedaniel.architectury.platform.Platform;
-import me.shedaniel.architectury.registry.CreativeTabs;
-import me.shedaniel.architectury.registry.RenderTypes;
-import me.shedaniel.architectury.registry.entity.EntityAttributes;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
@@ -71,17 +71,17 @@ public class Outvoted {
         EventRegister.init();
         WorldGen.addSpawnEntries();
 
-        EntityAttributes.register(ModEntityTypes.WILDFIRE::get, WildfireEntity::setCustomAttributes);
-        EntityAttributes.register(ModEntityTypes.GLUTTON::get, GluttonEntity::setCustomAttributes);
-        EntityAttributes.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);
-        EntityAttributes.register(ModEntityTypes.MEERKAT::get, MeerkatEntity::setCustomAttributes);
-        EntityAttributes.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
+        EntityAttributeRegistry.register(ModEntityTypes.WILDFIRE::get, WildfireEntity::setCustomAttributes);
+        EntityAttributeRegistry.register(ModEntityTypes.GLUTTON::get, GluttonEntity::setCustomAttributes);
+        EntityAttributeRegistry.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);
+        EntityAttributeRegistry.register(ModEntityTypes.MEERKAT::get, MeerkatEntity::setCustomAttributes);
+        EntityAttributeRegistry.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
     }
 
     @Environment(EnvType.CLIENT)
     public static void clientInit() {
         if (clientConfig.creativeTab) {
-            ItemGroup TAB = CreativeTabs.create(new Identifier(MOD_ID, "tab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
+            ItemGroup TAB = CreativeTabRegistry.create(new Identifier(MOD_ID, "tab"), () -> new ItemStack(ModItems.WILDFIRE_HELMET.get()));
             TAB_BLOCKS = TAB;
             TAB_DECO = TAB;
             TAB_COMBAT = TAB;
@@ -89,7 +89,7 @@ public class Outvoted {
             TAB_REDSTONE = TAB;
         }
 
-        RenderTypes.register(RenderLayer.getCutoutMipped(), ModBlocks.PALM_SAPLING.get(), ModBlocks.PALM_TRAPDOOR.get(), ModBlocks.PALM_DOOR.get(),
+        RenderTypeRegistry.register(RenderLayer.getCutoutMipped(), ModBlocks.PALM_SAPLING.get(), ModBlocks.PALM_TRAPDOOR.get(), ModBlocks.PALM_DOOR.get(),
                 ModBlocks.BAOBAB_SAPLING.get(), ModBlocks.BAOBAB_TRAPDOOR.get(), ModBlocks.BAOBAB_DOOR.get());
 
         if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();

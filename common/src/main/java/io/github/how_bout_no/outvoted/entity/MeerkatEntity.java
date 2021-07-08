@@ -11,7 +11,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.TargetFinder;
+import net.minecraft.entity.ai.NoWaterTargeting;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.ai.pathing.PathNodeType;
@@ -289,7 +289,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if ((this.temptGoal == null || this.temptGoal.isActive()) && !this.isTrusting() && this.isBreedingItem(itemStack) && player.squaredDistanceTo(this) < 9.0D) {
-            this.eat(player, itemStack);
+            this.eat(player, hand, itemStack);
             if (!this.world.isClient) {
                 if (this.random.nextInt(3) == 0) {
                     this.setTrusting(true);
@@ -340,7 +340,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
-    public Vec3d method_29919() {
+    public Vec3d getLeashOffset() {
         return new Vec3d(0.0D, (0.5F * this.getStandingEyeHeight()), (this.getWidth() * 0.05F));
     }
 
@@ -498,8 +498,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             k = m / 2;
             l = m / 2;
         }
-
-        Vec3d vec3d2 = TargetFinder.findGroundTargetTowards(this, k, l, i, vec3d, 0.3141592741012573D);
+        Vec3d vec3d2 = NoWaterTargeting.find(this, k, l, i, vec3d, 0.3141592741012573D);
         if (vec3d2 != null) {
             this.navigation.setRangeMultiplier(0.5F);
             this.navigation.startMovingTo(vec3d2.x + 0.5, vec3d2.y, vec3d2.z + 0.5, 1.0D);
@@ -654,11 +653,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         boolean bl = target.damage(DamageSource.mob(this), f);
         if (bl) {
             if (g > 0.0F && target instanceof LivingEntity) {
-                ((LivingEntity) target).takeKnockback(g * 0.5F, MathHelper.sin(this.yaw * 0.017453292F), -MathHelper.cos(this.yaw * 0.017453292F));
+                ((LivingEntity) target).takeKnockback(g * 0.5F, MathHelper.sin(this.getYaw() * 0.017453292F), -MathHelper.cos(this.getYaw() * 0.017453292F));
                 this.setVelocity(this.getVelocity().multiply(0.6D, 1.0D, 0.6D));
             }
 
-            this.dealDamage(this, target);
+            this.applyDamageEffects(this, target);
             this.onAttacking(target);
         }
 

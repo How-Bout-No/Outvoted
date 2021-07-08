@@ -7,13 +7,13 @@ dependencies {
     // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     // Remove the next line if you don't want to depend on the API
-    modApi "me.shedaniel:architectury:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
-    modCompile "software.bernie.geckolib:geckolib-fabric-1.16.5:${rootProject.geckolib_version}:dev"
+    modImplementation "software.bernie.geckolib:geckolib-fabric-1.17:${rootProject.geckolib_version}:dev"
     modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modCompile("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
+    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC-SNAPSHOT")
 }
 
 sourceSets.main.resources {
@@ -21,7 +21,7 @@ sourceSets.main.resources {
 }
 
 architectury {
-    common()
+    common(false)
 }
 
 java {

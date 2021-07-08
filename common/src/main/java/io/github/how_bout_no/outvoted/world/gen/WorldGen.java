@@ -1,10 +1,10 @@
 package io.github.how_bout_no.outvoted.world.gen;
 
+import dev.architectury.registry.level.biome.BiomeModifications;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.config.OutvotedConfigCommon;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModFeatures;
-import me.shedaniel.architectury.registry.BiomeModifications;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.SpawnSettings;

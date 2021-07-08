@@ -64,7 +64,7 @@ public abstract class MixinBlazeEntity extends HostileEntity implements IMixinBl
             }
         } else {
             Block block = worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock();
-            if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
+            if (block == Blocks.SOUL_SAND || block == Blocks.SOUL_SOIL) {
                 type = 1;
             }
         }

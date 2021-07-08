@@ -5,6 +5,7 @@
   "mixins": [
     "MixinAnvilScreenHandler",
     "MixinBlazeEntity",
+    "MixinBuiltinModelItemRenderer",
     "MixinCorridorExit",
     "MixinMendingEnchantment",
     "MixinServerPlayerEntity",
@@ -14,6 +15,7 @@
     "PointOfInterestTypeAccessor"
   ],
   "client": [
+    "GeoArmorRendererAccessor",
     "MixinAtlases",
     "MixinBlazeRenderer",
     "MixinSignTileEntityRenderer"

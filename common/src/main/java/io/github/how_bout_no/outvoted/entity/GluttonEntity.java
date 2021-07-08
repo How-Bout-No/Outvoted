@@ -104,9 +104,9 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                 }
             }
         } else {
-            if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
+            if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock() == Blocks.RED_SAND) {
                 type = 1;
-            } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND)) {
+            } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock() == Blocks.SAND) {
                 type = 0;
             }
         }
@@ -338,7 +338,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    public void takeKnockback(float strength, double ratioX, double ratioZ) {
+    public void takeKnockback(double strength, double ratioX, double ratioZ) {
         super.takeKnockback(this.isBurrowed() ? 0 : strength, ratioX, ratioZ);
     }
 
@@ -352,7 +352,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         boolean exec = super.tryAttack(entityIn);
         if (exec && entityIn instanceof PlayerEntity && Outvoted.commonConfig.entities.glutton.stealEnchants) {
             PlayerEntity player = (PlayerEntity) entityIn;
-            List<DefaultedList<ItemStack>> allInventories = ImmutableList.of(player.inventory.main, player.inventory.armor, player.inventory.offHand);
+            List<DefaultedList<ItemStack>> allInventories = ImmutableList.of(player.getInventory().main, player.getInventory().armor, player.getInventory().offHand);
             List<ItemStack> enchantedItems = new ArrayList<>();
             for (DefaultedList<ItemStack> inv : allInventories) {
                 enchantedItems.addAll(inv.stream().filter((item) -> !EnchantmentHelper.get(item).isEmpty()).collect(Collectors.toList()));
@@ -546,7 +546,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
      */
     private net.minecraft.util.math.Vec3d directionVector() {
         net.minecraft.util.math.Vec3d vec3d = net.minecraft.util.math.Vec3d.ZERO;
-        double rotation = this.yaw - 180;
+        double rotation = this.getYaw() - 180;
         if (rotation < 0) rotation += 360;
         int ordinal = MathHelper.floor(rotation / 45.0D + 0.5D) & 7;
         for (Direction direction : EightWayDirection.values()[ordinal].getDirections()) {
@@ -594,7 +594,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                                 if (((ItemEntity) entity).getThrower() != this.mob.getUuid()) {
                                     this.cacheitem = item.copy();
                                     this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), ModSounds.GLUTTON_EAT.get(), this.mob.getSoundCategory(), 0.8F, 0.9F);
-                                    entity.remove();
+                                    entity.discard();
                                     this.mob.setEnchanting(true);
                                     break;
                                 }
@@ -618,7 +618,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                     if (cacheitem.getItem().equals(ModItems.VOID_HEART.get())) {
                         Explosion.DestructionType explosion$mode = this.mob.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
                         this.mob.world.createExplosion(this.mob, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 2.0F, explosion$mode);
-                        this.mob.remove();
+                        this.mob.discard();
                     }
                     if (pair.getLeft() == 0) {
                         if (item != ItemStack.EMPTY) {

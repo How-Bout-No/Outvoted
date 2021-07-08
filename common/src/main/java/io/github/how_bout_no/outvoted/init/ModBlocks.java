@@ -1,5 +1,7 @@
 package io.github.how_bout_no.outvoted.init;
 
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.block.ModBlockItems.ModBlockItem;
@@ -12,8 +14,6 @@ import io.github.how_bout_no.outvoted.block.ModdedSignBlock.ModdedStandingSignBl
 import io.github.how_bout_no.outvoted.block.ModdedSignBlock.ModdedWallSignBlock;
 import io.github.how_bout_no.outvoted.block.trees.BaobabTree;
 import io.github.how_bout_no.outvoted.block.trees.PalmTree;
-import me.shedaniel.architectury.registry.DeferredRegister;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;

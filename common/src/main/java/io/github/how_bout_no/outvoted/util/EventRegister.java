@@ -1,11 +1,12 @@
 package io.github.how_bout_no.outvoted.util;
 
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.InteractionEvent;
+import dev.architectury.event.events.common.PlayerEvent;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
-import me.shedaniel.architectury.event.events.EntityEvent;
-import me.shedaniel.architectury.event.events.InteractionEvent;
-import me.shedaniel.architectury.event.events.PlayerEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -14,7 +15,6 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -44,10 +44,10 @@ public class EventRegister {
                     }
                 }
             }
-            return ActionResult.PASS;
+            return EventResult.pass();
         });
 
-        EntityEvent.LIVING_ATTACK.register((entity, source, amount) -> {
+        EntityEvent.LIVING_HURT.register((entity, source, amount) -> {
             if (!entity.world.isClient()) {
                 if (entity instanceof PlayerEntity) {
                     PlayerEntity player = (PlayerEntity) entity;
@@ -62,7 +62,7 @@ public class EventRegister {
                     }
                 }
             }
-            return ActionResult.PASS;
+            return EventResult.pass();
         });
 
         PlayerEvent.PLAYER_JOIN.register((PatchouliCompat::giveBook));

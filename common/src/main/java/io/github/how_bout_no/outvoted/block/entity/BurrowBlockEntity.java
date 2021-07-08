@@ -16,21 +16,21 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class BurrowBlockEntity extends BlockEntity implements Tickable {
+public class BurrowBlockEntity extends BlockEntity {
     private final List<Meerkat> meerkats = Lists.newArrayList();
     private final int capacity = 4;
 
-    public BurrowBlockEntity() {
-        super(ModBlockEntityTypes.BURROW.get());
+    public BurrowBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntityTypes.BURROW.get(), pos, state);
     }
 
     public boolean hasNoMeerkats() {
@@ -57,40 +57,39 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
                 this.world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
 
-            entity.remove();
+            entity.discard();
         }
     }
 
-    private boolean releaseMeerkat(BlockState state, Meerkat meerkat, @Nullable List<Entity> list, MeerkatState meerkatState) {
-        if ((this.world.isNight() || this.world.isRaining()) && meerkatState != MeerkatState.EMERGENCY && !this.world.getBlockState(this.pos.offset(state.get(FacingBlock.FACING))).isAir()) {
+    private static boolean releaseMeerkat(World world, BlockPos pos, BlockState state, Meerkat meerkat, @Nullable List<Entity> list, MeerkatState meerkatState, @Nullable BlockPos flowerPos) {
+        if ((world.isNight() || world.isRaining()) && meerkatState != MeerkatState.EMERGENCY && !world.getBlockState(pos.offset(state.get(FacingBlock.FACING))).isAir()) {
             return false;
         } else {
-            BlockPos blockPos = this.getPos();
             NbtCompound compoundTag = meerkat.entityData;
             compoundTag.remove("Passengers");
             compoundTag.remove("Leash");
             compoundTag.remove("UUID");
-            Direction direction = this.world.getBlockState(blockPos).get(BurrowBlock.FACING);
-            BlockPos blockPos2 = blockPos.offset(direction);
-            boolean bl = !this.world.getBlockState(blockPos2).getCollisionShape(this.world, blockPos2).isEmpty();
+            Direction direction = world.getBlockState(pos).get(BurrowBlock.FACING);
+            BlockPos blockPos2 = pos.offset(direction);
+            boolean bl = !world.getBlockState(blockPos2).getCollisionShape(world, blockPos2).isEmpty();
             if (bl && meerkatState != MeerkatState.EMERGENCY) {
                 return false;
             } else {
-                Entity entity = EntityType.loadEntityWithPassengers(compoundTag, this.world, (entityx) -> entityx);
+                Entity entity = EntityType.loadEntityWithPassengers(compoundTag, world, (entityx) -> entityx);
                 if (entity != null) {
                     if (entity instanceof MeerkatEntity) {
                         MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
 
-                        this.ageMeerkat(meerkat.ticksInBurrow, meerkatEntity);
+                        ageMeerkat(meerkat.ticksInBurrow, meerkatEntity);
                         if (list != null) {
                             list.add(meerkatEntity);
                         }
 
-                        entity.refreshPositionAndAngles(blockPos2, entity.yaw, entity.pitch);
+                        entity.refreshPositionAndAngles(blockPos2, entity.getYaw(), entity.getPitch());
                     }
 
-                    this.world.playSound(null, blockPos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return this.world.spawnEntity(entity);
+                    world.playSound(null, pos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    return world.spawnEntity(entity);
                 } else {
                     return false;
                 }
@@ -98,7 +97,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         }
     }
 
-    private void ageMeerkat(int ticks, MeerkatEntity meerkat) {
+    private static void ageMeerkat(int ticks, MeerkatEntity meerkat) {
         int i = meerkat.getBreedingAge();
         if (i < 0) {
             meerkat.setBreedingAge(Math.min(0, i + ticks));
@@ -109,45 +108,46 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         meerkat.setLoveTicks(Math.max(0, meerkat.getLoveTicks() - ticks));
     }
 
-    private void tickMeerkats() {
-        Iterator<Meerkat> iterator = this.meerkats.iterator();
+    private static void tickMeerkats(World world, BlockPos pos, BlockState state, List<Meerkat> meerkats, @Nullable BlockPos flowerPos) {
+        Iterator<Meerkat> iterator = meerkats.iterator();
 
         Meerkat meerkat;
-        for (BlockState blockState = this.getCachedState(); iterator.hasNext(); meerkat.ticksInBurrow++) {
+        for (BlockState blockState = state; iterator.hasNext(); meerkat.ticksInBurrow++) {
             meerkat = iterator.next();
             if (meerkat.ticksInBurrow > meerkat.minOccupationTicks) {
                 MeerkatState meerkatState = meerkat.entityData.getBoolean("HasNectar") ? MeerkatState.HONEY_DELIVERED : MeerkatState.MEERKAT_RELEASED;
-                if (this.releaseMeerkat(blockState, meerkat, null, meerkatState))
+                if (releaseMeerkat(world, pos, state, meerkat, (List)null, meerkatState, flowerPos))
                     iterator.remove();
             }
         }
 
     }
 
-    public void tick() {
-        if (!this.world.isClient) {
-            this.tickMeerkats();
-            if (this.meerkats.size() > 0 && this.world.getRandom().nextDouble() < 0.001D) {
-                for (Meerkat meerkat : this.meerkats) {
+    public static void serverTick(World world, BlockPos pos, BlockState state, BurrowBlockEntity blockEntity) {
+        if (!world.isClient) {
+            tickMeerkats(world, pos, state, blockEntity.meerkats, null);
+            List<Meerkat> meerkats = blockEntity.meerkats;
+            if (meerkats.size() > 0 && world.getRandom().nextDouble() < 0.001D) {
+                for (Meerkat meerkat : meerkats) {
                     double health = meerkat.entityData.getDouble("Health");
                     if (health != Outvoted.commonConfig.entities.meerkat.health) {
                         health = Math.min(health + 1, Outvoted.commonConfig.entities.meerkat.health);
                         meerkat.entityData.putDouble("Health", health);
                     }
                 }
-            } else if (this.meerkats.size() > 1 && this.meerkats.size() < capacity && this.world.getRandom().nextDouble() < 0.0001D) {
-                MeerkatEntity entity = ModEntityTypes.MEERKAT.get().create(this.world);
+            } else if (meerkats.size() > 1 && meerkats.size() < blockEntity.capacity && world.getRandom().nextDouble() < 0.0001D) {
+                MeerkatEntity entity = ModEntityTypes.MEERKAT.get().create(world);
                 NbtCompound compoundTag = new NbtCompound();
-                entity.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getPos()), SpawnReason.BREEDING, null, null);
+                entity.initialize((ServerWorldAccess) world, world.getLocalDifficulty(pos), SpawnReason.BREEDING, null, null);
                 entity.saveNbt(compoundTag);
                 compoundTag.putInt("Age", -25000);
-                this.meerkats.add(new Meerkat(compoundTag, 0, 600));
+                meerkats.add(new Meerkat(compoundTag, 0, 600));
             }
         }
     }
 
-    public void fromTag(BlockState state, NbtCompound tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         this.meerkats.clear();
         NbtList NbtList = tag.getList("Meerkats", 10);
 

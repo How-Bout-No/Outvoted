@@ -225,8 +225,8 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    public void takeKnockback(float strength, double ratioX, double ratioZ) {
-        super.takeKnockback(strength / 4, ratioX, ratioZ);
+    public void takeKnockback(double strength, double x, double z) {
+        super.takeKnockback(strength / 4, x, z);
     }
 
     /**
@@ -252,7 +252,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 }
             }
             if (this.hasTargetedEntity()) {
-                this.yaw = this.headYaw;
+                this.setYaw(this.headYaw);
                 LivingEntity livingentity = this.getTargetedEntity();
                 if (livingentity != null) {
                     this.getLookControl().lookAt(livingentity, 90.0F, 90.0F);
@@ -272,7 +272,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
                     while (d4 < d3) {
                         d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
-                        livingentity.refreshPositionAndAngles(this.getX() + d0 * d3, this.getEyeY() + d1, this.getZ() + d2 * d3, livingentity.yaw, livingentity.pitch);
+                        livingentity.refreshPositionAndAngles(this.getX() + d0 * d3, this.getEyeY() + d1, this.getZ() + d2 * d3, livingentity.getYaw(), livingentity.getPitch());
                         livingentity.setSwimming(false);
                         livingentity.updateSwimming();
                         if (!this.world.isClient) {
@@ -284,7 +284,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                                     ItemScatterer.spawn(boat.world, boat, (Inventory) boat);
                                 } catch (Exception ignored) {
                                 }
-                                boat.remove();
+                                boat.discard();
                             }
                         }
                         if (this.getAttackPhase() != 0) {
@@ -310,7 +310,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 this.setAir(300);
             } else if (this.onGround) {
                 this.setVelocity(this.getVelocity().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F), 0.5D, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F)));
-                this.yaw = this.random.nextFloat() * 360.0F;
+                this.setYaw(this.random.nextFloat() * 360.0F);
                 this.onGround = false;
                 this.velocityDirty = true;
             }
@@ -373,7 +373,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         if (livingentity.getVehicle() != null) {
             return livingentity.getVehicle().isTouchingWater();
         } else {
-            return livingentity.isTouchingWater() && (targetedEntities.get(livingentity.getEntityId()) == null || targetedEntities.get(livingentity.getEntityId()) == this.getUuid());
+            return livingentity.isTouchingWater() && (targetedEntities.get(livingentity.getId()) == null || targetedEntities.get(livingentity.getId()) == this.getUuid());
         }
     }
 
@@ -470,8 +470,8 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                     ++this.tickCounter;
                     if (this.mob.getAttackPhase() < 1) this.mob.setAttacking(1);
                     if (this.tickCounter == 0) {
-                        this.mob.setTargetedEntity(this.mob.getTarget().getEntityId());
-                        targetedEntities.put(livingentity.getEntityId(), this.mob.getUuid());
+                        this.mob.setTargetedEntity(this.mob.getTarget().getId());
+                        targetedEntities.put(livingentity.getId(), this.mob.getUuid());
                     } else if (this.tickCounter >= this.mob.getAttackDuration()) {
                         if (this.tickCounter >= 600) {
                             this.mob.setAttacking(2);
@@ -508,15 +508,15 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 double d2 = vector3d.y / d0;
                 double d3 = vector3d.z / d0;
                 float f = (float) (MathHelper.atan2(vector3d.z, vector3d.x) * (double) (180F / (float) Math.PI)) - 90.0F;
-                this.mob.yaw = this.wrapDegrees(this.mob.yaw, f, 90.0F);
-                this.mob.bodyYaw = this.mob.yaw;
+                this.mob.setYaw(this.wrapDegrees(this.mob.getYaw(), f, 90.0F));
+                this.mob.bodyYaw = this.mob.getYaw();
                 float f1 = (float) (this.speed * this.mob.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
                 float f2 = MathHelper.lerp(0.125F, this.mob.getMovementSpeed(), f1);
                 this.mob.setMovementSpeed(f2);
-                double d4 = Math.sin((double) (this.mob.age + this.mob.getEntityId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double) (this.mob.yaw * ((float) Math.PI / 180F)));
-                double d6 = Math.sin((double) (this.mob.yaw * ((float) Math.PI / 180F)));
-                double d7 = Math.sin((double) (this.mob.age + this.mob.getEntityId()) * 0.75D) * 0.05D;
+                double d4 = Math.sin((double) (this.mob.age + this.mob.getId()) * 0.5D) * 0.05D;
+                double d5 = Math.cos((double) (this.mob.getYaw() * ((float) Math.PI / 180F)));
+                double d6 = Math.sin((double) (this.mob.getYaw() * ((float) Math.PI / 180F)));
+                double d7 = Math.sin((double) (this.mob.age + this.mob.getId()) * 0.75D) * 0.05D;
                 this.mob.setVelocity(this.mob.getVelocity().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
                 LookControl lookcontroller = this.mob.getLookControl();
                 double d8 = this.mob.getX() + d1 * 2.0D;

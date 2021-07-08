@@ -1,12 +1,13 @@
 package io.github.how_bout_no.outvoted.item;
 
+import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
@@ -42,7 +43,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
             }
         };
         for (final SpawnEggItem spawnEgg : UNADDED_EGGS) {
-            SpawnEggItem.SPAWN_EGGS.put(spawnEgg.getEntityType(null), spawnEgg);
+            SpawnEggItem.SPAWN_EGGS.put((EntityType<MobEntity>) spawnEgg.getEntityType(null), spawnEgg);
             DispenserBlock.registerBehavior(spawnEgg, dispenseBehavior);
         }
     }

@@ -10,9 +10,9 @@ import net.minecraft.block.LeavesBlock;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 
 import java.util.Random;
@@ -23,7 +23,12 @@ public class PalmTreeFeature extends Feature<TreeFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess worldIn, ChunkGenerator generator, Random random, BlockPos position, TreeFeatureConfig config) {
+    public boolean generate(FeatureContext<TreeFeatureConfig> context) {
+        StructureWorldAccess worldIn = context.getWorld();
+        Random random = context.getRandom();
+        BlockPos position = context.getOrigin();
+        TreeFeatureConfig config = context.getConfig();
+
         int i = random.nextInt(2) + 6; // Tree height
 
         boolean flag = true;
@@ -138,7 +143,7 @@ public class PalmTreeFeature extends Feature<TreeFeatureConfig> {
 
     private void placeLeafAt(ModifiableTestableWorld world, BlockPos pos, Random rand, TreeFeatureConfig config) {
         if (isAirOrLeaves(world, pos)) {
-            this.setLogState(world, pos, config.leavesProvider.getBlockState(rand, pos).with(LeavesBlock.DISTANCE, 1));
+            this.setLogState(world, pos, config.foliageProvider.getBlockState(rand, pos).with(LeavesBlock.DISTANCE, 1));
         }
     }
 

@@ -1,10 +1,10 @@
 package io.github.how_bout_no.outvoted.init;
 
 import com.google.common.collect.ImmutableSet;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.mixin.PointOfInterestTypeAccessor;
-import me.shedaniel.architectury.registry.DeferredRegister;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.registry.Registry;

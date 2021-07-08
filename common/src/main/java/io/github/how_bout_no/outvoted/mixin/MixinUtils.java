@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.mixin;
 
-import me.shedaniel.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
 import me.shedaniel.autoconfig.util.Utils;
 import net.fabricmc.api.EnvType;
 import org.spongepowered.asm.mixin.Mixin;

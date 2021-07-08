@@ -2,8 +2,11 @@ package io.github.how_bout_no.outvoted.block;
 
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
 import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
+import io.github.how_bout_no.outvoted.init.ModBlockEntityTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +19,6 @@ import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
@@ -34,8 +36,13 @@ public class BurrowBlock extends BlockWithEntity {
     }
 
     @Nullable
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new BurrowBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new BurrowBlockEntity(pos, state);
+    }
+
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return world.isClient ? null : checkType(type, ModBlockEntityTypes.BURROW.get(), BurrowBlockEntity::serverTick);
     }
 
     @Nullable
@@ -89,7 +96,7 @@ public class BurrowBlock extends BlockWithEntity {
 
                             this.ageMeerkat(((NbtCompound) tag1).getInt("TicksInBurrow"), meerkatEntity);
 
-                            entity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), entity.pitch);
+                            entity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), entity.getPitch());
                         }
                         world.spawnEntity(entity);
                     }

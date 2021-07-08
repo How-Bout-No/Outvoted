@@ -38,7 +38,6 @@ public abstract class GiantTree extends SaplingGenerator {
         if (configuredfeature == null) {
             return false;
         } else {
-            configuredfeature.config.ignoreFluidCheck();
             BlockState blockstate = Blocks.AIR.getDefaultState();
             for (int i = 0; i <= 3; ++i) {
                 for (int j = 0; j <= 3; ++j) {

@@ -12,4 +12,5 @@ Ostrich
 * Here be dragons
 
 > Misc
-- Update dependencies
+- Rebase to 1.17
+* Many bugs will arise during this transition. Patience!
