@@ -43,7 +43,7 @@ public abstract class MixinSignTileEntityRenderer {
     private static void getMaterial(Block block, CallbackInfoReturnable<SpriteIdentifier> info) {
         if (block instanceof IModdedSign) {
             Identifier texture = ((IModdedSign) block).getTexture();
-            info.setReturnValue(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, texture));
+//            info.setReturnValue(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, texture));
         }
     }
 }

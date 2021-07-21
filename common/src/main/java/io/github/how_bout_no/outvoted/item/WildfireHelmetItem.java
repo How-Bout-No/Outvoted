@@ -67,9 +67,11 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {
             stacks.add(new ItemStack(this));
-            ItemStack soul = new ItemStack(this);
-            soul.getOrCreateNbt().putFloat("SoulTexture", 1.0F);
-            stacks.add(soul);
+            if (Outvoted.config.client.wildfireVariants) {
+                ItemStack soul = new ItemStack(this);
+                soul.getOrCreateNbt().putFloat("SoulTexture", 1.0F);
+                stacks.add(soul);
+            }
         }
     }
 

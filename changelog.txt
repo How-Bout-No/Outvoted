@@ -10,8 +10,12 @@ Ostrich
 - Fix entity name
 - Fix config text
 
+> Items
+Wildfire Helmet
+- Soul variant no longer shows in creative if config is disabled
+
 > Misc
 - Rebase to 1.17.1
 - Fix some loot tables being nonexistent
 - Fix some advancement criteria
-* Some advancements are still broken and I have no idea why
+* Still known bugs: Sign textures do not work, some advancements are still broken, Meerkat performance issues

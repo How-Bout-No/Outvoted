@@ -89,11 +89,11 @@ curseforge {
         apiKey = curseProp.getProperty('curseKey')
 
         project {
-            id = "476841"
+            id = "415057"
             releaseType = "alpha"
             changelogType = 'text'
             changelog = file('../changelog.txt')
-            addGameVersion("1.16.5")
+            addGameVersion("1.17.1")
             addGameVersion("Fabric")
             relations {
                 requiredDependency 'geckolib-fabric'
@@ -104,7 +104,7 @@ curseforge {
                 optionalDependency 'modmenu'
             }
             mainArtifact(remapJar.archivePath) {
-                displayName = "Outvoted-${mod_version}-fabric"
+                displayName = "[FABRIC] Outvoted-${mod_version}"
             }
             afterEvaluate {
                 uploadTask.dependsOn("build")
@@ -127,10 +127,11 @@ task modrinthFabric(type: TaskModrinthUpload) {
         token = modrinthProp.getProperty('modrinthKey')
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-fabric"
+        versionName = "[FABRIC] " + project.version
         uploadFile = remapJar.archivePath // This is the java jar task
         changelog = file('../changelog.txt').absoluteFile
         versionType = "ALPHA"
-        addGameVersion('1.16.5')
+        addGameVersion('1.17.1')
         addLoader('fabric')
     }
 }
