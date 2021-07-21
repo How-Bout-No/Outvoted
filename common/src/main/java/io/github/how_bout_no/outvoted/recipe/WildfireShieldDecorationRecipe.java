@@ -35,10 +35,10 @@ public class WildfireShieldDecorationRecipe extends SpecialCraftingRecipe {
         if (itemStack2.isEmpty()) {
             return itemStack2;
         }
-        NbtCompound compoundTag = itemStack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag = itemStack.getSubNbt("BlockEntityTag");
         NbtCompound compoundTag2 = compoundTag == null ? new NbtCompound() : compoundTag.copy();
         compoundTag2.putInt("Base", ((BannerItem) itemStack.getItem()).getColor().getId());
-        itemStack2.putSubTag("BlockEntityTag", compoundTag2);
+        itemStack2.setSubNbt("BlockEntityTag", compoundTag2);
         return itemStack2;
     }
 
@@ -75,7 +75,7 @@ public class WildfireShieldDecorationRecipe extends SpecialCraftingRecipe {
                         return false;
                     }
 
-                    if (itemStack3.getSubTag("BlockEntityTag") != null) {
+                    if (itemStack3.getSubNbt("BlockEntityTag") != null) {
                         return false;
                     }
 

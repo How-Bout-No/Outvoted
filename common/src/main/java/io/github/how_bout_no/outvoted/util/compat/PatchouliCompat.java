@@ -16,7 +16,7 @@ public class PatchouliCompat {
         if (Platform.isModLoaded("patchouli")) {
             if (Outvoted.commonConfig.misc.givePatchouliBookOnLogin && !((IMixinPlayerEntity) player).hasBook()) {
                 ItemStack stack = new ItemStack(PatchouliItems.book);
-                stack.getOrCreateTag().putString("patchouli:book", "outvoted:book");
+                stack.getOrCreateNbt().putString("patchouli:book", "outvoted:book");
                 player.giveItemStack(stack);
                 ((IMixinPlayerEntity) player).setBook(true);
             }

@@ -1,5 +1,5 @@
 plugins {
-    id "architectury-plugin" version "3.2.112"
+    id "architectury-plugin" version "3.2.114"
     id "dev.architectury.loom" version "0.8.0.130" apply false
     id "com.modrinth.minotaur" version "1.2.1" apply false
     id "com.matthewprenger.cursegradle" version "1.4.0" apply false
@@ -47,11 +47,7 @@ allprojects {
             }
         }
 //        maven { url 'https://jitpack.io' }
-        maven {
-            name = 'TerraformersMC Archive'
-            url = 'https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases/'
-        }
-//        maven { url 'https://maven.terraformersmc.com/releases/' }
+        maven { url 'https://maven.terraformersmc.com/releases/' }
 //        maven { url 'https://repo.repsy.io/mvn/howboutno/main' }
 
     }

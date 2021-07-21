@@ -35,8 +35,8 @@ public class ModSpawnEggItem extends SpawnEggItem {
             @Override
             public ItemStack dispense(BlockPointer blockPointer, ItemStack itemStack) {
                 Direction direction = blockPointer.getBlockState().get(DispenserBlock.FACING);
-                EntityType<?> type = ((SpawnEggItem) itemStack.getItem()).getEntityType(itemStack.getTag());
-                type.spawn(blockPointer.getWorld(), itemStack.getTag(), null, null, blockPointer.getBlockPos().offset(direction),
+                EntityType<?> type = ((SpawnEggItem) itemStack.getItem()).getEntityType(itemStack.getNbt());
+                type.spawn(blockPointer.getWorld(), itemStack.getNbt(), null, null, blockPointer.getPos().offset(direction),
                         SpawnReason.DISPENSER, direction != Direction.UP, false);
                 itemStack.decrement(1);
                 return itemStack;

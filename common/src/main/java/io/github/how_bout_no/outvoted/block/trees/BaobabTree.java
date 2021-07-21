@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class BaobabTree extends GiantTree {
     @Nullable
-    protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random randomIn, boolean largeHive) {
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean largeHive) {
         return null;
     }
 

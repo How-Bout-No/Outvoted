@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class PalmTree extends SaplingGenerator {
     @Nullable
-    protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random randomIn, boolean largeHive) {
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean largeHive) {
         return ModFeatures.PALM_TREE.get().configure(ModFeatures.Configs.PALM_TREE_CONFIG);
     }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "MCM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:polished_blackstone"
+    },
+    "C": {
+      "item": "outvoted:wildfire_piece"
+    }
+  },
+  "result": {
+    "item": "outvoted:wildfire_shield_part"
+  }
+}

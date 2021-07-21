@@ -36,7 +36,7 @@ public class BurrowGenFeature extends Feature<DefaultFeatureConfig> {
         mutable2.set(mutable).move(Direction.DOWN, 1);
         if (structureWorldAccess.getBlockState(mutable2).isOf(Blocks.SAND)) {
             structureWorldAccess.setBlockState(mutable2, ModBlocks.BURROW.get().getDefaultState(), 0);
-            for (int i = 0; i < random.nextInt(3) + 3; i++) {
+            for (int i = 0; i < random.nextInt(2) + 2; i++) {
                 MeerkatEntity livingEntity = ModEntityTypes.MEERKAT.get().create(structureWorldAccess.toServerWorld());
                 blockPos.add(livingEntity.getParticleX(2.0D), 0, livingEntity.getParticleZ(2.0D));
                 livingEntity.refreshPositionAndAngles(blockPos, livingEntity.getYaw(), livingEntity.getPitch());

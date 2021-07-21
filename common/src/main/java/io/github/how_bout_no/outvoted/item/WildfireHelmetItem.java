@@ -29,7 +29,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     @Override
     public Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, Identifier defaultTexture) {
         if (Outvoted.clientConfig.wildfireVariants) {
-            if (stack.getTag() != null && stack.getTag().getFloat("SoulTexture") == 1.0F) {
+            if (stack.getNbt() != null && stack.getNbt().getFloat("SoulTexture") == 1.0F) {
                 return HELMET_TEXTURE_SOUL;
             }
         }
@@ -68,7 +68,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
         if (this.isIn(group)) {
             stacks.add(new ItemStack(this));
             ItemStack soul = new ItemStack(this);
-            soul.getOrCreateTag().putFloat("SoulTexture", 1.0F);
+            soul.getOrCreateNbt().putFloat("SoulTexture", 1.0F);
             stacks.add(soul);
         }
     }

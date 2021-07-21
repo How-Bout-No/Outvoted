@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "outvoted:wildfire_shield_part"
+    ]
+  },
+  "criteria": {
+    "has_wildfire_piece": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "outvoted:wildfire_piece"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "outvoted:wildfire_shield_part"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_wildfire_piece",
+      "has_the_recipe"
+    ]
+  ]
+}

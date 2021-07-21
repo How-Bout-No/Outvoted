@@ -252,7 +252,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     public ItemEntity dropStack(ItemStack stack, float yOffset) {
         if (stack.getItem() instanceof WildfireHelmetItem) {
             if (Outvoted.clientConfig.wildfireVariants && this.getVariant() == 1) {
-                stack.getOrCreateTag().putFloat("SoulTexture", 1.0F);
+                stack.getOrCreateNbt().putFloat("SoulTexture", 1.0F);
             }
         }
 

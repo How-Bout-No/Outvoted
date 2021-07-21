@@ -224,12 +224,12 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public MutablePair<Integer, ItemStack> modifyEnchantments(ItemStack stack, int damage, int count) {
         ItemStack itemstack = stack.copy();
         Map<Enchantment, Integer> cacheEnchants = new ConcurrentHashMap<>(storedEnchants);
-        itemstack.removeSubTag("Enchantments");
-        itemstack.removeSubTag("StoredEnchantments");
+        itemstack.removeSubNbt("Enchantments");
+        itemstack.removeSubNbt("StoredEnchantments");
         if (damage > 0) {
             itemstack.setDamage(damage);
         } else {
-            itemstack.removeSubTag("Damage");
+            itemstack.removeSubNbt("Damage");
         }
 
         if (itemstack.getItem() == Items.BOOK) {
@@ -254,7 +254,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                 this.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 600, 1));
                 pair.setLeft(1);
                 return pair;
-            } else if (itemstack.getTag() != null && itemstack.getTag().contains("Bitten")) {
+            } else if (itemstack.getNbt() != null && itemstack.getNbt().contains("Bitten")) {
                 pair.setLeft(1);
                 return pair;
             } else if (!(itemstack.isEnchantable() || itemstack.hasEnchantments() || itemstack.getItem() instanceof EnchantedBookItem)) {
@@ -361,8 +361,8 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
             if (!enchantedItems.isEmpty()) {
                 ItemStack item = enchantedItems.get(this.random.nextInt(enchantedItems.size()));
                 Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(item);
-                item.removeSubTag("Enchantments");
-                item.removeSubTag("StoredEnchantments");
+                item.removeSubNbt("Enchantments");
+                item.removeSubNbt("StoredEnchantments");
                 Object[] enchants = enchantments.keySet().toArray();
                 Enchantment enchant = (Enchantment) enchants[this.random.nextInt(enchants.length)];
                 if (enchantments.get(enchant) > 1) {
@@ -631,7 +631,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                         this.mob.world.spawnEntity(newitem);
                     } else {
                         this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, this.mob.getSoundCategory(), 0.8F, 0.6F);
-                        item.getOrCreateTag().putInt("Bitten", 1);
+                        item.getOrCreateNbt().putInt("Bitten", 1);
                         ItemEntity newitem = new ItemEntity(this.mob.world, this.mob.getX(), this.mob.getY(), this.mob.getZ(), item);
                         newitem.setThrower(this.mob.getUuid());
                         this.mob.world.spawnEntity(newitem);

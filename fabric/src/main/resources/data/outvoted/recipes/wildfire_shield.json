@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:shield"
+  },
+  "addition": {
+    "item": "outvoted:wildfire_shield_part"
+  },
+  "result": {
+    "item": "outvoted:wildfire_shield"
+  }
+}

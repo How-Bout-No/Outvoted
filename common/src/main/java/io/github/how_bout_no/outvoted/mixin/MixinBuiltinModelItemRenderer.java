@@ -34,7 +34,7 @@ public abstract class MixinBuiltinModelItemRenderer {
     @Inject(method = "render", at = @At("HEAD"))
     public void lel(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
         if (stack.isOf(ModItems.WILDFIRE_SHIELD.get())) {
-            boolean bl = stack.getSubTag("BlockEntityTag") != null;
+            boolean bl = stack.getSubNbt("BlockEntityTag") != null;
             matrices.push();
             matrices.scale(1.0F, -1.0F, -1.0F);
             SpriteIdentifier spriteIdentifier = bl ? WildfireShield.base : WildfireShield.base_nop;
