@@ -9,16 +9,16 @@
     "MixinCorridorExit",
     "MixinMendingEnchantment",
     "MixinServerPlayerEntity",
+    "MixinSignType",
     "MixinSilverfishEntity",
     "MixinSpiderEntity",
+    "MixinTexturedRenderLayers",
     "MixinUtils",
     "PointOfInterestTypeAccessor"
   ],
   "client": [
     "GeoArmorRendererAccessor",
-    "MixinAtlases",
-    "MixinBlazeRenderer",
-    "MixinSignTileEntityRenderer"
+    "MixinBlazeRenderer"
   ],
   "minVersion": "0.8",
   "injectors": {

@@ -68,6 +68,7 @@ public class Outvoted {
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
         ModTags.init();
+        ModSignType.init();
         EventRegister.init();
         WorldGen.addSpawnEntries();
 

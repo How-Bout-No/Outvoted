@@ -26,24 +26,40 @@
 
 package io.github.how_bout_no.outvoted.mixin;
 
-import io.github.how_bout_no.outvoted.block.IModdedSign;
-import net.minecraft.block.Block;
+import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.init.ModSignType;
+import io.github.how_bout_no.outvoted.util.SignSprites;
 import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.SignType;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SignBlockEntityRenderer.class)
-public abstract class MixinSignTileEntityRenderer {
-    @Inject(method = "getSignType", at = @At("HEAD"), cancellable = true)
-    private static void getMaterial(Block block, CallbackInfoReturnable<SpriteIdentifier> info) {
-        if (block instanceof IModdedSign) {
-            Identifier texture = ((IModdedSign) block).getTexture();
-//            info.setReturnValue(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, texture));
+import java.util.function.Consumer;
+
+@Mixin(TexturedRenderLayers.class)
+public abstract class MixinTexturedRenderLayers {
+    @Shadow
+    @Final
+    public static Identifier SIGNS_ATLAS_TEXTURE;
+
+    @Inject(method = "addDefaultTextures", at = @At("RETURN"))
+    private static void collectModdedSigns(Consumer<SpriteIdentifier> consumer, CallbackInfo info) {
+        for (SpriteIdentifier material : SignSprites.getSprites()) {
+            consumer.accept(material);
+        }
+    }
+
+    @Inject(method = "createSignTextureId", at = @At("RETURN"), cancellable = true)
+    private static void newId(SignType type, CallbackInfoReturnable<SpriteIdentifier> cir) {
+        if (type.getName().equals(ModSignType.PALM.getName()) || type.getName().equals(ModSignType.BAOBAB.getName())) {
+            cir.setReturnValue(new SpriteIdentifier(SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/" + type.getName())));
         }
     }
 }

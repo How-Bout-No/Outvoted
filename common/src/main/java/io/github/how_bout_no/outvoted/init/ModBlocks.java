@@ -10,15 +10,12 @@ import io.github.how_bout_no.outvoted.block.ModBlockItems.ModSignItem;
 import io.github.how_bout_no.outvoted.block.ModBlockItems.ModTallBlockItem;
 import io.github.how_bout_no.outvoted.block.ModReplaceBlocks;
 import io.github.how_bout_no.outvoted.block.ModSaplingBlock;
-import io.github.how_bout_no.outvoted.block.ModdedSignBlock.ModdedStandingSignBlock;
-import io.github.how_bout_no.outvoted.block.ModdedSignBlock.ModdedWallSignBlock;
 import io.github.how_bout_no.outvoted.block.trees.BaobabTree;
 import io.github.how_bout_no.outvoted.block.trees.PalmTree;
 import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
@@ -44,8 +41,8 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> PALM_FENCE_GATE = BLOCKS.register("palm_fence_gate", () -> new FenceGateBlock(Block.Settings.copy(Blocks.JUNGLE_FENCE_GATE)));
     public static final RegistrySupplier<Block> PALM_TRAPDOOR = BLOCKS.register("palm_trapdoor", () -> new ModReplaceBlocks.Trapdoor(Block.Settings.copy(Blocks.JUNGLE_TRAPDOOR)));
     public static final RegistrySupplier<Block> PALM_DOOR = BLOCKS.register("palm_door", () -> new ModReplaceBlocks.Door(Block.Settings.copy(Blocks.JUNGLE_DOOR)));
-    public static final RegistrySupplier<Block> PALM_SIGN = BLOCKS.register("palm_sign", () -> new ModdedStandingSignBlock(Block.Settings.copy(Blocks.JUNGLE_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
-    public static final RegistrySupplier<Block> PALM_WALL_SIGN = BLOCKS.register("palm_wall_sign", () -> new ModdedWallSignBlock(Block.Settings.copy(Blocks.JUNGLE_WALL_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
+    public static final RegistrySupplier<Block> PALM_SIGN = BLOCKS.register("palm_sign", () -> new SignBlock(Block.Settings.copy(Blocks.JUNGLE_SIGN), ModSignType.PALM));
+    public static final RegistrySupplier<Block> PALM_WALL_SIGN = BLOCKS.register("palm_wall_sign", () -> new WallSignBlock(Block.Settings.copy(Blocks.JUNGLE_WALL_SIGN), ModSignType.PALM));
 
     public static final RegistrySupplier<Block> BAOBAB_PLANKS = BLOCKS.register("baobab_planks", () -> new Block(AbstractBlock.Settings.of(Material.WOOD, MapColor.ORANGE).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD)));
     public static final RegistrySupplier<Block> BAOBAB_LOG = BLOCKS.register("baobab_log", () -> createLogBlock(MapColor.ORANGE, MapColor.STONE_GRAY));
@@ -62,8 +59,8 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> BAOBAB_FENCE_GATE = BLOCKS.register("baobab_fence_gate", () -> new FenceGateBlock(Block.Settings.copy(Blocks.ACACIA_FENCE_GATE)));
     public static final RegistrySupplier<Block> BAOBAB_TRAPDOOR = BLOCKS.register("baobab_trapdoor", () -> new ModReplaceBlocks.Trapdoor(Block.Settings.copy(Blocks.ACACIA_TRAPDOOR)));
     public static final RegistrySupplier<Block> BAOBAB_DOOR = BLOCKS.register("baobab_door", () -> new ModReplaceBlocks.Door(Block.Settings.copy(Blocks.ACACIA_DOOR)));
-    public static final RegistrySupplier<Block> BAOBAB_SIGN = BLOCKS.register("baobab_sign", () -> new ModdedStandingSignBlock(Block.Settings.copy(Blocks.ACACIA_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
-    public static final RegistrySupplier<Block> BAOBAB_WALL_SIGN = BLOCKS.register("baobab_wall_sign", () -> new ModdedWallSignBlock(Block.Settings.copy(Blocks.ACACIA_WALL_SIGN), new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
+    public static final RegistrySupplier<Block> BAOBAB_SIGN = BLOCKS.register("baobab_sign", () -> new SignBlock(Block.Settings.copy(Blocks.ACACIA_SIGN), ModSignType.BAOBAB));
+    public static final RegistrySupplier<Block> BAOBAB_WALL_SIGN = BLOCKS.register("baobab_wall_sign", () -> new WallSignBlock(Block.Settings.copy(Blocks.ACACIA_WALL_SIGN), ModSignType.BAOBAB));
 
     // Block items
     public static final RegistrySupplier<Item> BURROW_ITEM = BLOCK_ITEMS.register("burrow", () -> new ModBlockItem(BURROW.get(), new Item.Settings()));
