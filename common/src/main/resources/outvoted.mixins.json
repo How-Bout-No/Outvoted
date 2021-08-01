@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "io.github.how_bout_no.outvoted.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "MixinAnvilScreenHandler",
     "MixinBlazeEntity",
@@ -20,7 +20,6 @@
     "GeoArmorRendererAccessor",
     "MixinBlazeRenderer"
   ],
-  "minVersion": "0.8",
   "injectors": {
     "defaultRequire": 1
   }

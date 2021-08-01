@@ -251,7 +251,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     @Nullable
     public ItemEntity dropStack(ItemStack stack, float yOffset) {
         if (stack.getItem() instanceof WildfireHelmetItem) {
-            if (Outvoted.clientConfig.wildfireVariants && this.getVariant() == 1) {
+            if (!world.isClient() && this.getVariant() == 1) {
                 stack.getOrCreateNbt().putFloat("SoulTexture", 1.0F);
             }
         }
@@ -276,7 +276,8 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         super.mobTick();
     }
 
-    public boolean handleFallDamage(float distance, float damageMultiplier) {
+    @Override
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
 

@@ -1,21 +1,11 @@
 > Entities
-Meerkat
-- Slightly improve performance
-- Reduce max spawn group
-
-Ostrich
-- Fix texture bugs on legs
-- Fix lang entries
-- Fix spawn egg name
-- Fix entity name
-- Fix config text
+Wildfire
+- Fix crash when dropping helmet
 
 > Items
 Wildfire Helmet
-- Soul variant no longer shows in creative if config is disabled
+- Patch possible issue
 
-> Misc
-- Rebase to 1.17.1
-- Fix some loot tables being nonexistent
-- Fix some advancement criteria
-* Still known bugs: Sign textures do not work, some advancements are still broken, Meerkat performance issues
+> Blocks
+Signs
+- Fix textures and behavior
