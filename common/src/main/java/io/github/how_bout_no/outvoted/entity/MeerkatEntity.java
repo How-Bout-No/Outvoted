@@ -696,12 +696,16 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("stand"));
-            this.setPose(EntityPose.STANDING);
-            this.setBoundingBox(calcBox());
+            if (this.getPose() != EntityPose.STANDING) {
+                this.setPose(EntityPose.STANDING);
+                this.setBoundingBox(calcBox());
+            }
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
-            this.setPose(EntityPose.CROUCHING);
-            this.setBoundingBox(calcBox());
+            if (this.getPose() != EntityPose.CROUCHING) {
+                this.setPose(EntityPose.CROUCHING);
+                this.setBoundingBox(calcBox());
+            }
             animtimer = 0;
         }
         if (animtimer < 10) animtimer++;

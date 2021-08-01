@@ -89,7 +89,7 @@ curseforge {
         apiKey = curseProp.getProperty('curseKey')
 
         project {
-            id = "476841"
+            id = "415057"
             releaseType = "alpha"
             changelogType = 'text'
             changelog = file('../changelog.txt')
@@ -127,6 +127,7 @@ task modrinthFabric(type: TaskModrinthUpload) {
         token = modrinthProp.getProperty('modrinthKey')
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-fabric"
+        versionName = "[FABRIC] " + project.version
         uploadFile = remapJar.archivePath // This is the java jar task
         changelog = file('../changelog.txt').absoluteFile
         versionType = "ALPHA"

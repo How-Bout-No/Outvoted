@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "wildfire_helmet": {
+    "get_helmet": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -26,5 +26,10 @@
         ]
       }
     }
-  }
+  },
+  "requirements": [
+    [
+      "get_helmet"
+    ]
+  ]
 }

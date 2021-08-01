@@ -139,6 +139,7 @@ task modrinthForge(type: TaskModrinthUpload) {
         token = modrinthProp.getProperty('modrinthKey')
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-forge"
+        versionName = "[FORGE] " + project.version
         uploadFile = remapJar.archivePath // This is the java jar task
         changelog = file('../changelog.txt').absoluteFile
         versionType = "ALPHA"

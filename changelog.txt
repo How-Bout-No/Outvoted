@@ -1,15 +1,15 @@
 > Entities
-Glutton
-- Config for stealing enchantments
+Meerkat
+- Slightly improve performance
+- Reduce max spawn group
 
 Ostrich
-- Spawns in Savanna biomes
-- Tameable + Rideable
-- Moves at around 15 blocks/sec
-- Fixed health + speed (A.K.A not Horse mechanics)
-* Currently based on Horse mob, will slowly detach from that dependency
-* Functionality works by taming it with wheat, and then adding a saddle and riding
-* Here be dragons
+- Fix texture bugs on legs
+- Fix lang entries
+- Fix spawn egg name
+- Fix entity name
+- Fix config text
 
-> Misc
-- Update dependencies
+> Items
+Wildfire Helmet
+- Soul variant no longer shows in creative if config is disabled
