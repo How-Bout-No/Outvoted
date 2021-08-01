@@ -87,15 +87,10 @@ public class BurrowBlock extends BlockWithEntity {
             if (!((BurrowBlockEntity) blockEntity).hasNoMeerkats()) {
                 for (NbtElement tag1 : ((BurrowBlockEntity) blockEntity).getMeerkats()) {
                     NbtCompound tag = ((NbtCompound) tag1).getCompound("EntityData");
-                    Entity entity = EntityType.loadEntityWithPassengers(tag, world, (entityx) -> {
-                        return entityx;
-                    });
+                    Entity entity = EntityType.loadEntityWithPassengers(tag, world, (entityx) -> entityx);
                     if (entity != null) {
-                        if (entity instanceof MeerkatEntity) {
-                            MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
-
+                        if (entity instanceof MeerkatEntity meerkatEntity) {
                             this.ageMeerkat(((NbtCompound) tag1).getInt("TicksInBurrow"), meerkatEntity);
-
                             entity.refreshPositionAndAngles(pos, state.get(FACING).asRotation(), entity.getPitch());
                         }
                         world.spawnEntity(entity);
@@ -119,11 +114,11 @@ public class BurrowBlock extends BlockWithEntity {
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return (BlockState) state.with(FACING, rotation.rotate((Direction) state.get(FACING)));
+        return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
 
     public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation((Direction) state.get(FACING)));
+        return state.rotate(mirror.getRotation(state.get(FACING)));
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

@@ -221,9 +221,7 @@ public class BaobabTreeFeature extends Feature<TreeFeatureConfig> {
             return worldIn.testBlockState(pos, state ->
                     state.isAir() || state.isIn(BlockTags.LEAVES));
         }
-        return worldIn.testBlockState(pos, (state) -> {
-            return state.isAir() || state.isIn(BlockTags.LEAVES);
-        });
+        return worldIn.testBlockState(pos, (state) -> state.isAir() || state.isIn(BlockTags.LEAVES));
     }
 
     public static void setDirtAt(WorldAccess worldIn, BlockPos pos) {

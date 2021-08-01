@@ -1,11 +1,20 @@
 > Entities
 Wildfire
-- Fix crash when dropping helmet
+- Variants will now be named differently
+- Fix crash on death related to dropping helmet
+
+Glutton
+- Variants will now be named differently
 
 > Items
 Wildfire Helmet
-- Patch possible issue
+- Variants will now be named differently
+- Patch possible issues
 
 > Blocks
 Signs
 - Fix textures and behavior
+
+> Misc
+- Utilize Java 16 features
+- Code cleanup

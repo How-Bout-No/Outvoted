@@ -30,7 +30,6 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -118,7 +117,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     static {
         TRUSTING = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
         TRUSTED_UUID = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
-        TAMING_INGREDIENT = Ingredient.ofItems(new ItemConvertible[]{Items.SPIDER_EYE});
+        TAMING_INGREDIENT = Ingredient.ofItems(Items.SPIDER_EYE);
     }
 
     protected void initDataTracker() {
@@ -233,8 +232,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             BlockPos blockPos = new BlockPos(this.getBlockPos());
             if (this.getServer().getOverworld() != null) {
                 ServerWorld serverWorld = this.getServer().getOverworld();
-                BlockPos blockPos2 = serverWorld.locateStructure(structureFeature, blockPos, (int) Math.floor(10 * serverWorld.getBiome(blockPos).getScale()), false);
-                return blockPos2;
+                return serverWorld.locateStructure(structureFeature, blockPos, (int) Math.floor(10 * serverWorld.getBiome(blockPos).getScale()), false);
             }
         }
         return null;
@@ -411,8 +409,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         public boolean canStart() {
             if (MeerkatEntity.this.burrowPos != null && MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow()) {
                 BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
-                if (blockEntity instanceof BurrowBlockEntity && MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING)).isWithinDistance(MeerkatEntity.this.getPos(), 1.0D)) {
-                    BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
+                if (blockEntity instanceof BurrowBlockEntity burrowBlockEntity && MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING)).isWithinDistance(MeerkatEntity.this.getPos(), 1.0D)) {
                     if (!burrowBlockEntity.isFullOfMeerkats()) {
                         return true;
                     }
@@ -429,8 +426,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             BlockEntity blockEntity = world.getBlockEntity(MeerkatEntity.this.burrowPos);
             BlockPos pos = blockEntity.getPos().offset(world.getBlockState(blockEntity.getPos()).get(BurrowBlock.FACING));
             boolean bl = MeerkatEntity.this.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < 1.0;
-            if (blockEntity instanceof BurrowBlockEntity && bl) {
-                BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
+            if (blockEntity instanceof BurrowBlockEntity burrowBlockEntity && bl) {
                 burrowBlockEntity.tryEnterBurrow(MeerkatEntity.this, false);
             }
         }
@@ -473,7 +469,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     private boolean isWithinDistance(BlockPos pos, int distance) {
-        return pos.isWithinDistance(this.getBlockPos(), (double) distance);
+        return pos.isWithinDistance(this.getBlockPos(), distance);
     }
 
     private boolean isTooFar(BlockPos pos) {
@@ -713,7 +709,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
+        AnimationController<MeerkatEntity> controller = new AnimationController<>(this, "controller", 2, this::predicate);
         data.addAnimationController(controller);
     }
 

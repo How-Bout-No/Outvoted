@@ -32,6 +32,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.EightWayDirection;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -167,6 +169,15 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
         ItemStack item = ItemStack.fromNbt(compound.getCompound("Enchantments"));
         storedEnchants = EnchantmentHelper.fromNbt(item.getEnchantments());
+    }
+
+    @Override
+    protected Text getDefaultName() {
+        return switch (getVariant()) {
+            case 1 -> new TranslatableText("entity.outvoted.glutton_r");
+            case 2 -> new TranslatableText("entity.outvoted.glutton_s");
+            default -> super.getDefaultName();
+        };
     }
 
     public int getLimitPerChunk() {
@@ -329,8 +340,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     /**
      * Returns whether this Entity is invulnerable to the given DamageSource.
-     *
-     * @param source
      */
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
@@ -350,8 +359,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     @Override
     public boolean tryAttack(Entity entityIn) {
         boolean exec = super.tryAttack(entityIn);
-        if (exec && entityIn instanceof PlayerEntity && Outvoted.commonConfig.entities.glutton.stealEnchants) {
-            PlayerEntity player = (PlayerEntity) entityIn;
+        if (exec && entityIn instanceof PlayerEntity player && Outvoted.commonConfig.entities.glutton.stealEnchants) {
             List<DefaultedList<ItemStack>> allInventories = ImmutableList.of(player.getInventory().main, player.getInventory().armor, player.getInventory().offHand);
             List<ItemStack> enchantedItems = new ArrayList<>();
             for (DefaultedList<ItemStack> inv : allInventories) {
@@ -541,8 +549,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     /**
      * Creates a vector based on caclulated direction of one of the 8 cardinal directions the entity is facing
-     *
-     * @return
      */
     private net.minecraft.util.math.Vec3d directionVector() {
         net.minecraft.util.math.Vec3d vec3d = net.minecraft.util.math.Vec3d.ZERO;
@@ -661,7 +667,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
@@ -722,7 +728,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
+        AnimationController<GluttonEntity> controller = new AnimationController<>(this, "controller", 2, this::predicate);
         controller.registerSoundListener(this::soundListener);
         controller.registerParticleListener(this::particleListener);
         data.addAnimationController(controller);

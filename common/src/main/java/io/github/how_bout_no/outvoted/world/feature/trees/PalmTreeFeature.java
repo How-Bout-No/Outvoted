@@ -137,10 +137,6 @@ public class PalmTreeFeature extends Feature<TreeFeatureConfig> {
         this.setLogState(worldIn, pos, config.trunkProvider.getBlockState(rand, pos));
     }
 
-    private void placeWoodAt(ModifiableWorld worldIn, BlockPos pos, Random rand, TreeFeatureConfig config) {
-        this.setLogState(worldIn, pos, new SimpleBlockStateProvider(ModBlocks.PALM_WOOD.get().getDefaultState()).getBlockState(rand, pos));
-    }
-
     private void placeLeafAt(ModifiableTestableWorld world, BlockPos pos, Random rand, TreeFeatureConfig config) {
         if (isAirOrLeaves(world, pos)) {
             this.setLogState(world, pos, config.foliageProvider.getBlockState(rand, pos).with(LeavesBlock.DISTANCE, 1));

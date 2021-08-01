@@ -206,10 +206,6 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         return ModSounds.BARNACLE_DEATH.get();
     }
 
-    protected boolean canClimb() {
-        return false;
-    }
-
     protected float getActiveEyeHeight(EntityPose poseIn, EntityDimensions sizeIn) {
         return sizeIn.height * 0.4F;
     }
@@ -309,7 +305,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             if (this.isInsideWaterOrBubbleColumn()) {
                 this.setAir(300);
             } else if (this.onGround) {
-                this.setVelocity(this.getVelocity().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F), 0.5D, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F)));
+                this.setVelocity(this.getVelocity().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.1F));
                 this.setYaw(this.random.nextFloat() * 360.0F);
                 this.onGround = false;
                 this.velocityDirty = true;

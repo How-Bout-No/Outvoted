@@ -61,7 +61,7 @@ public class BurrowBlockEntity extends BlockEntity {
         }
     }
 
-    private static boolean releaseMeerkat(World world, BlockPos pos, BlockState state, Meerkat meerkat, @Nullable List<Entity> list, MeerkatState meerkatState, @Nullable BlockPos flowerPos) {
+    private static boolean releaseMeerkat(World world, BlockPos pos, BlockState state, Meerkat meerkat, @Nullable List<Entity> list, MeerkatState meerkatState) {
         if ((world.isNight() || world.isRaining()) && meerkatState != MeerkatState.EMERGENCY && !world.getBlockState(pos.offset(state.get(FacingBlock.FACING))).isAir()) {
             return false;
         } else {
@@ -77,9 +77,7 @@ public class BurrowBlockEntity extends BlockEntity {
             } else {
                 Entity entity = EntityType.loadEntityWithPassengers(compoundTag, world, (entityx) -> entityx);
                 if (entity != null) {
-                    if (entity instanceof MeerkatEntity) {
-                        MeerkatEntity meerkatEntity = (MeerkatEntity) entity;
-
+                    if (entity instanceof MeerkatEntity meerkatEntity) {
                         ageMeerkat(meerkat.ticksInBurrow, meerkatEntity);
                         if (list != null) {
                             list.add(meerkatEntity);
@@ -108,15 +106,15 @@ public class BurrowBlockEntity extends BlockEntity {
         meerkat.setLoveTicks(Math.max(0, meerkat.getLoveTicks() - ticks));
     }
 
-    private static void tickMeerkats(World world, BlockPos pos, BlockState state, List<Meerkat> meerkats, @Nullable BlockPos flowerPos) {
+    private static void tickMeerkats(World world, BlockPos pos, BlockState state, List<Meerkat> meerkats) {
         Iterator<Meerkat> iterator = meerkats.iterator();
 
         Meerkat meerkat;
-        for (BlockState blockState = state; iterator.hasNext(); meerkat.ticksInBurrow++) {
+        for (; iterator.hasNext(); meerkat.ticksInBurrow++) {
             meerkat = iterator.next();
             if (meerkat.ticksInBurrow > meerkat.minOccupationTicks) {
                 MeerkatState meerkatState = meerkat.entityData.getBoolean("HasNectar") ? MeerkatState.HONEY_DELIVERED : MeerkatState.MEERKAT_RELEASED;
-                if (releaseMeerkat(world, pos, state, meerkat, (List)null, meerkatState, flowerPos))
+                if (releaseMeerkat(world, pos, state, meerkat, null, meerkatState))
                     iterator.remove();
             }
         }
@@ -125,7 +123,7 @@ public class BurrowBlockEntity extends BlockEntity {
 
     public static void serverTick(World world, BlockPos pos, BlockState state, BurrowBlockEntity blockEntity) {
         if (!world.isClient) {
-            tickMeerkats(world, pos, state, blockEntity.meerkats, null);
+            tickMeerkats(world, pos, state, blockEntity.meerkats);
             List<Meerkat> meerkats = blockEntity.meerkats;
             if (meerkats.size() > 0 && world.getRandom().nextDouble() < 0.001D) {
                 for (Meerkat meerkat : meerkats) {
@@ -194,12 +192,12 @@ public class BurrowBlockEntity extends BlockEntity {
         }
     }
 
-    public static enum MeerkatState {
+    public enum MeerkatState {
         HONEY_DELIVERED,
         MEERKAT_RELEASED,
         EMERGENCY;
 
-        private MeerkatState() {
+        MeerkatState() {
         }
     }
 }

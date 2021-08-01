@@ -26,6 +26,8 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
@@ -106,15 +108,11 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
         if (reason == SpawnReason.NATURAL) {
             ServerWorld serverWorld = worldIn.toServerWorld();
-            int max = 2;
-            switch (difficultyIn.getGlobalDifficulty()) {
-                case NORMAL:
-                    max = 3;
-                    break;
-                case HARD:
-                    max = 4;
-                    break;
-            }
+            int max = switch (difficultyIn.getGlobalDifficulty()) {
+                case NORMAL -> 3;
+                case HARD -> 4;
+                default -> 2;
+            };
             int min = max - 1;
             int rand = new Random().nextInt(max - min) + min;
             for (int i = 1; i <= rand; i++) {
@@ -141,6 +139,11 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     public void readCustomDataFromNbt(NbtCompound compound) {
         super.readCustomDataFromNbt(compound);
         this.setVariant(compound.getInt("Variant"));
+    }
+
+    @Override
+    protected Text getDefaultName() {
+        return getVariant() == 0 ? super.getDefaultName() : new TranslatableText("entity.outvoted.wildfire_s");
     }
 
     public int getLimitPerChunk() {
@@ -307,8 +310,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     public boolean damage(DamageSource source, float amount) {
         if (!this.world.isClient) {
-            if (source.getSource() instanceof LivingEntity && this.isInvulnerable()) {
-                LivingEntity entity = (LivingEntity) source.getSource();
+            if (source.getSource() instanceof LivingEntity entity && this.isInvulnerable()) {
                 // Shield disabling on critical axe hit
                 if (entity.getMainHandStack().getItem() instanceof AxeItem) {
                     double itemDamage = ((AxeItem) entity.getMainHandStack().getItem()).getAttackDamage() + 1;
@@ -396,10 +398,6 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
                     this.mob.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
-                    double d1 = livingentity.getX() - this.mob.getX();
-                    double d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
-                    double d3 = livingentity.getZ() - this.mob.getZ();
-
                     float health = (this.mob.getMaxHealth() - this.mob.getHealth()) / 2;
                     float healthPercent = this.mob.getHealth() / this.mob.getMaxHealth();
 
@@ -439,9 +437,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                             double maxdepressangle = toRadians(Outvoted.commonConfig.entities.wildfire.attacking.maxDepressAngle);
 
                             //update target pos
-                            d1 = livingentity.getX() - this.mob.getX();
-                            d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
-                            d3 = livingentity.getZ() - this.mob.getZ();
+                            double d1 = livingentity.getX() - this.mob.getX();
+                            double d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
+                            double d3 = livingentity.getZ() - this.mob.getZ();
 
                             //shoot fireballs
                             for (int i = 0; i <= (fireballcount - 1); ++i) {
@@ -450,8 +448,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                 double x = d1 * cos(angle) + d3 * sin(angle);
                                 double y = d2;
                                 double z = -d1 * sin(angle) + d3 * cos(angle);
-                                if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
-                                    y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
+                                double a = sqrt((d1 * d1) + (d3 * d3));
+                                if (abs((atan2(d2, a))) > maxdepressangle) {
+                                    y = -tan(maxdepressangle) * a;
                                 }
                                 wildfirefireballentity = new WildfireFireballEntity(this.mob.world, this.mob, x, y, z);
                                 wildfirefireballentity.setPosition(wildfirefireballentity.getX(), this.mob.getBodyY(0.5D), wildfirefireballentity.getZ());
@@ -481,7 +480,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
@@ -501,7 +500,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
+        AnimationController<WildfireEntity> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         data.addAnimationController(controller);
     }
 

@@ -37,9 +37,7 @@ public class EventRegister {
                     if (!world.isClient) {
                         world.setBlockState(pos, block.getDefaultState()
                                 .with(PillarBlock.AXIS, blockstate.get(PillarBlock.AXIS)), 11);
-                        itemStack.damage(1, player, (player1) -> {
-                            player1.sendToolBreakStatus(hand);
-                        });
+                        itemStack.damage(1, player, (player1) -> player1.sendToolBreakStatus(hand));
 //                        return ActionResult.SUCCESS;
                     }
                 }
@@ -49,8 +47,7 @@ public class EventRegister {
 
         EntityEvent.LIVING_HURT.register((entity, source, amount) -> {
             if (!entity.world.isClient()) {
-                if (entity instanceof PlayerEntity) {
-                    PlayerEntity player = (PlayerEntity) entity;
+                if (entity instanceof PlayerEntity player) {
                     if (amount > 0.0F && player.isBlocking() && player.getActiveItem().getItem() == ModItems.WILDFIRE_SHIELD.get()) {
                         if (source.getSource() != null) {
                             if (source.isProjectile()) {
@@ -68,6 +65,7 @@ public class EventRegister {
         PlayerEvent.PLAYER_JOIN.register((PatchouliCompat::giveBook));
     }
 
+    // Don't look, the wood is stripping
     static class WoodStripping {
         public static Map<Block, Block> BLOCK_STRIPPING_MAP = new HashMap<>();
 

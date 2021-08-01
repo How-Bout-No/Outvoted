@@ -28,6 +28,8 @@ import net.minecraft.util.Identifier;
 import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
 
+import java.util.Arrays;
+
 public class Outvoted {
     public static final String MOD_ID = "outvoted";
     public static OutvotedConfig config;

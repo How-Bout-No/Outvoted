@@ -29,13 +29,10 @@ public class GluttonRenderer extends GeoEntityRenderer<GluttonEntity> {
 
     @Override
     public Identifier getTexture(GluttonEntity entity) {
-        switch (entity.getVariant()) {
-            case 1:
-                return RED_SAND;
-            case 2:
-                return SWAMP;
-            default:
-                return super.getTexture(entity);
-        }
+        return switch (entity.getVariant()) {
+            case 1 -> RED_SAND;
+            case 2 -> SWAMP;
+            default -> super.getTexture(entity);
+        };
     }
 }

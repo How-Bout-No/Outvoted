@@ -2,6 +2,9 @@ package io.github.how_bout_no.outvoted.item;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -9,6 +12,11 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -16,6 +24,10 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
+import vazkii.patchouli.common.book.Book;
+import vazkii.patchouli.common.item.PatchouliItems;
+
+import java.util.List;
 
 public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
     private int timer = 0;
@@ -75,7 +87,30 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    @Override
+    public Text getName(ItemStack stack) {
+        if (stack != null && isSoul(stack)) {
+            return new TranslatableText("item.outvoted.wildfire_helmet_s");
+        }
+
+        return super.getName(stack);
+    }
+
+//    @Override
+//    @Environment(EnvType.CLIENT)
+//    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+//        super.appendTooltip(stack, world, tooltip, context);
+//
+//        if (isSoul(stack)) {
+//            tooltip.add(new LiteralText("Soul").formatted(Formatting.GRAY));
+//        }
+//    }
+
+    private boolean isSoul(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().getFloat("SoulTexture") == 1.0F;
+    }
+
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     @Override
     public void registerControllers(AnimationData animationData) {

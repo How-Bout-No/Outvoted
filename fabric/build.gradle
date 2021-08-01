@@ -31,7 +31,7 @@ dependencies {
     }
 
 //    modImplementation("curse.maven:xaero-263420:3298031")
-//    modImplementation("curse.maven:toro-245733:3144149")
+//    modImplementation("curse.maven:toro-245733:3401235")
 
     implementation(project(path: ":common")) {
         transitive = false
