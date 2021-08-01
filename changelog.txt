@@ -9,12 +9,14 @@ Glutton
 > Items
 Wildfire Helmet
 - Variants will now be named differently
-- Patch possible issues
+- Patch possible crash
+* Texture is still bugged but that's a GeckoLib issue, sorry!
 
 > Blocks
 Signs
 - Fix textures and behavior
 
 > Misc
+- Fix broken advancements
 - Utilize Java 16 features
 - Code cleanup
