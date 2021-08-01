@@ -26,6 +26,8 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
@@ -145,6 +147,11 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     public int getLimitPerChunk() {
         return this.world.getDifficulty() == Difficulty.HARD ? 2 : 1;
+    }
+
+    @Override
+    protected Text getDefaultName() {
+        return getVariant() == 0 ? super.getDefaultName() : new TranslatableText("entity.outvoted.wildfire_s");
     }
 
     static {
@@ -394,10 +401,6 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
                     this.mob.getMoveControl().moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
                 } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
-                    double d1 = livingentity.getX() - this.mob.getX();
-                    double d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
-                    double d3 = livingentity.getZ() - this.mob.getZ();
-
                     float health = (this.mob.getMaxHealth() - this.mob.getHealth()) / 2;
                     float healthPercent = this.mob.getHealth() / this.mob.getMaxHealth();
 
@@ -437,9 +440,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                             double maxdepressangle = toRadians(Outvoted.commonConfig.entities.wildfire.attacking.maxDepressAngle);
 
                             //update target pos
-                            d1 = livingentity.getX() - this.mob.getX();
-                            d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
-                            d3 = livingentity.getZ() - this.mob.getZ();
+                            double d1 = livingentity.getX() - this.mob.getX();
+                            double d2 = livingentity.getBodyY(0.5D) - this.mob.getBodyY(0.5D);
+                            double d3 = livingentity.getZ() - this.mob.getZ();
 
                             //shoot fireballs
                             for (int i = 0; i <= (fireballcount - 1); ++i) {

@@ -5,7 +5,10 @@
   "book.outvoted.landing": "One stop shop for everything outvoted!",
 
   "entity.outvoted.wildfire": "Wildfire",
+  "entity.outvoted.wildfire_s": "Soul Wildfire",
   "entity.outvoted.glutton": "Glutton",
+  "entity.outvoted.glutton_s": "Swamp Glutton",
+  "entity.outvoted.glutton_r": "Red Sand Glutton",
   "entity.outvoted.barnacle": "Barnacle",
   "entity.outvoted.meerkat": "Meerkat",
   "entity.outvoted.ostrich": "Ostrich",
@@ -16,6 +19,7 @@
   "item.outvoted.meerkat_spawn_egg": "Meerkat Spawn Egg",
   "item.outvoted.ostrich_spawn_egg": "Ostrich Spawn Egg",
   "item.outvoted.wildfire_helmet": "Wildfire Helmet",
+  "item.outvoted.wildfire_helmet_s": "Soul Wildfire Helmet",
   "item.outvoted.wildfire_shield": "Wildfire Shield",
   "item.outvoted.wildfire_shield.black": "Black Wildfire Shield",
   "item.outvoted.wildfire_shield.red": "Red Wildfire Shield",

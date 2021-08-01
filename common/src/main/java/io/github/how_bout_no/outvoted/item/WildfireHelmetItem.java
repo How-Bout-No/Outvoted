@@ -9,6 +9,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -73,6 +75,29 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
                 stacks.add(soul);
             }
         }
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        if (stack != null && isSoul(stack)) {
+            return new TranslatableText("item.outvoted.wildfire_helmet_s");
+        }
+
+        return super.getName(stack);
+    }
+
+//    @Override
+//    @Environment(EnvType.CLIENT)
+//    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+//        super.appendTooltip(stack, world, tooltip, context);
+//
+//        if (isSoul(stack)) {
+//            tooltip.add(new LiteralText("Soul").formatted(Formatting.GRAY));
+//        }
+//    }
+
+    private boolean isSoul(ItemStack stack) {
+        return stack.hasTag() && stack.getTag().getFloat("SoulTexture") == 1.0F;
     }
 
     private AnimationFactory factory = new AnimationFactory(this);

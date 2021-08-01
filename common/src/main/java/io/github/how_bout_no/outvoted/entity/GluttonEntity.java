@@ -32,6 +32,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.EightWayDirection;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -171,6 +173,18 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     public int getLimitPerChunk() {
         return 1;
+    }
+
+    @Override
+    protected Text getDefaultName() {
+        switch (getVariant()) {
+            case 1:
+                return new TranslatableText("entity.outvoted.glutton_r");
+            case 2:
+                return new TranslatableText("entity.outvoted.glutton_s");
+            default:
+                return super.getDefaultName();
+        }
     }
 
     static {
