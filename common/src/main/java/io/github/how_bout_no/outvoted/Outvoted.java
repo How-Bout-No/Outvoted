@@ -76,6 +76,7 @@ public class Outvoted {
         EntityAttributes.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);
         EntityAttributes.register(ModEntityTypes.MEERKAT::get, MeerkatEntity::setCustomAttributes);
         EntityAttributes.register(ModEntityTypes.OSTRICH::get, OstrichEntity::setCustomAttributes);
+        EntityAttributes.register(ModEntityTypes.TERMITE::get, TermiteEntity::setCustomAttributes);
     }
 
     @Environment(EnvType.CLIENT)

@@ -32,5 +32,7 @@ public class OutvotedFabric implements ModInitializer {
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MeerkatEntity::canSpawn);
         SpawnRestrictionAccessor.callRegister(ModEntityTypes.OSTRICH.get(), SpawnRestriction.Location.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, OstrichEntity::canSpawn);
+        SpawnRestrictionAccessor.callRegister(ModEntityTypes.TERMITE.get(), SpawnRestriction.Location.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TermiteEntity::canSpawn);
     }
 }

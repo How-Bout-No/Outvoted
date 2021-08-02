@@ -38,4 +38,9 @@ public class ModEntityTypes {
                     .create(OstrichEntity::new, SpawnGroup.CREATURE)
                     .setDimensions(1.0F, 1.7F)
                     .build(new Identifier(Outvoted.MOD_ID, "ostrich").toString()));
+    public static final RegistrySupplier<EntityType<TermiteEntity>> TERMITE = ENTITY_TYPES
+            .register("termite", () -> EntityType.Builder
+                    .create(TermiteEntity::new, SpawnGroup.MONSTER)
+                    .setDimensions(0.5F, 0.25F)
+                    .build(new Identifier(Outvoted.MOD_ID, "termite").toString()));
 }
