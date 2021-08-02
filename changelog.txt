@@ -3,6 +3,9 @@ Wildfire
 - No longer drops Blaze Rods
 - Chance to drop Molten Shard increased to 20% + 10% for each Looting level
 
+Glutton
+- Config allowed for uncapped overenchantments
+
 > Items
 Molten Shard
 - Can now be used to craft 4 Blaze Powder at once
