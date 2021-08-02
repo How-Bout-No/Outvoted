@@ -45,15 +45,11 @@ public class Outvoted {
     public static ItemGroup[] TABS = new ItemGroup[]{TAB_BLOCKS, TAB_DECO, TAB_COMBAT, TAB_REDSTONE, TAB_MISC};
 
     public static void init() {
-        if (Platform.getEnv() == EnvType.SERVER) {
-            AutoConfig.register(OutvotedConfigCommon.class, GsonConfigSerializer::new);
-            commonConfig = AutoConfig.getConfigHolder(OutvotedConfigCommon.class).getConfig();
-        } else {
-            AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
-            config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
-            clientConfig = config.client;
-            commonConfig = config.common;
-
+        AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
+        config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
+        clientConfig = config.client;
+        commonConfig = config.common;
+        if (Platform.getEnv() == EnvType.CLIENT) {
             SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
             SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
         }
