@@ -194,12 +194,12 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         }
     }
 
-    public static enum MeerkatState {
+    public enum MeerkatState {
         HONEY_DELIVERED,
         MEERKAT_RELEASED,
         EMERGENCY;
 
-        private MeerkatState() {
+        MeerkatState() {
         }
     }
 }

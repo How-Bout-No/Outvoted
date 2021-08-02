@@ -1,6 +1,5 @@
 package io.github.how_bout_no.outvoted.entity;
 
-import com.google.common.collect.UnmodifiableIterator;
 import io.github.how_bout_no.outvoted.Outvoted;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -44,7 +43,6 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -155,7 +153,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     @Nullable
     public UUID getOwnerUuid() {
-        return (UUID) ((Optional) this.dataTracker.get(OWNER_UUID)).orElse((Object) null);
+        return (UUID) ((Optional) this.dataTracker.get(OWNER_UUID)).orElse(null);
     }
 
     public void setOwnerUuid(@Nullable UUID uuid) {
@@ -216,10 +214,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         } else {
             this.damage(DamageSource.FALL, (float) i);
             if (this.hasPassengers()) {
-                Iterator var4 = this.getPassengersDeep().iterator();
-
-                while (var4.hasNext()) {
-                    Entity entity = (Entity) var4.next();
+                for (Entity entity : this.getPassengersDeep()) {
                     entity.damage(DamageSource.FALL, (float) i);
                 }
             }
@@ -436,7 +431,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
                     if (g > 0.0F) {
                         float i = MathHelper.sin(this.yaw * 0.017453292F);
                         float j = MathHelper.cos(this.yaw * 0.017453292F);
-                        this.setVelocity(this.getVelocity().add((double) (-0.4F * i * this.jumpStrength), 0.0D, (double) (0.4F * j * this.jumpStrength)));
+                        this.setVelocity(this.getVelocity().add(-0.4F * i * this.jumpStrength, 0.0D, 0.4F * j * this.jumpStrength));
                     }
 
                     this.jumpStrength = 0.0F;
@@ -467,6 +462,16 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         this.playSound(SoundEvents.ENTITY_HORSE_JUMP, 0.4F, 1.0F);
     }
 
+    public boolean canBreedWith(AnimalEntity other) {
+        if (other == this) {
+            return false;
+        } else if (!(other instanceof OstrichEntity)) {
+            return false;
+        } else {
+            return this.canBreed() && ((OstrichEntity) other).canBreed();
+        }
+    }
+
     protected boolean canBreed() {
         return !this.hasPassengers() && !this.hasVehicle() && this.isTame() && !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
     }
@@ -477,7 +482,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     @Nullable
     public Entity getPrimaryPassenger() {
-        return this.getPassengerList().isEmpty() ? null : (Entity) this.getPassengerList().get(0);
+        return this.getPassengerList().isEmpty() ? null : this.getPassengerList().get(0);
     }
 
     @Nullable
@@ -486,10 +491,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         double e = this.getBoundingBox().minY;
         double f = this.getZ() + vec3d.z;
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        UnmodifiableIterator var10 = livingEntity.getPoses().iterator();
-
-        while (var10.hasNext()) {
-            EntityPose entityPose = (EntityPose) var10.next();
+        for (EntityPose entityPose : livingEntity.getPoses()) {
             mutable.set(d, e, f);
             double g = this.getBoundingBox().maxY + 0.75D;
 
@@ -519,12 +521,12 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     }
 
     public Vec3d updatePassengerForDismount(LivingEntity passenger) {
-        Vec3d vec3d = getPassengerDismountOffset((double) this.getWidth(), (double) passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
+        Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
         Vec3d vec3d2 = this.method_27930(vec3d, passenger);
         if (vec3d2 != null) {
             return vec3d2;
         } else {
-            Vec3d vec3d3 = getPassengerDismountOffset((double) this.getWidth(), (double) passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.LEFT ? 90.0F : -90.0F));
+            Vec3d vec3d3 = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.LEFT ? 90.0F : -90.0F));
             Vec3d vec3d4 = this.method_27930(vec3d3, passenger);
             return vec3d4 != null ? vec3d4 : this.getPos();
         }
@@ -569,7 +571,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     public void stopJumping() {
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     @Override
     public void registerControllers(AnimationData animationData) {

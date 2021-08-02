@@ -343,8 +343,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     /**
      * Returns whether this Entity is invulnerable to the given DamageSource.
-     *
-     * @param source
      */
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
@@ -554,9 +552,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     }
 
     /**
-     * Creates a vector based on caclulated direction of one of the 8 cardinal directions the entity is facing
-     *
-     * @return
+     * Creates a vector based on calculated direction of one of the 8 cardinal directions the entity is facing
      */
     private net.minecraft.util.math.Vec3d directionVector() {
         net.minecraft.util.math.Vec3d vec3d = net.minecraft.util.math.Vec3d.ZERO;
@@ -675,7 +671,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
@@ -736,7 +732,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
+        AnimationController<GluttonEntity> controller = new AnimationController<>(this, "controller", 2, this::predicate);
         controller.registerSoundListener(this::soundListener);
         controller.registerParticleListener(this::particleListener);
         data.addAnimationController(controller);

@@ -309,7 +309,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             if (this.isInsideWaterOrBubbleColumn()) {
                 this.setAir(300);
             } else if (this.onGround) {
-                this.setVelocity(this.getVelocity().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F), 0.5D, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F)));
+                this.setVelocity(this.getVelocity().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.1F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.1F));
                 this.yaw = this.random.nextFloat() * 360.0F;
                 this.onGround = false;
                 this.velocityDirty = true;
@@ -514,8 +514,8 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 float f2 = MathHelper.lerp(0.125F, this.mob.getMovementSpeed(), f1);
                 this.mob.setMovementSpeed(f2);
                 double d4 = Math.sin((double) (this.mob.age + this.mob.getEntityId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double) (this.mob.yaw * ((float) Math.PI / 180F)));
-                double d6 = Math.sin((double) (this.mob.yaw * ((float) Math.PI / 180F)));
+                double d5 = Math.cos(this.mob.yaw * ((float) Math.PI / 180F));
+                double d6 = Math.sin(this.mob.yaw * ((float) Math.PI / 180F));
                 double d7 = Math.sin((double) (this.mob.age + this.mob.getEntityId()) * 0.75D) * 0.05D;
                 this.mob.setVelocity(this.mob.getVelocity().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
                 LookControl lookcontroller = this.mob.getLookControl();
@@ -538,7 +538,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         int phase = this.getAttackPhase();
@@ -571,7 +571,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 3, this::predicate);
+        AnimationController<BarnacleEntity> controller = new AnimationController<>(this, "controller", 3, this::predicate);
         data.addAnimationController(controller);
     }
 

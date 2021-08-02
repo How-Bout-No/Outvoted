@@ -13,9 +13,8 @@ public class ShieldModelProvider {
     }
 
     private static void registerShieldModels() {
-        FabricModelPredicateProviderRegistry.register(ModItems.WILDFIRE_SHIELD.get(), new Identifier("blocking"), (itemStack, clientWorld, livingEntity) -> {
-            return livingEntity != null && livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
-        });
+        FabricModelPredicateProviderRegistry.register(ModItems.WILDFIRE_SHIELD.get(), new Identifier("blocking"),
+                (itemStack, clientWorld, livingEntity) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F);
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(ShieldModelProvider::registerShieldTextures);
     }
 

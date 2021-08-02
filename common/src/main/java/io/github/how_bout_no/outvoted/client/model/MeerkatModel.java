@@ -13,6 +13,9 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @Environment(EnvType.CLIENT)
 public class MeerkatModel extends AnimatedGeoModel<MeerkatEntity> {
+    public static final float scale = 0.9F;
+    public static final float babyScale = 0.6F;
+
     @Override
     public Identifier getAnimationFileLocation(MeerkatEntity entity) {
         return new Identifier(Outvoted.MOD_ID, "animations/meerkat.animation.json");

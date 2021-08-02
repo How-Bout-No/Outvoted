@@ -15,7 +15,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class OstrichModel extends AnimatedGeoModel<OstrichEntity> {
     @Override
     public Identifier getAnimationFileLocation(OstrichEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "animations/wildfirehelmet.animation.json");
+        return new Identifier(Outvoted.MOD_ID, "animations/empty.animation.json");
     }
 
     @Override

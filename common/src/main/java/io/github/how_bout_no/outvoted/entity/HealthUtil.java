@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 
-public class HealthUtil {
+public final class HealthUtil {
     /**
      * Sets entity max health to that of its appropriate config value
      */

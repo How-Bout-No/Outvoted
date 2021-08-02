@@ -13,7 +13,6 @@ import net.minecraft.world.*;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
-import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 
 import java.util.Random;
 
@@ -130,10 +129,6 @@ public class PalmTreeFeature extends Feature<TreeFeatureConfig> {
 
     private void placeLogAt(ModifiableWorld worldIn, BlockPos pos, Random rand, TreeFeatureConfig config) {
         this.setLogState(worldIn, pos, config.trunkProvider.getBlockState(rand, pos));
-    }
-
-    private void placeWoodAt(ModifiableWorld worldIn, BlockPos pos, Random rand, TreeFeatureConfig config) {
-        this.setLogState(worldIn, pos, new SimpleBlockStateProvider(ModBlocks.PALM_WOOD.get().getDefaultState()).getBlockState(rand, pos));
     }
 
     private void placeLeafAt(ModifiableTestableWorld world, BlockPos pos, Random rand, TreeFeatureConfig config) {

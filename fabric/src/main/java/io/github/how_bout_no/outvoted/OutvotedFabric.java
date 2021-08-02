@@ -1,9 +1,6 @@
 package io.github.how_bout_no.outvoted;
 
-import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
-import io.github.how_bout_no.outvoted.entity.GluttonEntity;
-import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
-import io.github.how_bout_no.outvoted.entity.OstrichEntity;
+import io.github.how_bout_no.outvoted.entity.*;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import net.fabricmc.api.ModInitializer;

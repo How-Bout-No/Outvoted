@@ -100,7 +100,7 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
         return stack.hasTag() && stack.getTag().getFloat("SoulTexture") == 1.0F;
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     @Override
     public void registerControllers(AnimationData animationData) {

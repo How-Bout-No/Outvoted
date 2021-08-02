@@ -2,7 +2,6 @@ package io.github.how_bout_no.outvoted.entity;
 
 import com.google.common.collect.Lists;
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
 import io.github.how_bout_no.outvoted.init.*;
 import net.fabricmc.api.EnvType;
@@ -30,7 +29,6 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -118,7 +116,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     static {
         TRUSTING = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
         TRUSTED_UUID = DataTracker.registerData(MeerkatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
-        TAMING_INGREDIENT = Ingredient.ofItems(new ItemConvertible[]{Items.SPIDER_EYE});
+        TAMING_INGREDIENT = Ingredient.ofItems(Items.SPIDER_EYE);
     }
 
     protected void initDataTracker() {
@@ -165,7 +163,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Nullable
     private UUID getTrusted() {
-        return (UUID) ((Optional) this.dataTracker.get(TRUSTED_UUID)).orElse((Object) null);
+        return (UUID) ((Optional) this.dataTracker.get(TRUSTED_UUID)).orElse(null);
     }
 
     private void setTrusted(@Nullable UUID trusted) {
@@ -210,6 +208,14 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         return this.burrowPos;
     }
 
+    @Nullable
+    public BlockPos getBurrowOffsetPos() {
+        MeerkatEntity mob = MeerkatEntity.this;
+        World world = mob.world;
+        BlockPos burrow = mob.getBurrowPos();
+        return burrow.offset(world.getBlockState(burrow).get(FacingBlock.FACING));
+    }
+
     private boolean isBurrowValid() {
         if (!this.hasBurrow()) {
             return false;
@@ -233,8 +239,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
             BlockPos blockPos = new BlockPos(this.getBlockPos());
             if (this.getServer().getOverworld() != null) {
                 ServerWorld serverWorld = this.getServer().getOverworld();
-                BlockPos blockPos2 = serverWorld.locateStructure(structureFeature, blockPos, (int) Math.floor(10 * serverWorld.getBiome(blockPos).getScale()), false);
-                return blockPos2;
+                return serverWorld.locateStructure(structureFeature, blockPos, (int) Math.floor(10 * serverWorld.getBiome(blockPos).getScale()), false);
             }
         }
         return null;
@@ -363,11 +368,11 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            return this.mob.getStructurePos() != null && this.mob.isTrusting();
+            return this.mob.isTrusting() && this.mob.getStructurePos() != null;
         }
 
         public boolean shouldContinue() {
-            return super.shouldContinue() && !hasReached();
+            return super.shouldContinue() && !this.reached;
         }
 
         public void stop() {
@@ -382,10 +387,6 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
         protected void startMovingToTarget() {
             this.mob.getNavigation().startMovingTo((double) ((float) this.targetPos.getX()) + 0.5D, this.targetPos.getY(), (double) ((float) this.targetPos.getZ()) + 0.5D, this.speed);
-        }
-
-        protected boolean hasReached() {
-            return this.reached;
         }
 
         public void tick() {
@@ -409,9 +410,9 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     class EnterBurrowGoal extends Goal {
         public boolean canStart() {
-            if (MeerkatEntity.this.burrowPos != null && MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow()) {
+            if (MeerkatEntity.this.hasBurrow() && MeerkatEntity.this.canEnterBurrow()) {
                 BlockEntity blockEntity = MeerkatEntity.this.world.getBlockEntity(MeerkatEntity.this.burrowPos);
-                if (blockEntity instanceof BurrowBlockEntity && MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING)).isWithinDistance(MeerkatEntity.this.getPos(), 1.0D)) {
+                if (blockEntity instanceof BurrowBlockEntity && MeerkatEntity.this.getBurrowOffsetPos().isWithinDistance(MeerkatEntity.this.getPos(), 1.0D)) {
                     BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
                     if (!burrowBlockEntity.isFullOfMeerkats()) {
                         return true;
@@ -427,7 +428,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         public void start() {
             World world = MeerkatEntity.this.world;
             BlockEntity blockEntity = world.getBlockEntity(MeerkatEntity.this.burrowPos);
-            BlockPos pos = blockEntity.getPos().offset(world.getBlockState(blockEntity.getPos()).get(BurrowBlock.FACING));
+            BlockPos pos = MeerkatEntity.this.getBurrowOffsetPos();
             boolean bl = MeerkatEntity.this.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < 1.0;
             if (blockEntity instanceof BurrowBlockEntity && bl) {
                 BurrowBlockEntity burrowBlockEntity = (BurrowBlockEntity) blockEntity;
@@ -473,7 +474,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
     }
 
     private boolean isWithinDistance(BlockPos pos, int distance) {
-        return pos.isWithinDistance(this.getBlockPos(), (double) distance);
+        return pos.isWithinDistance(this.getBlockPos(), distance);
     }
 
     private boolean isTooFar(BlockPos pos) {
@@ -538,12 +539,15 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            return MeerkatEntity.this.burrowPos != null &&
-                    !MeerkatEntity.this.hasPositionTarget() &&
-                    MeerkatEntity.this.canEnterBurrow() &&
-                    !this.isCloseEnough(MeerkatEntity.this.burrowPos) &&
-                    MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).isOf(ModBlocks.BURROW.get()) &&
-                    MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos.offset(MeerkatEntity.this.world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING))).isAir();
+            MeerkatEntity mob = MeerkatEntity.this;
+            World world = mob.world;
+            BlockPos burrow = mob.getBurrowPos();
+            return mob.hasBurrow() &&
+                    !mob.hasPositionTarget() &&
+                    mob.canEnterBurrow() &&
+                    !this.isCloseEnough(burrow) &&
+                    world.getBlockState(burrow).isOf(ModBlocks.BURROW.get()) &&
+                    world.getBlockState(mob.getBurrowOffsetPos()).isAir();
         }
 
         public boolean shouldContinue() {
@@ -564,8 +568,8 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         public void tick() {
-            if (MeerkatEntity.this.burrowPos != null) {
-                BlockPos blockPos = MeerkatEntity.this.burrowPos.offset(world.getBlockState(MeerkatEntity.this.burrowPos).get(FacingBlock.FACING));
+            if (MeerkatEntity.this.hasBurrow()) {
+                BlockPos blockPos = MeerkatEntity.this.getBurrowOffsetPos();
                 ++this.ticks;
                 if (this.ticks > 600) {
                     this.makeChosenBurrowPossibleBurrow();
@@ -619,7 +623,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
 
         private void makeChosenBurrowPossibleBurrow() {
-            if (MeerkatEntity.this.burrowPos != null) {
+            if (MeerkatEntity.this.hasBurrow()) {
                 this.addPossibleBurrow(MeerkatEntity.this.burrowPos);
             }
 
@@ -691,21 +695,23 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         return new Box(vec3d, vec3d2);
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    @Override
+    public void setPose(EntityPose pose) {
+        if (pose != this.getPose()) {
+            super.setPose(pose);
+            this.setBoundingBox(calcBox());
+        }
+    }
+
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("stand"));
-            if (this.getPose() != EntityPose.STANDING) {
-                this.setPose(EntityPose.STANDING);
-                this.setBoundingBox(calcBox());
-            }
+            this.setPose(EntityPose.STANDING);
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
-            if (this.getPose() != EntityPose.CROUCHING) {
-                this.setPose(EntityPose.CROUCHING);
-                this.setBoundingBox(calcBox());
-            }
+            this.setPose(EntityPose.CROUCHING);
             animtimer = 0;
         }
         if (animtimer < 10) animtimer++;
@@ -714,7 +720,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 2, this::predicate);
+        AnimationController<MeerkatEntity> controller = new AnimationController<>(this, "controller", 2, this::predicate);
         data.addAnimationController(controller);
     }
 

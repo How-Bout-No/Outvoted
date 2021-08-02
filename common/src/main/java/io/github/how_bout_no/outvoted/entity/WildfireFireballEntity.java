@@ -48,7 +48,7 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
         super.onBlockHit(result);
         if (!this.world.isClient) {
             Entity entity = this.getOwner();
-            if (entity == null || !(entity instanceof MobEntity) || this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+            if (!(entity instanceof MobEntity) || this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                 BlockPos blockpos = result.getBlockPos().offset(result.getSide());
                 if (this.world.isAir(blockpos)) {
                     this.world.setBlockState(blockpos, AbstractFireBlock.getState(this.world, blockpos));
@@ -63,7 +63,7 @@ public class WildfireFireballEntity extends AbstractFireballEntity {
         if (!this.world.isClient) {
             if (doExplode) {
                 boolean flag = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && doExplode;
-                this.world.createExplosion((Entity) null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE);
+                this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE);
             }
             this.remove();
         }

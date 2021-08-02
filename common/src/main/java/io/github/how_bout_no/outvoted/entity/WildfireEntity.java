@@ -451,8 +451,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                 double x = d1 * cos(angle) + d3 * sin(angle);
                                 double y = d2;
                                 double z = -d1 * sin(angle) + d3 * cos(angle);
-                                if (abs((atan2(d2, sqrt((d1 * d1) + (d3 * d3))))) > maxdepressangle) {
-                                    y = -tan(maxdepressangle) * (sqrt((d1 * d1) + (d3 * d3)));
+                                double a = sqrt((d1 * d1) + (d3 * d3));
+                                if (abs((atan2(d2, a))) > maxdepressangle) {
+                                    y = -tan(maxdepressangle) * (a);
                                 }
                                 wildfirefireballentity = new WildfireFireballEntity(this.mob.world, this.mob, x, y, z);
                                 wildfirefireballentity.setPosition(wildfirefireballentity.getX(), this.mob.getBodyY(0.5D), wildfirefireballentity.getZ());
@@ -482,7 +483,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String animname = event.getController().getCurrentAnimation() != null ? event.getController().getCurrentAnimation().animationName : "";
@@ -502,7 +503,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 0, this::predicate);
+        AnimationController<WildfireEntity> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         data.addAnimationController(controller);
     }
 

@@ -25,7 +25,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
 
     public ModSpawnEggItem(RegistrySupplier<? extends EntityType<?>> entityTypeSupplier, int primaryColor, int secondaryColor, Settings settings) {
         super(null, primaryColor, secondaryColor, settings);
-        this.entityTypeSupplier = new Lazy(entityTypeSupplier);
+        this.entityTypeSupplier = new Lazy<>(entityTypeSupplier);
         UNADDED_EGGS.add(this);
     }
 
