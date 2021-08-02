@@ -67,8 +67,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     private static final TrackedData<Boolean> ENCHANTING;
     private static final TrackedData<Integer> VARIANT;
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
-    private static final ArrayList<RegistryKey<Biome>> desertKeys = new ArrayList<>(Arrays.asList(BiomeKeys.DESERT, BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_HILLS));
-    private static final ArrayList<RegistryKey<Biome>> badlandsKeys = new ArrayList<>(Arrays.asList(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.MODIFIED_BADLANDS_PLATEAU, BiomeKeys.ERODED_BADLANDS));
 
     public GluttonEntity(EntityType<? extends GluttonEntity> type, World worldIn) {
         super(type, worldIn);
@@ -95,24 +93,27 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.glutton.health);
 
-        int type = 2;
+        ArrayList<RegistryKey<Biome>> desertKeys = new ArrayList<>(Arrays.asList(BiomeKeys.DESERT, BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_HILLS));
+        ArrayList<RegistryKey<Biome>> badlandsKeys = new ArrayList<>(Arrays.asList(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.MODIFIED_BADLANDS_PLATEAU, BiomeKeys.ERODED_BADLANDS));
+
+        Variants type = Variants.SWAMP;
         if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
             if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {
                 RegistryKey<Biome> key = worldIn.getBiomeKey(this.getBlockPos()).get();
                 if (desertKeys.contains(key)) {
-                    type = 0;
+                    type = Variants.SAND;
                 } else if (badlandsKeys.contains(key)) {
-                    type = 1;
+                    type = Variants.RED;
                 }
             }
         } else {
             if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.RED_SAND)) {
-                type = 1;
+                type = Variants.RED;
             } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock().is(Blocks.SAND)) {
-                type = 0;
+                type = Variants.SAND;
             }
         }
-        this.setVariant(type);
+        this.setVariant(type.ordinal());
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -227,6 +228,12 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         return this.dataTracker.get(ENCHANTING);
     }
 
+    public enum Variants {
+        SAND,
+        RED,
+        SWAMP
+    }
+
     public void setVariant(int type) {
         this.dataTracker.set(VARIANT, type);
     }
@@ -235,7 +242,13 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         return this.dataTracker.get(VARIANT);
     }
 
-    public MutablePair<Integer, ItemStack> modifyEnchantments(ItemStack stack, int damage, int count) {
+    enum ItemStatus {
+        ACCEPTED,
+        REJECTED,
+        ENCHANTED
+    }
+
+    public MutablePair<ItemStatus, ItemStack> modifyEnchantments(ItemStack stack, int damage, int count) {
         ItemStack itemstack = stack.copy();
         Map<Enchantment, Integer> cacheEnchants = new ConcurrentHashMap<>(storedEnchants);
         itemstack.removeSubTag("Enchantments");
@@ -250,11 +263,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
             itemstack = new ItemStack(Items.ENCHANTED_BOOK);
         }
 
-        /*
-         * left: Status of item, 0 = accepted, 1 = rejected, 2 = enchanted
-         * right: Item to return
-         */
-        MutablePair<Integer, ItemStack> pair = new MutablePair<>(0, itemstack);
+        MutablePair<ItemStatus, ItemStack> pair = new MutablePair<>(ItemStatus.ACCEPTED, itemstack);
         if (storedEnchants.size() <= Outvoted.commonConfig.entities.glutton.maxEnchants) {
             itemstack.setCount(count);
             final boolean[] hasCurses = {false};
@@ -266,10 +275,10 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
             if (hasCurses[0]) {
                 this.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 600, 1));
-                pair.setLeft(1);
+                pair.setLeft(ItemStatus.REJECTED);
                 return pair;
             } else if (itemstack.getTag() != null && itemstack.getTag().contains("Bitten")) {
-                pair.setLeft(1);
+                pair.setLeft(ItemStatus.REJECTED);
                 return pair;
             } else if (!(itemstack.isEnchantable() || itemstack.hasEnchantments() || itemstack.getItem() instanceof EnchantedBookItem)) {
                 pair.setRight(ItemStack.EMPTY);
@@ -287,7 +296,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                             if (level == enchantment.getMaxLevel() && cacheEnchants.get(enchantment) == enchantment.getMaxLevel()) {
                                 for (Enchantment ench : cacheEnchants.keySet()) {
                                     if (cacheEnchants.get(ench) == ench.getMaxLevel() + 1) {
-                                        pair.setLeft(1);
+                                        pair.setLeft(ItemStatus.REJECTED);
                                         return pair;
                                     }
                                 }
@@ -298,7 +307,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                                 cacheEnchants.put(enchantment, level);
                             }
                         } else {
-                            pair.setLeft(1);
+                            pair.setLeft(ItemStatus.REJECTED);
                             return pair;
                         }
                     } else if (!storedEnchants.isEmpty()) {
@@ -307,7 +316,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                                 if (((ProtectionEnchantment) enchantment).canAccept(ench)) {
                                     cacheEnchants.put(enchantment, level);
                                 } else {
-                                    pair.setLeft(1);
+                                    pair.setLeft(ItemStatus.REJECTED);
                                     return pair;
                                 }
                             } else if (enchantment instanceof InfinityEnchantment || enchantment instanceof MendingEnchantment) {
@@ -317,7 +326,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                             } else if (enchantment.canCombine(ench)) {
                                 cacheEnchants.put(enchantment, level);
                             } else {
-                                pair.setLeft(1);
+                                pair.setLeft(ItemStatus.REJECTED);
                                 return pair;
                             }
                         }
@@ -326,7 +335,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                     }
                 }
             } else if (!storedEnchants.isEmpty()) {
-                pair.setLeft(2);
+                pair.setLeft(ItemStatus.ENCHANTED);
                 map = storedEnchants;
                 storedEnchants = new HashMap<>();
                 EnchantmentHelper.set(map, itemstack);
@@ -336,7 +345,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
             }
             storedEnchants = cacheEnchants;
         } else {
-            pair.setLeft(1);
+            pair.setLeft(ItemStatus.REJECTED);
         }
         return pair;
     }
@@ -623,18 +632,18 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                 this.tick++;
 
                 if (this.tick % 16 == 0) {
-                    MutablePair<Integer, ItemStack> pair = this.mob.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
+                    MutablePair<ItemStatus, ItemStack> pair = this.mob.modifyEnchantments(cacheitem, cacheitem.getDamage(), 1);
                     ItemStack item = pair.getRight();
                     if (cacheitem.getItem().equals(ModItems.VOID_HEART.get())) {
                         Explosion.DestructionType explosion$mode = this.mob.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
                         this.mob.world.createExplosion(this.mob, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 2.0F, explosion$mode);
                         this.mob.remove();
                     }
-                    if (pair.getLeft() == 0) {
+                    if (pair.getLeft() == ItemStatus.ACCEPTED) {
                         if (item != ItemStack.EMPTY) {
                             this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, this.mob.getSoundCategory(), 0.8F, 0.6F);
                         }
-                    } else if (pair.getLeft() == 1) {
+                    } else if (pair.getLeft() == ItemStatus.REJECTED) {
                         this.mob.world.playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), ModSounds.GLUTTON_SPIT.get(), this.mob.getSoundCategory(), 0.8F, 0.8F);
                         ItemEntity newitem = new ItemEntity(this.mob.world, this.mob.getX(), this.mob.getY(), this.mob.getZ(), cacheitem);
                         newitem.setThrower(this.mob.getUuid());

@@ -1,15 +1,11 @@
 > Entities
-Meerkat
-- Slightly improve performance
-- Reduce max spawn group
-
-Ostrich
-- Fix texture bugs on legs
-- Fix lang entries
-- Fix spawn egg name
-- Fix entity name
-- Fix config text
+Wildfire
+- No longer drops Blaze Rods
+- Chance to drop Molten Shard increased to 20% + 10% for each Looting level
 
 > Items
-Wildfire Helmet
-- Soul variant no longer shows in creative if config is disabled
+Molten Shard
+- Can now be used to craft 4 Blaze Powder at once
+
+> Misc
+- Updated some Patchouli entries

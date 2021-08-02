@@ -91,20 +91,20 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
     public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.wildfire.health);
 
-        int type = 0;
+        Variants type = Variants.DEFAULT;
         if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
             if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {
                 if (worldIn.getBiomeKey(this.getBlockPos()).get() == BiomeKeys.SOUL_SAND_VALLEY) {
-                    type = 1;
+                    type = Variants.SOUL;
                 }
             }
         } else {
             Block block = worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock();
             if (block.is(Blocks.SOUL_SAND) || block.is(Blocks.SOUL_SOIL)) {
-                type = 1;
+                type = Variants.SOUL;
             }
         }
-        this.setVariant(type);
+        this.setVariant(type.ordinal());
 
         if (reason == SpawnReason.NATURAL) {
             ServerWorld serverWorld = worldIn.toServerWorld();
@@ -180,6 +180,11 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
 
     public boolean getShielding() {
         return this.dataTracker.get(SHIELDING) && !this.shieldDisabled;
+    }
+
+    public enum Variants {
+        DEFAULT,
+        SOUL
     }
 
     public void setVariant(int type) {

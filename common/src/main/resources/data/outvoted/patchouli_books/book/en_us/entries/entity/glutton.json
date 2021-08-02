@@ -11,7 +11,7 @@
     },
     {
       "type": "text",
-      "text": "The Glutton is a complex mob that is able to consume items thrown into its mouth and store the enchantments. It can then apply those enchantments to a new enchantable item thrown in, given that the item has no enchantments to begin with. Any unenchantable items will be deleted, like a trash can. It is also able to get enchantments one level higher than the max when 2 max level enchants are combined. It can not go any higher than 1 above max, and only works on enchantments that have levels higher than 1."
+      "text": "The Glutton is a complex mob that is able to consume items thrown into its mouth and store the enchantments. It can then apply those enchantments to a new enchantable item thrown in, given that the item has no enchantments to begin with. Any unenchantable items will be permanently consumed, like a trash can. It is also able to get enchantments one level higher than the max when 2 max level enchants are combined. It can not go any higher than 1 above max, and only works on enchantments that have levels higher than 1."
     },
     {
       "type": "text",
@@ -19,7 +19,7 @@
     },
     {
       "type": "text",
-      "text": "Taking damage from the Glutton will cause 1 random enchanted item in your inventory to lose an enchantment level. If the enchantment is already at minimum level, it will remove the enchantment entirely.$(br2)Drops: Bottle o' Enchanting, $(l:items/void_heart)Void Heart$(/l)"
+      "text": "Taking damage from the Glutton will cause 1 random enchanted item in your inventory to lose an enchantment level (if enabled in config). If the enchantment is already at minimum level, it will remove the enchantment entirely.$(br2)Drops: Bottle o' Enchanting, $(l:items/void_heart)Void Heart$(/l)"
     },
     {
       "type": "entity",
