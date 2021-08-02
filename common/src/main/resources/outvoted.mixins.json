@@ -13,7 +13,6 @@
     "MixinSilverfishEntity",
     "MixinSpiderEntity",
     "MixinTexturedRenderLayers",
-    "MixinUtils",
     "PointOfInterestTypeAccessor"
   ],
   "client": [
