@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "6.1.0"
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
 configurations {
@@ -33,7 +33,7 @@ dependencies {
     modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"
 
     modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:${rootProject.geckolib_version}"
-    modCompile("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+    modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}")
 
 //    modImplementation("curse.maven:jei-238222:3295418")
