@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -54,9 +55,12 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     protected float jumpStrength;
     private boolean jumping;
     protected boolean inAir;
+    public int eggLayTime;
 
     public OstrichEntity(EntityType<? extends OstrichEntity> type, World worldIn) {
         super(type, worldIn);
+        this.eggLayTime = this.random.nextInt(6000) + 6000;
+        this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.stepHeight = 1.0F;
         this.onChestedStatusChanged();
     }
@@ -290,6 +294,20 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
             return ActionResult.success(this.world.isClient);
         }
         return super.interactMob(player, hand);
+    }
+
+    public void tickMovement() {
+        super.tickMovement();
+        Vec3d vec3d = this.getVelocity();
+        if (!this.onGround && vec3d.y < 0.0D) {
+            this.setVelocity(vec3d.multiply(1.0D, 0.9D, 1.0D));
+        }
+
+        if (!this.world.isClient && this.isAlive() && !this.isBaby() && !this.hasPassengers() && --this.eggLayTime <= 0) {
+            this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+            this.dropItem(Items.EGG);
+            this.eggLayTime = this.random.nextInt(6000) + 6000;
+        }
     }
 
     @Override

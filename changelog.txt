@@ -7,6 +7,14 @@ Wildfire
 Glutton
 - Config option for uncapped overenchantments
 
+Ostrich
+- Now periodically lays eggs like chickens
+- Now falls slower
+
+> Blocks
+@a
+- Fix missing loot tables for all blocks
+
 > Items
 Molten Shard
 - Can now be used to craft 4 Blaze Powder at once

@@ -21,8 +21,8 @@ loom {
     launches {
         data {
             arg "--existing", file("../common/src/main/resources").absolutePath
-            arg "--assetsDir", file(userCache).absolutePath + "\\assets"
-            arg "--assetIndex", "1.16.5-1.16"
+//            arg "--assetsDir", file(userCache).absolutePath + "\\assets"
+//            arg "--assetIndex", "1.16.5-1.16"
         }
     }
 }
