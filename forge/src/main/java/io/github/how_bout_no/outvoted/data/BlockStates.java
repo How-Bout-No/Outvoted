@@ -41,7 +41,7 @@ public class BlockStates extends BlockStateProvider {
         logBlock((PillarBlock) (input.equals("palm") ? ModBlocks.STRIPPED_PALM_LOG.get() : ModBlocks.STRIPPED_BAOBAB_LOG.get()));
         simpleBlock(input.equals("palm") ? ModBlocks.PALM_PLANKS.get() : ModBlocks.BAOBAB_PLANKS.get());
         pressurePlateBlockInternal((PressurePlateBlock) (input.equals("palm") ? ModBlocks.PALM_PRESSURE_PLATE.get() : ModBlocks.BAOBAB_PRESSURE_PLATE.get()));
-        simpleBlock(input.equals("palm") ? ModBlocks.PALM_SAPLING.get() : ModBlocks.BAOBAB_SAPLING.get());
+        crossBlock(input.equals("palm") ? ModBlocks.PALM_SAPLING.get() : ModBlocks.BAOBAB_SAPLING.get());
         slabBlock((SlabBlock) (input.equals("palm") ? ModBlocks.PALM_SLAB.get() : ModBlocks.BAOBAB_SLAB.get()), id("_planks"), id("_planks"));
         stairsBlock((StairsBlock) (input.equals("palm") ? ModBlocks.PALM_STAIRS.get() : ModBlocks.BAOBAB_STAIRS.get()), id("_planks"));
         trapdoorBlock((TrapdoorBlock) (input.equals("palm") ? ModBlocks.PALM_TRAPDOOR.get() : ModBlocks.BAOBAB_TRAPDOOR.get()), id("_trapdoor"), true);
@@ -101,5 +101,9 @@ public class BlockStates extends BlockStateProvider {
 
             return ConfiguredModel.builder().modelFile(isPowered ? pressurePlateDown : pressurePlate).build();
         });
+    }
+
+    public void crossBlock(Block block) {
+        simpleBlock(block, models().cross(block.getRegistryName().getPath(), blockTexture(block)));
     }
 }
