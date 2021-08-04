@@ -4,11 +4,8 @@ import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import io.github.how_bout_no.outvoted.entity.GluttonEntity;
 import io.github.how_bout_no.outvoted.entity.WildfireEntity;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.mob.BlazeEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,30 +28,6 @@ public class WorldGen {
                 List<Entity> entities = event.getWorld().getOtherEntities(event.getEntity(), event.getEntity().getBoundingBox().stretch(area, area, area).stretch(-area, -area, -area));
                 if (entities.stream().anyMatch(entity -> entity instanceof BarnacleEntity || entity instanceof GluttonEntity || entity instanceof WildfireEntity)) {
                     event.setResult(Event.Result.DENY);
-                }
-            }
-        }
-    }
-
-    /**
-     * "Adds" Wildfires to Mob Spawners
-     */
-    @SubscribeEvent
-    public static void changeMobs(LivingSpawnEvent.SpecialSpawn event) {
-        Entity e = event.getEntity();
-        if (Outvoted.commonConfig.entities.wildfire.spawn) {
-            if (e instanceof BlazeEntity) {
-                if (event.getSpawnReason() == SpawnReason.SPAWNER) {
-                    if (Math.random() > 0.85) {
-                        World world = event.getEntity().getEntityWorld();
-
-                        WildfireEntity wildfire = ModEntityTypes.WILDFIRE.get().create(world);
-                        wildfire.updatePositionAndAngles(e.getX(), e.getY(), e.getZ(), e.yaw, e.pitch);
-
-                        world.spawnEntity(wildfire);
-                        event.setCanceled(true);
-                        event.setResult(Event.Result.DENY);
-                    }
                 }
             }
         }

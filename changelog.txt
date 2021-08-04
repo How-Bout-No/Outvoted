@@ -1,10 +1,11 @@
 > Entities
 Wildfire
+- No longer spawns from Blaze spawners
 - No longer drops Blaze Rods
 - Chance to drop Molten Shard increased to 20% + 10% for each Looting level
 
 Glutton
-- Config allowed for uncapped overenchantments
+- Config option for uncapped overenchantments
 
 > Items
 Molten Shard
@@ -12,3 +13,4 @@ Molten Shard
 
 > Misc
 - Updated some Patchouli entries
+- Semi fix configs from other mods showing in outvoted folder on server (thx llndqvst)!
