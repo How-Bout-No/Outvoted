@@ -1,12 +1,12 @@
 package io.github.how_bout_no.outvoted.entity;
 
-import com.google.common.collect.UnmodifiableIterator;
 import io.github.how_bout_no.outvoted.Outvoted;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -15,7 +15,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryChangedListener;
@@ -42,7 +43,6 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -54,9 +54,12 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     protected float jumpStrength;
     private boolean jumping;
     protected boolean inAir;
+    public int eggLayTime;
 
     public OstrichEntity(EntityType<? extends OstrichEntity> type, World worldIn) {
         super(type, worldIn);
+        this.eggLayTime = this.random.nextInt(6000) + 6000;
+        this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.stepHeight = 1.0F;
         this.onChestedStatusChanged();
     }
@@ -85,8 +88,8 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     }
 
     static {
-        OSTRICH_FLAGS = DataTracker.registerData(HorseBaseEntity.class, TrackedDataHandlerRegistry.BYTE);
-        OWNER_UUID = DataTracker.registerData(HorseBaseEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+        OSTRICH_FLAGS = DataTracker.registerData(OstrichEntity.class, TrackedDataHandlerRegistry.BYTE);
+        OWNER_UUID = DataTracker.registerData(OstrichEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     }
 
     protected void initDataTracker() {
@@ -291,6 +294,20 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
             return ActionResult.success(this.world.isClient);
         }
         return super.interactMob(player, hand);
+    }
+
+    public void tickMovement() {
+        super.tickMovement();
+        Vec3d vec3d = this.getVelocity();
+        if (!this.onGround && vec3d.y < 0.0D) {
+            this.setVelocity(vec3d.multiply(1.0D, 0.9D, 1.0D));
+        }
+
+        if (!this.world.isClient && this.isAlive() && !this.isBaby() && !this.hasPassengers() && --this.eggLayTime <= 0) {
+            this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+            this.dropItem(Items.EGG);
+            this.eggLayTime = this.random.nextInt(6000) + 6000;
+        }
     }
 
     @Override
