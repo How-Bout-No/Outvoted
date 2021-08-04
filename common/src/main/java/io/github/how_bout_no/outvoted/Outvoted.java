@@ -42,17 +42,12 @@ public class Outvoted {
     //public static ItemGroup TAB_MATERIAL;
     public static ItemGroup TAB_REDSTONE = ItemGroup.REDSTONE;
     public static ItemGroup TAB_MISC = ItemGroup.MISC;
-    public static ItemGroup[] TABS = new ItemGroup[]{TAB_BLOCKS, TAB_DECO, TAB_COMBAT, TAB_REDSTONE, TAB_MISC};
 
     public static void init() {
         AutoConfig.register(OutvotedConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
         config = AutoConfig.getConfigHolder(OutvotedConfig.class).getConfig();
         clientConfig = config.client;
         commonConfig = config.common;
-        if (Platform.getEnv() == EnvType.CLIENT) {
-            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
-            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
-        }
 
         GeckoLib.initialize();
         GeckoLibMod.DISABLE_IN_DEV = true;
@@ -69,6 +64,11 @@ public class Outvoted {
         ModSignType.init();
         EventRegister.init();
         WorldGen.addSpawnEntries();
+
+        if (Platform.getEnv() == EnvType.CLIENT) {
+            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
+            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
+        }
 
         EntityAttributeRegistry.register(ModEntityTypes.WILDFIRE::get, WildfireEntity::setCustomAttributes);
         EntityAttributeRegistry.register(ModEntityTypes.GLUTTON::get, GluttonEntity::setCustomAttributes);

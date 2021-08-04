@@ -1,22 +1,18 @@
 > Entities
 Wildfire
-- Variants will now be named differently
-- Fix crash on death related to dropping helmet
+- No longer drops Blaze Rods
+- Chance to drop Molten Shard increased to 20% + 10% for each Looting level
 
 Glutton
-- Variants will now be named differently
-
-> Items
-Wildfire Helmet
-- Variants will now be named differently
-- Patch possible crash
-* Texture is still bugged but that's a GeckoLib issue, sorry!
+- Config option for uncapped overenchantments
 
 > Blocks
-Signs
-- Fix textures and behavior
+- Fix missing loot tables for all blocks
+
+> Items
+Molten Shard
+- Can now be used to craft 4 Blaze Powder at once
 
 > Misc
-- Fix broken advancements
-- Utilize Java 16 features
-- Code cleanup
+- Updated some Patchouli entries
+- Semi fix configs from other mods showing in outvoted folder on server (thx llndqvst)!

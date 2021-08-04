@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "outvoted:wildfire_piece"
+    }
+  ],
+  "result": {
+    "item": "minecraft:blaze_powder",
+    "count": 4
+  }
+}

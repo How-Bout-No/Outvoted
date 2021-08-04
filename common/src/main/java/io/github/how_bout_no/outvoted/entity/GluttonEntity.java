@@ -265,7 +265,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                 this.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 600, 1));
                 pair.setLeft(1);
                 return pair;
-            } else if (itemstack.getNbt() != null && itemstack.getNbt().contains("Bitten")) {
+            } else if (itemstack.getNbt() != null && itemstack.getNbt().contains("Bitten") && !Outvoted.commonConfig.entities.glutton.capEnchants) {
                 pair.setLeft(1);
                 return pair;
             } else if (!(itemstack.isEnchantable() || itemstack.hasEnchantments() || itemstack.getItem() instanceof EnchantedBookItem)) {
@@ -280,7 +280,7 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
                     Enchantment enchantment = entry.getKey();
                     Integer level = entry.getValue();
                     if (cacheEnchants.containsKey(enchantment)) {
-                        if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) < enchantment.getMaxLevel() + 1) {
+                        if (enchantment.getMaxLevel() != 1 && (!Outvoted.commonConfig.entities.glutton.capEnchants || cacheEnchants.get(enchantment) < enchantment.getMaxLevel() + 1)) {
                             if (level == enchantment.getMaxLevel() && cacheEnchants.get(enchantment) == enchantment.getMaxLevel()) {
                                 for (Enchantment ench : cacheEnchants.keySet()) {
                                     if (cacheEnchants.get(ench) == ench.getMaxLevel() + 1) {
