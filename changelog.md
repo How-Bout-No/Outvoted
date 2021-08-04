@@ -1,5 +1,7 @@
-> Entities
+Entities
+---
 Wildfire
+- No longer spawns from Blaze spawners
 - No longer drops Blaze Rods
 - Chance to drop Molten Shard increased to 20% + 10% for each Looting level
 
@@ -8,16 +10,20 @@ Glutton
 
 Ostrich
 - Now periodically lays eggs like chickens
-- Now falls slower
+- Now falls slightly slower
+- Fall damage has been halved
 
-> Blocks
+Blocks
+---
 @a
 - Fix missing loot tables for all blocks
 
-> Items
+Items
+---
 Molten Shard
 - Can now be used to craft 4 Blaze Powder at once
 
-> Misc
+Misc
+---
 - Updated some Patchouli entries
 - Semi fix configs from other mods showing in outvoted folder on server (thx llndqvst)!

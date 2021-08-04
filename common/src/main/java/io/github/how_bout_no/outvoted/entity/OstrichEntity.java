@@ -216,6 +216,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         if (i <= 0) {
             return false;
         } else {
+            i /= 2;
             this.damage(DamageSource.FALL, (float) i);
             if (this.hasPassengers()) {
                 for (Entity entity : this.getPassengersDeep()) {

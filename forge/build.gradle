@@ -106,7 +106,7 @@ curseforge {
             id = "415057"
             releaseType = "alpha"
             changelogType = 'text'
-            changelog = file('../changelog.txt')
+            changelog = file('../changelog.md')
             addGameVersion("1.16.5")
             addGameVersion("Forge")
             relations {
@@ -140,7 +140,7 @@ task modrinthForge(type: TaskModrinthUpload) {
         projectId = 'klAfKAj3'
         versionNumber = project.version + "-forge"
         uploadFile = remapJar.archivePath // This is the java jar task
-        changelog = file('../changelog.txt').absoluteFile
+        changelog = file('../changelog.md').absoluteFile
         versionType = "ALPHA"
         addGameVersion('1.16.5')
         addLoader('forge')

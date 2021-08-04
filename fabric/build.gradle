@@ -91,8 +91,8 @@ curseforge {
         project {
             id = "415057"
             releaseType = "alpha"
-            changelogType = 'text'
-            changelog = file('../changelog.txt')
+            changelogType = 'markdown'
+            changelog = file('../changelog.md')
             addGameVersion("1.17.1")
             addGameVersion("Fabric")
             relations {
@@ -129,7 +129,7 @@ task modrinthFabric(type: TaskModrinthUpload) {
         versionNumber = project.version + "-fabric"
         versionName = "[FABRIC] " + project.version
         uploadFile = remapJar.archivePath // This is the java jar task
-        changelog = file('../changelog.txt').absoluteFile
+        changelog = file('../changelog.md')
         versionType = "ALPHA"
         addGameVersion('1.17.1')
         addLoader('fabric')
