@@ -256,7 +256,7 @@
     ]
   },
   "meerkat_ambient": {
-    "category": "hostile",
+    "category": "neutral",
     "subtitle": "subtitles.entity.outvoted.meerkat.ambient",
     "sounds": [
       {
@@ -274,7 +274,7 @@
     ]
   },
   "meerkat_hurt": {
-    "category": "hostile",
+    "category": "neutral",
     "subtitle": "subtitles.entity.outvoted.meerkat.hurt",
     "sounds": [
       {
@@ -289,7 +289,7 @@
     ]
   },
   "meerkat_death": {
-    "category": "hostile",
+    "category": "neutral",
     "subtitle": "subtitles.entity.outvoted.meerkat.death",
     "sounds": [
       {
@@ -297,6 +297,24 @@
       },
       {
         "name": "outvoted:entity/meerkat_death2"
+      }
+    ]
+  },
+  "ostrich_ambient": {
+    "category": "neutral",
+    "subtitle": "subtitles.entity.outvoted.ostrich.ambient",
+    "sounds": [
+      {
+        "name": "outvoted:entity/ostrich1",
+        "volume": 1.0
+      },
+      {
+        "name": "outvoted:entity/ostrich2",
+        "volume": 1.0
+      },
+      {
+        "name": "outvoted:entity/ostrich3",
+        "volume": 1.0
       }
     ]
   }

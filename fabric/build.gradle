@@ -21,7 +21,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "me.shedaniel:architectury-fabric:${rootProject.architectury_version}"
 
-    modImplementation "software.bernie.geckolib:geckolib-fabric-1.16.5:${rootProject.geckolib_version}:dev"
+    modImplementation "software.bernie.geckolib:geckolib-fabric-1.16.5:${rootProject.geckolib_version_fabric}:dev"
     modApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
@@ -91,8 +91,8 @@ curseforge {
         project {
             id = "415057"
             releaseType = "alpha"
-            changelogType = 'text'
-            changelog = file('../changelog.txt')
+            changelogType = 'markdown'
+            changelog = file('../changelog.md')
             addGameVersion("1.16.5")
             addGameVersion("Fabric")
             relations {
@@ -129,7 +129,7 @@ task modrinthFabric(type: TaskModrinthUpload) {
         versionNumber = project.version + "-fabric"
         versionName = "[FABRIC] " + project.version
         uploadFile = remapJar.archivePath // This is the java jar task
-        changelog = file('../changelog.txt').absoluteFile
+        changelog = file('../changelog.md')
         versionType = "ALPHA"
         addGameVersion('1.16.5')
         addLoader('fabric')

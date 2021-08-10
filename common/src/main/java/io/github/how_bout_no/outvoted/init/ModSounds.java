@@ -53,4 +53,7 @@ public class ModSounds {
             () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "meerkat_hurt")));
     public static final RegistrySupplier<SoundEvent> MEERKAT_DEATH = SOUNDS.register("meerkat_death",
             () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "meerkat_death")));
+
+    public static final RegistrySupplier<SoundEvent> OSTRICH_AMBIENT = SOUNDS.register("ostrich_ambient",
+            () -> new SoundEvent(new Identifier(Outvoted.MOD_ID, "ostrich_ambient")));
 }

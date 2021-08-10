@@ -19,6 +19,6 @@
 !/README.md
 !/LICENSE
 !/update.json
-!/changelog.txt
+!/changelog.md
 !/.gitignore
 !/settings.gradle

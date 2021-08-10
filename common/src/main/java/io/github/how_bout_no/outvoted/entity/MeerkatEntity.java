@@ -330,7 +330,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
                 return ActionResult.CONSUME;
             }
         }
-        return super.interactMob(player, hand);
+        return ActionResult.PASS;
     }
 
     @Environment(EnvType.CLIENT)

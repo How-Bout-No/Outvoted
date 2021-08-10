@@ -47,11 +47,7 @@ allprojects {
             }
         }
 //        maven { url 'https://jitpack.io' }
-        maven {
-            name = 'TerraformersMC Archive'
-            url = 'https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases/'
-        }
-//        maven { url 'https://maven.terraformersmc.com/releases/' }
+        maven { url 'https://maven.terraformersmc.com/releases/' }
 //        maven { url 'https://repo.repsy.io/mvn/howboutno/main' }
 
     }

@@ -25,7 +25,7 @@ public class OstrichModel extends AnimatedGeoModel<OstrichEntity> {
 
     @Override
     public Identifier getTextureLocation(OstrichEntity entity) {
-        return new Identifier(Outvoted.MOD_ID, "textures/entity/ostrich.png");
+        return new Identifier(Outvoted.MOD_ID, "textures/entity/ostrich/ostrich.png");
     }
 
     @Override
