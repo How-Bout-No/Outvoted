@@ -1,5 +1,8 @@
 Entities
 ---
+@a
+- Re-mixed most entity sounds to have a more consistent volume
+
 Meerkat
 - Fix "double taming"
 
