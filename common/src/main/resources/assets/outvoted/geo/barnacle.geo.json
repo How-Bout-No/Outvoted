@@ -3,14 +3,14 @@
   "minecraft:geometry": [
     {
       "description": {
-        "identifier": "geometry.barnacle",
+        "identifier": "geometry.ocean_monster",
         "texture_width": 256,
         "texture_height": 160,
         "visible_bounds_width": 6,
-        "visible_bounds_height": 3,
+        "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
           0,
-          0.5,
+          0.75,
           0
         ]
       },
@@ -19,8 +19,8 @@
           "name": "mob",
           "pivot": [
             0,
-            8,
-            4
+            9,
+            0
           ],
           "rotation": [
             90,
@@ -33,15 +33,15 @@
           "parent": "mob",
           "pivot": [
             0,
-            3.5,
-            4
+            0.5,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 -8,
-                4,
-                -4
+                1,
+                -8
               ],
               "size": [
                 16,
@@ -56,8 +56,8 @@
             {
               "origin": [
                 -8,
-                -16,
-                -4
+                -19,
+                -8
               ],
               "size": [
                 16,
@@ -76,8 +76,8 @@
           "parent": "mob",
           "pivot": [
             0,
-            -4,
-            4
+            -7,
+            0
           ]
         },
         {
@@ -85,15 +85,15 @@
           "parent": "tentacles",
           "pivot": [
             -4,
-            12,
-            4
+            9,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 -12,
-                20,
-                4
+                17,
+                0
               ],
               "size": [
                 12,
@@ -112,15 +112,15 @@
           "parent": "tentacles",
           "pivot": [
             4,
-            12,
-            4
+            9,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 0,
-                20,
-                4
+                17,
+                0
               ],
               "size": [
                 12,
@@ -139,15 +139,15 @@
           "parent": "tentacles",
           "pivot": [
             4,
-            12,
-            4
+            9,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 0,
-                20,
-                -8
+                17,
+                -12
               ],
               "size": [
                 12,
@@ -166,15 +166,15 @@
           "parent": "tentacles",
           "pivot": [
             -4,
-            12,
-            4
+            9,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 -12,
-                20,
-                -8
+                17,
+                -12
               ],
               "size": [
                 12,
@@ -193,15 +193,15 @@
           "parent": "mob",
           "pivot": [
             0,
-            17,
-            4
+            14,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 -1,
-                16,
-                3
+                13,
+                -1
               ],
               "size": [
                 2,

@@ -3,6 +3,10 @@ Entities
 @a
 - Re-mixed most entity sounds to have a more consistent volume
 
+Barnacle
+- Fix rotation
+- Possible fix to client crash
+
 Meerkat
 - Fix "double taming"
 
