@@ -57,7 +57,6 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     private static final TrackedData<Optional<UUID>> OWNER_UUID;
     protected SimpleInventory items;
     protected float jumpStrength;
-    private boolean jumping;
     protected boolean inAir;
     public int eggLayTime;
 
@@ -82,7 +81,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.5D)
+                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.75D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.35D);
     }
 

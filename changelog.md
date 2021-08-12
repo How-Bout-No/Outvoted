@@ -12,3 +12,8 @@ Ostrich
 - Updated texture
 - Fix "double taming"
 - Fix getting stuck when first mounting
+
+Items
+---
+Wildfire Helmet
+- Fix baby model rendering on Forge

@@ -2,11 +2,14 @@ package io.github.how_bout_no.outvoted.client.render;
 
 import io.github.how_bout_no.outvoted.client.model.WildfireHelmetModel;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import software.bernie.geckolib3.renderer.geo.GeoArmorRenderer;
 
+@Environment(EnvType.CLIENT)
 public class WildfireHelmetRenderer extends GeoArmorRenderer<WildfireHelmetItem> {
     public WildfireHelmetRenderer() {
         super(new WildfireHelmetModel());
