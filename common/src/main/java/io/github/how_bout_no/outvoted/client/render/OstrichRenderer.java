@@ -16,6 +16,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class OstrichRenderer extends GeoEntityRenderer<OstrichEntity> {
     public OstrichRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new OstrichModel());
+        this.addLayer(new OstrichSaddleLayer(this));
     }
 
     @Override

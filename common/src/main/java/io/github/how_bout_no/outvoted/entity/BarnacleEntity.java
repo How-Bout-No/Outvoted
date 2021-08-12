@@ -534,11 +534,11 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         }
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         int phase = this.getAttackPhase();
-        if (this.hasTargetedEntity() && phase > 0) {
+        if (this.hasTargetedEntity() && phase > 0 && this.getTargetedEntity().getPos() != null) {
             GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
         }
         if (event.getController().getCurrentAnimation() == null || event.getController().getCurrentAnimation().animationName == null) {
@@ -546,22 +546,26 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
             return PlayState.CONTINUE;
         }
         switch (phase) {
-            case 1:
+            case 1 -> {
                 if (event.getController().getCurrentAnimation().animationName.equals("bite")) {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("reelin"));
                 } else {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation("attack").addAnimation("reelin"));
                 }
                 return PlayState.CONTINUE;
-            case 2:
+            }
+            case 2 -> {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("clamp"));
                 return PlayState.CONTINUE;
-            case 3:
+            }
+            case 3 -> {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("bite"));
                 return PlayState.CONTINUE;
-            default:
+            }
+            default -> {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
                 return PlayState.CONTINUE;
+            }
         }
     }
 

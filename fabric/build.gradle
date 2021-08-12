@@ -81,8 +81,10 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-curseforge {
-    if (file("../key.properties").exists()) {
+import com.modrinth.minotaur.TaskModrinthUpload
+
+if (file("../key.properties").exists()) {
+    curseforge {
         def curseProp = new Properties()
         File secretPropsFile = file("../key.properties")
         curseProp.load(secretPropsFile.newInputStream())
@@ -115,12 +117,8 @@ curseforge {
             javaVersionAutoDetect = false
         }
     }
-}
 
-import com.modrinth.minotaur.TaskModrinthUpload
-
-task modrinthFabric(type: TaskModrinthUpload) {
-    if (file("../key.properties").exists()) {
+    task modrinthFabric(type: TaskModrinthUpload) {
         def modrinthProp = new Properties()
         File secretPropsFile = file("../key.properties")
         modrinthProp.load(secretPropsFile.newInputStream())

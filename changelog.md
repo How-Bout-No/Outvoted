@@ -1,29 +1,21 @@
 Entities
 ---
-Wildfire
-- No longer spawns from Blaze spawners
-- No longer drops Blaze Rods
-- Chance to drop Molten Shard increased to 20% + 10% for each Looting level
+@a
+- Re-mixed most entity sounds to have a more consistent volume
 
-Glutton
-- Config option for uncapped overenchantments
+Barnacle
+- Fix rotation
+- Possible fix to client crash
+
+Meerkat
+- Fix "double taming"
 
 Ostrich
-- Now periodically lays eggs like chickens
-- Now falls slightly slower
-- Fall damage has been halved
-
-Blocks
----
-@a
-- Fix missing loot tables for all blocks
-
-Items
----
-Molten Shard
-- Can now be used to craft 4 Blaze Powder at once
-
-Misc
----
-- Updated some Patchouli entries
-- Semi fix configs from other mods showing in outvoted folder on server (thx llndqvst)!
+- Is now tamed + bred with seeds
+- Saddle now shows when equipped
+- Nerfed jump height
+- Added some ambient sounds
+- Updated model to 3d legs
+- Updated texture
+- Fix "double taming"
+- Fix getting stuck when first mounting

@@ -1,6 +1,8 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,9 +28,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.ServerConfigHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
@@ -48,6 +52,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class OstrichEntity extends AnimalEntity implements InventoryChangedListener, JumpingMount, Saddleable, IAnimatable {
+    private static final Ingredient TAMING_INGREDIENT;
     private static final TrackedData<Byte> OSTRICH_FLAGS;
     private static final TrackedData<Optional<UUID>> OWNER_UUID;
     protected SimpleInventory items;
@@ -68,6 +73,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.2D));
         this.goalSelector.add(2, new AnimalMateGoal(this, 1.0D, OstrichEntity.class));
+        this.goalSelector.add(3, new TemptGoal(this, 1.0D, TAMING_INGREDIENT, false));
         this.goalSelector.add(4, new FollowParentGoal(this, 1.0D));
         this.goalSelector.add(6, new WanderAroundFarGoal(this, 0.7D));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
@@ -76,7 +82,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 1.0D)
+                .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.75D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.35D);
     }
 
@@ -90,6 +96,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     static {
         OSTRICH_FLAGS = DataTracker.registerData(OstrichEntity.class, TrackedDataHandlerRegistry.BYTE);
         OWNER_UUID = DataTracker.registerData(OstrichEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+        TAMING_INGREDIENT = Ingredient.ofItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
     }
 
     protected void initDataTracker() {
@@ -202,6 +209,25 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         return !this.hasPassengers();
     }
 
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.OSTRICH_AMBIENT.get();
+    }
+
+//    @Override
+//    protected SoundEvent getDeathSound() {
+//        return ModSounds.OSTRICH_DEATH.get();
+//    }
+//
+//    @Override
+//    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+//        return ModSounds.OSTRICH_HURT.get();
+//    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return TAMING_INGREDIENT.test(stack);
+    }
+
     public static boolean canSpawn(EntityType<OstrichEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
         return canMobSpawn(entity, world, spawnReason, blockPos, random);
     }
@@ -294,7 +320,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
             return ActionResult.success(this.world.isClient);
         }
-        return super.interactMob(player, hand);
+        return ActionResult.PASS;
     }
 
     public void tickMovement() {
@@ -428,11 +454,6 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
                     g *= 0.25F;
                 }
 
-                if (this.onGround && this.jumpStrength == 0.0F && !this.jumping) {
-                    f = 0.0F;
-                    g = 0.0F;
-                }
-
                 if (this.jumpStrength > 0.0F && !this.isInAir() && this.onGround) {
                     double d = this.getJumpStrength() * (double) this.jumpStrength * (double) this.getJumpVelocityMultiplier();
                     double h;
@@ -504,7 +525,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     }
 
     @Nullable
-    private Vec3d method_27930(Vec3d vec3d, LivingEntity livingEntity) {
+    private Vec3d getDismountPos(Vec3d vec3d, LivingEntity livingEntity) {
         double d = this.getX() + vec3d.x;
         double e = this.getBoundingBox().minY;
         double f = this.getZ() + vec3d.z;
@@ -541,12 +562,12 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     public Vec3d updatePassengerForDismount(LivingEntity passenger) {
         Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
-        Vec3d vec3d2 = this.method_27930(vec3d, passenger);
+        Vec3d vec3d2 = this.getDismountPos(vec3d, passenger);
         if (vec3d2 != null) {
             return vec3d2;
         } else {
             Vec3d vec3d3 = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.LEFT ? 90.0F : -90.0F));
-            Vec3d vec3d4 = this.method_27930(vec3d3, passenger);
+            Vec3d vec3d4 = this.getDismountPos(vec3d3, passenger);
             return vec3d4 != null ? vec3d4 : this.getPos();
         }
     }
@@ -554,7 +575,9 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return null;
+        OstrichEntity ostrichEntity = ModEntityTypes.OSTRICH.get().create(world);
+        ostrichEntity.initialize(world, world.getLocalDifficulty(ostrichEntity.getBlockPos()), SpawnReason.BREEDING, null, null);
+        return ostrichEntity;
     }
 
     @Environment(EnvType.CLIENT)

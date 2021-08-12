@@ -76,8 +76,7 @@
     "subtitle": "subtitles.entity.outvoted.glutton.ambient",
     "sounds": [
       {
-        "name": "outvoted:entity/glutton",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton"
       }
     ]
   },
@@ -86,16 +85,13 @@
     "subtitle": "subtitles.entity.outvoted.glutton.hurt",
     "sounds": [
       {
-        "name": "outvoted:entity/glutton_hit1",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton_hit1"
       },
       {
-        "name": "outvoted:entity/glutton_hit2",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton_hit2"
       },
       {
-        "name": "outvoted:entity/glutton_hit3",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton_hit3"
       }
     ]
   },
@@ -104,16 +100,13 @@
     "subtitle": "subtitles.entity.outvoted.glutton.death",
     "sounds": [
       {
-        "name": "outvoted:entity/glutton_death1",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton_death1"
       },
       {
-        "name": "outvoted:entity/glutton_death2",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton_death2"
       },
       {
-        "name": "outvoted:entity/glutton_death3",
-        "volume": 0.5
+        "name": "outvoted:entity/glutton_death3"
       }
     ]
   },
@@ -256,25 +249,22 @@
     ]
   },
   "meerkat_ambient": {
-    "category": "hostile",
+    "category": "neutral",
     "subtitle": "subtitles.entity.outvoted.meerkat.ambient",
     "sounds": [
       {
-        "name": "outvoted:entity/meerkat1",
-        "volume": 0.7
+        "name": "outvoted:entity/meerkat1"
       },
       {
-        "name": "outvoted:entity/meerkat2",
-        "volume": 0.8
+        "name": "outvoted:entity/meerkat2"
       },
       {
-        "name": "outvoted:entity/meerkat3",
-        "volume": 0.9
+        "name": "outvoted:entity/meerkat3"
       }
     ]
   },
   "meerkat_hurt": {
-    "category": "hostile",
+    "category": "neutral",
     "subtitle": "subtitles.entity.outvoted.meerkat.hurt",
     "sounds": [
       {
@@ -289,7 +279,7 @@
     ]
   },
   "meerkat_death": {
-    "category": "hostile",
+    "category": "neutral",
     "subtitle": "subtitles.entity.outvoted.meerkat.death",
     "sounds": [
       {
@@ -297,6 +287,21 @@
       },
       {
         "name": "outvoted:entity/meerkat_death2"
+      }
+    ]
+  },
+  "ostrich_ambient": {
+    "category": "neutral",
+    "subtitle": "subtitles.entity.outvoted.ostrich.ambient",
+    "sounds": [
+      {
+        "name": "outvoted:entity/ostrich1"
+      },
+      {
+        "name": "outvoted:entity/ostrich2"
+      },
+      {
+        "name": "outvoted:entity/ostrich3"
       }
     ]
   }
