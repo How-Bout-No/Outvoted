@@ -325,11 +325,9 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
             }
             if (this.isInvulnerableTo(source)) {
                 this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.3F, 0.5F);
-                if (source.isProjectile()) {
-                    source.getSource().setOnFireFor(12);
-                } else if (source.getSource() != null) {
-                    source.getSource().setOnFireFor(8);
-                }
+                if (source.getSource() != null)
+                    if (source.isProjectile()) source.getSource().setOnFireFor(12);
+                    else source.getSource().setOnFireFor(8);
 
                 return false;
             }

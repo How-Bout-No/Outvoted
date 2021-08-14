@@ -52,7 +52,7 @@ public class EventRegister {
                         if (source.getSource() != null) {
                             if (source.isProjectile()) {
                                 source.getSource().setOnFireFor(5);
-                            } else {
+                            } else if (source.getAttacker() != null) {
                                 source.getAttacker().setOnFireFor(5);
                             }
                         }

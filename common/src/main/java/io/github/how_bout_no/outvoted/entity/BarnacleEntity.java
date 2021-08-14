@@ -45,7 +45,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
     private static final TrackedData<Integer> ATTACKING;
     private static final TrackedData<Integer> TARGET_ENTITY;
     private LivingEntity targetedEntity;
-    private static Map<Integer, UUID> targetedEntities = new HashMap<>();
+    private static final Map<Integer, UUID> targetedEntities = new HashMap<>();
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;
     protected WanderAroundGoal wander;
@@ -510,8 +510,8 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
                 float f2 = MathHelper.lerp(0.125F, this.mob.getMovementSpeed(), f1);
                 this.mob.setMovementSpeed(f2);
                 double d4 = Math.sin((double) (this.mob.age + this.mob.getId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double) (this.mob.getYaw() * ((float) Math.PI / 180F)));
-                double d6 = Math.sin((double) (this.mob.getYaw() * ((float) Math.PI / 180F)));
+                double d5 = Math.cos(this.mob.getYaw() * ((float) Math.PI / 180F));
+                double d6 = Math.sin(this.mob.getYaw() * ((float) Math.PI / 180F));
                 double d7 = Math.sin((double) (this.mob.age + this.mob.getId()) * 0.75D) * 0.05D;
                 this.mob.setVelocity(this.mob.getVelocity().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double) f2 * d2 * 0.1D, d4 * d6));
                 LookControl lookcontroller = this.mob.getLookControl();
@@ -571,7 +571,7 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 3, this::predicate);
+        AnimationController<BarnacleEntity> controller = new AnimationController<>(this, "controller", 3, this::predicate);
         data.addAnimationController(controller);
     }
 

@@ -57,7 +57,6 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
     private static final TrackedData<Optional<UUID>> OWNER_UUID;
     protected SimpleInventory items;
     protected float jumpStrength;
-    private boolean jumping;
     protected boolean inAir;
     public int eggLayTime;
 
@@ -163,7 +162,7 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
 
     @Nullable
     public UUID getOwnerUuid() {
-        return (UUID) ((Optional) this.dataTracker.get(OWNER_UUID)).orElse((Object) null);
+        return this.dataTracker.get(OWNER_UUID).orElse(null);
     }
 
     public void setOwnerUuid(@Nullable UUID uuid) {
@@ -442,54 +441,56 @@ public class OstrichEntity extends AnimalEntity implements InventoryChangedListe
         if (this.isAlive()) {
             if (this.hasPassengers() && this.canBeControlledByRider() && this.isSaddled()) {
                 LivingEntity livingEntity = (LivingEntity) this.getPrimaryPassenger();
-                this.setYaw(livingEntity.getYaw());
-                this.prevYaw = this.getYaw();
-                this.setPitch(livingEntity.getPitch() * 0.5F);
-                this.setRotation(this.getYaw(), this.getPitch());
-                this.bodyYaw = this.getYaw();
-                this.headYaw = this.bodyYaw;
-                float f = livingEntity.sidewaysSpeed * 0.5F;
-                float g = livingEntity.forwardSpeed;
-                if (g <= 0.0F) {
-                    g *= 0.25F;
-                }
-
-                if (this.jumpStrength > 0.0F && !this.isInAir() && this.onGround) {
-                    double d = this.getJumpStrength() * (double) this.jumpStrength * (double) this.getJumpVelocityMultiplier();
-                    double h;
-                    if (this.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
-                        h = d + (double) ((float) (this.getStatusEffect(StatusEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
-                    } else {
-                        h = d;
+                if (livingEntity != null) {
+                    this.setYaw(livingEntity.getYaw());
+                    this.prevYaw = this.getYaw();
+                    this.setPitch(livingEntity.getPitch() * 0.5F);
+                    this.setRotation(this.getYaw(), this.getPitch());
+                    this.bodyYaw = this.getYaw();
+                    this.headYaw = this.bodyYaw;
+                    float f = livingEntity.sidewaysSpeed * 0.5F;
+                    float g = livingEntity.forwardSpeed;
+                    if (g <= 0.0F) {
+                        g *= 0.25F;
                     }
 
-                    Vec3d vec3d = this.getVelocity();
-                    this.setVelocity(vec3d.x, h, vec3d.z);
-                    this.setInAir(true);
-                    this.velocityDirty = true;
-                    if (g > 0.0F) {
-                        float i = MathHelper.sin(this.getYaw() * 0.017453292F);
-                        float j = MathHelper.cos(this.getYaw() * 0.017453292F);
-                        this.setVelocity(this.getVelocity().add(-0.4F * i * this.jumpStrength, 0.0D, 0.4F * j * this.jumpStrength));
+                    if (this.jumpStrength > 0.0F && !this.isInAir() && this.onGround) {
+                        double d = this.getJumpStrength() * (double) this.jumpStrength * (double) this.getJumpVelocityMultiplier();
+                        double h;
+                        if (this.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
+                            h = d + (double) ((float) (this.getStatusEffect(StatusEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+                        } else {
+                            h = d;
+                        }
+
+                        Vec3d vec3d = this.getVelocity();
+                        this.setVelocity(vec3d.x, h, vec3d.z);
+                        this.setInAir(true);
+                        this.velocityDirty = true;
+                        if (g > 0.0F) {
+                            float i = MathHelper.sin(this.getYaw() * 0.017453292F);
+                            float j = MathHelper.cos(this.getYaw() * 0.017453292F);
+                            this.setVelocity(this.getVelocity().add(-0.4F * i * this.jumpStrength, 0.0D, 0.4F * j * this.jumpStrength));
+                        }
+
+                        this.jumpStrength = 0.0F;
                     }
 
-                    this.jumpStrength = 0.0F;
-                }
+                    this.flyingSpeed = this.getMovementSpeed() * 0.1F;
+                    if (this.isLogicalSideForUpdatingMovement()) {
+                        this.setMovementSpeed((float) this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
+                        super.travel(new Vec3d(f, movementInput.y, g));
+                    } else if (livingEntity instanceof PlayerEntity) {
+                        this.setVelocity(Vec3d.ZERO);
+                    }
 
-                this.flyingSpeed = this.getMovementSpeed() * 0.1F;
-                if (this.isLogicalSideForUpdatingMovement()) {
-                    this.setMovementSpeed((float) this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
-                    super.travel(new Vec3d(f, movementInput.y, g));
-                } else if (livingEntity instanceof PlayerEntity) {
-                    this.setVelocity(Vec3d.ZERO);
-                }
+                    if (this.onGround) {
+                        this.jumpStrength = 0.0F;
+                        this.setInAir(false);
+                    }
 
-                if (this.onGround) {
-                    this.jumpStrength = 0.0F;
-                    this.setInAir(false);
+                    this.updateLimbs(this, false);
                 }
-
-                this.updateLimbs(this, false);
             } else {
                 this.flyingSpeed = 0.02F;
                 super.travel(movementInput);

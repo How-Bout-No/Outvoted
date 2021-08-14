@@ -46,6 +46,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.poi.PointOfInterest;
 import net.minecraft.world.poi.PointOfInterestStorage;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -164,7 +165,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     @Nullable
     private UUID getTrusted() {
-        return (UUID) ((Optional) this.dataTracker.get(TRUSTED_UUID)).orElse((Object) null);
+        return this.dataTracker.get(TRUSTED_UUID).orElse(null);
     }
 
     private void setTrusted(@Nullable UUID trusted) {
@@ -468,7 +469,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
     }
 
-    private boolean isWithinDistance(BlockPos pos, int distance) {
+    private boolean isWithinDistance(@NotNull BlockPos pos, int distance) {
         return pos.isWithinDistance(this.getBlockPos(), distance);
     }
 
@@ -501,7 +502,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         }
     }
 
-    class AttackGoal extends MeleeAttackGoal {
+    static class AttackGoal extends MeleeAttackGoal {
         public AttackGoal(PathAwareEntity mob, double speed, boolean pauseWhenMobIdle) {
             super(mob, speed, pauseWhenMobIdle);
         }
@@ -519,7 +520,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
 
     class MoveToBurrowGoal extends Goal {
         private int ticks;
-        private List<BlockPos> possibleBurrows;
+        private final List<BlockPos> possibleBurrows;
         @Nullable
         private Path path;
         private int ticksUntilLost;
@@ -686,7 +687,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         return new Box(vec3d, vec3d2);
     }
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.getController().getAnimationState().equals(AnimationState.Stopped) || (animtimer == 10 && !this.isInsideWaterOrBubbleColumn() && !event.isMoving())) {
