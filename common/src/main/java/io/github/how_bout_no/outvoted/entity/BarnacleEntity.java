@@ -538,8 +538,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         int phase = this.getAttackPhase();
-        if (this.hasTargetedEntity() && phase > 0 && this.getTargetedEntity().getPos() != null) {
-            GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(this.getTargetedEntity()) + 15);
+        LivingEntity livingEntity = this.getTargetedEntity();
+        if (this.hasTargetedEntity() && phase > 0 && livingEntity != null && livingEntity.getPos() != null) {
+            GeckoLibCache.getInstance().parser.setValue("distance", this.squaredDistanceTo(livingEntity) + 15);
         }
         if (event.getController().getCurrentAnimation() == null || event.getController().getCurrentAnimation().animationName == null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("swim"));
