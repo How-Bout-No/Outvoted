@@ -49,7 +49,7 @@ public class Outvoted {
         commonConfig = config.common;
 
         GeckoLib.initialize();
-        GeckoLibMod.DISABLE_IN_DEV = true;
+        if (Platform.isDevelopmentEnvironment()) GeckoLibMod.DISABLE_IN_DEV = true;
 
         ModEntityTypes.ENTITY_TYPES.register();
         ModItems.ITEMS.register();

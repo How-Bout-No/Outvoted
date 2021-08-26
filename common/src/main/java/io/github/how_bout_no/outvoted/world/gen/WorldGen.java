@@ -32,6 +32,9 @@ public class WorldGen {
 //                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
 //                        new SpawnSettings.SpawnEntry(ModEntityTypes.MEERKAT.get(),
 //                                Outvoted.commonConfig.entities.meerkat.rate, 2, 4)));
+        BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
+                (biomeContext, mutable) -> mutable.getGenerationProperties()
+                        .addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, ModFeatures.Configured.BURROW));
         BiomeModifications.addProperties(biomeContext -> ent.ostrich.spawn && parseBiomes(ent.ostrich.biomes, biomeContext),
                 (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(SpawnGroup.CREATURE,
                         new SpawnSettings.SpawnEntry(ModEntityTypes.OSTRICH.get(),
@@ -43,11 +46,6 @@ public class WorldGen {
         BiomeModifications.addProperties(biomeContext -> Outvoted.commonConfig.generation.genBaobabTrees && biomeContext.getKey().equals(BiomeKeys.SAVANNA.getValue()),
                 (biomeContext, mutable) -> mutable.getGenerationProperties()
                         .addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ModFeatures.Configured.BAOBAB_TREE));
-
-
-        BiomeModifications.addProperties(biomeContext -> ent.meerkat.spawn && parseBiomes(ent.meerkat.biomes, biomeContext),
-                (biomeContext, mutable) -> mutable.getGenerationProperties()
-                        .addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, ModFeatures.Configured.BURROW));
 
     }
 

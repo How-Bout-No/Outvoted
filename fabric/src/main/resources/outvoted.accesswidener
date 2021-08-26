@@ -14,6 +14,10 @@ accessible  method  net/minecraft/tag/BlockTags                 register        
 accessible  method  net/minecraft/tag/ItemTags                  register                (Ljava/lang/String;)Lnet/minecraft/tag/Tag$Identified;
 accessible  field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
 mutable     field   net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
-extendable class  net/minecraft/structure/NetherFortressGenerator$Piece
-accessible method net/minecraft/world/poi/PointOfInterestType <init>       (Ljava/lang/String;Ljava/util/Set;II)V
-extendable method net/minecraft/block/dispenser/ItemDispenserBehavior dispense (Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;
+extendable  class   net/minecraft/structure/NetherFortressGenerator$Piece
+accessible  method  net/minecraft/world/poi/PointOfInterestType <init>          (Ljava/lang/String;Ljava/util/Set;II)V
+extendable  method  net/minecraft/block/dispenser/ItemDispenserBehavior dispense (Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;
+accessible  method   net/minecraft/world/SpawnHelper$Info       <init>          (ILit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;Lnet/minecraft/util/math/GravityField;)V
+accessible  field   net/minecraft/world/SpawnHelper CHUNK_AREA I
+accessible  method  net/minecraft/server/world/ThreadedAnvilChunkStorage getTicketManager ()Lnet/minecraft/server/world/ThreadedAnvilChunkStorage$TicketManager;
+extendable  class   net/minecraft/server/world/ThreadedAnvilChunkStorage$TicketManager

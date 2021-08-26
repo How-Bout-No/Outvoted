@@ -28,6 +28,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
@@ -288,7 +289,8 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         super.mobTick();
     }
 
-    public boolean handleFallDamage(float distance, float damageMultiplier) {
+    @Override
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier) {
         return false;
     }
 
@@ -450,6 +452,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                             double d3 = livingentity.getZ() - this.mob.getZ();
 
                             //shoot fireballs
+                            float h = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
                             for (int i = 0; i <= (fireballcount - 1); ++i) {
                                 WildfireFireballEntity wildfirefireballentity;
                                 double angle = (i - ((fireballcount - 1) / 2)) * offsetangle;
@@ -460,7 +463,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
                                 if (abs((atan2(d2, a))) > maxdepressangle) {
                                     y = -tan(maxdepressangle) * (a);
                                 }
-                                wildfirefireballentity = new WildfireFireballEntity(this.mob.world, this.mob, x, y, z);
+                                wildfirefireballentity = new WildfireFireballEntity(this.mob.world, this.mob, x + this.mob.getRandom().nextGaussian() * (double)h, y, z + this.mob.getRandom().nextGaussian() * (double)h);
                                 wildfirefireballentity.setPosition(wildfirefireballentity.getX(), this.mob.getBodyY(0.5D), wildfirefireballentity.getZ());
                                 this.mob.world.spawnEntity(wildfirefireballentity);
                             }

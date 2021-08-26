@@ -4,19 +4,8 @@ Barnacle
 - Maybe actually fix render crash this time
 
 Meerkat
-- Fix "double taming"
+- Tweak spawns to hopefully be more reasonable
 
-Ostrich
-- Is now tamed + bred with seeds
-- Saddle now shows when equipped
-- Nerfed jump height
-- Added some ambient sounds
-- Updated model to 3d legs
-- Updated texture
-- Fix "double taming"
-- Fix getting stuck when first mounting
-
-Items
+Misc
 ---
-Wildfire Helmet
-- Fix baby model rendering on Forge
+- Slight optimizations
