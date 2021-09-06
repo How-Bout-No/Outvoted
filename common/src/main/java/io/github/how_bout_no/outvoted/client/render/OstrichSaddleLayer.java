@@ -5,6 +5,7 @@ import io.github.how_bout_no.outvoted.entity.OstrichEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import software.bernie.geckolib3.model.provider.GeoModelProvider;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
@@ -21,7 +22,7 @@ public class OstrichSaddleLayer extends GeoLayerRenderer<OstrichEntity> {
             matrixStackIn.push();
             matrixStackIn.scale(1.01f, 1.01f, 1.01f);
             // Why does this need to be so long
-            renderCopyModel(this.getEntityModel(), SADDLE, matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn,
+            renderCopyModel((GeoModelProvider<OstrichEntity>) this.getEntityModel(), SADDLE, matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn,
                     1f, 1f, 1f, 1f, 1f, partialTicks, 1f, 1f, 1f);
             matrixStackIn.pop();
         }
