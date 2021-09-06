@@ -41,9 +41,9 @@
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": ">=1.17",
-    "architectury": ">=2.0",
+    "architectury": ">=2.5",
     "cloth-config2": "*",
-    "geckolib3": "*"
+    "geckolib3": ">=3.0.10"
   },
   "suggests": {
     "flamingo": "*"
