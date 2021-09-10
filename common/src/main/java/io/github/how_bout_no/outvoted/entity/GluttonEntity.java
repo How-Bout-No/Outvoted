@@ -5,6 +5,7 @@ import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import io.github.how_bout_no.outvoted.init.ModTags;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.*;
@@ -18,8 +19,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AirBlockItem;
 import net.minecraft.item.EnchantedBookItem;
@@ -40,10 +41,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.explosion.Explosion;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.Nullable;
@@ -61,14 +59,12 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class GluttonEntity extends HostileEntity implements IAnimatable {
+public class GluttonEntity extends PathAwareEntity implements IAnimatable {
     private static final TrackedData<Boolean> BURROWED;
     private static final TrackedData<Boolean> ATTACKING;
     private static final TrackedData<Boolean> ENCHANTING;
     private static final TrackedData<Integer> VARIANT;
     private Map<Enchantment, Integer> storedEnchants = new HashMap<>();
-    private static final ArrayList<RegistryKey<Biome>> desertKeys = new ArrayList<>(Arrays.asList(BiomeKeys.DESERT, BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_HILLS));
-    private static final ArrayList<RegistryKey<Biome>> badlandsKeys = new ArrayList<>(Arrays.asList(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.MODIFIED_BADLANDS_PLATEAU, BiomeKeys.ERODED_BADLANDS));
 
     public GluttonEntity(EntityType<? extends GluttonEntity> type, World worldIn) {
         super(type, worldIn);
@@ -82,7 +78,9 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
         this.goalSelector.add(4, new FindSpotGoal(this, 1.0D));
         this.goalSelector.add(5, new WanderGoal(this));
         this.goalSelector.add(6, new LookGoal(this));
-        this.targetSelector.add(1, new FollowTargetGoal<>(this, LivingEntity.class, true));
+        this.targetSelector.add(1, (new RevengeGoal(this)));
+        this.targetSelector.add(2, new FollowTargetGoal<>(this, GluttonEntity.class, true));
+        this.targetSelector.add(3, new FollowTargetGoal<>(this, LivingEntity.class, 10, true, false, e -> this.squaredDistanceTo(e) < 2));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
@@ -95,24 +93,8 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
     public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
         HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.glutton.health);
 
-        int type = 2;
-        if (reason != SpawnReason.SPAWN_EGG && reason != SpawnReason.DISPENSER) {
-            if (worldIn.getBiomeKey(this.getBlockPos()).isPresent()) {
-                RegistryKey<Biome> key = worldIn.getBiomeKey(this.getBlockPos()).get();
-                if (desertKeys.contains(key)) {
-                    type = 0;
-                } else if (badlandsKeys.contains(key)) {
-                    type = 1;
-                }
-            }
-        } else {
-            if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock() == Blocks.RED_SAND) {
-                type = 1;
-            } else if (worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock() == Blocks.SAND) {
-                type = 0;
-            }
-        }
-        this.setVariant(type);
+        Block block = worldIn.getBlockState(this.getVelocityAffectingPos()).getBlock();
+        this.setVariant(block == Blocks.SAND ? 0 : block == Blocks.RED_SAND ? 1 : 2);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -124,11 +106,6 @@ public class GluttonEntity extends HostileEntity implements IAnimatable {
 
     public static boolean canSpawn(EntityType<GluttonEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
         return world.getBaseLightLevel(blockPos, 0) > 8 && canMobSpawn(entity, world, spawnReason, blockPos, random) && world.getBlockState(blockPos.down()).isIn(ModTags.Blocks.GLUTTON_CAN_BURROW);
-    }
-
-    @Override
-    protected boolean isDisallowedInPeaceful() {
-        return false;
     }
 
     protected SoundEvent getAmbientSound() {
