@@ -10,8 +10,9 @@ import net.minecraft.world.SpawnHelper;
 public class SpawnUtil {
     public static boolean isBelowCap(SpawnGroup group, ServerWorld world, int multiplier) {
         ThreadedAnvilChunkStorage chunkStorage = world.getChunkManager().threadedAnvilChunkStorage;
-        SpawnHelper.Info info = new SpawnHelper.Info(chunkStorage.getTicketManager().getSpawningChunkCount(), new Object2IntOpenHashMap<>(), new GravityField());
-        int i = group.getCapacity() * info.getSpawningChunkCount() / SpawnHelper.CHUNK_AREA;
+        int scc = chunkStorage.getTicketManager().getSpawningChunkCount();
+        SpawnHelper.Info info = new SpawnHelper.Info(scc, new Object2IntOpenHashMap<>(), new GravityField());
+        int i = group.getCapacity() * scc / SpawnHelper.CHUNK_AREA;
         return info.getGroupToCount().getInt(group) < i * Math.max(multiplier, 1);
     }
 }

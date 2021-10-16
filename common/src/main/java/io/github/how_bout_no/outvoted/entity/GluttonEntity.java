@@ -79,8 +79,8 @@ public class GluttonEntity extends PathAwareEntity implements IAnimatable {
         this.goalSelector.add(5, new WanderGoal(this));
         this.goalSelector.add(6, new LookGoal(this));
         this.targetSelector.add(1, (new RevengeGoal(this)));
-        this.targetSelector.add(2, new FollowTargetGoal<>(this, GluttonEntity.class, true));
-        this.targetSelector.add(3, new FollowTargetGoal<>(this, LivingEntity.class, 10, true, false, e -> this.squaredDistanceTo(e) < 2));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, GluttonEntity.class, true));
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, LivingEntity.class, 10, true, false, e -> this.squaredDistanceTo(e) < 2));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {

@@ -75,7 +75,7 @@ public class WildfireEntity extends HostileEntity implements IAnimatable {
         this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(5, new LookAroundGoal(this));
         this.targetSelector.add(1, (new RevengeGoal(this)).setGroupRevenge());
-        this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {

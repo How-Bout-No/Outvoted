@@ -71,9 +71,9 @@ public class BarnacleEntity extends HostileEntity implements IAnimatable {
         this.goalSelector.add(9, new LookAroundGoal(this));
         this.wander.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         movetowardsrestrictiongoal.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
-        this.targetSelector.add(1, new FollowTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(2, new FollowTargetGoal<>(this, DolphinEntity.class, true));
-        this.targetSelector.add(3, new FollowTargetGoal<>(this, VillagerEntity.class, true));
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, DolphinEntity.class, true));
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, VillagerEntity.class, true));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {

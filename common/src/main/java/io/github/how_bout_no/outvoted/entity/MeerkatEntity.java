@@ -94,7 +94,7 @@ public class MeerkatEntity extends AnimalEntity implements IAnimatable {
         this.goalSelector.add(10, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(11, new LookAtEntityGoal(this, PlayerEntity.class, 10.0F));
         this.targetSelector.add(1, (new RevengeGoal(this, PlayerEntity.class, MeerkatEntity.class)));
-        this.targetSelector.add(2, new FollowTargetGoal<>(this, HostileEntity.class, 10, true, false, e -> e.getGroup() == EntityGroup.ARTHROPOD));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, HostileEntity.class, 10, true, false, e -> e.getGroup() == EntityGroup.ARTHROPOD));
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
