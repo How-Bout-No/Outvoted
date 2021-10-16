@@ -3,10 +3,8 @@ package io.github.how_bout_no.outvoted.util;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.InteractionEvent;
-import dev.architectury.event.events.common.PlayerEvent;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModItems;
-import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -62,7 +60,7 @@ public class EventRegister {
             return EventResult.pass();
         });
 
-        PlayerEvent.PLAYER_JOIN.register((PatchouliCompat::giveBook));
+//        PlayerEvent.PLAYER_JOIN.register((PatchouliCompat::giveBook));
     }
 
     // Don't look, the wood is stripping
