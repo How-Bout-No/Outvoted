@@ -43,7 +43,7 @@
     "minecraft": ">=1.17",
     "architectury": ">=2.5",
     "cloth-config2": "*",
-    "geckolib3": ">=3.0.10"
+    "geckolib3": ">=3.0.16"
   },
   "suggests": {
     "flamingo": "*"

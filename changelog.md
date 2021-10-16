@@ -1,23 +1,14 @@
 Entities
 ---
-Glutton
-- Is now less aggressive to other entities (except other Gluttons) and will only attack if threatened
-- Adjust variant assignment again (will now *only* take the variant of the block it spawns on regardless of biome)
-
-Barnacle
-- Fix occasional crash when attacking
-
 Meerkat
-- Tweak spawns to be more reasonable
+- Fix server crash related to burrow gen
 
-Ostrich
-- Fix crash when equipping saddle
-
-Blocks
+Items
 ---
-- Fix leaf drop table
+Wildfire Helmet
+- Fix player rendering (Requires Geckolib >= 3.0.16)
 
 Misc
 ---
-- Add most if not all missing item and block tags (fixes recipes)
-- Fix some client side mixins loading on server (thx kadir1243)
+- New method for giving players Patchouli books *only once*
+- Fixed MixinTexturedRenderLayers mixin loading error on server side (davidalb97)

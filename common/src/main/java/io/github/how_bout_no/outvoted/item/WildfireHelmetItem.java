@@ -12,7 +12,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -21,22 +20,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class WildfireHelmetItem extends ArmorItem implements IAnimatable {
     private int timer = 0;
-    private static final Identifier HELMET_TEXTURE = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png");
-    private static final Identifier HELMET_TEXTURE_SOUL = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
 
     public WildfireHelmetItem() {
         super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Settings().fireproof().group(Outvoted.TAB_COMBAT));
     }
-
-//    @Override
-//    public Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, Identifier defaultTexture) {
-//        if (Outvoted.clientConfig.wildfireVariants) {
-//            if (stack.getNbt() != null && stack.getNbt().getFloat("SoulTexture") == 1.0F) {
-//                return HELMET_TEXTURE_SOUL;
-//            }
-//        }
-//        return HELMET_TEXTURE;
-//    }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
