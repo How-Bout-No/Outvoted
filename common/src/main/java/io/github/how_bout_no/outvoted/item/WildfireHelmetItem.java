@@ -2,34 +2,24 @@ package io.github.how_bout_no.outvoted.item;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.util.GroupCheck;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.item.GeoArmorItem;
-import vazkii.patchouli.common.book.Book;
-import vazkii.patchouli.common.item.PatchouliItems;
 
-import java.util.List;
-
-public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
+public class WildfireHelmetItem extends ArmorItem implements IAnimatable {
     private int timer = 0;
     private static final Identifier HELMET_TEXTURE = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire.png");
     private static final Identifier HELMET_TEXTURE_SOUL = new Identifier(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
@@ -38,15 +28,15 @@ public class WildfireHelmetItem extends GeoArmorItem implements IAnimatable {
         super(ModArmor.WILDFIRE, EquipmentSlot.HEAD, new Settings().fireproof().group(Outvoted.TAB_COMBAT));
     }
 
-    @Override
-    public Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, Identifier defaultTexture) {
-        if (Outvoted.clientConfig.wildfireVariants) {
-            if (stack.getNbt() != null && stack.getNbt().getFloat("SoulTexture") == 1.0F) {
-                return HELMET_TEXTURE_SOUL;
-            }
-        }
-        return HELMET_TEXTURE;
-    }
+//    @Override
+//    public Identifier getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, Identifier defaultTexture) {
+//        if (Outvoted.clientConfig.wildfireVariants) {
+//            if (stack.getNbt() != null && stack.getNbt().getFloat("SoulTexture") == 1.0F) {
+//                return HELMET_TEXTURE_SOUL;
+//            }
+//        }
+//        return HELMET_TEXTURE;
+//    }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {

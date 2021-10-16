@@ -11,6 +11,8 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.util.Identifier;
+import software.bernie.example.client.renderer.armor.PotatoArmorRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Environment(EnvType.CLIENT)
 public class ClientListener implements ClientModInitializer {
@@ -24,7 +26,7 @@ public class ClientListener implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.MEERKAT.get(), MeerkatRenderer::new);
         EntityRendererRegistry.INSTANCE.register(ModEntityTypes.OSTRICH.get(), OstrichRenderer::new);
 
-//        GeoArmorRendererRegistry.INSTANCE.register(WildfireHelmetItem.class, (context) -> new WildfireHelmetRenderer(context));
+        GeoArmorRenderer.registerArmorRenderer(new PotatoArmorRenderer(), ModItems.WILDFIRE_HELMET.get());
         ShieldModelProvider.registerItemsWithModelProvider();
 
         UnclampedModelPredicateProvider prop = (stack, world, entity, seed) -> stack.hasNbt() && Outvoted.clientConfig.wildfireVariants ? stack.getNbt().getFloat("SoulTexture") : 0.0F;

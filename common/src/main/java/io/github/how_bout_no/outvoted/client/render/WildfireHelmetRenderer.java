@@ -5,14 +5,12 @@ import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
 import io.github.how_bout_no.outvoted.mixin.GeoArmorRendererAccessor;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
-import software.bernie.geckolib3.util.GeoArmorRendererFactory;
 
 public class WildfireHelmetRenderer extends GeoArmorRenderer<WildfireHelmetItem> {
-    public WildfireHelmetRenderer(GeoArmorRendererFactory.Context ctx) {
-        super(new WildfireHelmetModel(), ctx, EntityModelLayers.PLAYER_OUTER_ARMOR);
+    public WildfireHelmetRenderer() {
+        super(new WildfireHelmetModel());
 
         this.headBone = "helmet";
         this.bodyBone = "armorBody";

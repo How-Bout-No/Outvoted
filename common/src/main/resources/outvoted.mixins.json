@@ -7,7 +7,6 @@
     "MixinBlazeEntity",
     "MixinCorridorExit",
     "MixinMendingEnchantment",
-    "MixinServerPlayerEntity",
     "MixinSignType",
     "MixinSilverfishEntity",
     "MixinSpiderEntity",
