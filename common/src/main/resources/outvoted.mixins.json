@@ -10,13 +10,13 @@
     "MixinSignType",
     "MixinSilverfishEntity",
     "MixinSpiderEntity",
-    "MixinTexturedRenderLayers",
     "PointOfInterestTypeAccessor"
   ],
   "client": [
     "GeoArmorRendererAccessor",
     "MixinBuiltinModelItemRenderer",
-    "MixinBlazeRenderer"
+    "MixinBlazeRenderer",
+    "MixinTexturedRenderLayers"
   ],
   "injectors": {
     "defaultRequire": 1
