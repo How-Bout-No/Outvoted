@@ -12,6 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class OutvotedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<Integer> max_enchants;
+        public final ForgeConfigSpec.ConfigValue<Integer> max_level_increase;
         public final ForgeConfigSpec.BooleanValue spawnwildfire;
         public final ForgeConfigSpec.BooleanValue spawnhunger;
         public final ForgeConfigSpec.BooleanValue spawnkraken;
@@ -59,6 +60,7 @@ public class OutvotedConfig {
             ratehunger = builder.defineInRange("Spawn Weight", 5, 1, 100);
             healthhunger = builder.defineInRange("Max Health", 20.0D, 1.0D, Double.POSITIVE_INFINITY);
             max_enchants = builder.define("Maximum Stored Enchantments", 5);
+            max_level_increase = builder.defineInRange("Maximum Level Increase Above Cap", 1, 0, Integer.MAX_VALUE);
             builder.pop();
 
             builder.comment("Monster of the Ocean Depths").push("kraken");

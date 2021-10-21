@@ -311,7 +311,7 @@ public class HungerEntity extends MonsterEntity implements IAnimatable {
                     Enchantment enchantment = entry.getKey();
                     Integer level = entry.getValue();
                     if (cacheEnchants.containsKey(enchantment)) {
-                        if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) != enchantment.getMaxLevel() + 1) {
+                        if (enchantment.getMaxLevel() != 1 && cacheEnchants.get(enchantment) < enchantment.getMaxLevel() + OutvotedConfig.COMMON.max_level_increase.get()) {
                             if (level == enchantment.getMaxLevel() && cacheEnchants.get(enchantment) == enchantment.getMaxLevel()) {
                                 for (Enchantment ench : cacheEnchants.keySet()) {
                                     if (cacheEnchants.get(ench) == ench.getMaxLevel() + 1) {
