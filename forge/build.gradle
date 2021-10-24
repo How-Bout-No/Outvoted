@@ -3,8 +3,6 @@ plugins {
 }
 
 loom {
-    accessWidenerPath = file("../fabric/src/main/resources/outvoted.accesswidener")
-
     forge {
         mixinConfig "outvoted.mixins.json"
         mixinConfig "outvoted-forge.mixins.json"
@@ -12,8 +10,6 @@ loom {
         dataGen {
             mod "outvoted"
         }
-
-        convertAccessWideners = true
     }
 
     launches {

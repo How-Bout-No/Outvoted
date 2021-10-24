@@ -51,9 +51,7 @@ public class ModEventBusSubscriber {
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.AddLayers event) {
-        if (!FMLEnvironment.production) {
-            GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
-        }
+        GeoArmorRenderer.registerArmorRenderer(WildfireHelmetItem.class, new WildfireHelmetRenderer());
     }
 
     @SubscribeEvent

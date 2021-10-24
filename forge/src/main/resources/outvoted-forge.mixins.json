@@ -5,6 +5,7 @@
   "mixins": [
     "ItemInvoker",
     "MixinGeoArmorItem",
+    "MixinHoneycombItem",
     "MixinShapedRecipeJsonFactory",
     "MixinShapelessRecipeJsonFactory"
   ],

@@ -3,6 +3,7 @@
   "package": "io.github.how_bout_no.outvoted.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "MixinHoneycombItem",
     "MixinPlayerEntity"
   ],
   "minVersion": "0.8",

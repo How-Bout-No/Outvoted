@@ -1,0 +1,30 @@
+accessWidener v1 named
+
+accessible field  net/minecraft/world/biome/SpawnSettings     spawners                Ljava/util/Map;
+mutable    field  net/minecraft/world/biome/SpawnSettings     spawners                Ljava/util/Map;
+accessible method net/minecraft/block/StairsBlock             <init>                  (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V
+accessible method net/minecraft/block/WoodenButtonBlock       <init>                  (Lnet/minecraft/block/AbstractBlock$Settings;)V
+accessible method net/minecraft/block/PressurePlateBlock      <init>                  (Lnet/minecraft/block/PressurePlateBlock$ActivationRule;Lnet/minecraft/block/AbstractBlock$Settings;)V
+accessible method net/minecraft/block/TrapdoorBlock           <init>                  (Lnet/minecraft/block/AbstractBlock$Settings;)V
+accessible method net/minecraft/block/DoorBlock               <init>                  (Lnet/minecraft/block/AbstractBlock$Settings;)V
+accessible method net/minecraft/block/FireBlock               registerFlammableBlock  (Lnet/minecraft/block/Block;II)V
+accessible field  net/minecraft/item/SpawnEggItem             SPAWN_EGGS              Ljava/util/Map;
+mutable    field  net/minecraft/item/SpawnEggItem             SPAWN_EGGS              Ljava/util/Map;
+accessible method net/minecraft/tag/BlockTags                 register                (Ljava/lang/String;)Lnet/minecraft/tag/Tag$Identified;
+accessible method net/minecraft/tag/ItemTags                  register                (Ljava/lang/String;)Lnet/minecraft/tag/Tag$Identified;
+accessible field  net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
+mutable    field  net/minecraft/block/entity/BlockEntityType  blocks                  Ljava/util/Set;
+extendable class  net/minecraft/structure/NetherFortressGenerator$Piece
+accessible method net/minecraft/world/poi/PointOfInterestType <init>       (Ljava/lang/String;Ljava/util/Set;II)V
+extendable method net/minecraft/block/dispenser/ItemDispenserBehavior dispense (Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;
+accessible class  net/minecraft/world/gen/feature/ConfiguredFeatures$Decorators
+accessible class  net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
+accessible method net/minecraft/util/SignType               register                  (Lnet/minecraft/util/SignType;)Lnet/minecraft/util/SignType;
+accessible method net/minecraft/util/SignType               <init>                  (Ljava/lang/String;)V
+accessible method net/minecraft/world/SpawnHelper$Info       <init>          (ILit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;Lnet/minecraft/util/math/GravityField;)V
+accessible field  net/minecraft/world/SpawnHelper CHUNK_AREA I
+accessible field  net/minecraft/entity/ai/goal/MoveToTargetPosGoal safeWaitingTime I
+accessible method net/minecraft/server/world/ThreadedAnvilChunkStorage getTicketManager ()Lnet/minecraft/server/world/ChunkTicketManager;
+extendable method net/minecraft/block/AbstractButtonBlock getPressTicks ()I
+mutable field net/minecraft/item/HoneycombItem UNWAXED_TO_WAXED_BLOCKS Ljava/util/function/Supplier;
+mutable field net/minecraft/item/HoneycombItem WAXED_TO_UNWAXED_BLOCKS Ljava/util/function/Supplier;

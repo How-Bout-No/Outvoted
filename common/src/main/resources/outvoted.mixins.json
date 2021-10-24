@@ -7,7 +7,6 @@
     "MixinAxeItem",
     "MixinBlazeEntity",
     "MixinCorridorExit",
-    "MixinHoneycombItem",
     "MixinLightningRodBlock",
     "MixinMendingEnchantment",
     "PointOfInterestTypeAccessor"
