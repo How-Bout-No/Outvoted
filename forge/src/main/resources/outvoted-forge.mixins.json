@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "io.github.how_bout_no.outvoted.forge.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "ItemInvoker",
+    "MixinGeoArmorItem",
+    "MixinShapedRecipeJsonFactory",
+    "MixinShapelessRecipeJsonFactory"
+  ],
+  "minVersion": "0.8",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

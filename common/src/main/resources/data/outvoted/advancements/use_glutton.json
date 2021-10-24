@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:story/enchant_item",
+  "display": {
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "title": {
+      "translate": "advancements.outvoted.use_glutton.title"
+    },
+    "description": {
+      "translate": "advancements.outvoted.use_glutton.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "use_glutton": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "nbt": "{Bitten:1}"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "use_glutton"
+    ]
+  ]
+}

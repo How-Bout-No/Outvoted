@@ -1,0 +1,17 @@
+{
+  "name": "Barnacle",
+  "icon": "outvoted:barnacle_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:barnacle",
+      "scale": "0.3",
+      "text": "A terrifying monster that lurks in the deepest of oceans, waiting for its next victim"
+    },
+    {
+      "type": "text",
+      "text": "The Barnacle, originally referred to as the Monster of the Ocean Depths is a terror of the deep sea, it only spawns in the deepest of oceans and will chase any travelers that happen to stumble into its home. It can catch boats and grab players to pull them under the ocean surface. $(br2)Drops: $(l:items/barnacle_tooth)Barnacle Tooth$(/l)"
+    }
+  ]
+}

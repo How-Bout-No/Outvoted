@@ -1,0 +1,50 @@
+{
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:name_tag"
+    },
+    "title": {
+      "translate": "advancements.outvoted.rename_glutton.title"
+    },
+    "description": {
+      "translate": "advancements.outvoted.rename_glutton.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "rename_glutton_d": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "item": "minecraft:name_tag",
+          "nbt": "{display:{Name:'{\"text\":\"Dinnerbone\"}'}}"
+        },
+        "entity": {
+          "type": "outvoted:glutton"
+        }
+      }
+    },
+    "rename_glutton_g": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "item": "minecraft:name_tag",
+          "nbt": "{display:{Name:'{\"text\":\"Grumm\"}'}}"
+        },
+        "entity": {
+          "type": "outvoted:glutton"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "rename_glutton_d",
+      "rename_glutton_g"
+    ]
+  ]
+}

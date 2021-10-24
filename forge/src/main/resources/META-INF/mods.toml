@@ -1,0 +1,44 @@
+modLoader = "javafml"
+loaderVersion = "[${loader},)"
+license = "GNU GPLv3"
+issueTrackerURL = "https://github.com/How-Bout-No/Outvoted/issues"
+
+[[mods]] #mandatory
+modId = "outvoted"
+version = "${version}"
+displayName = "Outvoted"
+updateJSONURL = "https://raw.githubusercontent.com/How-Bout-No/Outvoted/1.16.5/update.json"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/outvoted"
+logoFile = "logo.png"
+authors = "HowBoutNo"
+credits = "Curseforge Community, Lord_Noodal for contributions, and Obi and Furti for textures"
+description = '''Adds in stuff that got outvoted!
+With generous support from TheMasterBlast_r'''
+
+[[dependencies.outvoted]]
+modId = "forge"
+mandatory = true
+versionRange = "[37.0.90,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.outvoted]]
+modId = "geckolib3"
+mandatory = true
+versionRange = "[3,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.outvoted]]
+modId = "architectury"
+mandatory = true
+versionRange = "[2,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.outvoted]]
+modId = "cloth_config"
+mandatory = true
+versionRange = "[5,)"
+ordering = "AFTER"
+side = "BOTH"

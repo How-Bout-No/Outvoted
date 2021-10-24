@@ -1,0 +1,279 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ostrich",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3.5,
+        "visible_bounds_offset": [
+          0,
+          1.25,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "ostrich",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "legs",
+          "parent": "ostrich",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "left",
+          "parent": "legs",
+          "pivot": [
+            2.5,
+            15,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                1.5,
+                0,
+                -3
+              ],
+              "size": [
+                3,
+                1,
+                3
+              ],
+              "uv": [
+                0,
+                45
+              ]
+            },
+            {
+              "origin": [
+                2,
+                0,
+                0
+              ],
+              "size": [
+                2,
+                16,
+                2
+              ],
+              "uv": [
+                52,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "right",
+          "parent": "legs",
+          "pivot": [
+            -2.5,
+            15,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4.5,
+                0,
+                -3
+              ],
+              "size": [
+                3,
+                1,
+                3
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            },
+            {
+              "origin": [
+                -4,
+                0,
+                0
+              ],
+              "size": [
+                2,
+                16,
+                2
+              ],
+              "uv": [
+                52,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "body",
+          "parent": "ostrich",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                15,
+                -8
+              ],
+              "size": [
+                10,
+                9,
+                16
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -4,
+                15,
+                10
+              ],
+              "size": [
+                8,
+                6,
+                2
+              ],
+              "pivot": [
+                0,
+                15,
+                8.5
+              ],
+              "rotation": [
+                35,
+                0,
+                0
+              ],
+              "uv": [
+                34,
+                25
+              ]
+            },
+            {
+              "origin": [
+                -6,
+                16,
+                -4
+              ],
+              "size": [
+                1,
+                6,
+                10
+              ],
+              "uv": [
+                22,
+                25
+              ]
+            },
+            {
+              "origin": [
+                5,
+                16,
+                -4
+              ],
+              "size": [
+                1,
+                6,
+                10
+              ],
+              "uv": [
+                0,
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "parent": "ostrich",
+          "pivot": [
+            0,
+            32,
+            -9.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -2.5,
+                32,
+                -12
+              ],
+              "size": [
+                5,
+                5,
+                5
+              ],
+              "uv": [
+                12,
+                25
+              ]
+            },
+            {
+              "origin": [
+                -1,
+                33,
+                -15
+              ],
+              "size": [
+                2,
+                1,
+                3
+              ],
+              "uv": [
+                0,
+                29
+              ]
+            }
+          ]
+        },
+        {
+          "name": "neck",
+          "parent": "ostrich",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                19,
+                -11
+              ],
+              "size": [
+                3,
+                13,
+                3
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

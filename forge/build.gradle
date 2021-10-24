@@ -1,0 +1,155 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+loom {
+    accessWidenerPath = file("../fabric/src/main/resources/outvoted.accesswidener")
+
+    forge {
+        mixinConfig "outvoted.mixins.json"
+        mixinConfig "outvoted-forge.mixins.json"
+
+        dataGen {
+            mod "outvoted"
+        }
+
+        convertAccessWideners = true
+    }
+
+    launches {
+        data {
+            arg "--existing", file("../common/src/main/resources").absolutePath
+        }
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+    dev
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+    // Remove the next line if you don't want to depend on the API
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+
+    modImplementation "software.bernie.geckolib:geckolib-1.17.1:${rootProject.geckolib_version_forge}"
+    modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+//    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-SNAPSHOT")
+
+//    modImplementation("curse.maven:jei-238222:3295418")
+//    modImplementation("curse.maven:xaero-263420:3298032")
+//    modImplementation("curse.maven:alex-426558:3297742")
+//    modImplementation("curse.maven:citadel-331936:3299591")
+//    modImplementation("curse.maven:workbench-394185:3276056")
+//    modImplementation("curse.maven:fastsuite-475117:3295233")
+//    modImplementation("curse.maven:placebo-283644:3281276")
+
+    common(project(path: ":common", configuration: "dev")) {
+        transitive = false
+    }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
+        transitive = false
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "loader", "${rootProject.forge_loader_version}"
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": "${project.version}", "loader": "${rootProject.forge_loader_version}"
+    }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+
+    configurations = [project.configurations.shadowCommon]
+    classifier "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    classifier null
+}
+
+jar {
+    classifier "dev"
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+//sourceSets.main.resources {
+//    srcDir 'src/generated/resources'
+//}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+import com.modrinth.minotaur.TaskModrinthUpload
+
+if (file("../key.properties").exists()) {
+    curseforge {
+        def curseProp = new Properties()
+        File secretPropsFile = file("../key.properties")
+        curseProp.load(secretPropsFile.newInputStream())
+        apiKey = curseProp.getProperty('curseKey')
+
+        project {
+            id = "415057"
+            releaseType = "alpha"
+            changelogType = 'text'
+            changelog = file('../changelog.md')
+            addGameVersion("1.16.5")
+            addGameVersion("Forge")
+            relations {
+                requiredDependency 'geckolib'
+                requiredDependency 'architectury-forge'
+                requiredDependency 'cloth-config-forge'
+                optionalDependency 'patchouli'
+            }
+            mainArtifact(remapJar.archivePath) {
+                displayName = "Outvoted-${mod_version}-forge"
+            }
+            afterEvaluate {
+                uploadTask.dependsOn("build")
+            }
+        }
+        options {
+            forgeGradleIntegration = false
+            javaVersionAutoDetect = false
+        }
+    }
+
+    task modrinthForge(type: TaskModrinthUpload) {
+        def modrinthProp = new Properties()
+        File secretPropsFile = file("../key.properties")
+        modrinthProp.load(secretPropsFile.newInputStream())
+        token = modrinthProp.getProperty('modrinthKey')
+        projectId = 'klAfKAj3'
+        versionNumber = project.version + "-forge"
+        uploadFile = remapJar.archivePath // This is the java jar task
+        changelog = file('../changelog.md').absoluteFile
+        versionType = "ALPHA"
+        addGameVersion('1.16.5')
+        addLoader('forge')
+    }
+}

@@ -1,0 +1,29 @@
+loom {
+    accessWidenerPath = file("../fabric/src/main/resources/outvoted.accesswidener")
+}
+
+dependencies {
+    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
+    // Do NOT use other classes from fabric loader
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    // Remove the next line if you don't want to depend on the API
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    modImplementation "software.bernie.geckolib:geckolib-fabric-1.17:${rootProject.geckolib_version}"
+    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC-SNAPSHOT")
+}
+
+architectury {
+    common()
+}
+
+configurations {
+    dev
+}
+
+artifacts {
+    dev(jar)
+}
