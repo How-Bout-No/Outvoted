@@ -196,6 +196,10 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         return canMobSpawn(entity, world, spawnReason, blockPos, random);
     }
 
+    protected int getNextAirUnderwater(int air) {
+        return air;
+    }
+
     public void onStruckByLightning(ServerWorld world, LightningEntity lightning) {
         this.unFreeze();
         this.setOxidizationLevel(0);
@@ -211,27 +215,31 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         }
     }
 
+    public float[] createRot() {
+        float limbSwing = this.limbAngle;
+        float limbSwingAmount = this.limbDistance;
+        float oxidizeMult = this.getOxidizationMultiplier();
+        if (oxidizeMult < 1 && oxidizeMult > 0) oxidizeMult += 0.25F;
+        float f = MathHelper.lerpAngleDegrees(0, this.prevBodyYaw, this.bodyYaw);
+        float f1 = MathHelper.lerpAngleDegrees(0, this.prevHeadYaw, this.headYaw);
+        float[] rot = new float[7];
+        rot[0] = this.getPitch();
+        rot[1] = f1 - f;
+        rot[2] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
+        rot[3] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
+        rot[4] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
+        rot[5] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
+        rot[6] = this.getYaw();
+
+        return rot;
+    }
+
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.getOxidizationLevel() < 3) {
-            float limbSwing = this.limbAngle;
-            float limbSwingAmount = this.limbDistance;
-            float oxidizeMult = this.getOxidizationMultiplier();
-            if (oxidizeMult < 1 && oxidizeMult > 0) oxidizeMult += 0.25F;
-            float f = MathHelper.lerpAngleDegrees(0, this.prevBodyYaw, this.bodyYaw);
-            float f1 = MathHelper.lerpAngleDegrees(0, this.prevHeadYaw, this.headYaw);
-            float[] rot = new float[7];
-            rot[0] = this.getPitch();
-            rot[1] = f1 - f;
-            rot[2] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
-            rot[3] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
-            rot[4] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
-            rot[5] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
-            rot[6] = this.getYaw();
-
-            this.setRotations(rot);
-        } else {
+        if (this.getOxidizationLevel() == 2) {
+            this.setRotations(this.createRot());
+        } else if (!this.isNotFrozen()) {
             this.setRotation(this.getRotations()[6], this.getPitch());
         }
     }
