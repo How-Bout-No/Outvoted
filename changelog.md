@@ -1,7 +1,8 @@
 Entities
 ---
 Copper Golem
-- (Sorta) Fix statue pose being reset on login
+- Add Patchouli entry
+- Semi-fix statue pose being reset on login
 - Fix spawning from /summon
 - Fix inconsistent pushing
 - Fix infinite waxing
@@ -12,4 +13,10 @@ Copper Golem
 Blocks
 ---
 Copper Button
+- Add Patchouli entry
 - Fix missing recipes
+
+Items
+---
+Guide Book
+- Fix Patchouli book not loading entries

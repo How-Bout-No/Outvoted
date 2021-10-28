@@ -1,0 +1,12 @@
+{
+  "name": "Copper Button",
+  "icon": "outvoted:copper_button",
+  "category": "outvoted:block_category",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "outvoted:copper_button",
+      "text": "A Copper Golem's favorite block. Will oxidize overtime, can be waxed and scraped like normal copper, however the time the button is pressed will increase the more oxidized it becomes."
+    }
+  ]
+}

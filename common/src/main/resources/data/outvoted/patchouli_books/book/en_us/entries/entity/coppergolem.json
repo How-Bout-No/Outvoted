@@ -1,0 +1,37 @@
+{
+  "name": "Copper Golem",
+  "icon": "minecrafT:copper_block",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:copper_golem{Oxidization:0}",
+      "scale": "0.7",
+      "text": "The Copper Golem is a cute little mob that loves to press copper buttons!"
+    },
+    {
+      "type": "text",
+      "text": "The Copper Golem can be created with a block of copper, a carved pumpkin, and a lightning rod place on top of each other. The Golem will spawn with whatever oxidization state the copper block was at. It also oxidizes slowly overtime (configurable) and can be waxed or scraped with an axe."
+    },
+    {
+      "type": "text",
+      "text": "Once fully oxidized, it will freeze in place like a statue. Also meaning that it will maintain its pose as well. If you want a statue with a default pose, spawn the Copper Golem using a fully oxidized copper block, and the Golem will spawn frozen and facing whichever direction the pumpkin was facing."
+    },
+    {
+      "type": "text",
+      "text": "At random intervals, the Copper Golem will pathfind to a copper button in its range (about 10 blocks) and press it. As the Golem oxidizes, it's movement speed slows, meaning the interval between pressing buttons will be increased."
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:copper_golem{Oxidization:1}",
+      "scale": "0.7",
+      "text": "Exposed Copper Golem"
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:copper_golem{Oxidization:2}",
+      "scale": "0.7",
+      "text": "Weathered Copper Golem"
+    }
+  ]
+}
