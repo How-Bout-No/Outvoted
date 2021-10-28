@@ -3,6 +3,7 @@ package io.github.how_bout_no.outvoted.entity;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.ModButtonBlock;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.util.ModUtil;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -25,8 +26,6 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtFloat;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -34,6 +33,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
 import net.minecraft.world.event.GameEvent;
@@ -52,8 +52,8 @@ import java.util.Random;
 public class CopperGolemEntity extends GolemEntity implements IAnimatable {
     protected static final TrackedData<Integer> OXIDIZATION_LEVEL;
     protected static final TrackedData<Boolean> WAXED;
+    protected static final TrackedData<NbtCompound> ROTATIONS;
     protected boolean pushingState = false;
-    public float[] cachedVals = new float[6];
 
     public CopperGolemEntity(EntityType<? extends CopperGolemEntity> type, World worldIn) {
         super(type, worldIn);
@@ -82,12 +82,14 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
     static {
         OXIDIZATION_LEVEL = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
         WAXED = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ROTATIONS = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
     }
 
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(OXIDIZATION_LEVEL, 0);
         this.dataTracker.startTracking(WAXED, false);
+        this.dataTracker.startTracking(ROTATIONS, new NbtCompound());
     }
 
     public void setOxidizationLevel(int level) {
@@ -104,6 +106,33 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
 
     public boolean isWaxed() {
         return this.dataTracker.get(WAXED);
+    }
+
+    public void setRotations(float[] inp) {
+        float[] rot = inp.clone();
+        for (int i=0; i < rot.length; i++) {
+            rot[i] *= 10000;
+        }
+        setRotationsI(ModUtil.toIntArray(rot));
+    }
+
+    public void setRotationsI(int[] inp) {
+        if (inp == null) inp = new int[7];
+        NbtCompound compound = new NbtCompound();
+        compound.putIntArray("Rot", inp);
+        this.dataTracker.set(ROTATIONS, compound);
+    }
+
+    public float[] getRotations() {
+        float[] rot = ModUtil.toFloatArray(getRotationsI().clone());
+        for (int i=0; i < rot.length; i++) {
+            rot[i] /= 10000;
+        }
+        return rot;
+    }
+
+    public int[] getRotationsI() {
+        return this.dataTracker.get(ROTATIONS).getIntArray("Rot");
     }
 
     @Override
@@ -152,11 +181,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         compound.putInt("Oxidization", this.getOxidizationLevel());
         compound.putBoolean("Waxed", this.isWaxed());
 
-        NbtList nbtTagList = new NbtList();
-        for (float f : this.cachedVals) {
-            nbtTagList.add(NbtFloat.of(f));
-        }
-        compound.put("CachePos", nbtTagList);
+        compound.putIntArray("Rotations", this.getRotationsI().clone());
     }
 
     public void readCustomDataFromNbt(NbtCompound compound) {
@@ -164,10 +189,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         this.setOxidizationLevel(compound.getInt("Oxidization"));
         this.setWaxed(compound.getBoolean("Waxed"));
 
-        NbtList list = (NbtList) compound.get("CachePos");
-        for (int i = 0; i < list.size(); i++) {
-            this.cachedVals[i] = list.getFloat(i);
-        }
+        this.setRotationsI(compound.getIntArray("Rotations"));
     }
 
     public static boolean canSpawn(EntityType<CopperGolemEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
@@ -186,6 +208,31 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
             if (!this.isWaxed() && this.age % 20 == 0 && this.random.nextFloat() < Outvoted.commonConfig.entities.coppergolem.oxidationRate) {
                 this.oxidize();
             }
+        }
+    }
+
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+        if (this.getOxidizationLevel() < 3) {
+            float limbSwing = this.limbAngle;
+            float limbSwingAmount = this.limbDistance;
+            float oxidizeMult = this.getOxidizationMultiplier();
+            if (oxidizeMult < 1 && oxidizeMult > 0) oxidizeMult += 0.25F;
+            float f = MathHelper.lerpAngleDegrees(0, this.prevBodyYaw, this.bodyYaw);
+            float f1 = MathHelper.lerpAngleDegrees(0, this.prevHeadYaw, this.headYaw);
+            float[] rot = new float[7];
+            rot[0] = this.getPitch();
+            rot[1] = f1 - f;
+            rot[2] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
+            rot[3] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
+            rot[4] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
+            rot[5] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
+            rot[6] = this.getYaw();
+
+            this.setRotations(rot);
+        } else {
+            this.setRotation(this.getRotations()[6], this.getPitch());
         }
     }
 
@@ -218,6 +265,12 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         this.getNavigation().setSpeed(1);
     }
 
+    protected void pushAway(Entity entity) {
+        if (this.isNotFrozen()) {
+            super.pushAway(entity);
+        }
+    }
+
     @Override
     public void pushAwayFrom(Entity entity) {
         if (this.isNotFrozen()) {
@@ -232,10 +285,13 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
 
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!itemStack.isOf(Items.COPPER_INGOT) && !(itemStack.getItem() instanceof AxeItem) && !(itemStack.isOf(Items.HONEYCOMB))) {
+        boolean ci = itemStack.isOf(Items.COPPER_INGOT);
+        boolean ai = itemStack.getItem() instanceof AxeItem;
+        boolean hi = itemStack.isOf(Items.HONEYCOMB);
+        if (!ci && !ai && !hi) {
             return ActionResult.PASS;
         } else {
-            if (itemStack.isOf(Items.COPPER_INGOT)) {
+            if (ci) {
                 float f = this.getHealth();
                 this.heal(6.25F);
                 if (this.getHealth() == f) {
@@ -244,26 +300,29 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
                     float g = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
                     this.playSound(SoundEvents.ENTITY_IRON_GOLEM_REPAIR, 1.0F, g);
                 }
-            } else if (itemStack.getItem() instanceof AxeItem) {
+            } else if (ai) {
                 if (this.isWaxed()) {
                     this.setWaxed(false);
                     this.playSound(SoundEvents.ITEM_AXE_WAX_OFF, 1.0F, 1.0F);
-                    this.world.syncWorldEvent(player, 3004, this.getBlockPos(), 0);
+                    this.world.syncWorldEvent(3004, this.getBlockPos(), 0);
                 } else if (this.getOxidizationLevel() > 0) {
                     this.deOxidize();
                     this.playSound(SoundEvents.ITEM_AXE_SCRAPE, 1.0F, 1.0F);
-                    this.world.syncWorldEvent(player, 3005, this.getBlockPos(), 0);
+                    this.world.syncWorldEvent(3005, this.getBlockPos(), 0);
                 } else {
                     return ActionResult.PASS;
                 }
-            } else {
+            } else if (!this.isWaxed()) {
                 this.setWaxed(true);
                 this.playSound(SoundEvents.ITEM_HONEYCOMB_WAX_ON, 1.0F, 1.0F);
-                this.world.syncWorldEvent(player, 3003, this.getBlockPos(), 0);
+                this.world.syncWorldEvent(3003, this.getBlockPos(), 0);
+            } else {
+                return ActionResult.PASS;
             }
             this.emitGameEvent(GameEvent.MOB_INTERACT, this.getCameraBlockPos());
             if (!player.getAbilities().creativeMode) {
-                itemStack.damage(1, this.random, (ServerPlayerEntity) player);
+                if (ci || hi) itemStack.decrement(1);
+                else itemStack.damage(1, this.random, (ServerPlayerEntity) player);
             }
 
             return ActionResult.success(this.world.isClient);
@@ -396,7 +455,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 //        if (!this.isNotFrozen()) return PlayState.STOP;
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("push"));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("headspin2", true));
 //        if (this.random.nextInt(100) < 1) {
 //            event.getController().setAnimation(new AnimationBuilder().addAnimation("headspinc"));
 //        } else if (this.random.nextInt(100) < 1) {
@@ -423,3 +482,4 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         return this.factory;
     }
 }
+
