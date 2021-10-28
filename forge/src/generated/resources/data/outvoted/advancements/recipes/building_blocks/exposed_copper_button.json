@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "outvoted:exposed_copper_button"
+    ]
+  },
+  "criteria": {
+    "has_ecopper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:exposed_copper"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "outvoted:exposed_copper_button"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ecopper",
+      "has_the_recipe"
+    ]
+  ]
+}
