@@ -132,7 +132,9 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
     }
 
     public int[] getRotationsI() {
-        return this.dataTracker.get(ROTATIONS).getIntArray("Rot");
+        int[] rots = this.dataTracker.get(ROTATIONS).getIntArray("Rot");
+        if (rots.length < 7) rots = new int[7];
+        return rots;
     }
 
     @Override

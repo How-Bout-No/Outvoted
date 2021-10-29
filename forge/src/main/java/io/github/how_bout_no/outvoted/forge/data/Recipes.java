@@ -51,20 +51,8 @@ public class Recipes extends RecipesProvider {
         ComplexRecipeJsonFactory.create(ModRecipes.SHIELD_DECO.get())
                 .offerTo(consumer, ModRecipes.SHIELD_DECO.getId().getPath());
         ShapelessRecipeJsonFactory.create(ModBlocks.COPPER_BUTTON.get())
-                .input(Blocks.COPPER_BLOCK)
-                .criterion("has_copper", conditionsFromItem(Blocks.COPPER_BLOCK))
-                .offerTo(consumer);
-        ShapelessRecipeJsonFactory.create(ModBlocks.EXPOSED_COPPER_BUTTON.get())
-                .input(Blocks.EXPOSED_COPPER)
-                .criterion("has_ecopper", conditionsFromItem(Blocks.EXPOSED_COPPER))
-                .offerTo(consumer);
-        ShapelessRecipeJsonFactory.create(ModBlocks.WEATHERED_COPPER_BUTTON.get())
-                .input(Blocks.WEATHERED_COPPER)
-                .criterion("has_wcopper", conditionsFromItem(Blocks.WEATHERED_COPPER))
-                .offerTo(consumer);
-        ShapelessRecipeJsonFactory.create(ModBlocks.OXIDIZED_COPPER_BUTTON.get())
-                .input(Blocks.OXIDIZED_COPPER)
-                .criterion("has_ocopper", conditionsFromItem(Blocks.OXIDIZED_COPPER))
+                .input(Items.COPPER_INGOT)
+                .criterion("has_copper", conditionsFromItem(Items.COPPER_INGOT))
                 .offerTo(consumer);
     }
 }
