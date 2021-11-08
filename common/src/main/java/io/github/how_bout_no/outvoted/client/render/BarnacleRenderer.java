@@ -1,5 +1,6 @@
 package io.github.how_bout_no.outvoted.client.render;
 
+import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.BarnacleModel;
 import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
 import net.fabricmc.api.EnvType;
@@ -21,5 +22,10 @@ public class BarnacleRenderer extends GeoEntityRenderer<BarnacleEntity> {
     @Override
     public RenderLayer getRenderType(BarnacleEntity animatable, float partialTicks, MatrixStack stack, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
         return RenderLayer.getEntityCutoutNoCull(this.getTexture(animatable));
+    }
+
+    @Override
+    public Identifier getTexture(BarnacleEntity entity) {
+        return new Identifier(Outvoted.MOD_ID, "textures/entity/barnacle.png");
     }
 }
