@@ -3,7 +3,7 @@ Entities
 Copper Golem
 - Fix server crash if beta 1 Copper Golems were loaded
 
-Blocks
+Items
 ---
-Copper Button
-- Change recipe to 1 ingot per button and removed recipes for oxidization stages
+Patchouli Book
+- Config for giving book on login is now functional

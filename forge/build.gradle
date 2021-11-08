@@ -111,10 +111,9 @@ if (file("../key.properties").exists()) {
 
         project {
             id = "415057"
-            releaseType = "alpha"
-            changelogType = 'text'
+            releaseType = "beta"
             changelog = file('../changelog.md')
-            addGameVersion("1.16.5")
+            addGameVersion("1.17.1")
             addGameVersion("Forge")
             relations {
                 requiredDependency 'geckolib'
@@ -123,7 +122,7 @@ if (file("../key.properties").exists()) {
                 optionalDependency 'patchouli'
             }
             mainArtifact(remapJar.archivePath) {
-                displayName = "Outvoted-${mod_version}-forge"
+                displayName = "[FORGE] Outvoted-${mod_version}"
             }
             afterEvaluate {
                 uploadTask.dependsOn("build")

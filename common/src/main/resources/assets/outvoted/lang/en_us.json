@@ -158,5 +158,6 @@
   "text.autoconfig.outvoted.option.common.misc": "Miscellaneous",
   "text.autoconfig.outvoted.option.common.misc.helmetPenalty": "Helmet Penalty",
   "text.autoconfig.outvoted.option.common.misc.helmetPenalty.@Tooltip[0]": "Time (in ticks) it takes in between consuming durability",
-  "text.autoconfig.outvoted.option.common.misc.helmetPenalty.@Tooltip[1]": "Set to 0 to never consume durability"
+  "text.autoconfig.outvoted.option.common.misc.helmetPenalty.@Tooltip[1]": "Set to 0 to never consume durability",
+  "text.autoconfig.outvoted.option.common.misc.givePatchouliBookOnLogin": "Give Patchouli Book On Login"
 }

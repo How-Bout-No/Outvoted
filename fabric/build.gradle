@@ -101,13 +101,12 @@ if (file("../key.properties").exists()) {
 
         project {
             id = "415057"
-            releaseType = "alpha"
-            changelogType = 'markdown'
+            releaseType = "beta"
             changelog = file('../changelog.md')
             addGameVersion("1.17.1")
             addGameVersion("Fabric")
             relations {
-                requiredDependency 'geckolib-fabric'
+                requiredDependency 'geckolib'
                 requiredDependency 'architectury-fabric'
                 requiredDependency 'cloth-config'
                 requiredDependency 'fabric-api'
