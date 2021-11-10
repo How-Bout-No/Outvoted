@@ -29,7 +29,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmlclient.ConfigGuiHandler;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 

@@ -4,11 +4,14 @@ import io.github.how_bout_no.outvoted.entity.CopperGolemEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(LightningRodBlock.class)
@@ -18,10 +21,10 @@ public abstract class MixinLightningRodBlock extends RodBlock {
         super(settings);
     }
 
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        if (!oldState.isOf(state.getBlock())) {
-            this.trySpawnEntity(world, pos);
-        }
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        this.trySpawnEntity(world, pos);
     }
 
     private void trySpawnEntity(World world, BlockPos pos) {
@@ -38,6 +41,7 @@ public abstract class MixinLightningRodBlock extends RodBlock {
 
                     CopperGolemEntity entity = ModEntityTypes.COPPER_GOLEM.get().create(world);
                     // This pos update is rly ugly but for some reason yaw doesnt get set properly??
+                    // TODO: Something better than below?
                     entity.refreshPositionAndAngles(pos.down(2), head.get(CarvedPumpkinBlock.FACING).asRotation() - 360F, entity.getPitch());
                     entity.updatePositionAndAngles(pos.getX() + 0.51D, pos.down(2).getY(), pos.getZ() + 0.51D, head.get(CarvedPumpkinBlock.FACING).asRotation() - 360F, entity.getPitch());
                     world.spawnEntity(entity);

@@ -12,6 +12,8 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -71,6 +73,11 @@ public abstract class MixinBlazeEntity extends HostileEntity implements IMixinBl
         this.setVariant(type);
 
         return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    @Override
+    protected Text getDefaultName() {
+        return this.getVariant() == 0 ? super.getDefaultName() : new TranslatableText("entity.outvoted.blaze_s");
     }
 
     @Inject(method = "initDataTracker", at = @At("TAIL"))
