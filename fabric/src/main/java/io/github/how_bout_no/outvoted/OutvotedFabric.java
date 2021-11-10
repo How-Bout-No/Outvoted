@@ -28,8 +28,8 @@ public class OutvotedFabric implements ModInitializer {
         SpawnRestrictionAccessor.callRegister(ModEntityTypes.BARNACLE.get(), SpawnRestriction.Location.IN_WATER,
                 Heightmap.Type.MOTION_BLOCKING, BarnacleEntity::canSpawn);
         SpawnRestrictionAccessor.callRegister(ModEntityTypes.GLARE.get(), SpawnRestriction.Location.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING, GlareEntity::canSpawn);
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GlareEntity::canSpawn);
         SpawnRestrictionAccessor.callRegister(ModEntityTypes.COPPER_GOLEM.get(), SpawnRestriction.Location.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING, CopperGolemEntity::canSpawn);
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CopperGolemEntity::canSpawn);
     }
 }

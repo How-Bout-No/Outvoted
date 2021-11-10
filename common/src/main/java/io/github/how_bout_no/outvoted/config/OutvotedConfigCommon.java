@@ -25,6 +25,9 @@ public class OutvotedConfigCommon implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public CopperGolem coppergolem = new CopperGolem();
 
+        @ConfigEntry.Gui.CollapsibleObject
+        public Glare glare = new Glare();
+
         public static class Wildfire {
             public boolean spawn = true;
             public int rate = 1;
@@ -67,6 +70,12 @@ public class OutvotedConfigCommon implements ConfigData {
             @ConfigEntry.BoundedDiscrete(max = 1)
             @ConfigEntry.Gui.Tooltip
             public float oxidationRate = 0.001F;
+        }
+
+        public static class Glare {
+            public boolean spawn = true;
+            public int rate = 2;
+            public double health = 10.0D;
         }
     }
 

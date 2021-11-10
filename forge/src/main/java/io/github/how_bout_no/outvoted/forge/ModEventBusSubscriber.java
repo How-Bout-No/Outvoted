@@ -68,7 +68,7 @@ public class ModEventBusSubscriber {
         SpawnRestriction.register(ModEntityTypes.GLUTTON.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GluttonEntity::canSpawn);
         SpawnRestriction.register(ModEntityTypes.BARNACLE.get(), SpawnRestriction.Location.IN_WATER, Heightmap.Type.MOTION_BLOCKING, BarnacleEntity::canSpawn);
         SpawnRestriction.register(ModEntityTypes.GLARE.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GlareEntity::canSpawn);
-        SpawnRestriction.register(ModEntityTypes.COPPER_GOLEM.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CopperGolemEntity::canSpawn);
+        SpawnRestriction.register(ModEntityTypes.COPPER_GOLEM.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, CopperGolemEntity::canSpawn);
 
         ModSpawnEggItem.initSpawnEggs();
     }

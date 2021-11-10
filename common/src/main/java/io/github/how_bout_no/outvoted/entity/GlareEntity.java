@@ -1,8 +1,10 @@
 package io.github.how_bout_no.outvoted.entity;
 
+import io.github.how_bout_no.outvoted.Outvoted;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.CaveVines;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.AboveGroundTargeting;
 import net.minecraft.entity.ai.NoPenaltySolidTargeting;
 import net.minecraft.entity.ai.NoWaterTargeting;
@@ -16,25 +18,39 @@ import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 
 import java.util.*;
 
 public class GlareEntity extends PathAwareEntity implements IAnimatable {
+    public static final int maxLight = 7;
     private GlareEntity.MoveToDarkGoal moveToDarkGoal;
     @Nullable
-    BlockPos darkPos;
+    protected BlockPos darkPos;
+    private static final TrackedData<Boolean> ANGRY;
 
     public GlareEntity(EntityType<? extends GlareEntity> type, World worldIn) {
         super(type, worldIn);
@@ -45,7 +61,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         this.setPathfindingPenalty(PathNodeType.WATER_BORDER, 16.0F);
         this.setPathfindingPenalty(PathNodeType.COCOA, -1.0F);
         this.setPathfindingPenalty(PathNodeType.FENCE, -1.0F);
-        this.setNoGravity(true);
     }
 
     public float getPathfindingFavor(BlockPos pos, WorldView world) {
@@ -62,11 +77,16 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0D)
-                .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.6000000238418579D)
+                .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.4000000238418579D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0D);
+    }
 
+    @Nullable
+    public EntityData initialize(ServerWorldAccess worldIn, LocalDifficulty difficultyIn, SpawnReason reason, @Nullable EntityData spawnDataIn, @Nullable NbtCompound dataTag) {
+        HealthUtil.setConfigHealth(this, Outvoted.commonConfig.entities.glare.health);
+
+        return super.initialize(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     protected EntityNavigation createNavigation(World world) {
@@ -81,11 +101,68 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         return birdNavigation;
     }
 
+    @Override
+    public void writeCustomDataToNbt(NbtCompound compound) {
+        super.writeCustomDataToNbt(compound);
+        compound.putBoolean("IsAngry", this.isAngry());
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound compound) {
+        super.readCustomDataFromNbt(compound);
+        this.setAngry(compound.getBoolean("IsAngry"));
+    }
+
+    static {
+        ANGRY = DataTracker.registerData(GlareEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(ANGRY, Boolean.FALSE);
+    }
+
     public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
 
     protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+        return 1.0F;
+    }
+
+    public boolean isAngry() {
+        return this.dataTracker.get(ANGRY);
+    }
+
+    public void setAngry(boolean angry) {
+        this.dataTracker.set(ANGRY, angry);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.setNoGravity(true);
+    }
+
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+        if (!this.world.isClient) {
+            this.setAngry(this.getLight(this.getBlockPos()) <= maxLight);
+        }
+        if (this.isAngry() && this.age % 20 == 0)
+            this.world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getParticleX(0.75D), this.getY() + this.random.nextDouble(), this.getParticleZ(0.75D), this.random.nextDouble(), this.random.nextDouble(), this.random.nextDouble());
+        if (this.isAngry() && this.age % 15 == 0)
+            this.world.playSoundFromEntity(null, this, SoundEvents.BLOCK_AZALEA_LEAVES_FALL, SoundCategory.NEUTRAL, 0.6F, lerp(0.25F, 0.75F, this.random.nextFloat()));
+    }
+
+    float lerp(float a, float b, float f) {
+        return (a * (1.0F - f)) + (b * f);
     }
 
     void startMovingTo(BlockPos pos) {
@@ -114,29 +191,43 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
     }
 
-    @Nullable
-    public BlockPos getDarkPos() {
-        return this.darkPos;
-    }
-
     public boolean hasDarkPos() {
         return this.darkPos != null;
     }
 
-    public void setDarkPos(BlockPos pos) {
-        this.darkPos = pos;
+    public boolean isDarkSpot(BlockPos pos) {
+        return this.getLight(pos) <= maxLight && this.isGap(pos) && !this.world.isSkyVisible(pos.up());
     }
 
-    public boolean isDarkSpot(BlockPos pos) {
-        return this.world.getLightLevel(LightType.BLOCK, pos) <= 8 && this.world.getBlockState(pos).isSolidBlock(this.world, pos.down()) && ((this.world.isNight() || this.world.isThundering()) || !this.world.isSkyVisible(pos.up()));
+    boolean isGap(BlockPos pos) {
+        boolean top = this.world.getBlockState(pos.up()).isAir();
+        boolean bottom = this.world.getBlockState(pos.down()).isAir();
+        return this.world.getBlockState(pos).isAir() && (top || bottom);
+    }
+
+    BlockPos modifyPos(BlockPos pos) {
+        if (isGap(pos)) {
+            if (this.world.getBlockState(pos.up()).isAir()) {
+                return pos.up();
+            }
+        }
+        return pos;
     }
 
     boolean isWithinDistance(BlockPos pos, int distance) {
-        return pos.isWithinDistance(this.getBlockPos(), (double) distance);
+        return isWithinDistance(pos, (double) distance);
+    }
+
+    boolean isWithinDistance(BlockPos pos, double distance) {
+        return pos.isWithinDistance(this.getBlockPos(), distance);
     }
 
     boolean isTooFar(BlockPos pos) {
         return !this.isWithinDistance(pos, 32);
+    }
+
+    int getLight(BlockPos pos) {
+        return this.world.getBaseLightLevel(pos, this.world.getAmbientDarkness());
     }
 
     class GlareWanderAroundGoal extends Goal {
@@ -171,13 +262,16 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     class FindDarkSpotGoal extends Goal {
         BlockPos cachePos;
+        int ticks;
 
         FindDarkSpotGoal() {
             super();
+            this.ticks = GlareEntity.this.world.random.nextInt(20) + 20;
         }
 
         public boolean canStart() {
-            return (!GlareEntity.this.hasDarkPos() || !isDarkSpot(GlareEntity.this.darkPos)) && cachePos != GlareEntity.this.getBlockPos();
+            ++this.ticks;
+            return (!GlareEntity.this.hasDarkPos() || !isDarkSpot(GlareEntity.this.darkPos)) && cachePos != GlareEntity.this.getBlockPos() && this.ticks > 40;
         }
 
         public boolean shouldContinue() {
@@ -185,6 +279,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
 
         public void start() {
+            this.ticks = 0;
             BlockPos darkestSpot = getDarkestSpot();
             if (darkestSpot != null) {
                 GlareEntity.this.darkPos = darkestSpot;
@@ -195,10 +290,10 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
             int mult = 5;
             Map<BlockPos, Integer> map = new HashMap<>();
             for (BlockPos blockPos : BlockPos.iterateOutwards(GlareEntity.this.getBlockPos(), mult, mult, mult)) {
-                if (isDarkSpot(blockPos))
-                    map.put(blockPos.toImmutable(), GlareEntity.this.world.getLightLevel(LightType.BLOCK, blockPos));
+                BlockPos blockPos1 = modifyPos(blockPos);
+                if (isDarkSpot(blockPos1) && blockPos1.getY() >= 4)
+                    map.put(blockPos1.toImmutable(), GlareEntity.this.getLight(blockPos1));
             }
-            System.out.println(map);
             return map;
         }
 
@@ -215,7 +310,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     class MoveToDarkGoal extends Goal {
-        private static final int MAX_DARK_NAVIGATION_TICKS = 600;
         int ticks;
 
         MoveToDarkGoal() {
@@ -225,7 +319,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            return GlareEntity.this.darkPos != null && !GlareEntity.this.hasPositionTarget() && !GlareEntity.this.isWithinDistance(GlareEntity.this.darkPos, 10);
+            return GlareEntity.this.darkPos != null && !GlareEntity.this.hasPositionTarget() && GlareEntity.this.getBlockPos() != GlareEntity.this.darkPos && !GlareEntity.this.isLeashed();
         }
 
         public boolean shouldContinue() {
@@ -259,14 +353,34 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
     }
 
+    private static boolean isSuitableSpawn(WorldAccess world, BlockPos pos, Random random) {
+        int mult = 5;
+        for (BlockPos blockPos : BlockPos.iterateOutwards(pos, mult, mult, mult)) {
+            BlockState state = world.getBlockState(blockPos);
+            if (state.getFluidState().isIn(FluidTags.LAVA)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean canSpawn(EntityType<GlareEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return canMobSpawn(entity, world, spawnReason, blockPos, random);
+        return !world.isSkyVisible(blockPos) && isSuitableSpawn(world, blockPos, random) && blockPos.getY() < world.getTopY() - 5 && canMobSpawn(entity, world, spawnReason, blockPos, random);
     }
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        GeckoLibCache.getInstance().parser.setValue("mult", this.isAngry() ? 0.75F : 0.25F);
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("living", true));
+
+        return PlayState.CONTINUE;
+    }
+
     @Override
-    public void registerControllers(AnimationData animationData) {
+    public void registerControllers(AnimationData data) {
+        AnimationController<GlareEntity> controller = new AnimationController<>(this, "controller", 2, this::predicate);
+        data.addAnimationController(controller);
     }
 
     @Override

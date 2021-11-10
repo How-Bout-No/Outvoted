@@ -133,6 +133,7 @@
         },
         {
           "name": "body",
+          "parent": "head",
           "pivot": [
             0,
             0,
@@ -175,6 +176,7 @@
         },
         {
           "name": "tail",
+          "parent": "body",
           "pivot": [
             0,
             0,
