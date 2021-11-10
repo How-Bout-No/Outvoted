@@ -303,7 +303,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         } else {
             if (ci) {
                 float f = this.getHealth();
-                this.heal(6.25F);
+                this.heal(this.getMaxHealth() / 4);
                 if (this.getHealth() == f) {
                     return ActionResult.PASS;
                 } else {
@@ -332,7 +332,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
             this.emitGameEvent(GameEvent.MOB_INTERACT, this.getCameraBlockPos());
             if (!player.getAbilities().creativeMode) {
                 if (ci || hi) itemStack.decrement(1);
-                else itemStack.damage(1, this.random, (ServerPlayerEntity) player);
+                else if (!this.world.isClient) itemStack.damage(1, this.random, (ServerPlayerEntity) player);
             }
 
             return ActionResult.success(this.world.isClient);

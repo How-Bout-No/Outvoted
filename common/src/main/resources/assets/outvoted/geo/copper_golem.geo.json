@@ -3,7 +3,7 @@
   "minecraft:geometry": [
     {
       "description": {
-        "identifier": "geometry.coppergolem",
+        "identifier": "geometry.copper_golem",
         "texture_width": 64,
         "texture_height": 64,
         "visible_bounds_width": 3,
@@ -16,7 +16,16 @@
       },
       "bones": [
         {
+          "name": "golem",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
           "name": "head",
+          "parent": "golem",
           "pivot": [
             0,
             8.875,
@@ -91,6 +100,7 @@
         },
         {
           "name": "body",
+          "parent": "golem",
           "pivot": [
             0,
             6.5,
@@ -116,33 +126,8 @@
           ]
         },
         {
-          "name": "leftarm",
-          "pivot": [
-            6.5,
-            9,
-            1
-          ],
-          "cubes": [
-            {
-              "origin": [
-                6,
-                0,
-                -1
-              ],
-              "size": [
-                3,
-                10,
-                4
-              ],
-              "uv": [
-                0,
-                26
-              ]
-            }
-          ]
-        },
-        {
           "name": "rightarm",
+          "parent": "golem",
           "pivot": [
             -6.5,
             9,
@@ -169,6 +154,7 @@
         },
         {
           "name": "rightleg",
+          "parent": "golem",
           "pivot": [
             -2.5,
             4,
@@ -194,7 +180,36 @@
           ]
         },
         {
+          "name": "leftarm",
+          "parent": "golem",
+          "pivot": [
+            6.5,
+            9,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                6,
+                0,
+                -1
+              ],
+              "size": [
+                3,
+                10,
+                4
+              ],
+              "uv": [
+                0,
+                26
+              ],
+              "mirror": true
+            }
+          ]
+        },
+        {
           "name": "leftleg",
+          "parent": "golem",
           "pivot": [
             2.5,
             4,
@@ -215,7 +230,8 @@
               "uv": [
                 28,
                 26
-              ]
+              ],
+              "mirror": true
             }
           ]
         }

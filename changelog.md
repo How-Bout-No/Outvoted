@@ -1,7 +1,8 @@
 Entities
 ---
 Copper Golem
-- Fix server crash if beta 1 Copper Golems were loaded
+- Healing will now be proportional to config health
+- Fix crash when deoxidizing
 
 Items
 ---
