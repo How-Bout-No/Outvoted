@@ -21,7 +21,7 @@ public class ConfigCheckLootCondition implements LootCondition {
     }
 
     public LootConditionType getType() {
-        return ModLootConditionTypes.CONFIG_CHECK.get();
+        return ModLootConditionTypes.CONFIG_CHECK;
     }
 
     public boolean test(LootContext lootContext) {

@@ -50,7 +50,7 @@ public class Outvoted {
         ModBlocks.BLOCK_ITEMS.register();
         ModEntityTypes.ENTITY_TYPES.register();
         ModItems.ITEMS.register();
-        ModLootConditionTypes.CONDITIONS.register();
+        ModLootConditionTypes.register();
         ModRecipes.RECIPES.register();
         ModSounds.SOUNDS.register();
         ModTags.init();
