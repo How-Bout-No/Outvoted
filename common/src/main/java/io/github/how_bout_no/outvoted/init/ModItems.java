@@ -20,6 +20,8 @@ public class ModItems {
             () -> new ModSpawnEggItem(ModEntityTypes.GLUTTON, 0xF0D786, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> BARNACLE_SPAWN_EGG = ITEMS.register("barnacle_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.BARNACLE, 0x5B872E, 0x000000, new Item.Settings()));
+    public static final RegistrySupplier<ModSpawnEggItem> GLARE_SPAWN_EGG = ITEMS.register("glare_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.GLARE, 0x325F03, 0x97D756, new Item.Settings()));
 
     // Items
     public static final RegistrySupplier<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);

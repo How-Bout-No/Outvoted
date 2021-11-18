@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.LookControl;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeType;
@@ -21,8 +22,10 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
@@ -64,6 +67,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     protected void initGoals() {
+        this.goalSelector.add(0, new TemptGoal(this, 1.5, Ingredient.ofItems(Items.GLOW_BERRIES), false));
         this.moveToDarkGoal = new GlareEntity.MoveToDarkGoal();
         this.goalSelector.add(1, this.moveToDarkGoal);
         this.goalSelector.add(2, new GlareEntity.FindDarkSpotGoal());

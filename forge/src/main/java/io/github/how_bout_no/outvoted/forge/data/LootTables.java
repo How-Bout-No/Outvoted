@@ -1,13 +1,16 @@
 package io.github.how_bout_no.outvoted.forge.data;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.init.ModItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.server.EntityLootTableGenerator;
 import net.minecraft.data.server.LootTablesProvider;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -54,6 +57,8 @@ public class LootTables extends LootTablesProvider {
             list.add(ModEntityTypes.WILDFIRE.get());
             list.add(ModEntityTypes.GLUTTON.get());
             list.add(ModEntityTypes.BARNACLE.get());
+            list.add(ModEntityTypes.COPPER_GOLEM.get());
+            list.add(ModEntityTypes.GLARE.get());
             return list;
         }
 
@@ -77,7 +82,6 @@ public class LootTables extends LootTablesProvider {
                                     .conditionally(RandomChanceWithLootingLootCondition.builder(0.05F, 0.025F))
                                     .conditionally(KilledByPlayerLootCondition.builder())))
             );
-
             this.register(ModEntityTypes.GLUTTON.get(), LootTable.builder()
                     .pool(LootPool.builder()
                             .rolls(ConstantLootNumberProvider.create(1))
@@ -91,7 +95,6 @@ public class LootTables extends LootTablesProvider {
                                     .conditionally(RandomChanceWithLootingLootCondition.builder(0.1F, 0.05F))
                                     .conditionally(KilledByPlayerLootCondition.builder())))
             );
-
             this.register(ModEntityTypes.BARNACLE.get(), LootTable.builder()
                     .pool(LootPool.builder()
                             .rolls(ConstantLootNumberProvider.create(1))
@@ -100,6 +103,32 @@ public class LootTables extends LootTablesProvider {
                                     .apply(LootingEnchantLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
                                     .conditionally(KilledByPlayerLootCondition.builder())))
             );
+            this.register(ModEntityTypes.COPPER_GOLEM.get(), LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(1))
+                            .with(ItemEntry.builder(Blocks.ALLIUM)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
+                            )
+                    )
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(1))
+                            .with(ItemEntry.builder(Items.COPPER_INGOT)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F)))
+                            )
+                    )
+            );
+            this.register(ModEntityTypes.GLARE.get(), LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(1))
+                            .with(ItemEntry.builder(Items.GLOW_BERRIES)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
+                            )
+                    )
+            );
+        }
+
+        static {
+            ENTITY_TYPES_IN_MISC_GROUP_TO_CHECK = ImmutableSet.of(EntityType.PLAYER, EntityType.ARMOR_STAND, EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM, EntityType.VILLAGER, ModEntityTypes.COPPER_GOLEM.get());
         }
     }
 }
