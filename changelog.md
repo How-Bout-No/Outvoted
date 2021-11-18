@@ -20,3 +20,10 @@ Items
 ---
 Patchouli Book
 - Config for giving book on login is now functional
+
+Wildfire Shield
+- Fix shield not consuming durability on Fabric
+
+Misc
+---
+- Fix crash with Carpet Fixes

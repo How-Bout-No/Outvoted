@@ -464,26 +464,14 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-//        if (!this.isNotFrozen()) return PlayState.STOP;
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("headspin2", true));
-//        if (this.random.nextInt(100) < 1) {
-//            event.getController().setAnimation(new AnimationBuilder().addAnimation("headspinc"));
-//        } else if (this.random.nextInt(100) < 1) {
-//            event.getController().setAnimation(new AnimationBuilder().addAnimation("headspincc"));
-//        }
-//
-//        if (this.pushingState) {
-//            System.out.println("push");
-//            event.getController().setAnimation(new AnimationBuilder().addAnimation("push"));
-//            this.pushingState = false;
-//        }
+//        event.getController().setAnimation(new AnimationBuilder().addAnimation("push", true));
 
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController<CopperGolemEntity> controller = new AnimationController<>(this, "controller", 2, this::predicate);
+        AnimationController<CopperGolemEntity> controller = new AnimationController<>(this, "controller", 1, this::predicate);
         data.addAnimationController(controller);
     }
 

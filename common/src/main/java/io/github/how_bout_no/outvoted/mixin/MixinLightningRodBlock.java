@@ -4,27 +4,27 @@ import io.github.how_bout_no.outvoted.entity.CopperGolemEntity;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LightningRodBlock.class)
 public abstract class MixinLightningRodBlock extends RodBlock {
-
     protected MixinLightningRodBlock(Settings settings) {
         super(settings);
     }
 
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        this.trySpawnEntity(world, pos);
+    @Inject(method = "onBlockAdded", at = @At("TAIL"))
+    public void trySpawn(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify, CallbackInfo ci) {
+        if (!state.isOf(oldState.getBlock())) {
+            this.trySpawnEntity(world, pos);
+        }
     }
 
     private void trySpawnEntity(World world, BlockPos pos) {
