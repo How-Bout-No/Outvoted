@@ -3,9 +3,9 @@ package io.github.how_bout_no.outvoted.init;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.block.BaseCopperButtonBlock;
 import io.github.how_bout_no.outvoted.block.CopperButtonBlock;
 import io.github.how_bout_no.outvoted.block.ModBlockItems.ModBlockItem;
-import io.github.how_bout_no.outvoted.block.ModButtonBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -22,10 +22,10 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> EXPOSED_COPPER_BUTTON = BLOCKS.register("exposed_copper_button", () -> new CopperButtonBlock(Oxidizable.OxidizationLevel.EXPOSED, AbstractBlock.Settings.copy(Blocks.EXPOSED_COPPER).noCollision().strength(0.5F)));
     public static final RegistrySupplier<Block> WEATHERED_COPPER_BUTTON = BLOCKS.register("weathered_copper_button", () -> new CopperButtonBlock(Oxidizable.OxidizationLevel.WEATHERED, AbstractBlock.Settings.copy(Blocks.WEATHERED_COPPER).noCollision().strength(0.5F)));
     public static final RegistrySupplier<Block> OXIDIZED_COPPER_BUTTON = BLOCKS.register("oxidized_copper_button", () -> new CopperButtonBlock(Oxidizable.OxidizationLevel.OXIDIZED, AbstractBlock.Settings.copy(Blocks.OXIDIZED_COPPER).noCollision().strength(0.5F)));
-    public static final RegistrySupplier<Block> WAXED_COPPER_BUTTON = BLOCKS.register("waxed_copper_button", () -> new ModButtonBlock(AbstractBlock.Settings.copy(COPPER_BUTTON.get())));
-    public static final RegistrySupplier<Block> WAXED_EXPOSED_COPPER_BUTTON = BLOCKS.register("waxed_exposed_copper_button", () -> new ModButtonBlock(AbstractBlock.Settings.copy(EXPOSED_COPPER_BUTTON.get())));
-    public static final RegistrySupplier<Block> WAXED_WEATHERED_COPPER_BUTTON = BLOCKS.register("waxed_weathered_copper_button", () -> new ModButtonBlock(AbstractBlock.Settings.copy(WEATHERED_COPPER_BUTTON.get())));
-    public static final RegistrySupplier<Block> WAXED_OXIDIZED_COPPER_BUTTON = BLOCKS.register("waxed_oxidized_copper_button", () -> new ModButtonBlock(AbstractBlock.Settings.copy(OXIDIZED_COPPER_BUTTON.get())));
+    public static final RegistrySupplier<Block> WAXED_COPPER_BUTTON = BLOCKS.register("waxed_copper_button", () -> new BaseCopperButtonBlock(Oxidizable.OxidizationLevel.UNAFFECTED, AbstractBlock.Settings.copy(COPPER_BUTTON.get())));
+    public static final RegistrySupplier<Block> WAXED_EXPOSED_COPPER_BUTTON = BLOCKS.register("waxed_exposed_copper_button", () -> new BaseCopperButtonBlock(Oxidizable.OxidizationLevel.EXPOSED, AbstractBlock.Settings.copy(EXPOSED_COPPER_BUTTON.get())));
+    public static final RegistrySupplier<Block> WAXED_WEATHERED_COPPER_BUTTON = BLOCKS.register("waxed_weathered_copper_button", () -> new BaseCopperButtonBlock(Oxidizable.OxidizationLevel.WEATHERED, AbstractBlock.Settings.copy(WEATHERED_COPPER_BUTTON.get())));
+    public static final RegistrySupplier<Block> WAXED_OXIDIZED_COPPER_BUTTON = BLOCKS.register("waxed_oxidized_copper_button", () -> new BaseCopperButtonBlock(Oxidizable.OxidizationLevel.OXIDIZED, AbstractBlock.Settings.copy(OXIDIZED_COPPER_BUTTON.get())));
 
     // Block items
     public static final RegistrySupplier<Item> COPPER_BUTTON_ITEM = BLOCK_ITEMS.register("copper_button", () -> new ModBlockItem(COPPER_BUTTON.get(), new Item.Settings()));

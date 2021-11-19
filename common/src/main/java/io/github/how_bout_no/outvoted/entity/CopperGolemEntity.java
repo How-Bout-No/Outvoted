@@ -40,7 +40,6 @@ import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -110,7 +109,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
 
     public void setRotations(float[] inp) {
         float[] rot = inp.clone();
-        for (int i=0; i < rot.length; i++) {
+        for (int i = 0; i < rot.length; i++) {
             rot[i] *= 10000;
         }
         setRotationsI(ModUtil.toIntArray(rot));
@@ -125,7 +124,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
 
     public float[] getRotations() {
         float[] rot = ModUtil.toFloatArray(getRotationsI().clone());
-        for (int i=0; i < rot.length; i++) {
+        for (int i = 0; i < rot.length; i++) {
             rot[i] /= 10000;
         }
         return rot;
@@ -234,6 +233,15 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         rot[6] = this.getYaw();
 
         return rot;
+    }
+
+    @Override
+    public void setRotation(float yaw, float pitch) {
+        super.setRotation(yaw, pitch);
+        if (!this.isNotFrozen()) {
+            this.headYaw = yaw;
+            this.bodyYaw = yaw;
+        }
     }
 
     @Override

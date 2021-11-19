@@ -6,12 +6,9 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Random;
 
-public class CopperButtonBlock extends ModButtonBlock implements IOxidizable {
-    private final OxidizationLevel oxidizationLevel;
-
+public class CopperButtonBlock extends BaseCopperButtonBlock {
     public CopperButtonBlock(OxidizationLevel oxidizationLevel, Settings settings) {
-        super(false, settings);
-        this.oxidizationLevel = oxidizationLevel;
+        super(oxidizationLevel, settings);
     }
 
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
@@ -20,14 +17,5 @@ public class CopperButtonBlock extends ModButtonBlock implements IOxidizable {
 
     public boolean hasRandomTicks(BlockState state) {
         return IOxidizable.getIncreasedOxidationBlock(state.getBlock()).isPresent();
-    }
-
-    public OxidizationLevel getDegradationLevel() {
-        return this.oxidizationLevel;
-    }
-
-    @Override
-    protected int getPressTicks() {
-        return 10 * (this.getDegradationLevel().ordinal() + 1);
     }
 }
