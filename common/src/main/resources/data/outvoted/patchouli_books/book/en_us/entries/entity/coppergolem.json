@@ -1,13 +1,40 @@
 {
   "name": "Copper Golem",
-  "icon": "minecrafT:copper_block",
+  "icon": "minecraft:copper_block",
   "category": "outvoted:entity_category",
   "pages": [
     {
       "type": "entity",
       "entity": "outvoted:copper_golem{Oxidization:0}",
-      "scale": "0.7",
+      "scale": "0.8",
       "text": "The Copper Golem is a cute little mob that loves to press copper buttons!"
+    },
+    {
+      "type": "multiblock",
+      "name": "Copper Golem",
+      "multiblock": {
+        "mapping": {
+          "L": "minecraft:lightning_rod",
+          "P": "minecraft:carved_pumpkin",
+          "C": "minecraft:copper_block"
+        },
+        "pattern": [
+          [
+            "L"
+          ],
+          [
+            "P"
+          ],
+          [
+            "C"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "offset": [0, 1, 0]
+      },
+      "text": "Any type of Copper Block works, and the golem will spawn with the oxidization level."
     },
     {
       "type": "text",
@@ -24,14 +51,20 @@
     {
       "type": "entity",
       "entity": "outvoted:copper_golem{Oxidization:1}",
-      "scale": "0.7",
+      "scale": "0.8",
       "text": "Exposed Copper Golem"
     },
     {
       "type": "entity",
       "entity": "outvoted:copper_golem{Oxidization:2}",
-      "scale": "0.7",
+      "scale": "0.8",
       "text": "Weathered Copper Golem"
+    },
+    {
+      "type": "entity",
+      "entity": "outvoted:copper_golem{Oxidization:3}",
+      "scale": "0.8",
+      "text": "Oxidized Copper Golem"
     }
   ]
 }
