@@ -40,7 +40,7 @@ dependencies {
 
     modImplementation "software.bernie.geckolib:geckolib-1.17.1:${rootProject.geckolib_version_forge}"
     modApi ("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
-//    modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-SNAPSHOT")
+    modCompileOnly("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-SNAPSHOT")
 
 //    modImplementation("curse.maven:jei-238222:3295418")
 //    modImplementation("curse.maven:xaero-263420:3298032")

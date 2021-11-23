@@ -9,6 +9,7 @@ Barnacle
 - Fix crash with JEI
 
 Copper Golem
+- Now drops Copper Ingots and Allium
 - Oxidization is a little more accurate (sometimes client will still desync)
 - Healing with Copper Ingots will now be proportional to config health
 - Fix crash when deoxidizing
@@ -18,6 +19,7 @@ Glare
 - Spawns occasionally in dark caves but not near lava
 - Will float over to areas of darkness and be visibly upset
 - Can be guided with a lead or glow berries; will not fly to dark corners unless unleashed/not following
+- Drops Glow Berries
 
 Blocks
 ---
