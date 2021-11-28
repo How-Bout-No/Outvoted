@@ -10,11 +10,9 @@ Copper Golem
 - Fix crash when deoxidizing
 
 Glare
-- Added Glare
-- Spawns occasionally in dark caves but not near lava
-- Will float over to areas of darkness and be visibly upset
-- Can be guided with a lead or glow berries; will not fly to dark corners unless unleashed/not following
-- Drops Glow Berries
+- New model
+- Will now pick up blocks that give off light and place them in dark areas (limited to non full blocks; can be disabled)
+- Now utilizes spawn biome filter in config (will only spawn at y < 63)
 
 Blocks
 ---

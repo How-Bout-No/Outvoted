@@ -2,7 +2,6 @@ package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.util.ItemPlacementContextLiving;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.AboveGroundTargeting;
@@ -23,7 +22,9 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
@@ -34,6 +35,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +53,7 @@ import java.util.function.Predicate;
 
 public class GlareEntity extends PathAwareEntity implements IAnimatable {
     public static final int maxLight = 7;
+    public static int inventorySize = Outvoted.commonConfig.entities.glare.inventorySize;
     @Nullable
     protected BlockPos darkPos;
     private static final TrackedData<Boolean> ANGRY;
@@ -64,7 +67,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         this.setPathfindingPenalty(PathNodeType.WATER_BORDER, 16.0F);
         this.setPathfindingPenalty(PathNodeType.COCOA, -1.0F);
         this.setPathfindingPenalty(PathNodeType.FENCE, -1.0F);
-        this.setCanPickUpLoot(true);
+        this.setCanPickUpLoot(Outvoted.commonConfig.entities.glare.shouldInteract);
     }
 
     public float getPathfindingFavor(BlockPos pos, WorldView world) {
@@ -73,20 +76,14 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     protected void initGoals() {
         this.goalSelector.add(0, new TemptGoal(this, 1.5, Ingredient.ofItems(Items.GLOW_BERRIES), false));
-        this.goalSelector.add(1, new PickupItemGoal());
-        this.goalSelector.add(2, new InDarkGoal());
+        if (Outvoted.commonConfig.entities.glare.shouldInteract) {
+            this.goalSelector.add(1, new PickupItemGoal());
+            this.goalSelector.add(2, new InDarkGoal());
+        }
         this.goalSelector.add(3, new MoveToDarkGoal());
         this.goalSelector.add(4, new GlareEntity.FindDarkSpotGoal());
         this.goalSelector.add(5, new GlareEntity.GlareWanderAroundGoal());
         this.goalSelector.add(6, new SwimGoal(this));
-    }
-
-    protected void initEquipment(LocalDifficulty difficulty) {
-        if (this.random.nextFloat() < 0.2F) {
-            ItemStack itemStack = this.random.nextBoolean() ? new ItemStack(Items.GLOW_LICHEN) : new ItemStack(Items.REDSTONE_TORCH);
-
-            this.equipStack(EquipmentSlot.MAINHAND, itemStack);
-        }
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
@@ -130,8 +127,10 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     static {
         ANGRY = DataTracker.registerData(GlareEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
         PICKABLE_DROP_FILTER = (item) -> {
-            if (item.getStack().getItem() instanceof BlockItem)
-                return !item.cannotPickup() && item.isAlive() && ((BlockItem) item.getStack().getItem()).getBlock().getDefaultState().getLuminance() > maxLight;
+            if (item.getStack().getItem() instanceof BlockItem) {
+                BlockState state = ((BlockItem) item.getStack().getItem()).getBlock().getDefaultState();
+                return !item.cannotPickup() && item.isAlive() && state.getLuminance() > maxLight;
+            }
             return false;
         };
     }
@@ -151,8 +150,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     @Override
     protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
-//        return 1.0F;
-        return super.getActiveEyeHeight(pose, dimensions);
+        return 0.7F;
     }
 
     public boolean isAngry() {
@@ -185,12 +183,12 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         ItemStack itemStack = item.getStack();
         if (this.canPickupItem(itemStack)) {
             int i = itemStack.getCount();
-            if (i > 1) {
-                this.dropItem(itemStack.split(i - 1));
+            if (i > inventorySize) {
+                this.dropItem(itemStack.split(i - inventorySize));
             }
 
             this.triggerItemPickedUpByEntityCriteria(item);
-            this.equipStack(EquipmentSlot.MAINHAND, itemStack.split(1));
+            this.equipStack(EquipmentSlot.MAINHAND, itemStack.split(inventorySize));
             this.handDropChances[EquipmentSlot.MAINHAND.getEntitySlotId()] = 2.0F;
             this.sendPickup(item, itemStack.getCount());
             item.discard();
@@ -212,11 +210,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         if (this.isAngry() && this.age % 20 == 0)
             this.world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getParticleX(0.75D), this.getY() + this.random.nextDouble(), this.getParticleZ(0.75D), this.random.nextDouble(), this.random.nextDouble(), this.random.nextDouble());
         if (this.isAngry() && this.age % 15 == 0)
-            this.world.playSoundFromEntity(null, this, SoundEvents.BLOCK_AZALEA_LEAVES_FALL, SoundCategory.NEUTRAL, 0.6F, lerp(0.25F, 0.75F, this.random.nextFloat()));
-    }
-
-    float lerp(float a, float b, float f) {
-        return (a * (1.0F - f)) + (b * f);
+            this.world.playSoundFromEntity(null, this, SoundEvents.BLOCK_AZALEA_LEAVES_FALL, SoundCategory.NEUTRAL, 0.6F, MathHelper.lerp(this.random.nextFloat(), 0.25F, 0.75F));
     }
 
     void startMovingTo(BlockPos pos) {
@@ -250,23 +244,23 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     public boolean isDarkSpot(BlockPos pos) {
-        return this.getLight(pos) <= maxLight && this.isGap(pos) && !this.world.isSkyVisible(pos.up());
+        return this.getLight(pos) <= maxLight && this.world.isAir(pos);
     }
 
-    boolean isGap(BlockPos pos) {
-        boolean top = this.world.getBlockState(pos.up()).isAir();
-        boolean bottom = this.world.getBlockState(pos.down()).isAir();
-        return this.world.getBlockState(pos).isAir() && (top || bottom);
-    }
-
-    BlockPos modifyPos(BlockPos pos) {
-        if (isGap(pos)) {
-            if (this.world.getBlockState(pos.up()).isAir()) {
-                return pos.up();
-            }
-        }
-        return pos;
-    }
+//    boolean isGap(BlockPos pos) {
+//        boolean top = this.world.getBlockState(pos.up()).isAir();
+//        boolean bottom = this.world.getBlockState(pos.down()).isAir();
+//        return this.world.getBlockState(pos).isAir() && (top || bottom);
+//    }
+//
+//    BlockPos modifyPos(BlockPos pos) {
+//        if (isGap(pos)) {
+//            if (this.world.getBlockState(pos.up()).isAir()) {
+//                return pos.up();
+//            }
+//        }
+//        return pos;
+//    }
 
     boolean isWithinDistance(BlockPos pos, int distance) {
         return isWithinDistance(pos, (double) distance);
@@ -343,9 +337,8 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
             int mult = 5;
             Map<BlockPos, Integer> map = new HashMap<>();
             for (BlockPos blockPos : BlockPos.iterateOutwards(GlareEntity.this.getBlockPos(), mult, mult, mult)) {
-                BlockPos blockPos1 = modifyPos(blockPos);
-                if (isDarkSpot(blockPos1) && blockPos1.getY() >= 4)
-                    map.put(blockPos1.toImmutable(), GlareEntity.this.getLight(blockPos1));
+                if (isDarkSpot(blockPos) && blockPos.getY() >= 4)
+                    map.put(blockPos.toImmutable(), GlareEntity.this.getLight(blockPos));
             }
             return map;
         }
@@ -407,6 +400,8 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     class InDarkGoal extends Goal {
+        private int tick;
+
         InDarkGoal() {
             super();
         }
@@ -421,15 +416,25 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
 
         public void tick() {
-            if (GlareEntity.this.darkPos != null) {
-                if (!GlareEntity.this.getMainHandStack().isEmpty()) {
+            if (GlareEntity.this.darkPos != null && tick >= 5) {
+                if (!GlareEntity.this.getMainHandStack().isEmpty() && isDarkSpot(GlareEntity.this.getBlockPos())) {
                     BlockItem blockItem = (BlockItem) GlareEntity.this.getMainHandStack().getItem();
                     ItemPlacementContextLiving itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos()), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos(), !GlareEntity.this.world.getBlockState(GlareEntity.this.getBlockPos()).isAir()));
                     ActionResult actionResult = blockItem.place(itemPlacementContextLiving);
-                    System.out.println(actionResult);
-                    GlareEntity.this.getMainHandStack().decrement(1);
+                    if (!actionResult.isAccepted()) {
+                        for (Direction direction : new Direction[]{Direction.DOWN, Direction.UP}) {
+                            itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos().offset(direction)), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos().offset(direction), !GlareEntity.this.world.getBlockState(GlareEntity.this.getBlockPos().offset(direction)).isAir()));
+                            actionResult = blockItem.place(itemPlacementContextLiving);
+                            if (actionResult.isAccepted()) break;
+                        }
+                    }
+                    if (actionResult.isAccepted()) {
+                        GlareEntity.this.getMainHandStack().decrement(1);
+                        tick = 0;
+                    }
                 }
             }
+            ++tick;
         }
     }
 
@@ -439,6 +444,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
 
         public boolean canStart() {
+            if (!Outvoted.commonConfig.entities.glare.shouldInteract || !GlareEntity.this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) return false;
             if (GlareEntity.this.getTarget() == null && GlareEntity.this.getAttacker() == null) {
                 if (GlareEntity.this.getRandom().nextInt(10) != 0) {
                     return false;
@@ -449,6 +455,10 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
             } else {
                 return false;
             }
+        }
+
+        public boolean shouldContinue() {
+            return (!Outvoted.commonConfig.entities.glare.shouldInteract || !GlareEntity.this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) && super.shouldContinue();
         }
 
         public void tick() {
@@ -479,7 +489,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<GlareEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        System.out.println(blockPos.getY());
         return !world.isSkyVisible(blockPos) && isSuitableSpawn(world, blockPos, random) && blockPos.getY() < 63 && canMobSpawn(entity, world, spawnReason, blockPos, random);
     }
 

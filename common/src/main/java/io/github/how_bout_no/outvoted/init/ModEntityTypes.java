@@ -31,7 +31,7 @@ public class ModEntityTypes {
     public static final RegistrySupplier<EntityType<GlareEntity>> GLARE = ENTITY_TYPES
             .register("glare", () -> EntityType.Builder
                     .create(GlareEntity::new, SpawnGroup.CREATURE)
-                    .setDimensions(0.8F, 1.0F)
+                    .setDimensions(0.8F, 0.95F)
                     .build(new Identifier(Outvoted.MOD_ID, "glare").toString()));
     public static final RegistrySupplier<EntityType<CopperGolemEntity>> COPPER_GOLEM = ENTITY_TYPES
             .register("copper_golem", () -> EntityType.Builder
