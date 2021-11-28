@@ -2,6 +2,9 @@ PLEASE NOTE: Forge servers are completely broken at the moment. Currently unable
 
 Entities
 ---
+Glutton
+- Fix Glutton ignoring maxEnchants and capEnchants configs
+- Fix missing lang entries for capEnchants config
 
 Copper Golem
 - New model
@@ -10,7 +13,7 @@ Copper Golem
 
 Glare
 - New model
-- Will now pick up blocks that give off light and place them in dark areas (limited to non full blocks; can be disabled)
+- Can now pick up items that give off light and place them in dark areas (limited to non full blocks; can be disabled)
 - Now utilizes spawn biome filter in config (will only spawn at y < 63)
 
 Blocks
@@ -19,15 +22,7 @@ Copper Button
 - Fix issue where buttons would get stuck if they oxidized while pressed
 - Fix huge performance hit at high tick speeds
 
-Items
----
-Patchouli Book
-- Config for giving book on login is now functional
-
-Wildfire Shield
-- Fix shield not consuming durability on Fabric
-
 Misc
 ---
 - Fix incompatibility with MobZ
-- Some performance improvements
+- Some backend improvements

@@ -71,7 +71,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     public float getPathfindingFavor(BlockPos pos, WorldView world) {
-        return world.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+        return world.isAir(pos) ? 10.0F : 0.0F;
     }
 
     protected void initGoals() {
@@ -103,7 +103,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     protected EntityNavigation createNavigation(World world) {
         BirdNavigation birdNavigation = new BirdNavigation(this, world) {
             public boolean isValidPosition(BlockPos pos) {
-                return !this.world.getBlockState(pos.down()).isAir();
+                return !this.world.isAir(pos.down());
             }
         };
         birdNavigation.setCanPathThroughDoors(false);
@@ -419,13 +419,16 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
             if (GlareEntity.this.darkPos != null && tick >= 5) {
                 if (!GlareEntity.this.getMainHandStack().isEmpty() && isDarkSpot(GlareEntity.this.getBlockPos())) {
                     BlockItem blockItem = (BlockItem) GlareEntity.this.getMainHandStack().getItem();
-                    ItemPlacementContextLiving itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos()), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos(), !GlareEntity.this.world.getBlockState(GlareEntity.this.getBlockPos()).isAir()));
+                    ItemPlacementContextLiving itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos()), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos(), !GlareEntity.this.world.isAir(GlareEntity.this.getBlockPos())));
                     ActionResult actionResult = blockItem.place(itemPlacementContextLiving);
                     if (!actionResult.isAccepted()) {
-                        for (Direction direction : new Direction[]{Direction.DOWN, Direction.UP}) {
-                            itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos().offset(direction)), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos().offset(direction), !GlareEntity.this.world.getBlockState(GlareEntity.this.getBlockPos().offset(direction)).isAir()));
-                            actionResult = blockItem.place(itemPlacementContextLiving);
-                            if (actionResult.isAccepted()) break;
+                        for (Direction direction : Direction.values()) {
+                            BlockPos blockPos = GlareEntity.this.getBlockPos().offset(direction);
+                            if (GlareEntity.this.world.isAir(blockPos) && isDarkSpot(blockPos)) {
+                                itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(blockPos), GlareEntity.this.getMovementDirection(), blockPos, !GlareEntity.this.world.isAir(blockPos)));
+                                actionResult = blockItem.place(itemPlacementContextLiving);
+                                if (actionResult.isAccepted()) break;
+                            }
                         }
                     }
                     if (actionResult.isAccepted()) {
