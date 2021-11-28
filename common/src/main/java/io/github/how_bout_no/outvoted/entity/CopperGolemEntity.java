@@ -1,12 +1,13 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.block.ModButtonBlock;
+import io.github.how_bout_no.outvoted.block.BaseCopperButtonBlock;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
 import io.github.how_bout_no.outvoted.util.ModUtil;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.control.LookControl;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
@@ -56,6 +57,20 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
 
     public CopperGolemEntity(EntityType<? extends CopperGolemEntity> type, World worldIn) {
         super(type, worldIn);
+        this.lookControl = new CGLookControl(this);
+    }
+
+    static class CGLookControl extends LookControl {
+        protected final CopperGolemEntity entity;
+
+        public CGLookControl(CopperGolemEntity entity) {
+            super(entity);
+            this.entity = entity;
+        }
+
+        public void tick() {
+            if (entity.isNotFrozen()) super.tick();
+        }
     }
 
     protected void initGoals() {
@@ -322,18 +337,18 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
                 if (this.isWaxed()) {
                     this.setWaxed(false);
                     this.playSound(SoundEvents.ITEM_AXE_WAX_OFF, 1.0F, 1.0F);
-                    this.world.syncWorldEvent(3004, this.getBlockPos(), 0);
+                    this.world.syncWorldEvent(WorldEvents.WAX_REMOVED, this.getBlockPos(), 0);
                 } else if (this.getOxidizationLevel() > 0) {
                     this.deOxidize();
                     this.playSound(SoundEvents.ITEM_AXE_SCRAPE, 1.0F, 1.0F);
-                    this.world.syncWorldEvent(3005, this.getBlockPos(), 0);
+                    this.world.syncWorldEvent(WorldEvents.BLOCK_SCRAPED, this.getBlockPos(), 0);
                 } else {
                     return ActionResult.PASS;
                 }
             } else if (!this.isWaxed()) {
                 this.setWaxed(true);
                 this.playSound(SoundEvents.ITEM_HONEYCOMB_WAX_ON, 1.0F, 1.0F);
-                this.world.syncWorldEvent(3003, this.getBlockPos(), 0);
+                this.world.syncWorldEvent(WorldEvents.BLOCK_WAXED, this.getBlockPos(), 0);
             } else {
                 return ActionResult.PASS;
             }
@@ -405,7 +420,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         @Override
         protected boolean isTargetPos(WorldView world, BlockPos pos) {
             BlockState blockState = world.getBlockState(pos);
-            return blockState.getBlock() instanceof ModButtonBlock;
+            return blockState.getBlock() instanceof BaseCopperButtonBlock;
         }
     }
 

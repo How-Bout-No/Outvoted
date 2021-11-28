@@ -1,13 +1,14 @@
 package io.github.how_bout_no.outvoted.entity;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import io.github.how_bout_no.outvoted.util.ItemPlacementContextLiving;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.AboveGroundTargeting;
 import net.minecraft.entity.ai.NoPenaltySolidTargeting;
 import net.minecraft.entity.ai.NoWaterTargeting;
 import net.minecraft.entity.ai.control.FlightMoveControl;
-import net.minecraft.entity.ai.control.LookControl;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
@@ -22,14 +23,17 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
@@ -43,23 +47,24 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class GlareEntity extends PathAwareEntity implements IAnimatable {
     public static final int maxLight = 7;
-    private GlareEntity.MoveToDarkGoal moveToDarkGoal;
     @Nullable
     protected BlockPos darkPos;
     private static final TrackedData<Boolean> ANGRY;
+    static final Predicate<ItemEntity> PICKABLE_DROP_FILTER;
 
     public GlareEntity(EntityType<? extends GlareEntity> type, World worldIn) {
         super(type, worldIn);
         this.moveControl = new FlightMoveControl(this, 20, true);
-        this.lookControl = new LookControl(this);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, -1.0F);
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F);
         this.setPathfindingPenalty(PathNodeType.WATER_BORDER, 16.0F);
         this.setPathfindingPenalty(PathNodeType.COCOA, -1.0F);
         this.setPathfindingPenalty(PathNodeType.FENCE, -1.0F);
+        this.setCanPickUpLoot(true);
     }
 
     public float getPathfindingFavor(BlockPos pos, WorldView world) {
@@ -68,11 +73,20 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     protected void initGoals() {
         this.goalSelector.add(0, new TemptGoal(this, 1.5, Ingredient.ofItems(Items.GLOW_BERRIES), false));
-        this.moveToDarkGoal = new GlareEntity.MoveToDarkGoal();
-        this.goalSelector.add(1, this.moveToDarkGoal);
-        this.goalSelector.add(2, new GlareEntity.FindDarkSpotGoal());
-        this.goalSelector.add(3, new GlareEntity.GlareWanderAroundGoal());
-        this.goalSelector.add(4, new SwimGoal(this));
+        this.goalSelector.add(1, new PickupItemGoal());
+        this.goalSelector.add(2, new InDarkGoal());
+        this.goalSelector.add(3, new MoveToDarkGoal());
+        this.goalSelector.add(4, new GlareEntity.FindDarkSpotGoal());
+        this.goalSelector.add(5, new GlareEntity.GlareWanderAroundGoal());
+        this.goalSelector.add(6, new SwimGoal(this));
+    }
+
+    protected void initEquipment(LocalDifficulty difficulty) {
+        if (this.random.nextFloat() < 0.2F) {
+            ItemStack itemStack = this.random.nextBoolean() ? new ItemStack(Items.GLOW_LICHEN) : new ItemStack(Items.REDSTONE_TORCH);
+
+            this.equipStack(EquipmentSlot.MAINHAND, itemStack);
+        }
     }
 
     public static DefaultAttributeContainer.Builder setCustomAttributes() {
@@ -115,6 +129,11 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     static {
         ANGRY = DataTracker.registerData(GlareEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        PICKABLE_DROP_FILTER = (item) -> {
+            if (item.getStack().getItem() instanceof BlockItem)
+                return !item.cannotPickup() && item.isAlive() && ((BlockItem) item.getStack().getItem()).getBlock().getDefaultState().getLuminance() > maxLight;
+            return false;
+        };
     }
 
     @Override
@@ -132,7 +151,8 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     @Override
     protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
-        return 1.0F;
+//        return 1.0F;
+        return super.getActiveEyeHeight(pose, dimensions);
     }
 
     public boolean isAngry() {
@@ -141,6 +161,40 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     public void setAngry(boolean angry) {
         this.dataTracker.set(ANGRY, angry);
+    }
+
+    public boolean canEquip(ItemStack stack) {
+        EquipmentSlot equipmentSlot = MobEntity.getPreferredEquipmentSlot(stack);
+        if (!this.getEquippedStack(equipmentSlot).isEmpty()) {
+            return false;
+        } else {
+            return equipmentSlot == EquipmentSlot.MAINHAND && super.canEquip(stack);
+        }
+    }
+
+    public boolean canPickupItem(ItemStack stack) {
+        return this.getEquippedStack(EquipmentSlot.MAINHAND).isEmpty();
+    }
+
+    private void dropItem(ItemStack stack) {
+        ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), stack);
+        this.world.spawnEntity(itemEntity);
+    }
+
+    protected void loot(ItemEntity item) {
+        ItemStack itemStack = item.getStack();
+        if (this.canPickupItem(itemStack)) {
+            int i = itemStack.getCount();
+            if (i > 1) {
+                this.dropItem(itemStack.split(i - 1));
+            }
+
+            this.triggerItemPickedUpByEntityCriteria(item);
+            this.equipStack(EquipmentSlot.MAINHAND, itemStack.split(1));
+            this.handDropChances[EquipmentSlot.MAINHAND.getEntitySlotId()] = 2.0F;
+            this.sendPickup(item, itemStack.getCount());
+            item.discard();
+        }
     }
 
     @Override
@@ -261,7 +315,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     class FindDarkSpotGoal extends Goal {
-        BlockPos cachePos;
         int ticks;
 
         FindDarkSpotGoal() {
@@ -271,7 +324,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
         public boolean canStart() {
             ++this.ticks;
-            return (!GlareEntity.this.hasDarkPos() || !isDarkSpot(GlareEntity.this.darkPos)) && cachePos != GlareEntity.this.getBlockPos() && this.ticks > 40;
+            return (!GlareEntity.this.hasDarkPos() || !isDarkSpot(GlareEntity.this.darkPos)) && this.ticks > 40;
         }
 
         public boolean shouldContinue() {
@@ -353,6 +406,67 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
     }
 
+    class InDarkGoal extends Goal {
+        InDarkGoal() {
+            super();
+        }
+
+        public boolean canStart() {
+            if (isDarkSpot(GlareEntity.this.getBlockPos())) GlareEntity.this.darkPos = GlareEntity.this.getBlockPos();
+            return GlareEntity.this.darkPos != null && !GlareEntity.this.hasPositionTarget() && GlareEntity.this.getBlockPos() == GlareEntity.this.darkPos;
+        }
+
+        public boolean shouldContinue() {
+            return this.canStart();
+        }
+
+        public void tick() {
+            if (GlareEntity.this.darkPos != null) {
+                if (!GlareEntity.this.getMainHandStack().isEmpty()) {
+                    BlockItem blockItem = (BlockItem) GlareEntity.this.getMainHandStack().getItem();
+                    ItemPlacementContextLiving itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos()), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos(), !GlareEntity.this.world.getBlockState(GlareEntity.this.getBlockPos()).isAir()));
+                    ActionResult actionResult = blockItem.place(itemPlacementContextLiving);
+                    System.out.println(actionResult);
+                    GlareEntity.this.getMainHandStack().decrement(1);
+                }
+            }
+        }
+    }
+
+    class PickupItemGoal extends Goal {
+        public PickupItemGoal() {
+            this.setControls(EnumSet.of(Control.MOVE));
+        }
+
+        public boolean canStart() {
+            if (GlareEntity.this.getTarget() == null && GlareEntity.this.getAttacker() == null) {
+                if (GlareEntity.this.getRandom().nextInt(10) != 0) {
+                    return false;
+                } else {
+                    List<ItemEntity> list = GlareEntity.this.world.getEntitiesByClass(ItemEntity.class, GlareEntity.this.getBoundingBox().expand(8.0D, 8.0D, 8.0D), GlareEntity.PICKABLE_DROP_FILTER);
+                    return !list.isEmpty() && GlareEntity.this.getEquippedStack(EquipmentSlot.MAINHAND).isEmpty();
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public void tick() {
+            List<ItemEntity> list = GlareEntity.this.world.getEntitiesByClass(ItemEntity.class, GlareEntity.this.getBoundingBox().expand(8.0D, 8.0D, 8.0D), GlareEntity.PICKABLE_DROP_FILTER);
+            ItemStack itemStack = GlareEntity.this.getEquippedStack(EquipmentSlot.MAINHAND);
+            if (itemStack.isEmpty() && !list.isEmpty()) {
+                GlareEntity.this.getNavigation().startMovingTo(list.get(0), 1.2D);
+            }
+        }
+
+        public void start() {
+            List<ItemEntity> list = GlareEntity.this.world.getEntitiesByClass(ItemEntity.class, GlareEntity.this.getBoundingBox().expand(8.0D, 8.0D, 8.0D), GlareEntity.PICKABLE_DROP_FILTER);
+            if (!list.isEmpty()) {
+                GlareEntity.this.getNavigation().startMovingTo(list.get(0), 1.2D);
+            }
+        }
+    }
+
     private static boolean isSuitableSpawn(WorldAccess world, BlockPos pos, Random random) {
         int mult = 5;
         for (BlockPos blockPos : BlockPos.iterateOutwards(pos, mult, mult, mult)) {
@@ -365,13 +479,14 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<GlareEntity> entity, WorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return !world.isSkyVisible(blockPos) && isSuitableSpawn(world, blockPos, random) && blockPos.getY() < world.getTopY() - 5 && canMobSpawn(entity, world, spawnReason, blockPos, random);
+        System.out.println(blockPos.getY());
+        return !world.isSkyVisible(blockPos) && isSuitableSpawn(world, blockPos, random) && blockPos.getY() < 63 && canMobSpawn(entity, world, spawnReason, blockPos, random);
     }
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        GeckoLibCache.getInstance().parser.setValue("mult", this.isAngry() ? 0.75F : 0.25F);
+        GeckoLibCache.getInstance().parser.setValue("mult", this.isAngry() ? 0.6F : 0.2F);
         event.getController().setAnimation(new AnimationBuilder().addAnimation("living", true));
 
         return PlayState.CONTINUE;

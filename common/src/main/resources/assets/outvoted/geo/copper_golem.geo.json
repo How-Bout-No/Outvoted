@@ -6,7 +6,7 @@
         "identifier": "geometry.copper_golem",
         "texture_width": 64,
         "texture_height": 64,
-        "visible_bounds_width": 3,
+        "visible_bounds_width": 2,
         "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
           0,
@@ -16,32 +16,23 @@
       },
       "bones": [
         {
-          "name": "golem",
-          "pivot": [
-            0,
-            0,
-            0
-          ]
-        },
-        {
           "name": "head",
-          "parent": "golem",
           "pivot": [
             0,
-            8.875,
-            1
+            9,
+            0
           ],
           "cubes": [
             {
               "origin": [
-                -6,
+                -5.5,
                 9,
-                -3
+                -5.5
               ],
               "size": [
-                12,
+                11,
                 7,
-                8
+                11
               ],
               "uv": [
                 0,
@@ -50,41 +41,36 @@
             },
             {
               "origin": [
-                -2,
-                7,
-                -4
+                -1.5,
+                8,
+                -7.5
               ],
               "size": [
-                4,
-                5,
-                2
-              ],
-              "uv": [
-                40,
-                8
-              ]
-            },
-            {
-              "origin": [
-                -1,
-                14,
-                0
-              ],
-              "size": [
-                2,
+                3,
                 5,
                 2
               ],
               "uv": [
                 0,
-                1
+                0
               ]
-            },
+            }
+          ]
+        },
+        {
+          "name": "rod",
+          "parent": "head",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
             {
               "origin": [
                 -2,
-                19,
-                -1
+                18,
+                -2
               ],
               "size": [
                 4,
@@ -92,144 +78,155 @@
                 4
               ],
               "uv": [
-                32,
+                33,
                 0
               ]
-            }
-          ]
-        },
-        {
-          "name": "body",
-          "parent": "golem",
-          "pivot": [
-            0,
-            6.5,
-            1
-          ],
-          "cubes": [
+            },
             {
               "origin": [
-                -6,
-                4,
-                -2
+                -1,
+                16,
+                -1
               ],
               "size": [
-                12,
-                5,
-                6
+                2,
+                2,
+                2
               ],
               "uv": [
                 0,
-                15
+                7
               ]
             }
           ]
         },
         {
           "name": "rightarm",
-          "parent": "golem",
           "pivot": [
-            -6.5,
-            9,
-            1
+            -4,
+            8,
+            0
           ],
           "cubes": [
             {
               "origin": [
-                -9,
+                -8,
                 0,
-                -1
+                -2
               ],
               "size": [
-                3,
+                4,
                 10,
                 4
               ],
               "uv": [
                 0,
-                26
-              ]
-            }
-          ]
-        },
-        {
-          "name": "rightleg",
-          "parent": "golem",
-          "pivot": [
-            -2.5,
-            4,
-            1
-          ],
-          "cubes": [
-            {
-              "origin": [
-                -5,
-                0,
-                -1
-              ],
-              "size": [
-                5,
-                4,
-                4
-              ],
-              "uv": [
-                28,
-                26
+                29
               ]
             }
           ]
         },
         {
           "name": "leftarm",
-          "parent": "golem",
           "pivot": [
-            6.5,
-            9,
-            1
+            4,
+            8,
+            0
           ],
           "cubes": [
             {
               "origin": [
-                6,
+                4,
                 0,
-                -1
+                -2
               ],
               "size": [
-                3,
+                4,
                 10,
                 4
               ],
               "uv": [
                 0,
-                26
+                29
               ],
               "mirror": true
             }
           ]
         },
         {
-          "name": "leftleg",
-          "parent": "golem",
+          "name": "torso",
           "pivot": [
-            2.5,
+            0,
+            6.5,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                4,
+                -3
+              ],
+              "size": [
+                8,
+                5,
+                6
+              ],
+              "uv": [
+                0,
+                18
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rightleg",
+          "pivot": [
+            -2,
             4,
-            1
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                0,
+                -2
+              ],
+              "size": [
+                4,
+                4,
+                4
+              ],
+              "uv": [
+                16,
+                35
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leftleg",
+          "pivot": [
+            2,
+            4,
+            0
           ],
           "cubes": [
             {
               "origin": [
                 0,
                 0,
-                -1
+                -2
               ],
               "size": [
-                5,
+                4,
                 4,
                 4
               ],
               "uv": [
-                28,
-                26
+                16,
+                35
               ],
               "mirror": true
             }
