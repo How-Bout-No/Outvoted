@@ -74,7 +74,8 @@ public class OutvotedConfigCommon implements ConfigData {
 
         public static class Glare {
             public boolean spawn = true;
-            public int rate = 2;
+            public int rate = 10;
+            public List<String> biomes = Arrays.asList("#taiga", "#jungle", "#plains", "#savanna", "#forest", "#swamp", "#underground");
             public double health = 10.0D;
         }
     }

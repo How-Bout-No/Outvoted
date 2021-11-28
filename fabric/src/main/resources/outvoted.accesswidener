@@ -26,5 +26,4 @@ accessible field  net/minecraft/world/SpawnHelper CHUNK_AREA I
 accessible field  net/minecraft/entity/ai/goal/MoveToTargetPosGoal safeWaitingTime I
 accessible method net/minecraft/server/world/ThreadedAnvilChunkStorage getTicketManager ()Lnet/minecraft/server/world/ChunkTicketManager;
 extendable method net/minecraft/block/AbstractButtonBlock getPressTicks ()I
-mutable field net/minecraft/item/HoneycombItem UNWAXED_TO_WAXED_BLOCKS Ljava/util/function/Supplier;
-mutable field net/minecraft/item/HoneycombItem WAXED_TO_UNWAXED_BLOCKS Ljava/util/function/Supplier;
+accessible method net/minecraft/item/ItemUsageContext <init> (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/hit/BlockHitResult;)V

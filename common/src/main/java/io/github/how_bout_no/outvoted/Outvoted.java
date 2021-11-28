@@ -1,5 +1,6 @@
 package io.github.how_bout_no.outvoted;
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
@@ -91,5 +92,12 @@ public class Outvoted {
             if (Platform.isModLoaded("patchouli")) PatchouliCompat.updateFlag();
             return ActionResult.SUCCESS;
         });
+
+        registerModels();
+    }
+
+    @ExpectPlatform
+    public static void registerModels() {
+        throw new AssertionError();
     }
 }

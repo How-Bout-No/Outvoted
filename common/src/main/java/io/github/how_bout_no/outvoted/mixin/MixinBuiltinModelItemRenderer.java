@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
 import com.mojang.datafixers.util.Pair;
-import io.github.how_bout_no.outvoted.client.WildfireShield;
+import io.github.how_bout_no.outvoted.client.model.WildfireShield;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BannerPattern;
@@ -31,7 +31,7 @@ public abstract class MixinBuiltinModelItemRenderer {
     private ShieldEntityModel modelShield;
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void lel(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
+    public void setModelShield(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
         if (stack.isOf(ModItems.WILDFIRE_SHIELD.get())) {
             boolean bl = stack.getSubNbt("BlockEntityTag") != null;
             matrices.push();

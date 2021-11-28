@@ -160,6 +160,7 @@
   "text.autoconfig.outvoted.option.common.entities.glare": "Glare",
   "text.autoconfig.outvoted.option.common.entities.glare.spawn": "Enable Spawning",
   "text.autoconfig.outvoted.option.common.entities.glare.rate": "Spawn Weight",
+  "text.autoconfig.outvoted.option.common.entities.glare.biomes": "Spawn Biomes",
   "text.autoconfig.outvoted.option.common.entities.glare.health": "Max Health",
   "text.autoconfig.outvoted.option.common.misc": "Miscellaneous",
   "text.autoconfig.outvoted.option.common.misc.helmetPenalty": "Helmet Penalty",

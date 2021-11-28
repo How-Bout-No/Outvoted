@@ -1,5 +1,8 @@
 package io.github.how_bout_no.outvoted.block;
 
+/**
+ * Base class is made for the waxed buttons (no random tick implementation)
+ */
 public class BaseCopperButtonBlock extends ModButtonBlock implements IOxidizable {
     private final OxidizationLevel oxidizationLevel;
 

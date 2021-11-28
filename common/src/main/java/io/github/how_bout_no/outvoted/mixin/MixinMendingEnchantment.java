@@ -16,7 +16,6 @@ public abstract class MixinMendingEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        if (stack.getItem() instanceof WildfireHelmetItem) return false;
-        return super.isAcceptableItem(stack);
+        return !(stack.getItem() instanceof WildfireHelmetItem) && super.isAcceptableItem(stack);
     }
 }

@@ -24,13 +24,13 @@
   "accessWidener": "outvoted.accesswidener",
   "entrypoints": {
     "client": [
-      "io.github.how_bout_no.outvoted.ClientListener"
+      "io.github.how_bout_no.outvoted.fabric.ClientListener"
     ],
     "main": [
-      "io.github.how_bout_no.outvoted.OutvotedFabric"
+      "io.github.how_bout_no.outvoted.fabric.OutvotedFabric"
     ],
     "modmenu": [
-      "io.github.how_bout_no.outvoted.config.ModMenuOutvoted"
+      "io.github.how_bout_no.outvoted.fabric.config.ModMenuOutvoted"
     ]
   },
   "mixins": [

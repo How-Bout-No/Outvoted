@@ -2,8 +2,7 @@ package io.github.how_bout_no.outvoted.forge;
 
 import dev.architectury.platform.forge.EventBuses;
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.forge.client.render.ClientRender;
-import io.github.how_bout_no.outvoted.forge.util.ServerEvents;
+import io.github.how_bout_no.outvoted.forge.util.MappingsFixer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,7 +20,7 @@ public class OutvotedForge {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 //        modEventBus.addListener(this::setup);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().register(new ClientRender()));
-        MinecraftForge.EVENT_BUS.register(new ServerEvents());
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().register(new OutvotedImpl()));
+        MinecraftForge.EVENT_BUS.register(new MappingsFixer());
     }
 }

@@ -90,10 +90,6 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-//sourceSets.main.resources {
-//    srcDir 'src/generated/resources'
-//}
-
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()

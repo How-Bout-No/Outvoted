@@ -38,6 +38,7 @@ dependencies {
 //    modImplementation("curse.maven:xaero-263420:3298031")
 //    modImplementation("curse.maven:toro-245733:3401235")
     modImplementation("curse.maven:light-325492:3492614")
+//    modImplementation("curse.maven:mobz-336554:3498091")
 
     common(project(path: ":common", configuration: "dev")) {
         transitive = false

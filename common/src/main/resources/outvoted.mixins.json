@@ -10,7 +10,8 @@
     "MixinHoneycombItem",
     "MixinLightningRodBlock",
     "MixinMendingEnchantment",
-    "PointOfInterestTypeAccessor"
+    "PointOfInterestTypeAccessor",
+    "SpawnRestrictionAccessor"
   ],
   "client": [
     "GeoArmorRendererAccessor",
