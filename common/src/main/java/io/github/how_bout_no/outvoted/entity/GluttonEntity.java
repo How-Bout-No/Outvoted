@@ -245,7 +245,7 @@ public class GluttonEntity extends PathAwareEntity implements IAnimatable {
                 this.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 600, 1));
                 pair.setLeft(1);
                 return pair;
-            } else if (itemstack.getNbt() != null && itemstack.getNbt().contains("Bitten") && !Outvoted.commonConfig.entities.glutton.capEnchants) {
+            } else if (itemstack.getNbt() != null && itemstack.getNbt().getBoolean("Bitten") && Outvoted.commonConfig.entities.glutton.capEnchants) {
                 pair.setLeft(1);
                 return pair;
             } else if (!(itemstack.isEnchantable() || itemstack.hasEnchantments() || itemstack.getItem() instanceof EnchantedBookItem)) {
