@@ -60,16 +60,13 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         this.lookControl = new CGLookControl(this);
     }
 
-    static class CGLookControl extends LookControl {
-        protected final CopperGolemEntity entity;
-
-        public CGLookControl(CopperGolemEntity entity) {
-            super(entity);
-            this.entity = entity;
+    class CGLookControl extends LookControl {
+        public CGLookControl(MobEntity mobEntity) {
+            super(mobEntity);
         }
 
         public void tick() {
-            if (entity.isNotFrozen()) super.tick();
+            if (CopperGolemEntity.this.isNotFrozen()) super.tick();
         }
     }
 
@@ -225,7 +222,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
     public void tick() {
         super.tick();
         if (!this.world.isClient) {
-            if (!this.isWaxed() && this.age % 20 == 0 && this.random.nextFloat() < Outvoted.commonConfig.entities.coppergolem.oxidationRate) {
+            if (!this.isWaxed() && this.age % (int)Math.max(Math.pow(35 * this.world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED), (-1D/2)), 1) == 0 && this.random.nextFloat() < Outvoted.commonConfig.entities.coppergolem.oxidationRate) {
                 this.oxidize();
             }
         }

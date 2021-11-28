@@ -4,10 +4,9 @@ Entities
 ---
 
 Copper Golem
-- Now drops Copper Ingots and Allium
-- Oxidization is a little more accurate (sometimes client will still desync)
-- Healing with Copper Ingots will now be proportional to config health
-- Fix crash when deoxidizing
+- New model
+- Reduce chances of desync
+- Oxidization rate is now also affected by the randomTickSpeed gamerule... in case you wanted that...
 
 Glare
 - New model
