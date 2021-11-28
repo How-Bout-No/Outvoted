@@ -27,13 +27,37 @@ public interface IOxidizable extends Oxidizable {
         return Optional.ofNullable((Block) ((BiMap) OXIDATION_LEVEL_DECREASES.get()).get(block));
     }
 
+    static Block getUnaffectedOxidationBlock(Block block) {
+        Block block2 = block;
+
+        for (Block block3 = (Block) ((BiMap) OXIDATION_LEVEL_DECREASES.get()).get(block); block3 != null; block3 = (Block) ((BiMap) OXIDATION_LEVEL_DECREASES.get()).get(block3)) {
+            block2 = block3;
+        }
+
+        return block2;
+    }
+
     static Optional<BlockState> getDecreasedOxidationState(BlockState state) {
         return getDecreasedOxidationBlock(state.getBlock()).map((block) -> {
-            return block.getStateWithProperties(state);
+            return ((BaseCopperButtonBlock) block).getStateWithPropertiesNoPower(state);
         });
     }
 
     static Optional<Block> getIncreasedOxidationBlock(Block block) {
-        return Optional.ofNullable((Block)((BiMap)OXIDATION_LEVEL_INCREASES.get()).get(block));
+        return Optional.ofNullable((Block) ((BiMap) OXIDATION_LEVEL_INCREASES.get()).get(block));
+    }
+
+    static BlockState getUnaffectedOxidationState(BlockState state) {
+        return ((BaseCopperButtonBlock) getUnaffectedOxidationBlock(state.getBlock())).getStateWithPropertiesNoPower(state);
+    }
+
+    default Optional<BlockState> getDegradationResult(BlockState state) {
+        return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {
+            return ((BaseCopperButtonBlock) block).getStateWithPropertiesNoPower(state);
+        });
+    }
+
+    default float getDegradationChanceMultiplier() {
+        return this.getDegradationLevel() == Oxidizable.OxidizationLevel.UNAFFECTED ? 0.75F : 1.0F;
     }
 }

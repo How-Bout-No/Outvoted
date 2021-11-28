@@ -52,7 +52,7 @@ public class OutvotedConfigCommon implements ConfigData {
             public List<String> biomes = Arrays.asList("#swamp", "#desert", "minecraft:badlands_plateau", "minecraft:badlands");
             public double health = 20.0D;
             public boolean stealEnchants = true;
-            @ConfigEntry.Gui.Tooltip(count = 3)
+            @ConfigEntry.Gui.Tooltip(count = 2)
             public boolean capEnchants = true;
             @ConfigEntry.Gui.Tooltip
             public int maxEnchants = 5;
@@ -77,6 +77,10 @@ public class OutvotedConfigCommon implements ConfigData {
             public int rate = 10;
             public List<String> biomes = Arrays.asList("#taiga", "#jungle", "#plains", "#savanna", "#forest", "#swamp", "#underground");
             public double health = 10.0D;
+            @ConfigEntry.Gui.Tooltip
+            public boolean shouldInteract = true;
+            @ConfigEntry.BoundedDiscrete(min = 1, max = 64)
+            public int inventorySize = 32;
         }
     }
 

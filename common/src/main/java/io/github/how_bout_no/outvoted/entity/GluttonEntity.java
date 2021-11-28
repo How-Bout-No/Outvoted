@@ -279,24 +279,29 @@ public class GluttonEntity extends PathAwareEntity implements IAnimatable {
                             return pair;
                         }
                     } else if (!storedEnchants.isEmpty()) {
-                        for (Enchantment ench : storedEnchants.keySet()) {
-                            if (enchantment instanceof ProtectionEnchantment && ench instanceof ProtectionEnchantment) {
-                                if (((ProtectionEnchantment) enchantment).canAccept(ench)) {
+                        if (storedEnchants.size() < Outvoted.commonConfig.entities.glutton.maxEnchants) {
+                            for (Enchantment ench : storedEnchants.keySet()) {
+                                if (enchantment instanceof ProtectionEnchantment && ench instanceof ProtectionEnchantment) {
+                                    if (((ProtectionEnchantment) enchantment).canAccept(ench)) {
+                                        cacheEnchants.put(enchantment, level);
+                                    } else {
+                                        pair.setLeft(1);
+                                        return pair;
+                                    }
+                                } else if (enchantment instanceof InfinityEnchantment || enchantment instanceof MendingEnchantment) {
+                                    cacheEnchants.put(enchantment, level);
+                                } else if (enchantment instanceof DamageEnchantment && ench instanceof DamageEnchantment) {
+                                    cacheEnchants.put(enchantment, level);
+                                } else if (enchantment.canCombine(ench)) {
                                     cacheEnchants.put(enchantment, level);
                                 } else {
                                     pair.setLeft(1);
                                     return pair;
                                 }
-                            } else if (enchantment instanceof InfinityEnchantment || enchantment instanceof MendingEnchantment) {
-                                cacheEnchants.put(enchantment, level);
-                            } else if (enchantment instanceof DamageEnchantment && ench instanceof DamageEnchantment) {
-                                cacheEnchants.put(enchantment, level);
-                            } else if (enchantment.canCombine(ench)) {
-                                cacheEnchants.put(enchantment, level);
-                            } else {
-                                pair.setLeft(1);
-                                return pair;
                             }
+                        } else {
+                            pair.setLeft(1);
+                            return pair;
                         }
                     } else {
                         cacheEnchants.put(enchantment, level);

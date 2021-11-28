@@ -2,11 +2,6 @@ PLEASE NOTE: Forge servers are completely broken at the moment. Currently unable
 
 Entities
 ---
-Blaze
-- Soul variants will now have a unique name
-
-Barnacle
-- Fix crash with JEI
 
 Copper Golem
 - Now drops Copper Ingots and Allium
@@ -24,7 +19,8 @@ Glare
 Blocks
 ---
 Copper Button
-- Fix waxed buttons having default press times
+- Fix issue where buttons would get stuck if they oxidized while pressed
+- Fix huge performance hit at high tick speeds
 
 Items
 ---
@@ -36,4 +32,5 @@ Wildfire Shield
 
 Misc
 ---
-- Fix crash with Carpet Fixes on Fabric
+- Fix incompatibility with MobZ
+- Some performance improvements
