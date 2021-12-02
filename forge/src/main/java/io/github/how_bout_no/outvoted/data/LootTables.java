@@ -113,10 +113,10 @@ public class LootTables extends LootTablesProvider {
                             .with(ItemEntry.builder(Items.EGG)
                                     .apply(SetCountLootFunction.builder(UniformLootTableRange.between(0.0F, 1.0F))))
             ));
-            this.register(ModEntityTypes.TERMITE.get(), LootTable.builder()
-                    .pool(LootPool.builder()
-                            .rolls(ConstantLootTableRange.create(1))
-            ));
+//            this.register(ModEntityTypes.TERMITE.get(), LootTable.builder()
+//                    .pool(LootPool.builder()
+//                            .rolls(ConstantLootTableRange.create(1))
+//            ));
         }
     }
 

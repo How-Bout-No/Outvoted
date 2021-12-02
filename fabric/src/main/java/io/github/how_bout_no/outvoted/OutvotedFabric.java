@@ -1,6 +1,9 @@
 package io.github.how_bout_no.outvoted;
 
-import io.github.how_bout_no.outvoted.entity.*;
+import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
+import io.github.how_bout_no.outvoted.entity.GluttonEntity;
+import io.github.how_bout_no.outvoted.entity.MeerkatEntity;
+import io.github.how_bout_no.outvoted.entity.OstrichEntity;
 import io.github.how_bout_no.outvoted.init.*;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import net.fabricmc.api.ModInitializer;
@@ -32,7 +35,7 @@ public class OutvotedFabric implements ModInitializer {
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MeerkatEntity::canSpawn);
         SpawnRestrictionAccessor.callRegister(ModEntityTypes.OSTRICH.get(), SpawnRestriction.Location.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, OstrichEntity::canSpawn);
-        SpawnRestrictionAccessor.callRegister(ModEntityTypes.TERMITE.get(), SpawnRestriction.Location.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TermiteEntity::canSpawn);
+//        SpawnRestrictionAccessor.callRegister(ModEntityTypes.TERMITE.get(), SpawnRestriction.Location.ON_GROUND,
+//                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TermiteEntity::canSpawn);
     }
 }

@@ -29,6 +29,9 @@ public class OutvotedConfigCommon implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Ostrich ostrich = new Ostrich();
 
+        @ConfigEntry.Gui.CollapsibleObject
+        public Termite termite = new Termite();
+
         public static class Wildfire {
             public boolean spawn = true;
             public int rate = 1;
@@ -79,6 +82,14 @@ public class OutvotedConfigCommon implements ConfigData {
             public int rate = 2;
             public List<String> biomes = Collections.singletonList("#savanna");
             public double health = 15.0D;
+        }
+
+        public static class Termite {
+            public boolean spawn = true;
+            public int rate = 2;
+            public List<String> biomes = Collections.singletonList("#savanna");
+            public double health = 6.0D;
+            public int maxCount = 3;
         }
     }
 

@@ -24,8 +24,8 @@ public class ModItems {
             () -> new ModSpawnEggItem(ModEntityTypes.MEERKAT, 0xC19773, 0x000000, new Item.Settings()));
     public static final RegistrySupplier<ModSpawnEggItem> OSTRICH_SPAWN_EGG = ITEMS.register("ostrich_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.OSTRICH, 0xFED39B, 0x000000, new Item.Settings()));
-    public static final RegistrySupplier<ModSpawnEggItem> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
-            () -> new ModSpawnEggItem(ModEntityTypes.TERMITE, 0xFED39B, 0x000000, new Item.Settings()));
+//    public static final RegistrySupplier<ModSpawnEggItem> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
+//            () -> new ModSpawnEggItem(ModEntityTypes.TERMITE, 0xFED39B, 0x000000, new Item.Settings()));
 
     // Items
     public static final RegistrySupplier<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);
