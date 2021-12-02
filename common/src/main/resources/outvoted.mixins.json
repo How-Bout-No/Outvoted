@@ -7,10 +7,9 @@
     "MixinBlazeEntity",
     "MixinCorridorExit",
     "MixinMendingEnchantment",
-    "MixinServerPlayerEntity",
+    "MixinPillarBlock",
     "MixinSilverfishEntity",
     "MixinSpiderEntity",
-    "MixinUtils",
     "PointOfInterestTypeAccessor"
   ],
   "client": [

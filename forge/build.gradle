@@ -2,8 +2,21 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
-configurations {
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+loom {
+    forge {
+        mixinConfig "outvoted.mixins.json"
+        mixinConfig "outvoted-forge.mixins.json"
+
+        dataGen {
+            mod "outvoted"
+        }
+    }
+
+    launches {
+        data {
+            arg "--existing", file("../common/src/main/resources").absolutePath
+        }
+    }
 }
 
 architectury {
@@ -11,20 +24,12 @@ architectury {
     forge()
 }
 
-loom {
-    mixinConfigs = ["outvoted.mixins.json", "outvoted-forge.mixins.json"]
-
-    dataGen {
-        mod "outvoted"
-    }
-
-    launches {
-        data {
-            arg "--existing", file("../common/src/main/resources").absolutePath
-            arg "--assetsDir", file(userCache).absolutePath + "\\assets"
-            arg "--assetIndex", "1.16.5-1.16"
-        }
-    }
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
 }
 
 dependencies {
@@ -44,17 +49,12 @@ dependencies {
 //    modImplementation("curse.maven:fastsuite-475117:3295233")
 //    modImplementation("curse.maven:placebo-283644:3281276")
 
-    implementation(project(path: ":common")) {
-        transitive = false
-    }
-    developmentForge(project(path: ":common")) {
+    common(project(path: ":common", configuration: "namedElements")) {
         transitive = false
     }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
         transitive = false
     }
-
-    annotationProcessor "org.spongepowered:mixin:0.8:processor"
 }
 
 processResources {
@@ -70,7 +70,6 @@ processResources {
 
 shadowJar {
     exclude "fabric.mod.json"
-
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
@@ -78,15 +77,11 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "forge"
+    classifier null
 }
 
 jar {
     classifier "dev"
-}
-
-java {
-    withSourcesJar()
 }
 
 sourcesJar {
@@ -95,6 +90,13 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
     duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 }
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
 
 sourceSets.main.resources {
     srcDir 'src/generated/resources'

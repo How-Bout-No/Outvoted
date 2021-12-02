@@ -2,8 +2,10 @@
 
 /forge/.gradle
 /forge/build
+/forge/run
 /fabric/.gradle
 /fabric/build
+/fabric/run
 /common/.gradle
 /common/build
 

@@ -1,7 +1,7 @@
-package io.github.how_bout_no.outvoted.mixin;
+package io.github.how_bout_no.outvoted.forge.mixin;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import org.spongepowered.asm.mixin.Final;
@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ShapelessRecipeJsonFactory.class)
-public abstract class MixinShapelessRecipeJsonFactory {
+@Mixin(ShapedRecipeJsonFactory.class)
+public abstract class MixinShapedRecipeJsonFactory {
     @Shadow
     @Final
     private Item output;

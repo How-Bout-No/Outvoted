@@ -1,5 +1,5 @@
-minecraft {
-    accessWidener = file("../fabric/src/main/resources/outvoted.accesswidener")
+loom {
+    accessWidenerPath = file("../fabric/src/main/resources/outvoted.accesswidener")
 }
 
 dependencies {
@@ -22,8 +22,4 @@ sourceSets.main.resources {
 
 architectury {
     common()
-}
-
-java {
-    withSourcesJar()
 }

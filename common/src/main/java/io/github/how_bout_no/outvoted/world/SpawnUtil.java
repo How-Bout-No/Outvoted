@@ -11,8 +11,8 @@ public class SpawnUtil {
     public static boolean isBelowCap(SpawnGroup group, ServerWorld world, int multiplier) {
         ThreadedAnvilChunkStorage chunkStorage = world.getChunkManager().threadedAnvilChunkStorage;
         int scc = chunkStorage.getTicketManager().getSpawningChunkCount();
-        SpawnHelper.Info info = new SpawnHelper.Info(scc, new Object2IntOpenHashMap<>(), new GravityField());
         int i = group.getCapacity() * scc / SpawnHelper.CHUNK_AREA;
+        SpawnHelper.Info info = new SpawnHelper.Info(scc, new Object2IntOpenHashMap<>(), new GravityField());
         return info.getGroupToCount().getInt(group) < i * Math.max(multiplier, 1);
     }
 }

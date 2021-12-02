@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.mixin;
+package io.github.how_bout_no.outvoted.forge.mixin;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
