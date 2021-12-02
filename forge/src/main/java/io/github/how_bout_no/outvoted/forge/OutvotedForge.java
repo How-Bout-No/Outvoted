@@ -35,7 +35,6 @@ public class OutvotedForge {
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventBusSubscriber {
         @SubscribeEvent
-        @OnlyIn(Dist.CLIENT)
         public static void onClientSetup(FMLClientSetupEvent event) {
             Outvoted.clientInit();
 
