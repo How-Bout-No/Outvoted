@@ -30,7 +30,6 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
-    dev
 }
 
 dependencies {
@@ -50,7 +49,7 @@ dependencies {
 //    modImplementation("curse.maven:fastsuite-475117:3295233")
 //    modImplementation("curse.maven:placebo-283644:3281276")
 
-    common(project(path: ":common", configuration: "dev")) {
+    common(project(path: ":common", configuration: "namedElements")) {
         transitive = false
     }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {

@@ -2,7 +2,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
-minecraft {
+loom {
     accessWidenerPath = file("src/main/resources/outvoted.accesswidener")
 }
 
@@ -17,7 +17,6 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
-    dev
 }
 
 dependencies {
@@ -40,7 +39,7 @@ dependencies {
     modImplementation("curse.maven:light-325492:3492614")
 //    modImplementation("curse.maven:mobz-336554:3498091")
 
-    common(project(path: ":common", configuration: "dev")) {
+    common(project(path: ":common", configuration: "namedElements")) {
         transitive = false
     }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
