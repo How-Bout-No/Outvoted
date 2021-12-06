@@ -1,4 +1,3 @@
 Misc
 ---
-- Fix server hanging on worldgen
-- Update backend
+- Fix bug where wood logs would not drop items

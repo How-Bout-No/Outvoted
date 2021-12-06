@@ -69,11 +69,12 @@ jar {
     classifier "dev"
 }
 
-//sourceSets.main.resources {
-//    srcDir '../forge/src/generated/resources'
-//}
+sourceSets.main.resources {
+    srcDirs '../forge/src/generated/resources'
+}
 
 sourcesJar {
+    duplicatesStrategy 'exclude'
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }

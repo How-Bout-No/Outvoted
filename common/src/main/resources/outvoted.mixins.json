@@ -7,7 +7,6 @@
     "MixinBlazeEntity",
     "MixinCorridorExit",
     "MixinMendingEnchantment",
-    "MixinPillarBlock",
     "MixinSilverfishEntity",
     "MixinSpiderEntity",
     "PointOfInterestTypeAccessor"

@@ -16,10 +16,6 @@ dependencies {
     modImplementation("vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC")
 }
 
-sourceSets.main.resources {
-    srcDirs '../forge/src/generated/resources'
-}
-
 architectury {
     common()
 }
