@@ -58,11 +58,6 @@ public class Outvoted {
         EventRegister.init();
         WorldGen.addSpawnEntries();
 
-//        if (Platform.getEnv() == EnvType.CLIENT) {
-//            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/palm")));
-//            SignSprites.addRenderMaterial(new SpriteIdentifier(TexturedRenderLayers.SIGNS_ATLAS_TEXTURE, new Identifier(Outvoted.MOD_ID, "entity/signs/baobab")));
-//        }
-
         EntityAttributeRegistry.register(ModEntityTypes.WILDFIRE::get, WildfireEntity::setCustomAttributes);
         EntityAttributeRegistry.register(ModEntityTypes.GLUTTON::get, GluttonEntity::setCustomAttributes);
         EntityAttributeRegistry.register(ModEntityTypes.BARNACLE::get, BarnacleEntity::setCustomAttributes);

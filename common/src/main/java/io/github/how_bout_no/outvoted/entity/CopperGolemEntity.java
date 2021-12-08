@@ -222,7 +222,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
     public void tick() {
         super.tick();
         if (!this.world.isClient) {
-            if (!this.isWaxed() && this.age % (int)Math.max(Math.pow(35 * this.world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED), (-1D/2)), 1) == 0 && this.random.nextFloat() < Outvoted.commonConfig.entities.coppergolem.oxidationRate) {
+            if (!this.isWaxed() && this.age % (int)Math.max((35 * Math.sqrt(this.world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED)))/3, 1) == 0 && this.random.nextFloat() < Outvoted.commonConfig.entities.coppergolem.oxidationRate) {
                 this.oxidize();
             }
         }
@@ -233,10 +233,11 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable {
         float limbSwingAmount = this.limbDistance;
         float oxidizeMult = this.getOxidizationMultiplier();
         if (oxidizeMult < 1 && oxidizeMult > 0) oxidizeMult += 0.25F;
-        float f = MathHelper.lerpAngleDegrees(0, this.prevBodyYaw, this.bodyYaw);
-        float f1 = MathHelper.lerpAngleDegrees(0, this.prevHeadYaw, this.headYaw);
+        int partialTicks = 0;
+        float f = MathHelper.lerpAngleDegrees(partialTicks, this.prevBodyYaw, this.bodyYaw);
+        float f1 = MathHelper.lerpAngleDegrees(partialTicks, this.prevHeadYaw, this.headYaw);
         float[] rot = new float[7];
-        rot[0] = this.getPitch();
+        rot[0] = MathHelper.lerp(partialTicks, this.prevPitch, this.getPitch());
         rot[1] = f1 - f;
         rot[2] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult) * 2.0F * limbSwingAmount;
         rot[3] = MathHelper.cos(limbSwing * 1.0F * oxidizeMult + (float) Math.PI) * 2.0F * limbSwingAmount;
