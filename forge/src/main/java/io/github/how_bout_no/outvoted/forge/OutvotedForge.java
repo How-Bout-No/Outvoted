@@ -12,12 +12,13 @@ import io.github.how_bout_no.outvoted.world.SpawnUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -28,8 +29,11 @@ import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 @Mod(Outvoted.MOD_ID)
 public class OutvotedForge {
     public OutvotedForge() {
-        EventBuses.registerModEventBus(Outvoted.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        EventBuses.registerModEventBus(Outvoted.MOD_ID, modEventBus);
         Outvoted.init();
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.register(new ShieldTex()));
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -61,7 +65,9 @@ public class OutvotedForge {
             ModSpawnEggItem.initSpawnEggs();
             SpawnUtil.registerRestrictions();
         }
+    }
 
+    static class ShieldTex {
         @SubscribeEvent
         public void registerTextureAtlas(TextureStitchEvent.Pre event) {
             event.addSprite(WildfireShield.base.getTextureId());

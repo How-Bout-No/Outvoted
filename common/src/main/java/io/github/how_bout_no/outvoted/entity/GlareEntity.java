@@ -181,7 +181,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
     protected void loot(ItemEntity item) {
         ItemStack itemStack = item.getStack();
-        if (this.canPickupItem(itemStack)) {
+        if (this.canPickupItem(itemStack) && PICKABLE_DROP_FILTER.test(item)) {
             int i = itemStack.getCount();
             if (i > inventorySize) {
                 this.dropItem(itemStack.split(i - inventorySize));
@@ -312,7 +312,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         int ticks;
 
         FindDarkSpotGoal() {
-            super();
             this.ticks = GlareEntity.this.world.random.nextInt(20) + 20;
         }
 
@@ -359,7 +358,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         int ticks;
 
         MoveToDarkGoal() {
-            super();
             this.ticks = GlareEntity.this.world.random.nextInt(10);
             this.setControls(EnumSet.of(Control.MOVE));
         }
@@ -402,10 +400,6 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
     class InDarkGoal extends Goal {
         private int tick;
 
-        InDarkGoal() {
-            super();
-        }
-
         public boolean canStart() {
             if (isDarkSpot(GlareEntity.this.getBlockPos())) GlareEntity.this.darkPos = GlareEntity.this.getBlockPos();
             return GlareEntity.this.darkPos != null && !GlareEntity.this.hasPositionTarget() && GlareEntity.this.getBlockPos() == GlareEntity.this.darkPos;
@@ -417,8 +411,7 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
 
         public void tick() {
             if (GlareEntity.this.darkPos != null && tick >= 5) {
-                if (!GlareEntity.this.getMainHandStack().isEmpty() && isDarkSpot(GlareEntity.this.getBlockPos())) {
-                    BlockItem blockItem = (BlockItem) GlareEntity.this.getMainHandStack().getItem();
+                if (!GlareEntity.this.getMainHandStack().isEmpty() && GlareEntity.this.getMainHandStack().getItem() instanceof BlockItem blockItem && isDarkSpot(GlareEntity.this.getBlockPos())) {
                     ItemPlacementContextLiving itemPlacementContextLiving = new ItemPlacementContextLiving(GlareEntity.this.world, GlareEntity.this, GlareEntity.this.getActiveHand(), GlareEntity.this.getMainHandStack(), new BlockHitResult(Vec3d.ofCenter(GlareEntity.this.getBlockPos()), GlareEntity.this.getMovementDirection(), GlareEntity.this.getBlockPos(), !GlareEntity.this.world.isAir(GlareEntity.this.getBlockPos())));
                     ActionResult actionResult = blockItem.place(itemPlacementContextLiving);
                     if (!actionResult.isAccepted()) {
@@ -435,6 +428,9 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
                         GlareEntity.this.getMainHandStack().decrement(1);
                         tick = 0;
                     }
+                } else if (!(GlareEntity.this.getMainHandStack().getItem() instanceof BlockItem)) {
+                    GlareEntity.this.dropItem(GlareEntity.this.getMainHandStack().getItem());
+                    GlareEntity.this.getMainHandStack().setCount(0);
                 }
             }
             ++tick;
@@ -447,7 +443,8 @@ public class GlareEntity extends PathAwareEntity implements IAnimatable {
         }
 
         public boolean canStart() {
-            if (!Outvoted.commonConfig.entities.glare.shouldInteract || !GlareEntity.this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) return false;
+            if (!Outvoted.commonConfig.entities.glare.shouldInteract || !GlareEntity.this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING))
+                return false;
             if (GlareEntity.this.getTarget() == null && GlareEntity.this.getAttacker() == null) {
                 if (GlareEntity.this.getRandom().nextInt(10) != 0) {
                     return false;
