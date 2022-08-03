@@ -1,18 +1,7 @@
 /*
 
-/forge/.gradle
-/forge/build
-/forge/run
-/fabric/.gradle
-/fabric/build
-/fabric/run
-/common/.gradle
-/common/build
-
 !/gradle
-!/common
-!/fabric
-!/forge
+!/src
 
 !/build.gradle
 !/gradle.properties

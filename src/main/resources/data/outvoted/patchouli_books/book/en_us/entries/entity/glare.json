@@ -1,0 +1,17 @@
+{
+  "name": "Glare",
+  "icon": "outvoted:glare_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:glare",
+      "scale": "0.8",
+      "text": "The Glare hates monsters, and will notify you of areas that are too dark!"
+    },
+    {
+      "type": "text",
+      "text": "The Glare can occasionally be found roaming in caves. It will float over to areas that are dark enough for mobs to spawn, and start shaking, notifying you that the area is too dark. You can bring a Glare with you either by tempting it with Glow Berries, or by attaching a lead to it."
+    }
+  ]
+}

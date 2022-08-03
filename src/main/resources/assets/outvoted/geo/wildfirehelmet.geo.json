@@ -1,0 +1,95 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.helmetwildfire",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "armor",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "helmet",
+					"parent": "armor",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-4, 24, -4], "size": [8, 9, 8], "inflate": 0.5, "uv": [16, 46]}
+					]
+				},
+				{
+					"name": "chestplate",
+					"parent": "armor",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "rightArm",
+					"parent": "armor",
+					"pivot": [-5, 22, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "leftArm",
+					"parent": "armor",
+					"pivot": [5, 22, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "leftLeg",
+					"parent": "armor",
+					"pivot": [2, 12, 0]
+				},
+				{
+					"name": "leftBase",
+					"parent": "leftLeg",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "leftBoot",
+					"parent": "armor",
+					"pivot": [2, 12, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "rightLeg",
+					"parent": "armor",
+					"pivot": [-2, 12, 0]
+				},
+				{
+					"name": "rightBase",
+					"parent": "rightLeg",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "rightBoot",
+					"parent": "armor",
+					"pivot": [-2, 12, 0],
+					"cubes": [
+						{"origin": [0, 24, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

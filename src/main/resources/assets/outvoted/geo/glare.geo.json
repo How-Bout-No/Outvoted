@@ -1,0 +1,149 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.glare",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2.5,
+        "visible_bounds_offset": [
+          0,
+          0.75,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                12,
+                -6
+              ],
+              "size": [
+                12,
+                4,
+                12
+              ],
+              "uv": [
+                1,
+                1
+              ]
+            },
+            {
+              "origin": [
+                -6,
+                7,
+                -5
+              ],
+              "size": [
+                12,
+                5,
+                11
+              ],
+              "uv": [
+                1,
+                54
+              ]
+            },
+            {
+              "origin": [
+                -6,
+                4,
+                -5
+              ],
+              "size": [
+                12,
+                3,
+                11
+              ],
+              "uv": [
+                1,
+                23
+              ]
+            },
+            {
+              "origin": [
+                -5,
+                7,
+                -1.25
+              ],
+              "size": [
+                10,
+                9,
+                7
+              ],
+              "uv": [
+                0,
+                37
+              ]
+            }
+          ]
+        },
+        {
+          "name": "body",
+          "parent": "head",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                2,
+                -3
+              ],
+              "size": [
+                8,
+                5,
+                8
+              ],
+              "uv": [
+                34,
+                37
+              ]
+            }
+          ]
+        },
+        {
+          "name": "tail",
+          "parent": "body",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3,
+                0,
+                -2
+              ],
+              "size": [
+                6,
+                6,
+                6
+              ],
+              "uv": [
+                37,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

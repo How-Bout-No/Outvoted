@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "package": "io.github.how_bout_no.outvoted.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinAnvilMenu",
+    "MixinAxeItem",
+    "MixinBlazeEntity",
+    "MixinCorridorExit",
+    "MixinGeoArmorItem",
+    "MixinHoneycombItem",
+    "MixinLightningRodBlock",
+    "MixinMendingEnchantment",
+    "MixinMob",
+    "PointOfInterestTypeAccessor",
+    "SpawnPlacementsInvoker"
+  ],
+  "client": [
+    "GeoArmorRendererAccessor",
+    "MixinBlazeRenderer",
+    "MixinBuiltinModelItemRenderer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": [
+          {
+            "condition": "outvoted:config_check",
+            "patchouli": true
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "outvoted:grant_book_on_first_join"
+    ]
+  }
+}
