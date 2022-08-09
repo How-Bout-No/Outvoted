@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.util;
 
-public class ModUtil {
+public final class ModUtil {
     public static int[] toIntArray(float[] arr) {
         if (arr == null) return null;
         int n = arr.length;

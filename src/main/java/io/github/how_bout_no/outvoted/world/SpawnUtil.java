@@ -1,10 +1,10 @@
 package io.github.how_bout_no.outvoted.world;
 
-import io.github.how_bout_no.outvoted.entity.BarnacleEntity;
-import io.github.how_bout_no.outvoted.entity.CopperGolemEntity;
-import io.github.how_bout_no.outvoted.entity.GlareEntity;
-import io.github.how_bout_no.outvoted.entity.GluttonEntity;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.entity.Barnacle;
+import io.github.how_bout_no.outvoted.entity.CopperGolem;
+import io.github.how_bout_no.outvoted.entity.Glare;
+import io.github.how_bout_no.outvoted.entity.Glutton;
+import io.github.how_bout_no.outvoted.init.ModEntities;
 import io.github.how_bout_no.outvoted.mixin.SpawnPlacementsInvoker;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.Monster;
@@ -12,10 +12,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 public class SpawnUtil {
     public static void registerRestrictions() {
-        SpawnPlacementsInvoker.callRegister(ModEntityTypes.WILDFIRE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkAnyLightMonsterSpawnRules);
-        SpawnPlacementsInvoker.callRegister(ModEntityTypes.GLUTTON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GluttonEntity::canSpawn);
-        SpawnPlacementsInvoker.callRegister(ModEntityTypes.BARNACLE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, BarnacleEntity::canSpawn);
-        SpawnPlacementsInvoker.callRegister(ModEntityTypes.GLARE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GlareEntity::canSpawn);
-        SpawnPlacementsInvoker.callRegister(ModEntityTypes.COPPER_GOLEM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, CopperGolemEntity::canSpawn);
+        SpawnPlacementsInvoker.callRegister(ModEntities.WILDFIRE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkAnyLightMonsterSpawnRules);
+        SpawnPlacementsInvoker.callRegister(ModEntities.GLUTTON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Glutton::canSpawn);
+        SpawnPlacementsInvoker.callRegister(ModEntities.BARNACLE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, Barnacle::canSpawn);
+        SpawnPlacementsInvoker.callRegister(ModEntities.GLARE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Glare::canSpawn);
+        SpawnPlacementsInvoker.callRegister(ModEntities.COPPER_GOLEM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, CopperGolem::canSpawn);
     }
 }

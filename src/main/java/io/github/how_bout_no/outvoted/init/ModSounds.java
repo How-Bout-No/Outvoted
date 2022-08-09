@@ -46,4 +46,14 @@ public class ModSounds {
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "barnacle_death")));
     public static final RegistryObject<SoundEvent> BARNACLE_FLOP = SOUNDS.register("barnacle_flop",
             () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "barnacle_flop")));
+
+    public static final RegistryObject<SoundEvent> MEERKAT_AMBIENT = SOUNDS.register("meerkat_ambient",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "meerkat_ambient")));
+    public static final RegistryObject<SoundEvent> MEERKAT_HURT = SOUNDS.register("meerkat_hurt",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "meerkat_hurt")));
+    public static final RegistryObject<SoundEvent> MEERKAT_DEATH = SOUNDS.register("meerkat_death",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "meerkat_death")));
+
+    public static final RegistryObject<SoundEvent> OSTRICH_AMBIENT = SOUNDS.register("ostrich_ambient",
+            () -> new SoundEvent(new ResourceLocation(Outvoted.MOD_ID, "ostrich_ambient")));
 }

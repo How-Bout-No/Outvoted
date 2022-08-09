@@ -4,21 +4,19 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinAnvilMenu",
-    "MixinAxeItem",
-    "MixinBlazeEntity",
-    "MixinCorridorExit",
+    "MixinBlaze",
+    "MixinCastleEntrance",
     "MixinGeoArmorItem",
     "MixinHoneycombItem",
     "MixinLightningRodBlock",
     "MixinMendingEnchantment",
     "MixinMob",
-    "PointOfInterestTypeAccessor",
     "SpawnPlacementsInvoker"
   ],
   "client": [
     "GeoArmorRendererAccessor",
     "MixinBlazeRenderer",
-    "MixinBuiltinModelItemRenderer"
+    "MixinBlockEntityWithoutLevelRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

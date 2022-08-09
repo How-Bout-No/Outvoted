@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.mixin;
 
-import io.github.how_bout_no.outvoted.entity.CopperGolemEntity;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.entity.CopperGolem;
+import io.github.how_bout_no.outvoted.init.ModEntities;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,7 +57,7 @@ public abstract class MixinLightningRodBlock extends RodBlock {
                 world.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, cachedBlockPosition.getPos(), Block.getId(cachedBlockPosition.getState()));
             }
 
-            CopperGolemEntity entity = ModEntityTypes.COPPER_GOLEM.get().create(world);
+            CopperGolem entity = ModEntities.COPPER_GOLEM.get().create(world);
             BlockPos blockPos = result.getBlock(0, 2, 0).getPos();
             entity.moveTo((double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.05, (double) blockPos.getZ() + 0.5, head.getValue(CarvedPumpkinBlock.FACING).toYRot() - 360F, entity.getXRot());
             entity.yHeadRot = head.getValue(CarvedPumpkinBlock.FACING).toYRot() - 360F;

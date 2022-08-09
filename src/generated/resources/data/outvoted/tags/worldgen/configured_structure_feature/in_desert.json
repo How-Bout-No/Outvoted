@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:desert_pyramid",
+    "minecraft:village_desert",
+    "minecraft:buried_treasure",
+    "minecraft:ruined_portal_desert"
+  ]
+}

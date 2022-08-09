@@ -19,9 +19,9 @@ public class CopperButtonBlock extends BaseCopperButtonBlock {
         }
     }
 
-    public boolean isRandomlyTicking(BlockState state) {
-        return IOxidizable.getNext(state.getBlock()).isPresent();
-    }
+//    public boolean isRandomlyTicking(BlockState state) {
+//        return IOxidizable.getNext(state.getBlock()).isPresent();
+//    }
 
     // Don't know if below is needed at all, but I'll keep it so as not to break anything
     public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {

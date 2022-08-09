@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "outvoted:block/palm_log",
+    "end": "outvoted:block/palm_log"
+  }
+}

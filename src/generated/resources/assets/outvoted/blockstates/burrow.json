@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "outvoted:block/burrow",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "outvoted:block/burrow"
+    },
+    "facing=north": {
+      "model": "outvoted:block/burrow",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "outvoted:block/burrow",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "outvoted:block/burrow",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "outvoted:block/burrow",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

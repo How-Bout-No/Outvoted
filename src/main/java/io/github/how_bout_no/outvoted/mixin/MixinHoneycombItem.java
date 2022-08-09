@@ -1,5 +1,3 @@
-// Adapted from: https://github.com/LambdAurora/AurorasDecorations/blob/1.17/src/main/java/dev/lambdaurora/aurorasdeco/mixin/item/HoneycombItemMixin.java
-
 package io.github.how_bout_no.outvoted.mixin;
 
 import com.google.common.collect.BiMap;

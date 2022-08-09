@@ -3,7 +3,7 @@ package io.github.how_bout_no.outvoted.data;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModEntities;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.EntityLoot;
@@ -53,17 +53,17 @@ public class LootTables extends LootTableProvider {
         @Override
         protected Iterable<EntityType<?>> getKnownEntities() {
             List<EntityType<?>> list = new ArrayList<>();
-            list.add(ModEntityTypes.WILDFIRE.get());
-            list.add(ModEntityTypes.GLUTTON.get());
-            list.add(ModEntityTypes.BARNACLE.get());
-            list.add(ModEntityTypes.COPPER_GOLEM.get());
-            list.add(ModEntityTypes.GLARE.get());
+            list.add(ModEntities.WILDFIRE.get());
+            list.add(ModEntities.GLUTTON.get());
+            list.add(ModEntities.BARNACLE.get());
+            list.add(ModEntities.COPPER_GOLEM.get());
+            list.add(ModEntities.GLARE.get());
             return list;
         }
 
         @Override
         protected void addTables() {
-            this.add(ModEntityTypes.WILDFIRE.get(), LootTable.lootTable()
+            this.add(ModEntities.WILDFIRE.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(Items.BLAZE_ROD)
@@ -81,7 +81,7 @@ public class LootTables extends LootTableProvider {
                                     .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.05F, 0.025F))
                                     .when(LootItemKilledByPlayerCondition.killedByPlayer())))
             );
-            this.add(ModEntityTypes.GLUTTON.get(), LootTable.lootTable()
+            this.add(ModEntities.GLUTTON.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE)
@@ -94,7 +94,7 @@ public class LootTables extends LootTableProvider {
                                     .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.1F, 0.05F))
                                     .when(LootItemKilledByPlayerCondition.killedByPlayer())))
             );
-            this.add(ModEntityTypes.BARNACLE.get(), LootTable.lootTable()
+            this.add(ModEntities.BARNACLE.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(ModItems.BARNACLE_TOOTH.get())
@@ -102,7 +102,7 @@ public class LootTables extends LootTableProvider {
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                     .when(LootItemKilledByPlayerCondition.killedByPlayer())))
             );
-            this.add(ModEntityTypes.COPPER_GOLEM.get(), LootTable.lootTable()
+            this.add(ModEntities.COPPER_GOLEM.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(Blocks.ALLIUM)
@@ -116,7 +116,7 @@ public class LootTables extends LootTableProvider {
                             )
                     )
             );
-            this.add(ModEntityTypes.GLARE.get(), LootTable.lootTable()
+            this.add(ModEntities.GLARE.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(Items.GLOW_BERRIES)
@@ -127,7 +127,7 @@ public class LootTables extends LootTableProvider {
         }
 
         static {
-            SPECIAL_LOOT_TABLE_TYPES = ImmutableSet.of(EntityType.PLAYER, EntityType.ARMOR_STAND, EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM, EntityType.VILLAGER, ModEntityTypes.COPPER_GOLEM.get());
+            SPECIAL_LOOT_TABLE_TYPES = ImmutableSet.of(EntityType.PLAYER, EntityType.ARMOR_STAND, EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM, EntityType.VILLAGER, ModEntities.COPPER_GOLEM.get());
         }
     }
 }

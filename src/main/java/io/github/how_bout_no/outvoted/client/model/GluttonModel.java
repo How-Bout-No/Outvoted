@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.client.model;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.GluttonEntity;
+import io.github.how_bout_no.outvoted.entity.Glutton;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,24 +12,24 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @OnlyIn(Dist.CLIENT)
-public class GluttonModel extends AnimatedGeoModel<GluttonEntity> {
+public class GluttonModel extends AnimatedGeoModel<Glutton> {
     @Override
-    public ResourceLocation getAnimationFileLocation(GluttonEntity entity) {
+    public ResourceLocation getAnimationFileLocation(Glutton entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "animations/glutton.animation.json");
     }
 
     @Override
-    public ResourceLocation getModelLocation(GluttonEntity entity) {
+    public ResourceLocation getModelLocation(Glutton entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "geo/glutton.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GluttonEntity entity) {
+    public ResourceLocation getTextureLocation(Glutton entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/glutton/glutton.png");
     }
 
     @Override
-    public void setLivingAnimations(GluttonEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(Glutton entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getBone("head");
         IBone legBR = this.getBone("LegBR");

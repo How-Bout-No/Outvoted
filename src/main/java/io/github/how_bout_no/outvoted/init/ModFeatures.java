@@ -1,14 +1,25 @@
 package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.AcaciaFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.RandomSpreadFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,21 +29,32 @@ import java.util.List;
 
 public class ModFeatures {
     public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Outvoted.MOD_ID);
+    public static final DeferredRegister<ConfiguredStructureFeature<?, ?>> CONFIGURED_STRUCTURE_FEATURES = DeferredRegister.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, Outvoted.MOD_ID);
     public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Outvoted.MOD_ID);
 
-    private static final String TNT_PILE_NAME = "tnt_pile";
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CONFIGURED_BURROW =
+            CONFIGURED_FEATURES.register("burrow",
+                    () -> new ConfiguredFeature<>(Feature.BLOCK_COLUMN,
+                            new BlockColumnConfiguration(List.of(BlockColumnConfiguration.layer(ConstantInt.of(1), BlockStateProvider.simple(ModBlocks.BURROW.get()))), Direction.DOWN, BlockPredicate.matchesBlock(Blocks.AIR, BlockPos.ZERO), false)));
 
-    // your ConfiguredFeature RegistryObject fields must use <?,?> as the generic params for technical reasons
-    public static final RegistryObject<ConfiguredFeature<?,?>> CONFIGURED_TNT_PILE =
-            CONFIGURED_FEATURES.register(TNT_PILE_NAME,
-                    // ConfiguredFeature takes a feature type and a featureconfig.
-                    // You generally can't static init featureconfigs ahead of time, as they
-                    // very often have hard references to blocks (such as this one does).
-                    // The feature type defines the generation logic, the feature config is extra data used by that logic.
-                    // Feature.BLOCK_PILE generates blocks in a pile, it takes a BlockPileConfiguration.
-                    () -> new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-                            // BlockPileConfiguration takes a blockstate provider, we use one that always provides TNT.
-                            new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.TNT))));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CONFIGURED_BAOBAB =
+            CONFIGURED_FEATURES.register("baobab",
+                    () -> new ConfiguredFeature<>(Feature.TREE,
+                            (new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(ModBlocks.BAOBAB_LOG.get()),
+                                    new StraightTrunkPlacer(4, 2, 0),
+                                    BlockStateProvider.simple(ModBlocks.BAOBAB_LEAVES.get()),
+                                    new RandomSpreadFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), ConstantInt.of(2), 70),
+                                    new TwoLayersFeatureSize(0, 0, 0))).build()));
+//                                    Optional.of(new MangroveRootPlacer(UniformInt.of(1, 3), BlockStateProvider.simple(Blocks.MANGROVE_ROOTS), Optional.of(new AboveRootPlacement(BlockStateProvider.simple(Blocks.MOSS_CARPET), 0.5F)), new MangroveRootPlacement(Registry.BLOCK.getOrCreateTag(BlockTags.MANGROVE_ROOTS_CAN_GROW_THROUGH), HolderSet.direct(Block::builtInRegistryHolder, new Block[]{Blocks.MUD, Blocks.MUDDY_MANGROVE_ROOTS}), BlockStateProvider.simple(Blocks.MUDDY_MANGROVE_ROOTS), 8, 15, 0.2F))), new TwoLayersFeatureSize(2, 0, 2))).decorators(List.of(new LeaveVineDecorator(0.125F), new AttachedToLeavesDecorator(0.14F, 1, 0, new RandomizedIntStateProvider(BlockStateProvider.simple((BlockState)Blocks.MANGROVE_PROPAGULE.defaultBlockState().setValue(MangrovePropaguleBlock.HANGING, true)), MangrovePropaguleBlock.AGE, UniformInt.of(0, 4)), 2, List.of(Direction.DOWN)), BEEHIVE_001)).ignoreVines().build());
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CONFIGURED_PALM =
+            CONFIGURED_FEATURES.register("palm",
+                    () -> new ConfiguredFeature<>(Feature.TREE,
+                            (new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(ModBlocks.PALM_LOG.get()),
+                                    new ForkingTrunkPlacer(5, 2, 2), BlockStateProvider.simple(ModBlocks.PALM_LEAVES.get()),
+                                    new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
+                                    new TwoLayersFeatureSize(1, 0, 2))).ignoreVines().build()));
+
 
     // A PlacedFeature is a configured feature and a list of placement modifiers.
     // This is what goes into biomes, the placement modifiers determine where and how often to
@@ -43,12 +65,20 @@ public class ModFeatures {
     // Each placement modifier converts the input position to zero or more output positions, each of which
     // is given to the next placement modifier.
     // The ConfiguredFeature is generated at the positions generated after all placement modifiers have run.
-    public static final RegistryObject<PlacedFeature> PLACED_TNT_PILE =
-            PLACED_FEATURES.register(TNT_PILE_NAME,
-                    () -> new PlacedFeature(CONFIGURED_TNT_PILE.getHolder().get(),
-                            // InSquarePlacement.spread() takes the input position
-                            // and randomizes the X and Z coordinates within the chunk
-                            // PlacementUtils.HEIGHTMAP sets the Y-coordinate of the input position to the heightmap.
-                            // This causes the tnt pile to be generated at a random surface position in the chunk.
-                            List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)));
+    public static final RegistryObject<PlacedFeature> PLACED_BURROW =
+            PLACED_FEATURES.register("burrow",
+                    // InSquarePlacement.spread() takes the input position
+                    // and randomizes the X and Z coordinates within the chunk
+                    // PlacementUtils.HEIGHTMAP sets the Y-coordinate of the input position to the heightmap.
+                    // This causes the tnt pile to be generated at a random surface position in the chunk.
+                    () -> new PlacedFeature(CONFIGURED_BURROW.getHolder().get(),
+                            List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome())));
+    public static final RegistryObject<PlacedFeature> PLACED_BAOBAB =
+            PLACED_FEATURES.register("baobab",
+                    () -> new PlacedFeature(CONFIGURED_BAOBAB.getHolder().get(),
+                            List.of(PlacementUtils.filteredByBlockSurvival(ModBlocks.BAOBAB_SAPLING.get()))));
+    public static final RegistryObject<PlacedFeature> PLACED_PALM =
+            PLACED_FEATURES.register("palm",
+                    () -> new PlacedFeature(CONFIGURED_PALM.getHolder().get(),
+                            List.of(PlacementUtils.filteredByBlockSurvival(ModBlocks.PALM_SAPLING.get()))));
 }

@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import io.github.how_bout_no.outvoted.config.Config;
-import io.github.how_bout_no.outvoted.init.ModLootConditionTypes;
+import io.github.how_bout_no.outvoted.init.ModLootConditions;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.Serializer;
@@ -22,7 +22,7 @@ public class ConfigCheckLootCondition implements LootItemCondition {
     }
 
     public LootItemConditionType getType() {
-        return ModLootConditionTypes.CONFIG_CHECK.get();
+        return ModLootConditions.CONFIG_CHECK.get();
     }
 
     public boolean test(LootContext lootContext) {

@@ -11,22 +11,16 @@ import io.github.how_bout_no.outvoted.util.compat.PatchouliCompat;
 import io.github.how_bout_no.outvoted.world.SpawnUtil;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,13 +44,6 @@ public class Outvoted {
         }
     };
 
-    public static final ResourceLocation BIOME_CATEGORY_PLACEMENT = new ResourceLocation(MOD_ID, "biome_category");
-    public static final ResourceLocation RED_WOOL = new ResourceLocation(MOD_ID, "red_wool");
-    public static final ResourceLocation LAZY_RED_WOOL = new ResourceLocation(MOD_ID, "lazy_red_wool");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_RED_WOOL = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, RED_WOOL);
-    public static final ResourceKey<PlacedFeature> PLACED_RED_WOOL = ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, RED_WOOL);
-
-
     public Outvoted() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
@@ -69,25 +56,16 @@ public class Outvoted {
 
         ModBlocks.BLOCKS.register(modBus);
         ModBlocks.BLOCK_ITEMS.register(modBus);
-        ModEntityTypes.ENTITY_TYPES.register(modBus);
+        ModEntities.ENTITIES.register(modBus);
+        ModEntities.BLOCK_ENTITIES.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModRecipes.RECIPES.register(modBus);
         ModSounds.SOUNDS.register(modBus);
         ModFeatures.PLACED_FEATURES.register(modBus);
         ModFeatures.CONFIGURED_FEATURES.register(modBus);
-        ModTags.init();
         ForgeConfig.register();
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modBus.register(new ShieldTex()));
-        forgeBus.addListener(this::onBiomeLoading);
-    }
-
-    // BiomeLoadingEvent can be used to add placed features to existing biomes.
-    // Placed features added in the BiomeLoadingEvent must have been previously registered.
-    // JSON features cannot be added to biomes via the BiomeLoadingEvent.
-    private void onBiomeLoading(BiomeLoadingEvent event)
-    {
-        event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_TNT_PILE.getHolder().get());
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -107,11 +85,12 @@ public class Outvoted {
 
     @SubscribeEvent
     public static void registerEntities(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.WILDFIRE.get(), WildfireRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.GLUTTON.get(), GluttonRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.BARNACLE.get(), BarnacleRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.GLARE.get(), GlareRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.COPPER_GOLEM.get(), CopperGolemRenderer::new);
+        event.registerEntityRenderer(ModEntities.WILDFIRE.get(), WildfireRenderer::new);
+        event.registerEntityRenderer(ModEntities.GLUTTON.get(), GluttonRenderer::new);
+        event.registerEntityRenderer(ModEntities.BARNACLE.get(), BarnacleRenderer::new);
+        event.registerEntityRenderer(ModEntities.GLARE.get(), GlareRenderer::new);
+        event.registerEntityRenderer(ModEntities.COPPER_GOLEM.get(), CopperGolemRenderer::new);
+        event.registerEntityRenderer(ModEntities.MEERKAT.get(), MeerkatRenderer::new);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -121,11 +100,12 @@ public class Outvoted {
 
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        event.put(ModEntityTypes.WILDFIRE.get(), WildfireEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.GLUTTON.get(), GluttonEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.BARNACLE.get(), BarnacleEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.GLARE.get(), GlareEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.COPPER_GOLEM.get(), CopperGolemEntity.setCustomAttributes().build());
+        event.put(ModEntities.WILDFIRE.get(), Wildfire.setCustomAttributes().build());
+        event.put(ModEntities.GLUTTON.get(), Glutton.setCustomAttributes().build());
+        event.put(ModEntities.BARNACLE.get(), Barnacle.setCustomAttributes().build());
+        event.put(ModEntities.GLARE.get(), Glare.setCustomAttributes().build());
+        event.put(ModEntities.COPPER_GOLEM.get(), CopperGolem.setCustomAttributes().build());
+        event.put(ModEntities.MEERKAT.get(), Meerkat.setCustomAttributes().build());
     }
 
     static class ShieldTex {

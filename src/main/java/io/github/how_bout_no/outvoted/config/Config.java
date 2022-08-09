@@ -2,7 +2,6 @@ package io.github.how_bout_no.outvoted.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Config {
@@ -28,6 +27,10 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue barnacleSpawn;
     public static ForgeConfigSpec.IntValue barnacleRate;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> barnacleBiomes;
+    public static ForgeConfigSpec.DoubleValue meerkatHealth;
+    public static ForgeConfigSpec.BooleanValue meerkatSpawn;
+    public static ForgeConfigSpec.IntValue meerkatRate;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> meerkatBiomes;
     public static ForgeConfigSpec.DoubleValue copperGolemHealth;
     public static ForgeConfigSpec.DoubleValue copperGolemOxidation;
     public static ForgeConfigSpec.DoubleValue glareHealth;
@@ -56,7 +59,7 @@ public class Config {
                 .defineInRange("rate", 1, 1, 100);
         wildfireBiomes = COMMON_BUILDER
                 .comment("biomes")
-                .defineList("biomes", Arrays.asList("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley"), b -> b instanceof String);
+                .defineList("biomes", List.of("minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:crimson_forest", "minecraft:soul_sand_valley"), b -> b instanceof String);
 
         COMMON_BUILDER.push("Attack Settings");
 
@@ -90,7 +93,7 @@ public class Config {
                 .defineInRange("Glutton Spawn Rate", 5, 1, 100);
         gluttonBiomes = COMMON_BUILDER
                 .comment("biomes")
-                .defineList("Glutton Spawn Biomes", Arrays.asList("#swamp", "#desert", "minecraft:badlands_plateau", "minecraft:badlands"), b -> b instanceof String);
+                .defineList("Glutton Spawn Biomes", List.of("#swamp", "#desert", "minecraft:badlands_plateau", "minecraft:badlands"), b -> b instanceof String);
         gluttonStealEnchants = COMMON_BUILDER
                 .comment("Enable stealing enchantments on bite")
                 .define("Should Glutton Steal Enchants?", true);
@@ -115,23 +118,23 @@ public class Config {
                 .defineInRange("Barnacle Spawn Rate", 2, 1, 100);
         barnacleBiomes = COMMON_BUILDER
                 .comment("biomes")
-                .defineList("Barnacle Spawn Biomes", Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean"), b -> b instanceof String);
+                .defineList("Barnacle Spawn Biomes", List.of("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean"), b -> b instanceof String);
 
         COMMON_BUILDER.pop();
-        COMMON_BUILDER.push("Barnacle Settings");
+        COMMON_BUILDER.push("Meerkat Settings");
 
-        barnacleHealth = COMMON_BUILDER
+        meerkatHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("Barnacle Health", 40, 1, Double.MAX_VALUE);
-        barnacleSpawn = COMMON_BUILDER
+                .defineInRange("Meerkat Health", 10, 1, Double.MAX_VALUE);
+        meerkatSpawn = COMMON_BUILDER
                 .comment("spawn")
-                .define("Should Barnacle Spawn", true);
-        barnacleRate = COMMON_BUILDER
+                .define("Should Meerkat Spawn", true);
+        meerkatRate = COMMON_BUILDER
                 .comment("rate")
-                .defineInRange("Barnacle Spawn Rate", 2, 1, 100);
-        barnacleBiomes = COMMON_BUILDER
+                .defineInRange("Burrow Generation Rate", 40, 1, 100);
+        meerkatBiomes = COMMON_BUILDER
                 .comment("biomes")
-                .defineList("Barnacle Spawn Biomes", Arrays.asList("minecraft:deep_warm_ocean", "minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_lukewarm_ocean"), b -> b instanceof String);
+                .defineList("Burrow Spawn Biomes", List.of("#desert"), b -> b instanceof String);
 
         COMMON_BUILDER.pop();
         COMMON_BUILDER.push("Copper Golem Settings");
@@ -156,7 +159,7 @@ public class Config {
                 .defineInRange("Glare Spawn Rate", 10, 1, 100);
         glareBiomes = COMMON_BUILDER
                 .comment("biomes")
-                .defineList("Glare Spawn Biomes", Arrays.asList("#taiga", "#jungle", "#plains", "#savanna", "#forest", "#swamp", "#underground"), b -> b instanceof String);
+                .defineList("Glare Spawn Biomes", List.of("#taiga", "#jungle", "#plains", "#savanna", "#forest", "#swamp", "#underground"), b -> b instanceof String);
         glareShouldInteract = COMMON_BUILDER
                 .comment("Set to FALSE to disable the Glare picking up and placing blocks/items")
                 .define("Should Glare Interact With The World?", true);

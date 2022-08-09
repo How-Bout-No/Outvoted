@@ -15,13 +15,14 @@ public class DataGenerators {
         if (event.includeServer()) {
             generator.addProvider(new Recipes(generator));
             generator.addProvider(new LootTables(generator));
-            BlockTagProvider blocktagprovider = new BlockTagProvider(generator, existingFileHelper);
-            generator.addProvider(blocktagprovider);
-//            generator.install(new ItemTagProvider(generator, blocktagprovider, existingFileHelper));
+            BlockTags blockTags = new BlockTags(generator, existingFileHelper);
+            generator.addProvider(blockTags);
+            generator.addProvider(new ItemTags(generator, blockTags, existingFileHelper));
+            generator.addProvider(new ConfiguredStructureTags(generator, existingFileHelper));
         }
         if (event.includeClient()) {
-            generator.addProvider(new Blocks(generator, event.getExistingFileHelper()));
-            generator.addProvider(new Items(generator, event.getExistingFileHelper()));
+            generator.addProvider(new BlockModels(generator, event.getExistingFileHelper()));
+            generator.addProvider(new ItemModels(generator, event.getExistingFileHelper()));
             generator.addProvider(new BlockStates(generator, existingFileHelper));
         }
     }

@@ -5,19 +5,19 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.GlareModel;
-import io.github.how_bout_no.outvoted.entity.GlareEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import io.github.how_bout_no.outvoted.entity.Glare;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 
 @OnlyIn(Dist.CLIENT)
-public class GlareRenderer extends GeoMobRenderer<GlareEntity> {
+public class GlareRenderer extends GeoMobRenderer<Glare> {
     public GlareRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new GlareModel());
     }
@@ -26,12 +26,12 @@ public class GlareRenderer extends GeoMobRenderer<GlareEntity> {
     private static final ResourceLocation ANGRY = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/glare/glare_angry.png");
 
     @Override
-    public RenderType getRenderType(GlareEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+    public RenderType getRenderType(Glare animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GlareEntity entity) {
+    public ResourceLocation getTextureLocation(Glare entity) {
         return entity.isAngry() ? ANGRY : DEFAULT;
     }
 

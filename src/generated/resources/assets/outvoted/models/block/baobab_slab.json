@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "side": "outvoted:block/baobab_planks",
+    "bottom": "outvoted:block/baobab_planks",
+    "top": "outvoted:block/baobab_planks"
+  }
+}

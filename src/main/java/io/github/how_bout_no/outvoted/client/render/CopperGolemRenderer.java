@@ -5,19 +5,19 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.CopperGolemModel;
-import io.github.how_bout_no.outvoted.entity.CopperGolemEntity;
+import io.github.how_bout_no.outvoted.entity.CopperGolem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 
 @OnlyIn(Dist.CLIENT)
-public class CopperGolemRenderer extends GeoMobRenderer<CopperGolemEntity> {
+public class CopperGolemRenderer extends GeoMobRenderer<CopperGolem> {
     public CopperGolemRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new CopperGolemModel());
     }
@@ -27,11 +27,11 @@ public class CopperGolemRenderer extends GeoMobRenderer<CopperGolemEntity> {
     private static final ResourceLocation WEATHERED = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/copper_golem/copper_golem3.png");
     private static final ResourceLocation OXIDIZED = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/copper_golem/copper_golem4.png");
     @Override
-    public RenderType getRenderType(CopperGolemEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+    public RenderType getRenderType(CopperGolem animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
     }
     @Override
-    public ResourceLocation getTextureLocation(CopperGolemEntity entity) {
+    public ResourceLocation getTextureLocation(CopperGolem entity) {
         return switch (entity.getOxidizationLevel()) {
             case 0 -> UNAFFECTED;
             case 1 -> EXPOSED;

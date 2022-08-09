@@ -10,7 +10,8 @@
     },
     "face=ceiling,facing=north,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
-      "x": 180
+      "x": 180,
+      "y": 180
     },
     "face=floor,facing=south,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
@@ -24,8 +25,7 @@
     },
     "face=ceiling,facing=south,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
-      "x": 180,
-      "y": 180
+      "x": 180
     },
     "face=floor,facing=west,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
@@ -40,7 +40,7 @@
     "face=ceiling,facing=west,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
       "x": 180,
-      "y": 270
+      "y": 90
     },
     "face=floor,facing=east,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
@@ -55,7 +55,7 @@
     "face=ceiling,facing=east,powered=false": {
       "model": "outvoted:block/exposed_copper_button",
       "x": 180,
-      "y": 90
+      "y": 270
     },
     "face=floor,facing=north,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed"
@@ -67,7 +67,8 @@
     },
     "face=ceiling,facing=north,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
-      "x": 180
+      "x": 180,
+      "y": 180
     },
     "face=floor,facing=south,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
@@ -81,8 +82,7 @@
     },
     "face=ceiling,facing=south,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
-      "x": 180,
-      "y": 180
+      "x": 180
     },
     "face=floor,facing=west,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
@@ -97,7 +97,7 @@
     "face=ceiling,facing=west,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
       "x": 180,
-      "y": 270
+      "y": 90
     },
     "face=floor,facing=east,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
@@ -112,7 +112,7 @@
     "face=ceiling,facing=east,powered=true": {
       "model": "outvoted:block/exposed_copper_button_pressed",
       "x": 180,
-      "y": 90
+      "y": 270
     }
   }
 }

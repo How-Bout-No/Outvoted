@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.util;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModEntities;
 import io.github.how_bout_no.outvoted.init.ModItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -39,13 +39,13 @@ public class MappingsFixer {
         for (RegistryEvent.MissingMappings.Mapping<EntityType<?>> entry : event.getAllMappings()) {
             if (entry.key.getNamespace().equals(Outvoted.MOD_ID)) {
                 if (entry.key.getPath().equals("inferno")) {
-                    entry.remap(ModEntityTypes.WILDFIRE.get());
+                    entry.remap(ModEntities.WILDFIRE.get());
                 }
                 if (entry.key.getPath().equals("hunger")) {
-                    entry.remap(ModEntityTypes.GLUTTON.get());
+                    entry.remap(ModEntities.GLUTTON.get());
                 }
                 if (entry.key.getPath().equals("kraken")) {
-                    entry.remap(ModEntityTypes.BARNACLE.get());
+                    entry.remap(ModEntities.BARNACLE.get());
                 }
             }
         }

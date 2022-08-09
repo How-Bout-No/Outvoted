@@ -1,7 +1,7 @@
 package io.github.how_bout_no.outvoted.client.model;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.entity.CopperGolemEntity;
+import io.github.how_bout_no.outvoted.entity.CopperGolem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,24 +12,24 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @OnlyIn(Dist.CLIENT)
-public class CopperGolemModel extends AnimatedGeoModel<CopperGolemEntity> {
+public class CopperGolemModel extends AnimatedGeoModel<CopperGolem> {
     @Override
-    public ResourceLocation getAnimationFileLocation(CopperGolemEntity entity) {
+    public ResourceLocation getAnimationFileLocation(CopperGolem entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "animations/copper_golem.animation.json");
     }
 
     @Override
-    public ResourceLocation getModelLocation(CopperGolemEntity entity) {
+    public ResourceLocation getModelLocation(CopperGolem entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "geo/copper_golem.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CopperGolemEntity entity) {
+    public ResourceLocation getTextureLocation(CopperGolem entity) {
         return new ResourceLocation(Outvoted.MOD_ID, "textures/entity/copper_golem/copper_golem.png");
     }
 
     @Override
-    public void setLivingAnimations(CopperGolemEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(CopperGolem entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
 
         IBone head = this.getBone("head");

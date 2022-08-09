@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.model.WildfireModel;
 import io.github.how_bout_no.outvoted.config.Config;
-import io.github.how_bout_no.outvoted.entity.WildfireEntity;
+import io.github.how_bout_no.outvoted.entity.Wildfire;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class WildfireRenderer extends GeoEntityRenderer<WildfireEntity> {
+public class WildfireRenderer extends GeoEntityRenderer<Wildfire> {
     public WildfireRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new WildfireModel());
     }
@@ -25,17 +25,17 @@ public class WildfireRenderer extends GeoEntityRenderer<WildfireEntity> {
     private static final ResourceLocation SOUL = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
 
     @Override
-    public RenderType getRenderType(WildfireEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+    public RenderType getRenderType(Wildfire animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
     }
 
     @Override
-    protected int getBlockLightLevel(WildfireEntity arg, BlockPos arg2) {
+    protected int getBlockLightLevel(Wildfire arg, BlockPos arg2) {
         return 15;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(WildfireEntity entity) {
+    public ResourceLocation getTextureLocation(Wildfire entity) {
         if (entity.getVariant() == 0 || !Config.wildfireVariants.get()) {
             return DEFAULT;
         }

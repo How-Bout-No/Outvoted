@@ -1,9 +1,12 @@
 package io.github.how_bout_no.outvoted.world.gen;
 
 import io.github.how_bout_no.outvoted.config.Config;
-import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.init.ModEntities;
+import io.github.how_bout_no.outvoted.init.ModFeatures;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,26 +16,37 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WorldGen {
+    // BiomeLoadingEvent can be used to add placed features to existing biomes.
+    // Placed features added in the BiomeLoadingEvent must have been previously registered.
+    // JSON features cannot be added to biomes via the BiomeLoadingEvent.
+    @SubscribeEvent
+    public static void onBiomeLoading(BiomeLoadingEvent event) {
+        if (event.getCategory() == Biome.BiomeCategory.DESERT) {
+            event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_BURROW.getHolder().get());
+            event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_PALM.getHolder().get());
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void addSpawns(final BiomeLoadingEvent event) {
         if (Config.wildfireSpawn.get() && validBiome(event, Config.wildfireBiomes.get())) {
             event.getSpawns().addSpawn(MobCategory.MONSTER,
-                    new MobSpawnSettings.SpawnerData(ModEntityTypes.WILDFIRE.get(),
+                    new MobSpawnSettings.SpawnerData(ModEntities.WILDFIRE.get(),
                             Config.wildfireRate.get(), 1, 1)
             );
         } else if (Config.gluttonSpawn.get() && validBiome(event, Config.gluttonBiomes.get())) {
             event.getSpawns().addSpawn(MobCategory.MONSTER,
-                    new MobSpawnSettings.SpawnerData(ModEntityTypes.GLUTTON.get(),
+                    new MobSpawnSettings.SpawnerData(ModEntities.GLUTTON.get(),
                             Config.gluttonRate.get(), 1, 1)
             );
         } else if (Config.barnacleSpawn.get() && validBiome(event, Config.barnacleBiomes.get())) {
             event.getSpawns().addSpawn(MobCategory.MONSTER,
-                    new MobSpawnSettings.SpawnerData(ModEntityTypes.BARNACLE.get(),
+                    new MobSpawnSettings.SpawnerData(ModEntities.BARNACLE.get(),
                             Config.barnacleRate.get(), 1, 1)
             );
         } else if (Config.glareSpawn.get() && validBiome(event, Config.glareBiomes.get())) {
             event.getSpawns().addSpawn(MobCategory.MONSTER,
-                    new MobSpawnSettings.SpawnerData(ModEntityTypes.GLARE.get(),
+                    new MobSpawnSettings.SpawnerData(ModEntities.GLARE.get(),
                             Config.glareRate.get(), 1, 1)
             );
         }

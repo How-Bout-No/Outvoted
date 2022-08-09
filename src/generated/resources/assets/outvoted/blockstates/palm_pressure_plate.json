@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "outvoted:block/palm_pressure_plate"
+    },
+    "powered=true": {
+      "model": "outvoted:block/palm_pressure_plate_down"
+    }
+  }
+}
