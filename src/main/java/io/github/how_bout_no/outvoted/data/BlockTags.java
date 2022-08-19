@@ -19,7 +19,6 @@ public class BlockTags extends BlockTagsProvider {
     protected void addTags() {
         tag(ModTags.GLUTTON_CAN_BURROW).addTag(net.minecraft.tags.BlockTags.SAND)
                 .add(Blocks.GRAVEL, Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.MYCELIUM);
-
         tag(net.minecraft.tags.BlockTags.BUTTONS)
                 .add(ModBlocks.COPPER_BUTTON.get());
     }

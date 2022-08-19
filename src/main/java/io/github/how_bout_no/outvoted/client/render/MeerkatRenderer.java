@@ -19,8 +19,8 @@ public class MeerkatRenderer extends GeoMobRenderer<Meerkat> {
     }
 
     @Override
-    public RenderType getRenderType(Meerkat animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
+    public RenderType getRenderType(Meerkat meerkat, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(meerkat));
     }
 
     @Override

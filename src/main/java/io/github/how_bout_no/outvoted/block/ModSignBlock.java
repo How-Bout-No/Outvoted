@@ -1,36 +1,43 @@
 package io.github.how_bout_no.outvoted.block;
 
-import net.minecraft.resources.ResourceLocation;
+import io.github.how_bout_no.outvoted.block.entity.ModSignBlockEntity;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
-import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class ModSignBlock {
-    public static class ModStandingSignBlock extends StandingSignBlock implements IModdedSign {
-        private final ResourceLocation texture;
-
-        public ModStandingSignBlock(Properties properties, ResourceLocation texture) {
-            super(properties, WoodType.OAK);
-            this.texture = texture;
+public class ModSignBlock {
+    public static class ModStandingSignBlock extends StandingSignBlock {
+        public ModStandingSignBlock(Properties properties, ModWoodType woodType) {
+            super(properties, woodType);
         }
 
         @Override
-        public ResourceLocation getTexture() {
-            return texture;
+        public String getDescriptionId() {
+            return Util.makeDescriptionId("item", this.getRegistryName());
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new ModSignBlockEntity(pos, state);
         }
     }
 
-    public static class ModWallSignBlock extends WallSignBlock implements IModdedSign {
-        private final ResourceLocation texture;
-
-        public ModWallSignBlock(Properties properties, ResourceLocation texture) {
-            super(properties, WoodType.OAK);
-            this.texture = texture;
+    public static class ModWallSignBlock extends WallSignBlock {
+        public ModWallSignBlock(Properties properties, ModWoodType woodType) {
+            super(properties, woodType);
         }
 
         @Override
-        public ResourceLocation getTexture() {
-            return texture;
+        public String getDescriptionId() {
+            return Util.makeDescriptionId("item", this.getRegistryName());
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new ModSignBlockEntity(pos, state);
         }
     }
 }

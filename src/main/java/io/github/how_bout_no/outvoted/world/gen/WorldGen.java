@@ -24,6 +24,8 @@ public class WorldGen {
         if (event.getCategory() == Biome.BiomeCategory.DESERT) {
             event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_BURROW.getHolder().get());
             event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_PALM.getHolder().get());
+        } else if (event.getCategory() == Biome.BiomeCategory.SAVANNA) {
+            event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_BAOBAB.getHolder().get());
         }
     }
 
@@ -49,11 +51,16 @@ public class WorldGen {
                     new MobSpawnSettings.SpawnerData(ModEntities.GLARE.get(),
                             Config.glareRate.get(), 1, 1)
             );
+        } else if (Config.ostrichSpawn.get() && validBiome(event, Config.ostrichBiomes.get())) {
+            event.getSpawns().addSpawn(MobCategory.CREATURE,
+                    new MobSpawnSettings.SpawnerData(ModEntities.OSTRICH.get(),
+                            Config.ostrichRate.get(), 1, 3)
+            );
         }
     }
 
     private static boolean validBiome(BiomeLoadingEvent biome, List<? extends String> filter) {
         if (biome.getName() == null) return false;
-        return filter.contains(biome.getName().getPath()) || filter.contains("#" + biome.getCategory().getSerializedName());
+        return filter.contains(biome.getName().getPath()) || filter.contains("#" + biome.getCategory().getName());
     }
 }

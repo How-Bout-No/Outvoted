@@ -5,7 +5,6 @@ import io.github.how_bout_no.outvoted.block.BurrowBlock;
 import io.github.how_bout_no.outvoted.config.Config;
 import io.github.how_bout_no.outvoted.entity.Meerkat;
 import io.github.how_bout_no.outvoted.init.ModEntities;
-import net.minecraft.client.renderer.texture.Tickable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +14,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 
-public class BurrowBlockEntity extends BlockEntity implements Tickable {
+public class BurrowBlockEntity extends BlockEntity {
     private final List<MeerkatInfo> meerkats = Lists.newArrayList();
     private final int capacity = 4;
 
@@ -108,7 +108,7 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
         meerkat.setInLoveTime(Math.max(0, meerkat.getInLoveTime() - ticks));
     }
 
-    private void tickMeerkats() {
+    private void tickOccupants(Level arg, BlockPos arg2, BlockState arg3, List<BurrowBlockEntity.MeerkatInfo> list) {
         Iterator<MeerkatInfo> iterator = this.meerkats.iterator();
 
         MeerkatInfo meerkat;
@@ -123,9 +123,9 @@ public class BurrowBlockEntity extends BlockEntity implements Tickable {
 
     }
 
-    public void tick() {
+    public void serverTick(Level arg, BlockPos arg2, BlockState arg3, BurrowBlockEntity arg4) {
         if (!this.level.isClientSide) {
-            this.tickMeerkats();
+            this.tickOccupants(arg, arg2, arg3, arg4.meerkats);
             if (this.meerkats.size() > 0 && this.level.getRandom().nextDouble() < 0.001D) {
                 for (MeerkatInfo meerkat : this.meerkats) {
                     double health = meerkat.entityData.getDouble("Health");

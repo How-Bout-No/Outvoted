@@ -16,6 +16,22 @@ public class BlockModels extends BlockModelProvider {
 
     @Override
     protected void registerModels() {
+        tree("palm");
+        ResourceLocation planks = id("block/palm_planks");
+        cubeAll("palm_planks", planks);
+        buttonModel("palm_button", planks);
+        doorModel("palm_door");
+        fenceGateModel("palm_fence_gate", planks);
+        fenceModel("palm_fence", planks);
+        pressurePlateModel("palm_pressure_plate", planks);
+        sign("palm_sign", planks);
+        slabModel("palm_slab", planks);
+        stairsModel("palm_stairs", planks);
+        trapdoorModel("palm_trapdoor", id("block/palm_trapdoor"));
+
+        tree("baobab");
+
+        cubeTop("burrow", new ResourceLocation("block/sand"), id("block/burrow"));
         buttonModel("copper_button", new ResourceLocation("block/copper_block"));
         buttonModel("exposed_copper_button", new ResourceLocation("block/exposed_copper"));
         buttonModel("weathered_copper_button", new ResourceLocation("block/weathered_copper"));
@@ -26,108 +42,72 @@ public class BlockModels extends BlockModelProvider {
         buttonModel("waxed_oxidized_copper_button", new ResourceLocation("block/oxidized_copper"));
     }
 
-    private void registerWood(String input) {
-        type = input;
-        textureBase = "block/" + type;
-        buttonModel();
-        doorModel();
-        fenceGateModel();
-        fenceModel();
-        singleTexture(type + "_leaves", new ResourceLocation("block/leaves"), "all", id("_leaves"));
-        cubeColumn(type + "_log", id("_log"), id("_log_top"));
-        cubeAll(type + "_planks", id("_planks"));
-        pressurePlateModel();
-//        cross(type + "_sapling", id("_sapling"));
-//        Can't make sign jsons with this...
-//        singleTexture(type + "_sign", new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks"));
-        slabModel();
-        stairsModel();
-        trapdoorModel();
-        cubeColumn(type + "_wood", id("_log"), id("_log"));
-        strippedModels();
+    private ResourceLocation id(String path) {
+        return new ResourceLocation(Outvoted.MOD_ID, path);
     }
 
-    private ResourceLocation id(String suffix) {
-        return new ResourceLocation(Outvoted.MOD_ID, textureBase + suffix);
+    private void tree(String path) {
+        String log = path + "_log";
+        cross(path + "_sapling", id("block/" + path + "_sapling"));
+        singleTexture(path + "_leaves", new ResourceLocation("block/leaves"), "all", id("block/" + path + "_leaves"));
+        cubeColumn(log, id("block/" + log), id("block/" + log + "_top"));
+        cubeColumn(path + "_wood", id("block/" + log), id("block/" + log));
+        strippedModels(path, id("block/" + log));
     }
 
-    private void buttonModel() {
-        buttonModel(type + "_button", new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks"));
+    private void strippedModels(String path, ResourceLocation texture) {
+        cubeColumn(path + "_log", texture, id(texture.getPath() + "_top"));
+        cubeColumnHorizontal(path + "_log_horizontal", texture, id(texture.getPath() + "_top"));
+        cubeColumn(path + "_wood", texture, texture);
     }
 
     private void buttonModel(String path, ResourceLocation texture) {
-        singleTexture(path, new ResourceLocation("block/button"),
-                "texture", texture);
-        singleTexture(path + "_inventory", new ResourceLocation("block/button_inventory"),
-                "texture", texture);
-        singleTexture(path + "_pressed", new ResourceLocation("block/button_pressed"),
-                "texture", texture);
+        button(path, texture);
+        buttonInventory(path + "_inventory", texture);
+        buttonPressed(path + "_pressed", texture);
     }
 
-    private void doorModel() {
-        String path = type + "_door";
-        ResourceLocation bottom = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_door_bottom");
-        ResourceLocation top = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_door_top");
+    private void doorModel(String path) {
+        ResourceLocation bottom = id("block/" + path + "_bottom");
+        ResourceLocation top = id("block/" + path + "_top");
         doorTopLeft(path + "_top", bottom, top);
         doorTopRight(path + "_top_hinge", bottom, top);
         doorBottomLeft(path + "_bottom", bottom, top);
         doorBottomRight(path + "_bottom_hinge", bottom, top);
     }
 
-    private void fenceGateModel() {
-        String path = type + "_fence_gate";
-        ResourceLocation texture = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks");
+    private void fenceGateModel(String path, ResourceLocation texture) {
         fenceGate(path, texture);
         fenceGateOpen(path + "_open", texture);
         fenceGateWall(path + "_wall", texture);
         fenceGateWallOpen(path + "_wall_open", texture);
     }
 
-    private void fenceModel() {
-        String path = type + "_fence";
-        ResourceLocation texture = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks");
-        fenceInventory(path + "_inventory", texture);
+    private void fenceModel(String path, ResourceLocation texture) {
         fencePost(path + "_post", texture);
         fenceSide(path + "_side", texture);
+        fenceInventory(path + "_inventory", texture);
     }
 
-    private void pressurePlateModel() {
-        String path = type + "_pressure_plate";
-        ResourceLocation texture = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks");
-        singleTexture(path, new ResourceLocation("block/pressure_plate_up"),
-                "texture", texture);
-        singleTexture(path + "_down", new ResourceLocation("block/pressure_plate_down"),
-                "texture", texture);
+    private void pressurePlateModel(String path, ResourceLocation texture) {
+        pressurePlate(path, texture);
+        pressurePlateDown(path + "_down", texture);
     }
 
-    private void slabModel() {
-        String path = type + "_slab";
-        ResourceLocation texture = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks");
+    private void slabModel(String path, ResourceLocation texture) {
         slab(path, texture, texture, texture);
         slabTop(path + "_top", texture, texture, texture);
     }
 
-    private void stairsModel() {
-        String path = type + "_stairs";
-        ResourceLocation texture = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_planks");
+    private void stairsModel(String path, ResourceLocation texture) {
         stairs(path, texture, texture, texture);
         stairsInner(path + "_inner", texture, texture, texture);
         stairsOuter(path + "_outer", texture, texture, texture);
     }
 
-    private void trapdoorModel() {
-        String path = type + "_trapdoor";
-        ResourceLocation texture = new ResourceLocation(Outvoted.MOD_ID, textureBase + "_trapdoor");
+    private void trapdoorModel(String path, ResourceLocation texture) {
         trapdoorBottom(path + "_bottom", texture);
         trapdoorOpen(path + "_open", texture);
         trapdoorTop(path + "_top", texture);
-    }
-
-    private void strippedModels() {
-        String path = "stripped_" + type;
-        String newTextureBase = "block/" + path;
-        cubeColumn(path + "_log", new ResourceLocation(Outvoted.MOD_ID, newTextureBase + "_log"), new ResourceLocation(Outvoted.MOD_ID, newTextureBase + "_log_top"));
-        cubeColumnHorizontal(path + "_log_horizontal", new ResourceLocation(Outvoted.MOD_ID, newTextureBase + "_log"), new ResourceLocation(Outvoted.MOD_ID, newTextureBase + "_log_top"));
-        cubeColumn(path + "_wood", new ResourceLocation(Outvoted.MOD_ID, newTextureBase + "_log"), new ResourceLocation(Outvoted.MOD_ID, newTextureBase + "_log"));
     }
 }

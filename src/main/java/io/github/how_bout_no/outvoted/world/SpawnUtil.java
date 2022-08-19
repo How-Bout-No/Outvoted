@@ -1,9 +1,6 @@
 package io.github.how_bout_no.outvoted.world;
 
-import io.github.how_bout_no.outvoted.entity.Barnacle;
-import io.github.how_bout_no.outvoted.entity.CopperGolem;
-import io.github.how_bout_no.outvoted.entity.Glare;
-import io.github.how_bout_no.outvoted.entity.Glutton;
+import io.github.how_bout_no.outvoted.entity.*;
 import io.github.how_bout_no.outvoted.init.ModEntities;
 import io.github.how_bout_no.outvoted.mixin.SpawnPlacementsInvoker;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -17,5 +14,6 @@ public class SpawnUtil {
         SpawnPlacementsInvoker.callRegister(ModEntities.BARNACLE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, Barnacle::canSpawn);
         SpawnPlacementsInvoker.callRegister(ModEntities.GLARE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Glare::canSpawn);
         SpawnPlacementsInvoker.callRegister(ModEntities.COPPER_GOLEM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, CopperGolem::canSpawn);
+        SpawnPlacementsInvoker.callRegister(ModEntities.OSTRICH.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Ostrich::canSpawn);
     }
 }

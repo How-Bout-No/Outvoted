@@ -3,7 +3,7 @@ package io.github.how_bout_no.outvoted.entity;
 import io.github.how_bout_no.outvoted.config.Config;
 import io.github.how_bout_no.outvoted.init.ModSounds;
 import io.github.how_bout_no.outvoted.item.WildfireHelmetItem;
-import io.github.how_bout_no.outvoted.util.IMixinBlazeEntity;
+import io.github.how_bout_no.outvoted.util.IMixinBlaze;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -125,7 +125,7 @@ public class Wildfire extends Monster implements IAnimatable {
                 while (!serverWorld.isEmptyBlock(blaze.blockPosition())) { // Should prevent spawning inside of blocks
                     blaze.absMoveTo(this.getRandomX(3.0D), this.getY(), this.getRandomZ(3.0D), this.getYRot(), this.getXRot());
                 }
-                ((IMixinBlazeEntity) blaze).initialize(worldIn, difficultyIn, reason, null, null);
+                ((IMixinBlaze) blaze).initialize(worldIn, difficultyIn, reason, null, null);
                 serverWorld.addFreshEntity(blaze);
             }
         }

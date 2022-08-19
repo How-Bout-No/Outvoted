@@ -26,8 +26,8 @@ public class GlareRenderer extends GeoMobRenderer<Glare> {
     private static final ResourceLocation ANGRY = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/glare/glare_angry.png");
 
     @Override
-    public RenderType getRenderType(Glare animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
+    public RenderType getRenderType(Glare glare, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(glare));
     }
 
     @Override

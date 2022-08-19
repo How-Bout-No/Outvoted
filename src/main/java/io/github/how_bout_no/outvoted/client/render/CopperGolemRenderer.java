@@ -27,8 +27,8 @@ public class CopperGolemRenderer extends GeoMobRenderer<CopperGolem> {
     private static final ResourceLocation WEATHERED = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/copper_golem/copper_golem3.png");
     private static final ResourceLocation OXIDIZED = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/copper_golem/copper_golem4.png");
     @Override
-    public RenderType getRenderType(CopperGolem animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
+    public RenderType getRenderType(CopperGolem copperGolem, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(copperGolem));
     }
     @Override
     public ResourceLocation getTextureLocation(CopperGolem entity) {

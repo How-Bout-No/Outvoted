@@ -31,8 +31,8 @@ public class WildfireHelmetRenderer extends GeoArmorRenderer<WildfireHelmetItem>
     }
 
     @Override
-    public void renderEarly(WildfireHelmetItem animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+    public void renderEarly(WildfireHelmetItem item, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+        super.renderEarly(item, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
         if (((GeoArmorRendererAccessor) this).getEntityLiving().isBaby()) {
             stackIn.scale(0.7F, 0.7F, 0.7F);
             stackIn.translate(0F, -0.4F, 0F);

@@ -1,0 +1,17 @@
+{
+  "name": "Meerkat",
+  "icon": "outvoted:meerkat_spawn_egg",
+  "category": "outvoted:entity_category",
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "outvoted:meerkat",
+      "scale": "1.0",
+      "text": "Quick little critter that scouts out the desert sand. Not actually a cat."
+    },
+    {
+      "type": "text",
+      "text": "Meerkats are small creatures that roam around the desert. They are neutral to all mobs except arthropods, and are peaceful to Players and other Meerkats. Gain a Meerkat's trust by feeding it Spider Eyes, and if you lend it a stick it will lead you to nearby desert structures."
+    }
+  ]
+}

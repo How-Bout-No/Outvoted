@@ -1,6 +1,6 @@
 package io.github.how_bout_no.outvoted.mixin;
 
-import io.github.how_bout_no.outvoted.util.IMixinBlazeEntity;
+import io.github.how_bout_no.outvoted.util.IMixinBlaze;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Add variant creation + storage code to normal Blazes
  */
 @Mixin(Blaze.class)
-public abstract class MixinBlaze extends Monster implements IMixinBlazeEntity {
+public abstract class MixinBlaze extends Monster implements IMixinBlaze {
     protected MixinBlaze(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
     }

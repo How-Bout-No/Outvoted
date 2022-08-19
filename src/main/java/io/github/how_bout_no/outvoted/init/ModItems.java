@@ -25,8 +25,8 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.GLARE, 0x325F03, 0x97D756, ITEM_PROPERTIES));
     public static final RegistryObject<ForgeSpawnEggItem> MEERKAT_SPAWN_EGG = ITEMS.register("meerkat_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.MEERKAT, 0xC19773, 0x000000, ITEM_PROPERTIES));
-//    public static final RegistryObject<ForgeSpawnEggItem> OSTRICH_SPAWN_EGG = ITEMS.register("ostrich_spawn_egg",
-//            () -> new ForgeSpawnEggItem(ModEntities.OSTRICH, 0xFED39B, 0x000000, ITEM_PROPERTIES));
+    public static final RegistryObject<ForgeSpawnEggItem> OSTRICH_SPAWN_EGG = ITEMS.register("ostrich_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.OSTRICH, 0xFED39B, 0x000000, ITEM_PROPERTIES));
 
     // Items
     public static final RegistryObject<Item> WILDFIRE_HELMET = ITEMS.register("wildfire_helmet", WildfireHelmetItem::new);

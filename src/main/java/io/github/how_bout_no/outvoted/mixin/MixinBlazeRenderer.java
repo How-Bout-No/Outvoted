@@ -2,7 +2,7 @@ package io.github.how_bout_no.outvoted.mixin;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.config.Config;
-import io.github.how_bout_no.outvoted.util.IMixinBlazeEntity;
+import io.github.how_bout_no.outvoted.util.IMixinBlaze;
 import net.minecraft.client.renderer.entity.BlazeRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Blaze;
@@ -21,6 +21,6 @@ public abstract class MixinBlazeRenderer {
     @Inject(method = "getTextureLocation", at = @At("RETURN"), cancellable = true)
     private void soulTextures(Blaze entity, CallbackInfoReturnable<ResourceLocation> cir) {
         if (!Config.wildfireVariants.get()) return;
-        if (((IMixinBlazeEntity) entity).getVariant() == 1) cir.setReturnValue(BLAZE_TEXTURES_SOUL);
+        if (((IMixinBlaze) entity).getVariant() == 1) cir.setReturnValue(BLAZE_TEXTURES_SOUL);
     }
 }

@@ -25,8 +25,8 @@ public class WildfireRenderer extends GeoEntityRenderer<Wildfire> {
     private static final ResourceLocation SOUL = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/wildfire/wildfire_soul.png");
 
     @Override
-    public RenderType getRenderType(Wildfire animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
+    public RenderType getRenderType(Wildfire wildfire, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(wildfire));
     }
 
     @Override

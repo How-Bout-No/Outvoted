@@ -58,6 +58,8 @@ public class LootTables extends LootTableProvider {
             list.add(ModEntities.BARNACLE.get());
             list.add(ModEntities.COPPER_GOLEM.get());
             list.add(ModEntities.GLARE.get());
+            list.add(ModEntities.MEERKAT.get());
+            list.add(ModEntities.OSTRICH.get());
             return list;
         }
 
@@ -122,6 +124,26 @@ public class LootTables extends LootTableProvider {
                             .add(LootItem.lootTableItem(Items.GLOW_BERRIES)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
                             )
+                    )
+            );
+            this.add(ModEntities.MEERKAT.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(Items.STICK)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))))
+                            .add(LootItem.lootTableItem(Items.CACTUS)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))))
+                            .add(LootItem.lootTableItem(Items.WHEAT_SEEDS)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))))
+                            .add(LootItem.lootTableItem(Items.STRING)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))))
+                    )
+            );
+            this.add(ModEntities.OSTRICH.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(Items.EGG)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))))
                     )
             );
         }

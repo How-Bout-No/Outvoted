@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WeatheringCopper.class)
-public class MixinWeatheringCopper {
+public abstract class MixinWeatheringCopper {
     @Dynamic
     @Inject(method = {"method_34740", "m_154909_"}, at = @At("RETURN"), remap = false, cancellable = true)
     private static void onBuildScrapedMapping(CallbackInfoReturnable<BiMap<Block, Block>> cir) {

@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.block.entity.BurrowBlockEntity;
+import io.github.how_bout_no.outvoted.block.entity.ModSignBlockEntity;
 import io.github.how_bout_no.outvoted.entity.*;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -35,10 +36,10 @@ public class ModEntities {
             .of(Meerkat::new, MobCategory.CREATURE)
             .sized(0.8F, 1.3F)
             .build(new ResourceLocation(Outvoted.MOD_ID, "meerkat").toString()));
-    //    public static final RegistryObject<EntityType<OstrichEntity>> OSTRICH = ENTITY_TYPES.register("ostrich", () -> EntityType.Builder
-//                    .of(OstrichEntity::new, MobCategory.CREATURE)
-//                    .sized(1.0F, 1.7F)
-//                    .build(new ResourceLocation(Outvoted.MOD_ID, "ostrich").toString()));
+        public static final RegistryObject<EntityType<Ostrich>> OSTRICH = ENTITIES.register("ostrich", () -> EntityType.Builder
+                    .of(Ostrich::new, MobCategory.CREATURE)
+                    .sized(1.0F, 1.7F)
+                    .build(new ResourceLocation(Outvoted.MOD_ID, "ostrich").toString()));
     public static final RegistryObject<EntityType<Glare>> GLARE = ENTITIES.register("glare", () -> EntityType.Builder
             .of(Glare::new, MobCategory.CREATURE)
             .sized(0.8F, 0.95F)
@@ -53,4 +54,10 @@ public class ModEntities {
             .register("burrow", () -> BlockEntityType.Builder
                     .of(BurrowBlockEntity::new, ModBlocks.BURROW.get())
                     .build(Util.fetchChoiceType(References.BLOCK_ENTITY, "burrow")));
+    public static final RegistryObject<BlockEntityType<ModSignBlockEntity>> SIGN_BLOCK_ENTITIES = BLOCK_ENTITIES
+            .register("sign_block_entity", () -> BlockEntityType.Builder
+                    .of(ModSignBlockEntity::new,
+                            ModBlocks.PALM_SIGN.get(),
+                            ModBlocks.PALM_WALL_SIGN.get())
+                    .build(Util.fetchChoiceType(References.BLOCK_ENTITY, "sign_block_entity")));
 }

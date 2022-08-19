@@ -21,9 +21,9 @@ public class DataGenerators {
             generator.addProvider(new ConfiguredStructureTags(generator, existingFileHelper));
         }
         if (event.includeClient()) {
-            generator.addProvider(new BlockModels(generator, event.getExistingFileHelper()));
-            generator.addProvider(new ItemModels(generator, event.getExistingFileHelper()));
             generator.addProvider(new BlockStates(generator, existingFileHelper));
+            generator.addProvider(new BlockModels(generator, existingFileHelper));
+            generator.addProvider(new ItemModels(generator, existingFileHelper));
         }
     }
 }

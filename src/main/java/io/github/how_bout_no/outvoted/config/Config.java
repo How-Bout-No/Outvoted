@@ -31,6 +31,10 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue meerkatSpawn;
     public static ForgeConfigSpec.IntValue meerkatRate;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> meerkatBiomes;
+    public static ForgeConfigSpec.DoubleValue ostrichHealth;
+    public static ForgeConfigSpec.BooleanValue ostrichSpawn;
+    public static ForgeConfigSpec.IntValue ostrichRate;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> ostrichBiomes;
     public static ForgeConfigSpec.DoubleValue copperGolemHealth;
     public static ForgeConfigSpec.DoubleValue copperGolemOxidation;
     public static ForgeConfigSpec.DoubleValue glareHealth;
@@ -50,7 +54,7 @@ public class Config {
 
         wildfireHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("health", 50, 1, Double.MAX_VALUE);
+                .defineInRange("health", 50, 1, 1023.);
         wildfireSpawn = COMMON_BUILDER
                 .comment("spawn")
                 .define("spawn", true);
@@ -65,13 +69,13 @@ public class Config {
 
         wildfireFireballCount = COMMON_BUILDER
                 .comment("fireball count")
-                .defineInRange("fireballs", 17, 1, Integer.MAX_VALUE);
+                .defineInRange("fireballs", 17, 1, 1023);
         wildfireOffsetAngle = COMMON_BUILDER
                 .comment("offset")
-                .defineInRange("offset", 4, 1, Double.MAX_VALUE);
+                .defineInRange("offset", 4, 1, 1023.);
         wildfireMaxDepressAngle = COMMON_BUILDER
                 .comment("depress")
-                .defineInRange("depress", 50, 1, Double.MAX_VALUE);
+                .defineInRange("depress", 50, 1, 1023.);
         wildfireDoFireballExplode = COMMON_BUILDER
                 .comment("explode")
                 .define("explode", false);
@@ -84,7 +88,7 @@ public class Config {
 
         gluttonHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("Glutton Health", 20, 1, Double.MAX_VALUE);
+                .defineInRange("Glutton Health", 20, 1, 1023.);
         gluttonSpawn = COMMON_BUILDER
                 .comment("spawn")
                 .define("Should Glutton Spawn", true);
@@ -109,7 +113,7 @@ public class Config {
 
         barnacleHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("Barnacle Health", 40, 1, Double.MAX_VALUE);
+                .defineInRange("Barnacle Health", 40, 1, 1023.);
         barnacleSpawn = COMMON_BUILDER
                 .comment("spawn")
                 .define("Should Barnacle Spawn", true);
@@ -125,7 +129,7 @@ public class Config {
 
         meerkatHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("Meerkat Health", 10, 1, Double.MAX_VALUE);
+                .defineInRange("Meerkat Health", 10, 1, 1023.);
         meerkatSpawn = COMMON_BUILDER
                 .comment("spawn")
                 .define("Should Meerkat Spawn", true);
@@ -137,11 +141,27 @@ public class Config {
                 .defineList("Burrow Spawn Biomes", List.of("#desert"), b -> b instanceof String);
 
         COMMON_BUILDER.pop();
+        COMMON_BUILDER.push("Ostrich Settings");
+
+        ostrichHealth = COMMON_BUILDER
+                .comment("health")
+                .defineInRange("Ostrich Health", 15, 1, 1023.);
+        ostrichSpawn = COMMON_BUILDER
+                .comment("spawn")
+                .define("Should Ostrich Spawn", true);
+        ostrichRate = COMMON_BUILDER
+                .comment("rate")
+                .defineInRange("Burrow Generation Rate", 2, 1, 100);
+        ostrichBiomes = COMMON_BUILDER
+                .comment("biomes")
+                .defineList("Burrow Spawn Biomes", List.of("#savanna"), b -> b instanceof String);
+
+        COMMON_BUILDER.pop();
         COMMON_BUILDER.push("Copper Golem Settings");
 
         copperGolemHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("Copper Golem Health", 25, 1, Double.MAX_VALUE);
+                .defineInRange("Copper Golem Health", 25, 1, 1023.);
         copperGolemOxidation = COMMON_BUILDER
                 .comment("Percentage chance for golem to oxidize per second, as a decimal")
                 .defineInRange("Copper Golem Oxidation Rate", 0.001, 0, 1);
@@ -150,7 +170,7 @@ public class Config {
 
         glareHealth = COMMON_BUILDER
                 .comment("health")
-                .defineInRange("Glare Health", 10, 1, Double.MAX_VALUE);
+                .defineInRange("Glare Health", 10, 1, 1023.);
         glareSpawn = COMMON_BUILDER
                 .comment("spawn")
                 .define("Should Glare Spawn", true);
@@ -175,7 +195,7 @@ public class Config {
                 .define("Give Patchouli Book On Login", true);
         helmetPenalty = COMMON_BUILDER
                 .comment("Set to 0 to never consume durability")
-                .defineInRange("Time (in ticks) it takes in between consuming durability", 40, 0, Integer.MAX_VALUE);
+                .defineInRange("Time (in ticks) it takes in between consuming durability", 40, 0, 1023);
 
         COMMON_BUILDER.pop();
     }

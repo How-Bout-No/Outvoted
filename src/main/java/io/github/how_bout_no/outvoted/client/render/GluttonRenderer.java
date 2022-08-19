@@ -23,8 +23,8 @@ public class GluttonRenderer extends GeoMobRenderer<Glutton> {
     private static final ResourceLocation SWAMP = new ResourceLocation(Outvoted.MOD_ID, "textures/entity/glutton/glutton_swamp.png");
 
     @Override
-    public RenderType getRenderType(Glutton animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityCutoutNoCull(this.getTextureLocation(animatable));
+    public RenderType getRenderType(Glutton glutton, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(glutton));
     }
 
     @Override
